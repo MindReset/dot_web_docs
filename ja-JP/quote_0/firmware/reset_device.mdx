@@ -1,74 +1,71 @@
 ---
-title: 重置设备
+title: デバイスをリセットする
 ---
 
 import { DeviceCurrentStatusTypeMap } from '@/dot_platform_share/constants/device/map.ts';
 
-## 使用 App 重置
+## アプリでリセット
 
-<Callout type="info" title="什么时候应该使用「App 重置」？">
-	当您的设备已接入电源，同时当前网络可用时。您在 Dot. App 中设备右上角将会看到
-	<LucideIcon icon={DeviceCurrentStatusTypeMap['IDLE_POWER'].icon} /> 标志，这表明您可以使用 App 重置。
+<Callout type="info" title="「アプリでリセット」はいつ使うべき？">
+	デバイスが電源に接続され、現在のネットワークが利用可能な場合です。Dot. アプリのデバイス右上に
+	<LucideIcon icon={DeviceCurrentStatusTypeMap['IDLE_POWER'].icon} /> の表示が見えるとき、アプリからリセットできます。
 </Callout>
 
 <Steps>
-<Step>
+    <Step>
 
-### 划动进入「更多」标签页
+        ### 「その他」タブへスワイプ
 
-<CustomCloudImage osSrc="dot/docs/reset_device_via_app_1.png" alt="进入「更多」" />
+        <CustomCloudImage osSrc="dot/docs/reset_device_via_app_1.png" alt="「その他」へ移動" />
+    </Step>
 
-</Step>
+    <Step>
 
-<Step>
+        ### アイコンの下にあるデバイス一覧をタップ
 
-### 点击头像下方的设备列表
+        <CustomCloudImage osSrc="dot/docs/reset_device_via_app_2.png" alt="「デバイス一覧」へ" />
+    </Step>
 
-<CustomCloudImage osSrc="dot/docs/reset_device_via_app_2.png" alt="进入「设备列表」" />
+    <Step>
 
-</Step>
+        ### デバイスを選択
 
-<Step>
+        <CustomCloudImage osSrc="dot/docs/reset_device_via_app_3.png" alt="デバイスを選択" />
+    </Step>
 
-### 选择您的设备
+    <Step>
 
-<CustomCloudImage osSrc="dot/docs/reset_device_via_app_3.png" alt="选择设备" />
+        ### 「リセット」をタップ
 
-</Step>
+        <div className="flex flex-col md:flex-row gap-4">
+            <CustomCloudImage osSrc="dot/docs/reset_device_via_app_4.png" alt="「デバイス一覧」へ" />
+            <CustomCloudImage osSrc="dot/docs/reset_device_via_app_5.png" alt="「デバイス一覧」へ" />
+        </div>
+    </Step>
 
-<Step>
+    <Step>
 
-### 点击「重置」
+        ### リセットを確認
 
-<div className="flex flex-col md:flex-row gap-4">
-	<CustomCloudImage osSrc="dot/docs/reset_device_via_app_4.png" alt="进入「设备列表」" />
-	<CustomCloudImage osSrc="dot/docs/reset_device_via_app_5.png" alt="进入「设备列表」" />
-</div>
-
-</Step>
-
-<Step>
-
-### 确认重置
-
-<CustomCloudImage osSrc="dot/docs/reset_device_via_app_6.png" alt="确认重置" />
-
-</Step>
+        <CustomCloudImage osSrc="dot/docs/reset_device_via_app_6.png" alt="リセットを確認" />
+    </Step>
 
 </Steps>
 
-## 网络工具
+## ネットワークツール
 
-<Callout type="info" title="什么时候应该使用「网络工具」？">
-	当您的设备无法连接到原本的网络，这表明您需要使用网页工具来重置网络。
+<Callout type="info" title="「ネットワークツール」はいつ使うべき？">
+	デバイスが元のネットワークに接続できない場合、ウェブツールを使用してネットワークをリセットする必要があります。
 </Callout>
 
-### 将设备连接至网页工具
+### デバイスをウェブツールに接続
 
 <include>./device_tool_connect.mdx</include>
 
-### 下一步
+### 次のステップ
 
-点选下方的「重置设备」，在设备屏幕变化后，您可以使用 Dot. App 重新配对该设备。
+下の「デバイスをリセット」をタップします。デバイス画面に変化が現れたら、Dot. アプリで再度ペアリングを行ってください。
 
-<Callout type="info">如若屏幕无变化，可以尝试断开连接，刷新网页后，重新连接尝试。</Callout>
+<Callout type="info">
+	画面に変化がない場合は、一度接続を解除し、ページをリロードしてから再接続してください。
+</Callout>

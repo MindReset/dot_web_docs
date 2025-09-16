@@ -1,45 +1,44 @@
 ---
 title: RSS
-description: 将您的 RSS 订阅无缝同步至 Dot. 设备。
+description: あなたの RSS 購読を Dot. デバイスへシームレスに同期します。
 ---
 
-## 什么是 RSS？
+## RSS とは？
 
-RSS（Really Simple Syndication 或 Rich Site Summary）是一种 Web 内容聚合格式，允许用户订阅网站的更新内容。通过 RSS，您可以在一个地方集中获取多个网站的最新文章、新闻或更新，无需逐一访问每个网站。
+RSS（Really Simple Syndication または Rich Site Summary）は、ウェブコンテンツのアグリゲーション形式で、ユーザーがサイトの更新情報を購読できる仕組みです。RSS を使うと、複数サイトの記事・ニュース・更新を一箇所でまとめて取得でき、個別にサイトへアクセスする必要がありません。
 
-<Callout title="关于 RSSHub" type="info">
+<Callout title="RSSHub について" type="info">
 
-RSSHub 是一个开源的 RSS 生成器，可以为没有提供 RSS 的网站生成 RSS 订阅源。通过 RSSHub，您可以将各种网站的内容转换为 RSS 格式，方便统一订阅和管理。在 Dot. 内容工坊中，如果您看到了数据解析为「RSSHub」，则意味着该数据是基于 RSSHub 的 API 生成的。
+RSSHub は、RSS を提供していないサイトから RSS フィードを生成できるオープンソースの RSS 生成器です。RSSHub を用いることで、さまざまなサイトのコンテンツを RSS 形式へ変換し、統一的に購読・管理できます。Dot. のコンテンツ工房でデータの解析元が「RSSHub」と表示されている場合、そのデータは RSSHub の API を基に生成されています。
 
-### 相关链接
+### 関連リンク
 
--   GitHub 地址：[DIYgod/RSSHub](https://github.com/DIYgod/RSSHub)
--   官方文档：[docs.rsshub.app](https://docs.rsshub.app)
+-   GitHub： [DIYgod/RSSHub](https://github.com/DIYgod/RSSHub)
+-   公式ドキュメント： [docs.rsshub.app](https://docs.rsshub.app)
 
-通过 RSSHub，您可以轻松地将各种网站内容转换为 RSS 格式，实现真正的内容聚合订阅。
+RSSHub を使えば、多様なウェブサイトのコンテンツを簡単に RSS 化し、真のコンテンツ集約購読を実現できます。
 
 </Callout>
 
-## 使用 RSS 订阅
+## RSS 購読を使う
 
 <Steps>
-<Step>
-	### 检索或获取 RSS 订阅链接
+    <Step>
+        ### RSS 購読リンクを探す／取得する
 
-    一般来说，您可以在网站的底部或侧边栏找到 RSS 订阅链接，通常以「RSS」或「订阅」字样标识。如果网站没有提供 RSS 链接，您可以使用 RSSHub 官方站点或自行搭建的 RSSHub 来生成。
+        一般的に、サイトのフッターやサイドバーに「RSS」「購読」などの表記で RSS リンクがあります。サイトが RSS を提供していない場合は、RSSHub の公式サイトや自前で構築した RSSHub を使って生成できます。
 
-    RSS 链接格式为 `https://example.com/rss` 或 `https://example.com/feed`。
+        RSS リンクの例：`https://example.com/rss` または `https://example.com/feed`
 
-    <CustomCloudImage osSrc="dot/docs/___%20-%20__________1754405386466.jpeg" alt="少数派官网的 RSS 订阅"  caption="例如「少数派」官网右侧提供的 RSS 订阅：https://sspai.com/feed" />
+        <CustomCloudImage osSrc="dot/docs/___%20-%20__________1754405386466.jpeg" alt="少数派公式サイトの RSS 購読" caption="例：「少数派」公式サイト右側の RSS 購読：https://sspai.com/feed" />
+    </Step>
+    <Step>
+        ### RSS 購読リンクを入力
 
-</Step>
-  <Step>
-### 填写 RSS 订阅链接
+        <div className="flex flex-col md:flex-row gap-4">
+            <CustomCloudImage osSrc="dot/docs/STIIITCH_2025_08_05_10_54_21_1754405692651.PNG" alt="RSS 購読リンクを入力" />
+            <CustomCloudImage osSrc="dot/docs/STIIITCH_2025_08_05_10_54_27_1754405722301.PNG" alt="入力完了" />
+        </div>
+    </Step>
 
-    <div className="flex flex-col md:flex-row gap-4">
-    <CustomCloudImage osSrc="dot/docs/STIIITCH_2025_08_05_10_54_21_1754405692651.PNG" alt="填写 RSS 订阅链接" />
-    <CustomCloudImage osSrc="dot/docs/STIIITCH_2025_08_05_10_54_27_1754405722301.PNG" alt="完成填写" />
-
-</div>
-</Step>
 </Steps>

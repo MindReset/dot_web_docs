@@ -1,71 +1,67 @@
 ---
-title: 配对 Quote/0
-description: 配对 Quote/0 设备的详细步骤和注意事项
+title: Quote/0 をペアリングする
+description: Quote/0 デバイスのペアリング手順と注意事項
 ---
 
-## 如何配对 Quote/0
+## どのように Quote/0 をペアリングするか
 
 <Callout type="info">
 	<include>../../dot/install_app.mdx</include>
 </Callout>
 
-<Callout type="info">请确保 Quote/0 在配对成功前，始终接入电源。</Callout>
+<Callout type="info">
+	ペアリングが完了するまで、必ず Quote/0 を電源に接続したままにしてください。
+</Callout>
 
 <Steps>
-  <Step>
-    ### 接入电源
+    <Step>
+        ### 電源に接続
 
-    将**电源线接入 Quote/0**。
+        「電源ケーブルを Quote/0 に接続」します。
 
-    <CustomCloudImage osSrc="dot/docs/user_conf_init.png" alt="Quote/0 用户激活" />
+        <CustomCloudImage osSrc="dot/docs/user_conf_init.png" alt="Quote/0 ユーザーアクティベーション" />
+    </Step>
 
-  </Step>
+    <Step>
+        ### Dot. アプリを開く
 
-  <Step>
-    ### 打开 Dot. App
+        スマートフォンに Dot. アプリがインストールされていることを確認し、アカウントの登録またはログインを行ってください。
 
-    确保您的手机已安装 Dot. App，并注册或登录您的账号。
+        <CustomCloudImage osSrc="dot/docs/user_conf_prov.png" alt="Quote/0 アクティベーション待機" />
+    </Step>
+    <Step>
+        ### デバイスを検索
 
-    <CustomCloudImage osSrc="dot/docs/user_conf_prov.png" alt="Quote/0 等待激活" />
-
-  </Step>
-  <Step>
-    ### 搜索设备
-
-    打开 Dot. App，点选主页右上角的「 + 」按钮，在弹出的卡片中选择「查找设备」，稍等片刻，将会出现您的设备。
-
-<div className="flex flex-col md:flex-row gap-4">
-	<CustomCloudImage osSrc="dot/docs/search_device_1.png" alt="搜索设备 第一步" />
-	<CustomCloudImage osSrc="dot/docs/search_device_2.png" alt="搜索设备 第二步" />
-	<CustomCloudImage osSrc="dot/docs/search_device_3.png" alt="搜索设备 第三步" />
-</div>
-
-<Callout type="info">请确保您的手机已开启蓝牙功能并赋予权限。</Callout>
-
-  </Step>
-  <Step>
-    ### 连接网络
-
-    选择您的 Wi-Fi 网络并输入正确的密码，点击「传输到设备」。
-
-    <div className="flex flex-col md:flex-row gap-4">
-    <CustomCloudImage osSrc="dot/docs/connect_net_1.png" alt="连接网络 第一步" />
-    <CustomCloudImage osSrc="dot/docs/connect_net_2.png" alt="连接网络 第二步" />
-    <CustomCloudImage osSrc="dot/docs/connect_net_3.png" alt="连接网络 第三步" />
-
-</div>
-
-  </Step>
-  <Step>
-    ### 完成配对
-
-    稍等片刻，您的 Quote/0 将会完成配并添加到您的设备列表中。当显示「一日一隅」时，则代表您已成功配对。
+        Dot. アプリを開き、ホーム右上の「+」ボタンをタップし、表示されたカードから「デバイスを探す」を選択します。しばらく待つと、お使いのデバイスが表示されます。
 
         <div className="flex flex-col md:flex-row gap-4">
-    <CustomCloudImage osSrc="dot/docs/pair_done_1.png" alt="完成配对 第一步" />
-    <CustomCloudImage osSrc="dot/docs/pair_done_2.png" alt="完成配对 第二步" />
+            <CustomCloudImage osSrc="dot/docs/search_device_1.png" alt="デバイス検索 ステップ1" />
+            <CustomCloudImage osSrc="dot/docs/search_device_2.png" alt="デバイス検索 ステップ2" />
+            <CustomCloudImage osSrc="dot/docs/search_device_3.png" alt="デバイス検索 ステップ3" />
+        </div>
 
-</div>
+        <Callout type="info">スマートフォンの Bluetooth を有効にし、権限が付与されていることを確認してください。</Callout>
+    </Step>
+    <Step>
+        ### ネットワークに接続
 
-  </Step>
+        ご自宅の Wi‑Fi ネットワークを選択し、正しいパスワードを入力して「デバイスへ送信」をタップします。
+
+        <div className="flex flex-col md:flex-row gap-4">
+            <CustomCloudImage osSrc="dot/docs/connect_net_1.png" alt="ネットワーク接続 ステップ1" />
+            <CustomCloudImage osSrc="dot/docs/connect_net_2.png" alt="ネットワーク接続 ステップ2" />
+            <CustomCloudImage osSrc="dot/docs/connect_net_3.png" alt="ネットワーク接続 ステップ3" />
+        </div>
+    </Step>
+    <Step>
+        ### ペアリング完了
+
+        しばらく待つと、Quote/0 のペアリングが完了し、デバイス一覧に追加されます。画面に「一日一隅」と表示されれば、ペアリング成功のサインです。
+
+        <div className="flex flex-col md:flex-row gap-4">
+            <CustomCloudImage osSrc="dot/docs/pair_done_1.png" alt="ペアリング完了 ステップ1" />
+            <CustomCloudImage osSrc="dot/docs/pair_done_2.png" alt="ペアリング完了 ステップ2" />
+        </div>
+    </Step>
+
 </Steps>

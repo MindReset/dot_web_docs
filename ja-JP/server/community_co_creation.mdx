@@ -1,75 +1,78 @@
 ---
-title: 社区共创
-description: 从实用工具到趣味应用，我们活跃的开发者社区正在不断拓展 Quote/0 的边界。
+title: コミュニティ共創
+description: 実用ツールから遊び心のあるアプリまで、活発な開発者コミュニティが Quote/0 の可能性を拡張し続けています。
 ---
 
 import Button from '~/src/components/Button/Button';
 
-<Callout type="info" title="要使用社区共创的内容，您需要在 Dot. App 中关联设备并完成 API 设置。" />
+<Callout
+	type="info"
+	title="コミュニティ共創コンテンツを利用するには、Dot. アプリでデバイス連携と API 設定を完了する必要があります。"
+/>
 
 ## Dot Calendar
 
-**开发者：wanyaxing** | [GitHub 仓库](https://github.com/wanyaxing/dot_calendar)
+開発者：wanyaxing | [GitHub リポジトリ](https://github.com/wanyaxing/dot_calendar)
 
-获取 30 天内天气并推送到 Quote/0 的电子墨水屏上。
+今後 30 日間の天気を取得し、Quote/0 の電子ペーパーにプッシュ表示します。
 
-<CustomCloudImage osSrc="dot/docs/iShot_2025-09-05_22.11.58_1757592344181.png" alt="实现效果" />
+<CustomCloudImage osSrc="dot/docs/iShot_2025-09-05_22.11.58_1757592344181.png" alt="実装イメージ" />
 
-### 功能
+### 機能
 
--   使用日历的方式展示当地最近 30 天的天气数据
--   展示当天当地的天气、最低温度、最高温度
--   展示当天当地的预警信息
--   展示当地未来 2 小时内的雨雪雾天气情况，或未来两周内最近一日的雨雪雾。
--   展示 ToDo 列表（可参考 demo 接入钉钉日程，或另行实现相关 ToDo 文本的接入）
+-   カレンダー形式で地域の直近 30 日分の天気データを表示
+-   当日の天気、最低・最高気温を表示
+-   当日の気象警報情報を表示
+-   向こう 2 時間の雨・雪・霧の予報、または今後 2 週間で最も近い日の雨雪霧を表示
+-   ToDo リストを表示（デモのように DingTalk 予定に連携、または別途 ToDo テキスト連携を実装可能）
 
 ## Quote/0 MCP (thomaszdxsn)
 
-**开发者：thomaszdxsn** | [GitHub 仓库](https://github.com/thomaszdxsn/quote0-mcp)
+開発者：thomaszdxsn | [GitHub リポジトリ](https://github.com/thomaszdxsn/quote0-mcp)
 
-通过 Claude Desktop 控制您的 Quote/0 智能显示设备。
+Claude Desktop を通じて、Quote/0 スマートディスプレイを操作します。
 
-<CustomCloudImage osSrc="dot/docs/thomaszdxsn_quote0-mcp_1757592813675.jpeg" alt="运行效果" />
+<CustomCloudImage osSrc="dot/docs/thomaszdxsn_quote0-mcp_1757592813675.jpeg" alt="動作イメージ" />
 
 ## Quote/0 MCP (stvlynn)
 
-**开发者：stvlynn** | [GitHub 仓库](https://github.com/stvlynn/quote0-mcp)
+開発者：stvlynn | [GitHub リポジトリ](https://github.com/stvlynn/quote0-mcp)
 
-一个模型上下文协议（MCP）服务器，提供与 Dot. 设备交互的工具。该服务器实现了 Dot. 官方 API 端点，用于在 Dot. 设备屏幕上显示文本和图像。
+Model Context Protocol（MCP）サーバーで、Dot. デバイスと対話するツール群を提供。Dot. 公式 API エンドポイントを実装し、デバイス画面にテキストや画像を表示します。
 
-<CustomCloudImage osSrc="dot/docs/stvlynn_quote0-mcp_1757593061861.jpeg" alt="运行效果" />
+<CustomCloudImage osSrc="dot/docs/stvlynn_quote0-mcp_1757593061861.jpeg" alt="動作イメージ" />
 
-### 功能
+### 機能
 
--   简单文本 API：在 MindReset 设备上显示基本文本内容
--   复杂文本 API：显示带有签名和格式的文本
--   带图标文本：显示带有自定义图标和点击跳转链接的文本内容
--   图片 API：显示带有可定制边框的 PNG 图像
+-   シンプルテキスト API：MindReset デバイスに基本的なテキストを表示
+-   リッチテキスト API：署名やフォーマット付きのテキストを表示
+-   アイコン付きテキスト：カスタムアイコンとタップでのリンク遷移を備えたテキスト表示
+-   画像 API：カスタマイズ可能な枠線付き PNG 画像を表示
 
 ## DotClient
 
-**开发者：琥珀** | [GitHub 仓库 / 下载地址](https://github.com/onehupo/DotClient)
+開発者：琥珀 | [GitHub リポジトリ / ダウンロード](https://github.com/onehupo/DotClient)
 
-针对 Dot.开发的墨水屏推送软件，定制自己的文本和图案。
+Dot. 向けに開発された電子ペーパー用プッシュソフト。独自のテキストや図案を作成・送信できます。
 
-<CustomCloudImage osSrc="dot/docs/demo_1754558002770.jpg" alt="运行效果" />
+<CustomCloudImage osSrc="dot/docs/demo_1754558002770.jpg" alt="動作イメージ" />
 
-### 主要功能
+### 主な機能
 
--   调用 Dot.的文本、图片 API 配置内容，图片支持灰阶转换，让黑白墨水屏显示灰度的效果
--   通过制图页面自由定制文本的样式，包括大小、旋转、Emoji 等
--   配置的图片或者制作的图片，可以导出文件分享
--   多个示例 icon，示例图片可以选择
--   配置多个设备，选择制定设备发送
--   添加了 base64 转换工具，可以把图片转换成 base64
+-   Dot. のテキスト・画像 API を用いてコンテンツを設定。画像は階調変換に対応し、白黒電子ペーパーでグレースケール表現
+-   作図ページでテキストのスタイル（サイズ、回転、Emoji 等）を自由にカスタマイズ
+-   設定した画像や作成した画像はファイルとしてエクスポートして共有可能
+-   複数のサンプルアイコン・サンプル画像を同梱
+-   複数デバイスを設定し、指定デバイスを選んで送信可能
+-   base64 変換ツールを同梱し、画像を base64 に変換可能
 
-<CustomCloudImage osSrc="dot/docs/examples_1754558201107.jpg" alt="图片展示廊" />
-<CustomCloudImage osSrc="dot/docs/software_1754558223605.jpg" alt="软件界面" />
+<CustomCloudImage osSrc="dot/docs/examples_1754558201107.jpg" alt="画像ギャラリー" />
+<CustomCloudImage osSrc="dot/docs/software_1754558223605.jpg" alt="ソフトウェア画面" />
 
-## Quote/0 发信 Demo
+## Quote/0 送信デモ
 
-**开发者：Lakphy** | [GitHub 仓库](https://github.com/Lakphy/quote0-api-demo)
+開発者：Lakphy | [GitHub リポジトリ](https://github.com/Lakphy/quote0-api-demo)
 
-本项目用于演示使用 Quote/0 的 [文本 API](docs/server/text_api) 发信。
+Quote/0 の「テキスト API」（docs/server/text_api）を使った送信のデモプロジェクトです。
 
-<CustomCloudImage osSrc="dot/docs/img1_1754558880618.png" alt="软件界面" />
+<CustomCloudImage osSrc="dot/docs/img1_1754558880618.png" alt="ソフトウェア画面" />

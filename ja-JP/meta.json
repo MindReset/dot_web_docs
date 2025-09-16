@@ -1,7 +1,6 @@
 {
-    "root": true,
     "pages": [
-        "---常见问题---",
+        "---よくある質問---",
         "quote_0/faq/change_network",
         "quote_0/faq/pair_issues",
         "quote_0/faq/action_issues",
@@ -9,24 +8,25 @@
         "dot/install_app",
         "dot/diagnostic_tool",
         "dot/known_issues",
-        "---Quote 摘录---",
+        "---Quote---",
         "quote_0",
-        "---内容与服务---",
+        "---コンテンツとサービス---",
         "server/template",
         "server/api",
         "server/shortcut",
         "server/community_co_creation",
         "server/update_plan",
-        "---拓展更多可能---",
-        "[贡献你的想法](/submit#idea)",
-        "[加入我们的内容工坊](/submit#platform)",
-        "---安全---",
+        "---さらに可能性を広げる---",
+        "[あなたのアイデアを投稿](/submit#idea)",
+        "[私たちのコンテンツ工房に参加](/submit#platform)",
+        "---セキュリティ---",
         "security_advisory",
         "security_policy",
-        "---更多---",
+        "---その他---",
         "privacy",
         "terms",
         "contact",
         "about_mindreset"
-    ]
+    ],
+    "root": true
 }

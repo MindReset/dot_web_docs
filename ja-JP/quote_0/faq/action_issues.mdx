@@ -1,35 +1,38 @@
 ---
-title: 碰一碰操作无法唤起 / 轻 App 不可用
+title: タッチ操作で起動できない／軽量アプリが使えない
 ---
 
 import Link from 'fumadocs-core/link';
 
-## 如何进行「碰一碰」操作
+## 「タッチ操作」のやり方
 
 <include>../start/action.mdx</include>
 
-## “轻 App”不可用
+## 「軽量アプリ」が使用できない
 
-<CustomCloudImage osSrc="dot/docs/action_clip_app_not_available.png" alt="“轻 App”不可用" />
+<CustomCloudImage
+	osSrc="dot/docs/action_clip_app_not_available.png"
+	alt="「軽量アプリ」が使用できない"
+/>
 
-如果您在「碰一碰」操作后遇到了“轻 App”不可用，表明您暂未下载安装 Dot. App。在<Link href="/docs/dot/install_app">安装最新版本 App</Link>后，即可使用「碰一碰」。
+「タッチ操作」の後に「軽量アプリが使用できません」と表示される場合、まだ Dot. アプリをインストールしていないことを意味します。<Link href="/docs/dot/install_app">最新バージョンのアプリをインストール</Link>すると、「タッチ操作」を利用できます。
 
-出现这个错误提示，是因为目前的“轻 App”体积超过了 Apple 在系统限制中“无需安装主 App 而唤醒轻 App 的体积”。目前，我们正在努力减少“轻 App”的体积，这样可以在无需安装主 App 的时候直接唤起查看。
+このエラーは、現時点の「軽量アプリ」のサイズが、Apple の「メインアプリを未インストールでも起動可能なサイズ上限」を超えているために表示されます。現在、メインアプリをインストールせずとも直接起動できるよう、「軽量アプリ」のサイズ削減に取り組んでいます。
 
-## 无法唤起
+## 起動できない
 
-<CustomCloudImage osSrc="dot/docs/action_location.png" alt="“唤起位置" />
+<CustomCloudImage osSrc="dot/docs/action_location.png" alt="起動位置" />
 
 ### iPhone
 
-如果您在尝试「碰一碰」，却在 iPhone 中无法唤起轻 App，建议尝试将 iPhone 锁屏，重新解锁设备，手持 iPhone 由低到高，靠近设备右侧，这样一般可以正常唤起轻 App。
+「タッチ操作」を試しても iPhone で軽量アプリが起動しない場合は、iPhone を一度ロックしてから再度ロック解除し、iPhone を上下に動かしつつ、デバイス右側に近づけてみてください。多くの場合、これで正常に起動します。
 
-出现这种问题的原因，一般是由于 iOS 的系统限制。当您触碰多次相同的轻 App 来源时，iOS 会屏蔽后续的唤起操作，只有您锁屏后，并且动作幅度较大来去靠近时，iOS 才会重新唤起轻 App。
+この現象は、iOS のシステム制限によるものです。同一の軽量アプリのソースに対して何度もタッチすると、iOS が後続の起動を抑制することがあります。ロック後に十分な動きで近づけると、iOS が改めて起動を許可します。
 
-如若您正在使用国行 iPhone，可以检查「设置」 - 「通用」中的 NFC 是否已开启。
+中国本土版の iPhone をお使いの場合は、「設定」→「一般」内で NFC が有効になっているかご確認ください。
 
 ### Android
 
-如果您在尝试「碰一碰」，却在 Android 设备中无法正确跳转，请确保您的 Android 设备已安装 Dot. App，开启 NFC 功能、并确定您的 Android 设备 NFC 区域。
+Android 端末で正しく遷移しない場合は、Dot. アプリのインストール、NFC の有効化、そしてお使いの端末における NFC アンテナ位置の確認を行ってください。
 
-将该区域靠近设备右侧空白区域，即可唤起内容。
+その NFC 領域をデバイス右側の空白エリアに近づけると、コンテンツを起動できます。

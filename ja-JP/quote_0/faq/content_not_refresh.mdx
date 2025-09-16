@@ -1,59 +1,55 @@
 ---
-title: 内容不更新
+title: コンテンツが更新されない
 ---
 
-请您按照以下步骤检查，或通过 Dot. App 检查设备状态：
+以下の手順で確認するか、Dot. アプリからデバイスの状態をご確認ください。
 
-## 内容更新间隔设置是否过长
+## コンテンツ更新間隔の設定が長すぎないか
 
-如果您在 Dot. App 中设置了内容更新间隔过长，设备将不会频繁唤醒以获取内容更新。请检查您的设置，并适当缩短内容更新间隔。
+Dot. アプリで更新間隔を長く設定している場合、デバイスは頻繁にウェイクして更新を取得しません。設定を確認し、更新間隔を適切に短くしてください。
 
 <Steps>
-<Step>
+    <Step>
 
-### 选择设备
+        ### デバイスを選択
 
-<CustomCloudImage osSrc="dot/docs/change_loop_interval_1.png" alt="选择设备" />
+        <CustomCloudImage osSrc="dot/docs/change_loop_interval_1.png" alt="デバイスを選択" />
+    </Step>
 
-</Step>
+    <Step>
 
-<Step>
+        ### 右下のデバイスタスクをタップ
 
-### 点击右下角设备任务
+        <CustomCloudImage osSrc="dot/docs/change_loop_interval_2.png" alt="デバイスタスク" />
+    </Step>
 
-<CustomCloudImage osSrc="dot/docs/change_loop_interval_2.png" alt="设备任务" />
+    <Step>
 
-</Step>
+        ### 「更新間隔を調整」をタップ
 
-<Step>
+        <CustomCloudImage osSrc="dot/docs/change_loop_interval_3.png" alt="更新間隔を調整" />
+    </Step>
 
-### 点击「调整更新间隔」
+    <Step>
 
-<CustomCloudImage osSrc="dot/docs/change_loop_interval_3.png" alt="「调整更新间隔」" />
+        ### 異なる間隔時間に調整
 
-</Step>
-
-<Step>
-
-### 调整不同的间隔时间
-
-<div className="flex flex-col md:flex-row gap-4">
-	<CustomCloudImage osSrc="dot/docs/change_loop_interval_4_1.png" alt="不同的间隔时间" />
-	<CustomCloudImage osSrc="dot/docs/change_loop_interval_4_2.png" alt="不同的间隔时间" />
-</div>
-
-</Step>
+        <div className="flex flex-col md:flex-row gap-4">
+            <CustomCloudImage osSrc="dot/docs/change_loop_interval_4_1.png" alt="異なる間隔時間" />
+            <CustomCloudImage osSrc="dot/docs/change_loop_interval_4_2.png" alt="異なる間隔時間" />
+        </div>
+    </Step>
 
 </Steps>
 
-## 设备断电或电量耗尽，尝试连接电源
+## デバイスの電源断またはバッテリー切れの場合、電源に接続
 
 <include>./battery_low_or_fast.mdx</include>
 
-## Wi-Fi 连接中断，检查您的路由器网络是否正常
+## Wi‑Fi 接続が切れていないか、ルーターのネットワーク状態を確認
 
-如果您的设备在使用过程中断开了 Wi-Fi 连接，设备将无法获取内容更新。请检查您的路由器网络是否正常工作。
+利用中にデバイスが Wi‑Fi から切断された場合、コンテンツ更新を取得できません。ルーターの動作が正常か確認してください。
 
-### 切换当前网络
+### 現在のネットワークを切り替える
 
 <include>../firmware/reset_network.mdx</include>

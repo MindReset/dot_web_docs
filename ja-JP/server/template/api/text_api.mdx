@@ -1,26 +1,31 @@
 ---
-title: 文本 API
+title: テキスト API
 ---
 
 import Link from 'fumadocs-core/link';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
-## 快速指引
+## クイックガイド
 
 ### 必要条件
 
-1. 确保您已在 Dot. App 中<Link href="/docs/server/template/api/get_api">获取并保存了 API 密钥</Link>；
-2. 确保您至少有一台所属于自己的设备并已<Link href="/docs/server/template/api/get_device_id">获取设备序列号</Link>；
-3. 确保您的设备已接入电源；
-4. 确保您的设备已接入网络；
-5. 确保设备已添加 `文本 API` 内容。
+1. Dot. アプリで<Link href="/docs/server/template/api/get_api">API キーを取得して保存</Link>していること
+2. 自分のデバイスが少なくとも 1 台あり、<Link href="/docs/server/template/api/get_device_id">デバイスのシリアル番号</Link>を取得していること
+3. デバイスが電源に接続されていること
+4. デバイスがネットワークに接続されていること
+5. デバイスに「テキスト API」コンテンツが追加されていること
 
 <Callout
 	type="info"
-	title="API 请求不受 App 设置中设备最短 5 分钟的限制，API 的请求限制为每秒 1 次。因此，通过 API 请求，您可以更灵活地控制设备的行为和响应。"
+	title="API リクエストはアプリ設定の最短5分制限を受けません。API のリクエスト制限は1秒あたり1回です。したがって、API を使うとデバイスの動作と応答をより柔軟に制御できます。"
 />
 
-### 请求示例
+<Callout
+	type="info"
+	title="ドキュメント中の ‘{{変数}}’ は置換が必要なプレースホルダーです。実際の値に置き換え、‘{{}}’ は削除してください。"
+/>
+
+### リクエスト例
 
 <Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
   <Tab value="cURL">
@@ -30,13 +35,13 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
       -H 'Authorization: Bearer {{API_KEY}}' \
       -H 'Content-Type: application/json' \
       -d '{
-        "refreshNow": {{是否立刻显示内容}},
-        "deviceId": "{{设备序列号}}",
-        "title": "{{标题}}",
+        "refreshNow": {{内容を即時表示するか}},
+        "deviceId": "{{デバイスシリアル番号}}",
+        "title": "{{タイトル}}",
         "message": "{{内容}}",
-        "signature": "{{签名}}",
-        "icon": "{{base64 编码 PNG 图标数据}}",
-        "link": "{{碰一碰跳转链接}}"
+        "signature": "{{署名}}",
+        "icon": "{{base64 エンコードした PNG アイコンデータ}}",
+        "link": "{{タッチ操作時の遷移リンク}}"
       }'
     ```
   </Tab>
@@ -50,13 +55,13 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
         "Content-Type": "application/json"
     }
     data = {
-        "refreshNow": {{是否立刻显示内容}},
-        "deviceId": "{{设备序列号}}",
-        "title": "{{标题}}",
+        "refreshNow": {{内容を即時表示するか}},
+        "deviceId": "{{デバイスシリアル番号}}",
+        "title": "{{タイトル}}",
         "message": "{{内容}}",
-        "signature": "{{签名}}",
-        "icon": "{{base64 编码 PNG 图标数据}}",
-        "link": "{{碰一碰跳转链接}}"
+        "signature": "{{署名}}",
+        "icon": "{{base64 エンコードした PNG アイコンデータ}}",
+        "link": "{{タッチ操作時の遷移リンク}}"
     }
     response = requests.post(url, json=data, headers=headers)
     print(response.json())
@@ -72,13 +77,13 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        refreshNow: {{是否立刻显示内容}},
-        deviceId: "{{设备序列号}}",
-        title: "{{标题}}",
+        refreshNow: {{内容を即時表示するか}},
+        deviceId: "{{デバイスシリアル番号}}",
+        title: "{{タイトル}}",
         message: "{{内容}}",
-        signature: "{{签名}}",
-        icon: "{{base64 编码 PNG 图标数据}}",
-        link: "{{碰一碰跳转链接}}"
+        signature: "{{署名}}",
+        icon: "{{base64 エンコードした PNG アイコンデータ}}",
+        link: "{{タッチ操作時の遷移リンク}}"
       })
     }).then(res => res.json()).then(console.log);
     ```
@@ -98,13 +103,13 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        refreshNow: {{是否立刻显示内容}},
-        deviceId: "{{设备序列号}}",
-        title: "{{标题}}",
+        refreshNow: {{内容を即時表示するか}},
+        deviceId: "{{デバイスシリアル番号}}",
+        title: "{{タイトル}}",
         message: "{{内容}}",
-        signature: "{{签名}}",
-        icon: "{{base64 编码 PNG 图标数据}}",
-        link: "{{碰一碰跳转链接}}"
+        signature: "{{署名}}",
+        icon: "{{base64 エンコードした PNG アイコンデータ}}",
+        link: "{{タッチ操作時の遷移リンク}}"
       })
     })
       .then(res => res.json() as Promise<ApiResponse>)
@@ -129,13 +134,13 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
     func main() {
       url := "https://dot.mindreset.tech/api/open/text"
       payload := map[string]interface{}{
-        "refreshNow": {{是否立刻显示内容}},
-        "deviceId": "{{设备序列号}}",
-        "title": "{{标题}}",
+        "refreshNow": {{内容を即時表示するか}},
+        "deviceId": "{{デバイスシリアル番号}}",
+        "title": "{{タイトル}}",
         "message": "{{内容}}",
-        "signature": "{{签名}}",
-        "icon": "{{base64 编码 PNG 图标数据}}",
-        "link": "{{碰一碰跳转链接}}"
+        "signature": "{{署名}}",
+        "icon": "{{base64 エンコードした PNG アイコンデータ}}",
+        "link": "{{タッチ操作時の遷移リンク}}",
       }
       body, _ := json.Marshal(payload)
       req, _ := http.NewRequest("POST", url, bytes.NewBuffer(body))
@@ -162,13 +167,13 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
             .header("Authorization", "Bearer {{API_KEY}}")
             .header("Content-Type", "application/json")
             .json(&json!({
-                "refreshNow": {{是否立刻显示内容}},
-                "deviceId": "{{设备序列号}}",
-                "title": "{{标题}}",
+                "refreshNow": {{内容を即時表示するか}},
+                "deviceId": "{{デバイスシリアル番号}}",
+                "title": "{{タイトル}}",
                 "message": "{{内容}}",
-                "signature": "{{签名}}",
-                "icon": "{{base64 编码 PNG 图标数据}}",
-                "link": "{{碰一碰跳转链接}}"
+                "signature": "{{署名}}",
+                "icon": "{{base64 エンコードした PNG アイコンデータ}}",
+                "link": "{{タッチ操作時の遷移リンク}}"
             }))
             .send()
             .unwrap()
@@ -181,23 +186,23 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
   </Tab>
 </Tabs>
 
-### 响应示例
+### レスポンス例
 
 ```json
 {
 	"code": 200,
-	"message": "设备文本 API 内容已切换",
+	"message": "デバイスのテキスト API コンテンツを切り替えました",
 	"result": {
-		"message": "设备 ABCD1234ABCD 文本 API 内容已切换"
+		"message": "デバイス ABCD1234ABCD のテキスト API コンテンツを切り替えました"
 	}
 }
 ```
 
-## 参考使用
+## 参考ユースケース
 
-1. 简单文本但不立刻显示
+1. シンプルなテキスト（即時表示しない）
 
-<CustomCloudImage osSrc="dot/docs/1_1754308279592.png" alt="实际效果" />
+<CustomCloudImage osSrc="dot/docs/1_1754308279592.png" alt="実際の効果" />
 
 <Tabs items={['cURL']}>
   <Tab value="cURL">
@@ -216,9 +221,9 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
   </Tab>
 </Tabs>
 
-2. 复杂文本并立即显示
+2. 複雑なテキスト（即時表示）
 
-<CustomCloudImage osSrc="dot/docs/2_1754308783977.png" alt="实际效果" />
+<CustomCloudImage osSrc="dot/docs/2_1754308783977.png" alt="実際の効果" />
 
 <Tabs items={['cURL']}>
   <Tab value="cURL">
@@ -237,9 +242,9 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
   </Tab>
 </Tabs>
 
-3. 带有图标与链接的复杂文本并立即显示
+3. アイコンとリンク付きの複雑テキスト（即時表示）
 
-<CustomCloudImage osSrc="dot/docs/3_1754310143662.png" alt="实际效果" />
+<CustomCloudImage osSrc="dot/docs/3_1754310143662.png" alt="実際の効果" />
 
 <Tabs items={['cURL']}>
   <Tab value="cURL">
@@ -251,59 +256,59 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
       -d '{
         "deviceId": "ABCD1234ABCD",
         "title": "每日健康",
-        "message": "消耗卡路里：702千卡\n今日步数：4183步\n站立时间：62分钟",
+        "message": "消耗カロリー：702kcal\n本日の歩数：4183歩\nスタンド時間：62分",
         "signature": "2025年8月4日 20:16",
-        "icon": "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAARGVYSWZNTQAqAAAACAABh2kABAAAAAEAAAAaAAAAAAADoAEAAwAAAAEAAQAAoAIABAAAAAEAAAAwoAMABAAAAAEAAAAwAAAAANs3bAwAAAH+SURBVGgF7VYBbsMgDFy3PWQ/mX8W7yl7SdjLsjsVS4xCcVKSVBqWPGNjnw8Hqr28DBkTGBMYEzhzApcHm8uD9Xl5yAN7+ArQZUedgS3QXYTge5JPsbX3CeRA8naQ5iFeV5xyWpF7WOqaAxxGKmn0mayLy2c/QJF0GnxPnR3WXxGTkxRo7sftYwwJaNQZdmmoYD8VSR2sFdrCYJ/dRIBcI+BtXKu3eBPH+wYUZAlGFSglQO1K0H9aETCziZjVyLa0l+fE1BujiFhuzc43VRsCpUYGLMCrNWe8JoKNe3W2N9cALO69QsEKovVeHRKQrFbhN4llNV1cAQo1FRJZHKqxiNaTbznE300UyNbIY0nGk5fmsKabbCGQktmybh7A+wa6TaE30DhA74kehSdoVHoTzTtbIEis2vto4q35b5SNKCFRxXqCmggW1DUia5K35LJBPiGNQLT5Xk9/jn0eMgQpkSKoVPZK+Vti7H1XPL9CPwWEUIidEvK8AQWzAJ2gFB5IuYBY7Opd/4bUca7Fmdc9Lb8WzU9eYZDjmN/E83wB66m2iHbKfLoCZdPStUP4XCGx5WBlz7viecR3Ac7e/FcHOONeN3s++xcIva+oAvCoh8xeTXlrZvxNCHAvMfQRbW8TAPgNVWhTjEwzsZIglfjWcNhaOOrGBMYExgTOmcAvEXiUy7zcBV8AAAAASUVORK5CYII=",
+        "icon": "{{base64 エンコードした PNG 画像データ}}",
         "link": "x-apple-health://"
       }'
     ```
   </Tab>
 </Tabs>
 
-4. 高度自定义的文本或图形
+4. 高度にカスタマイズしたテキストやグラフィック
 
 <Link href="/docs/server/template/api/image_api#%E5%8F%82%E8%80%83%E4%BD%BF%E7%94%A8">
-	请参考图像 API 中文本图像的使用方法
+	テキスト画像の利用方法は画像 API の該当セクションをご参照ください
 </Link>
 
-<CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B13_1754130631116.png" alt="实际效果" />
+<CustomCloudImage osSrc="dot/docs/陰影3_1754130631116.png" alt="実際の効果" />
 
-## 问题排查
+## トラブルシューティング
 
-### 请求路径
+### リクエストパス
 
 `/api/open/text`
 
-### 请求方法
+### メソッド
 
 `POST`
 
-### 请求结构
+### リクエスト構造
 
-| 字段名       | 类型     | 必填 | 默认值 | 说明                                   | 用途                     |
-| ------------ | -------- | ---- | ------ | -------------------------------------- | ------------------------ |
-| `refreshNow` | `bool`   | 否   | `true` | 是否立刻显示内容                       | 控制内容的显示时机       |
-| `deviceId`   | `string` | 是   |        | 设备序列号                             | 分辨不同的设备           |
-| `title`      | `string` | 否   |        | 文本标题                               | 显示在屏幕上的标题       |
-| `message`    | `string` | 否   |        | 文本内容                               | 显示在屏幕上的内容       |
-| `signature`  | `string` | 否   |        | 文本签名                               | 显示在屏幕上的签名       |
-| `icon`       | `string` | 否   |        | base64 编码 PNG 图标数据（40px\*40px） | 显示在屏幕左下角上的图标 |
-| `link`       | `string` | 否   |        | http/https 链接或 Scheme Url           | 碰一碰跳转的内容         |
+| フィールド名 | 型       | 必須 | デフォルト | 説明                                        | 用途                   |
+| :----------- | :------- | :--- | :--------- | :------------------------------------------ | :--------------------- |
+| `refreshNow` | `bool`   | 否   | `true`     | コンテンツを即時に表示するか                | 表示タイミング制御     |
+| `deviceId`   | `string` | 是   |            | デバイスのシリアル番号                      | デバイス識別           |
+| `title`      | `string` | 否   |            | テキストのタイトル                          | 画面上のタイトル       |
+| `message`    | `string` | 否   |            | テキスト本文                                | 画面上の内容           |
+| `signature`  | `string` | 否   |            | 署名                                        | 画面上の署名           |
+| `icon`       | `string` | 否   |            | base64 エンコード PNG アイコン（40px×40px） | 左下に表示するアイコン |
+| `link`       | `string` | 否   |            | http/https またはスキーム URL               | タッチ操作の遷移先     |
 
-### 响应结构
+### レスポンス構造
 
-| 字段名    | 类型     | 说明     |
-| --------- | -------- | -------- |
-| `code`    | `number` | 状态码   |
-| `message` | `string` | 响应描述 |
-| `result`  | `object` | 响应内容 |
+| フィールド名 | 型       | 説明       |
+| :----------- | :------- | :--------- |
+| `code`       | `number` | ステータス |
+| `message`    | `string` | 応答説明   |
+| `result`     | `object` | 応答内容   |
 
-### 响应说明
+### レスポンスコード
 
-| code  | 含义             | 描述                                           |
-| ----- | ---------------- | ---------------------------------------------- |
-| `200` | 成功             | 设备文本 API 内容已切换/数据已更新但未切换内容 |
-| `400` | 参数错误         | 无效的图标格式                                 |
-| `403` | 权限不足         | 您没有权限操作此设备                           |
-| `404` | 设备或内容不存在 | 设备不存在或未注册<br/>未添加文本 API 内容     |
-| `500` | 设备响应失败     | 设备文本 API 内容切换失败                      |
+| code  | 意味             | 説明                                                |
+| :---- | :--------------- | :-------------------------------------------------- |
+| `200` | 成功             | テキスト API コンテンツを切替／データ更新（未切替） |
+| `400` | パラメータ不正   | 無効なアイコン形式                                  |
+| `403` | 権限不足         | 当該デバイスを操作する権限がありません              |
+| `404` | 未検出           | デバイスが存在しない・未登録／テキスト API 未追加   |
+| `500` | デバイス応答失敗 | テキスト API コンテンツの切替に失敗                 |
