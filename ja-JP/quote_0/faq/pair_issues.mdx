@@ -1,0 +1,27 @@
+---
+title: 配对时遇到了问题
+description: 在配对过程中遇到问题？我们为您提供了常见问题解答和解决方案。
+---
+
+import Link from 'fumadocs-core/link';
+
+## App 提示激活成功，但是 Quote/0 没有响应或 App 提示激活成功后长时间停留在设备配置中
+
+<div className="flex flex-col md:flex-row gap-4">
+	<CustomCloudImage osSrc="dot/docs/pair_issues_case_2_1.png" alt="设备无响应" />
+	<CustomCloudImage osSrc="dot/docs/pair_issues_case_2_2.png" alt="设备无响应" />
+</div>
+
+Quote/0 通常会在十几秒内完成激活上报和自我配置，最长可能在 1 分钟左右。
+
+    - 请确保网络畅通并靠近路由器；
+    - 如果较长时间都没有配置完成，Quote/0 显示「等待配对完成」，您可以尝试插拔数据线来重新配置；
+    - 如果 Quote/0 屏幕已经发生了变化，但较长时间都无反应，请您尝试<Link href="/docs/quote_0/firmware/update_firmware">更新设备</Link>后<Link href="/docs/quote_0/firmware/reset_network">重置网络</Link>，再次尝试；
+    - 如果您所使用的路由器开启了 MAC 地址过滤，请将 Quote/0 的 MAC（序列号）地址添加到白名单中（请参考<Link href="/docs/server/template/api/get_device_id">获取设备序列号</Link>），并在<Link href="/docs/quote_0/firmware/reset_device">重置设备</Link>后重新完成配对；
+    - 如果您所使用的路由器开启了分流策略、代理、防火墙、域名黑/白名单，请您将 `*.mindreset.tech` 添加到白名单或策略中。
+
+### 进一步排查
+
+您可以使用**手机热点**来临时性的排查是否是网络问题。将手机热点开启（如看到有关兼容性的选项时，请打开）后，在与手机配对是时请选择手机热点，并观察是否能够正常配对。
+
+如果可以，请您进一步检查路由器或网络设置，确保设备能够正常连接到互联网。

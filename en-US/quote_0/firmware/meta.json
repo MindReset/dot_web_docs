@@ -1,0 +1,10 @@
+{
+    "title": "Update & Reset",
+    "pages": [
+        "update_firmware",
+        "reset_network",
+        "reset_device",
+        "changelog"
+    ],
+    "defaultOpen": true
+}

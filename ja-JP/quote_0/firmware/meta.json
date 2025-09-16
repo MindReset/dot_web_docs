@@ -1,0 +1,10 @@
+{
+    "title": "更新与重置",
+    "pages": [
+        "update_firmware",
+        "reset_network",
+        "reset_device",
+        "changelog"
+    ],
+    "defaultOpen": true
+}

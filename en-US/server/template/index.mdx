@@ -1,0 +1,21 @@
+---
+title: Content Studio
+description: In the Content Studio, you can create and edit rich content to explore more possibilities.
+---
+
+import { getAllTemplate } from '@/src/ui/Template/getAllTemplate';
+import { TemplateFlow } from '@/src/ui/Template/TemplateFlow';
+import { TemplateTable } from '@/src/ui/Template/TemplateTable';
+import Link from 'fumadocs-core/link';
+
+<div className="bg-muted h-[448px] flex-1 rounded-lg flex flex-col gap-1 overflow-hidden">
+	<TemplateFlow />
+</div>
+
+<Callout type="info" title="Related Reading">
+	<Link href="/docs/quote_0/start/set_template">Learn how to use the Content Studio</Link>
+</Callout>
+
+## Currently available content
+
+<TemplateTable />

@@ -1,0 +1,10 @@
+{
+    "title": "API",
+    "pages": [
+        "get_api",
+        "get_device_id",
+        "text_api",
+        "image_api"
+    ],
+    "defaultOpen": true
+}

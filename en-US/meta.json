@@ -1,0 +1,32 @@
+{
+    "root": true,
+    "pages": [
+        "---FAQ---",
+        "quote_0/faq/change_network",
+        "quote_0/faq/pair_issues",
+        "quote_0/faq/action_issues",
+        "---Dot.---",
+        "dot/install_app",
+        "dot/diagnostic_tool",
+        "dot/known_issues",
+        "---Quote / Excerpt---",
+        "quote_0",
+        "---Content & Services---",
+        "server/template",
+        "server/api",
+        "server/shortcut",
+        "server/community_co_creation",
+        "server/update_plan",
+        "---Explore More Possibilities---",
+        "[Contribute Your Ideas](/submit#idea)",
+        "[Join Our Content Studio](/submit#platform)",
+        "---Security---",
+        "security_advisory",
+        "security_policy",
+        "---More---",
+        "privacy",
+        "terms",
+        "contact",
+        "about_mindreset"
+    ]
+}

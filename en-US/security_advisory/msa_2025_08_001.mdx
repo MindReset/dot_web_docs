@@ -1,0 +1,78 @@
+---
+title: MSA-2025-08-001
+description: Quote/0 firmware upgrade endpoint authorization validation flaw
+---
+
+**Release Date**: August 29, 2025  
+**Last Updated**: August 29, 2025  
+**Severity**: High  
+**Status**: Fixed  
+**CVSS 3.1 Score**: 7.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N)
+
+---
+
+## Overview
+
+We received a security report about the Quote/0 device update endpoint on 2025-08-26T16:02:00Z. The flaw could lead to unauthorized access to sensitive device-related information. We completed the fix and deployment on 2025-08-26T18:00:00Z, and there is currently no evidence of malicious exploitation.
+
+## Impact Scope
+
+| Item                    | Details                                                |
+| ----------------------- | ------------------------------------------------------ |
+| **Affected Product**    | Quote/0 device update page                             |
+| **Affected Versions**   | None                                                   |
+| **Fixed Version**       | None                                                   |
+| **Affected Component**  | Firmware upgrade API endpoint (`/api/device/firmware`) |
+| **Attack Vector**       | Network                                                |
+| **Required Privileges** | No authentication required                             |
+
+## Technical Details
+
+The firmware upgrade endpoint lacked sufficient authorization checks when processing device serial number queries. By crafting specific requests, an attacker could obtain complete device information without authentication, including but not limited to:
+
+-       Device configuration metadata
+-       Certain user-associated information
+
+Note: This vulnerability requires network access. It does not impact core device functionality, and we have not observed signs of automated bulk data extraction.
+
+## Remediation
+
+We implemented the following security improvements:
+
+### Immediate Fixes
+
+-       Applied data minimization by strictly limiting returned fields
+
+### Long-term Enhancements
+
+-       Conducted a comprehensive audit of authorization models across all API endpoints
+
+## Incident Timeline
+
+| Time                     | Event                                                           |
+| ------------------------ | --------------------------------------------------------------- |
+| **2025-08-26T16:02:00Z** | Security report received                                        |
+| **2025-08-26T16:10:00Z** | Vulnerability confirmed; emergency response initiated           |
+| **2025-08-26T16:12:00Z** | Temporary mitigations deployed (rate limiting + access control) |
+| **2025-08-26T17:20:00Z** | Code fix completed and internally validated                     |
+| **2025-08-26T18:00:00Z** | Fixed version released                                          |
+| **2025-08-29T09:00:00Z** | This security advisory published                                |
+
+## Impact Assessment
+
+Based on detailed log analysis and forensic investigation:
+
+-       No evidence of malicious exploitation: no abnormal bulk requests or data extraction
+-       Impact is contained: only affects single API responses; no persistence risk
+-       User data integrity: core user data and business logic remain unaffected
+
+## Acknowledgments
+
+We sincerely thank **Misaka** for reporting this issue through responsible disclosure and providing valuable verification assistance during the fix. This spirit of collaboration helps protect all users’ data security.
+
+---
+
+**Disclaimer**: This advisory is compiled based on currently available information. We will continue to monitor relevant threat intelligence and update this advisory if there are significant changes.  
+**Document ID**: MSA-2025-08-001  
+**Classification**: Public  
+**Issuing Organization**: MindReset Security Team

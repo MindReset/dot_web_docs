@@ -1,0 +1,35 @@
+---
+title: 碰一碰操作无法唤起 / 轻 App 不可用
+---
+
+import Link from 'fumadocs-core/link';
+
+## 如何进行「碰一碰」操作
+
+<include>../start/action.mdx</include>
+
+## “轻 App”不可用
+
+<CustomCloudImage osSrc="dot/docs/action_clip_app_not_available.png" alt="“轻 App”不可用" />
+
+如果您在「碰一碰」操作后遇到了“轻 App”不可用，表明您暂未下载安装 Dot. App。在<Link href="/docs/dot/install_app">安装最新版本 App</Link>后，即可使用「碰一碰」。
+
+出现这个错误提示，是因为目前的“轻 App”体积超过了 Apple 在系统限制中“无需安装主 App 而唤醒轻 App 的体积”。目前，我们正在努力减少“轻 App”的体积，这样可以在无需安装主 App 的时候直接唤起查看。
+
+## 无法唤起
+
+<CustomCloudImage osSrc="dot/docs/action_location.png" alt="“唤起位置" />
+
+### iPhone
+
+如果您在尝试「碰一碰」，却在 iPhone 中无法唤起轻 App，建议尝试将 iPhone 锁屏，重新解锁设备，手持 iPhone 由低到高，靠近设备右侧，这样一般可以正常唤起轻 App。
+
+出现这种问题的原因，一般是由于 iOS 的系统限制。当您触碰多次相同的轻 App 来源时，iOS 会屏蔽后续的唤起操作，只有您锁屏后，并且动作幅度较大来去靠近时，iOS 才会重新唤起轻 App。
+
+如若您正在使用国行 iPhone，可以检查「设置」 - 「通用」中的 NFC 是否已开启。
+
+### Android
+
+如果您在尝试「碰一碰」，却在 Android 设备中无法正确跳转，请确保您的 Android 设备已安装 Dot. App，开启 NFC 功能、并确定您的 Android 设备 NFC 区域。
+
+将该区域靠近设备右侧空白区域，即可唤起内容。

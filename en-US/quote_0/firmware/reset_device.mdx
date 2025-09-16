@@ -1,0 +1,79 @@
+---
+title: Reset Device
+---
+
+import { DeviceCurrentStatusTypeMap } from '@/dot_platform_share/constants/device/map.ts';
+
+## Reset via App
+
+<Callout type="info" title="When should I use 'Reset via App'?">
+	When your device is connected to power and the current network is available. You will see the
+	<LucideIcon icon={DeviceCurrentStatusTypeMap['IDLE_POWER'].icon} /> icon at the top right of the
+	device card in the Dot. App, indicating you can reset via the app.
+</Callout>
+
+<Steps>
+<Step>
+
+### Swipe to the "More" tab
+
+<CustomCloudImage osSrc="dot/docs/reset_device_via_app_1.png" alt="Go to 'More'" />
+
+</Step>
+
+<Step>
+
+### Tap the device list under your avatar
+
+<CustomCloudImage osSrc="dot/docs/reset_device_via_app_2.png" alt="Go to “Device List”" />
+
+</Step>
+
+<Step>
+
+### Select your device
+
+<CustomCloudImage osSrc="dot/docs/reset_device_via_app_3.png" alt="Select device" />
+
+</Step>
+
+<Step>
+
+### Tap “Reset”
+
+<div className="flex flex-col md:flex-row gap-4">
+	<CustomCloudImage osSrc="dot/docs/reset_device_via_app_4.png" alt="Go to “Device List”" />
+	<CustomCloudImage osSrc="dot/docs/reset_device_via_app_5.png" alt="Go to “Device List”" />
+</div>
+
+</Step>
+
+<Step>
+
+### Confirm reset
+
+<CustomCloudImage osSrc="dot/docs/reset_device_via_app_6.png" alt="Confirm reset" />
+
+</Step>
+
+</Steps>
+
+## Network Tool
+
+<Callout type="info" title="When should I use the “Network Tool”?">
+	When your device cannot connect to the original network, indicating you need to use the web tool
+	to reset the network.
+</Callout>
+
+### Connect the device to the web tool
+
+<include>./device_tool_connect.mdx</include>
+
+### Next step
+
+Tap “Reset Device” below. After the device screen changes, you can use the Dot. App to pair the device again.
+
+<Callout type="info">
+	If the screen does not change, try disconnecting, refreshing the page, and reconnecting before
+	trying again.
+</Callout>

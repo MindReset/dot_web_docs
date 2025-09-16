@@ -1,0 +1,12 @@
+{
+    "title": "常见问题",
+    "pages": [
+        "pair_issues",
+        "offline",
+        "action_issues",
+        "change_network",
+        "content_not_refresh",
+        "etc"
+    ],
+    "defaultOpen": false
+}

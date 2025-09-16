@@ -1,0 +1,11 @@
+{
+    "title": "开始使用",
+    "pages": [
+        "how_to_pair",
+        "set_template",
+        "action",
+        "share_device",
+        "how_to_charge"
+    ],
+    "defaultOpen": true
+}

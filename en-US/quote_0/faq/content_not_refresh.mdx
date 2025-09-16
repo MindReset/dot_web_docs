@@ -1,0 +1,65 @@
+---
+title: Content not updating
+---
+
+Please follow the steps below to check, or use the Dot. App to inspect the device status:
+
+## Is the content update interval set too long
+
+If you set a long content update interval in the Dot. App, the device will not wake frequently to fetch updates. Please review your settings and shorten the update interval as appropriate.
+
+<Steps>
+<Step>
+
+### Select the device
+
+<CustomCloudImage osSrc="dot/docs/change_loop_interval_1.png" alt="Select device" />
+
+</Step>
+
+<Step>
+
+### Tap the device tasks in the bottom-right
+
+<CustomCloudImage osSrc="dot/docs/change_loop_interval_2.png" alt="Device tasks" />
+
+</Step>
+
+<Step>
+
+### Tap “Adjust update interval”
+
+<CustomCloudImage osSrc="dot/docs/change_loop_interval_3.png" alt="Adjust update interval" />
+
+</Step>
+
+<Step>
+
+### Adjust different interval times
+
+<div className="flex flex-col md:flex-row gap-4">
+	<CustomCloudImage
+		osSrc="dot/docs/change_loop_interval_4_1.png"
+		alt="Different interval times"
+	/>
+	<CustomCloudImage
+		osSrc="dot/docs/change_loop_interval_4_2.png"
+		alt="Different interval times"
+	/>
+</div>
+
+</Step>
+
+</Steps>
+
+## Device is powered off or battery is drained — try connecting to power
+
+<include>./battery_low_or_fast.mdx</include>
+
+## Wi‑Fi connection interrupted — check whether your router network is normal
+
+If your device disconnects from Wi‑Fi during use, it will be unable to fetch content updates. Please verify that your router is working properly.
+
+### Switch the current network
+
+<include>../firmware/reset_network.mdx</include>
