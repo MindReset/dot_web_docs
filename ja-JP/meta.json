@@ -1,4 +1,5 @@
 {
+    "root": true,
     "pages": [
         "---よくある質問---",
         "quote_0/faq/change_network",
@@ -12,9 +13,8 @@
         "quote_0",
         "---コンテンツとサービス---",
         "server/template",
-        "server/api",
         "server/shortcut",
-        "server/community_co_creation",
+        "server/co_create",
         "server/update_plan",
         "---さらに可能性を広げる---",
         "[あなたのアイデアを投稿](/submit#idea)",
@@ -27,6 +27,5 @@
         "terms",
         "contact",
         "about_mindreset"
-    ],
-    "root": true
+    ]
 }
