@@ -1,37 +1,37 @@
 ---
 title: Device Offline
-description: When the device shows as offline, try the following methods to resolve it.
+description: When the device shows as offline, try the following troubleshooting methods to resolve the issue.
 ---
 
 import Link from 'fumadocs-core/link';
 
-When you see “Device Offline” in the Dot. App, it means the device cannot establish effective communication with our servers. This issue may be caused by several factors:
+When you see "Device Offline" in the Dot. App, it indicates that the device cannot establish effective communication with our servers. This issue may be caused by several factors:
 
-### Device battery is drained
+### Device Battery Drained
 
-A drained battery is a common cause of going offline. The device relies on battery power to maintain normal operation and network connectivity. Please connect the device to external power to charge. After charging starts, wait a few minutes to see whether the device automatically comes back online.
+A drained battery is a common cause of devices going offline. The device relies on battery power to maintain normal operation and network connectivity. Please connect the device to an external power source for charging. After charging begins, wait a few minutes to observe whether the device automatically comes back online.
 
-### Network connection interrupted
+### Network Connection Interrupted
 
-The device’s connection to the internet may be interrupted due to unstable Wi‑Fi signal, router misconfiguration, or hardware failure.
+The device's internet connection may be interrupted due to unstable Wi‑Fi signal, router misconfiguration, or hardware failure.
 
--        Confirm that your Wi‑Fi network is operating normally, and check whether other devices on the network can access the internet.
--        Try restarting your router.
--        Check the device’s physical location to ensure it is within Wi‑Fi coverage and remove any obstacles that may interfere with the signal.
+-   Verify that your Wi‑Fi network is functioning properly, and check whether other devices on the network can access the internet.
+-   Try restarting your router.
+-   Check the device's physical location to ensure it is within Wi‑Fi coverage range and remove any obstacles that may interfere with the signal.
 
-### Network environment changed
+### Network Environment Changed
 
-If the device’s working network environment changes (for example, you replace the router or move the device to a new network area), it may go offline because it cannot connect to the previously saved Wi‑Fi network.
+If the device's working network environment changes (for example, you replace the router or move the device to a new network area), it may go offline because it cannot connect to the previously saved Wi‑Fi network.
 
-Please <Link href="/docs/quote_0/firmware/reset_network">reconfigure the network</Link> for the device to join the new Wi‑Fi environment.
+Please <Link href="/docs/quote_0/firmware/reset_network">reconfigure the network</Link> to allow the device to join the new Wi‑Fi environment.
 
-### Router proxy or firewall settings
+### Router Proxy or Firewall Settings
 
 Some routers or network environments may have proxy services or firewall rules configured that block the device from connecting to our cloud services.
 
-    - If your router has MAC address filtering enabled, add the Quote/0 MAC (serial number) to the whitelist (see <Link href="/docs/server/template/api/get_device_id">Get Device Serial Number</Link>), and then <Link href="/docs/quote_0/firmware/reset_device">reset the device</Link> and pair again.
-    - If your router has traffic splitting, proxy, firewall, or domain allow/deny lists enabled, add `*.mindreset.tech` to the allowlist or relevant policy.
+-   If your router has MAC address filtering enabled, add the Quote/0 MAC (serial number) to the whitelist (see <Link href="/docs/server/template/api/get_device_id">Get Device Serial Number</Link>), then <Link href="/docs/quote_0/firmware/reset_device">reset the device</Link> and pair again.
+-   If your router has traffic splitting, proxy, firewall, or domain allow/deny lists enabled, add `*.mindreset.tech` to the allowlist or relevant policy.
 
-## Still not resolved
+## Still Not Resolved
 
-Try <Link href="/docs/quote_0/firmware/reset_device">resetting the device</Link> and pairing it again; this usually resolves most issues.
+Try <Link href="/docs/quote_0/firmware/reset_device">resetting the device</Link> and pairing it again; this typically resolves most issues.
