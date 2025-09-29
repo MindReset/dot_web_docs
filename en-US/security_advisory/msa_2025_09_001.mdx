@@ -1,0 +1,73 @@
+---
+title: MSA-2025-09-001
+description: IDOR vulnerability in NFC Tap
+---
+
+**Release Date**: September 29, 2025  
+**Last Updated**: September 29, 2025  
+**Severity**: High  
+**Status**: Fixed  
+**CVSS 3.1 Score**: 8.3 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N)
+
+---
+
+## Overview
+
+On 2025-09-29T02:56:00Z, we received a security report about an IDOR (Insecure Direct Object Reference) issue in the NFC “Tap” flow. The server returned screen content based solely on a provided deviceId without authenticating or authorizing the requester, allowing attackers who know or can guess deviceId values to read a user’s device screen content.
+
+We have completed remediation, released App version 1.1.0, and deployed server-side changes. There is no evidence of malicious exploitation.
+
+## Affected Scope
+
+| Item                     | Details                                                             |
+| ------------------------ | ------------------------------------------------------------------- |
+| ** Affected Product**    | Dot App (NFC Tap feature)                                           |
+| ** Affected Versions**   | App 1.0.x and earlier                                               |
+| ** Fixed Version**       | App 1.1.0 (requires latest server-side policies)                    |
+| ** Affected Components** | Content-read API (`/api/device/content`) and NFC redirect flow      |
+| ** Attack Vector**       | Network (when deviceId is known or guessable)                       |
+| ** Required Privilege**  | None (before fix, sensitive content could be returned without auth) |
+
+## Technical Description
+
+-   Flow: NFC tag encodes a link like https://dot.mindreset.cn/nfc?deviceId=xxxxxx. After tap, the App is opened, parses deviceId, and requests `/api/device/content` to display screen content.
+-   Root cause: The API returned content using only deviceId with no Authentication or Authorization, leading to a typical IDOR risk.
+-   deviceId sources: Accidental exposure in shared images, untrusted network environments, or brute-force enumeration in extreme cases.
+
+## Remediation
+
+To balance usability and security, we implemented an App–server coordinated access model aligned with the principles of Informed Consent and DAC (Discretionary Access Control):
+
+-   App (from 1.1.0):
+-   New “Tap Access Permission” setting:
+    -   Allow everyone to tap
+    -   Only me and shared recipients (default)
+-   Users can adjust at any time; the setting binds to the device’s content access policy.
+
+-   Server:
+-   Enforce authentication and authorization on content retrieval, returning data according to the App-side setting:
+    -   “Only me and shared recipients”: return content only if the requester is authenticated and is the owner or on the share list/holds a valid share token; otherwise 403.
+    -   “Allow everyone”: provide restricted content with risk controls (rate limiting, anomaly detection, minimized fields).
+-   Anti-enumeration and risk controls: rate limiting, anomaly pattern detection, signed/expiring tokens, minimal responses.
+
+## Impact Assessment
+
+-   No evidence of malicious exploitation: logs show no abnormal bulk access or exfiltration.
+-   Post-fix risk reduction: default is “Only me and shared recipients,” significantly reducing overexposure.
+-   Data integrity unaffected: read-only exposure; no write-path or core logic impact.
+
+## User Action
+
+-   Please update to App 1.1.0 and review the “Tap Access Permission” setting (default: Only me and shared recipients).
+-   Avoid sharing screenshots/links containing deviceId publicly; when sharing, use in-App sharing with signed, time-limited links.
+
+## Acknowledgements
+
+We sincerely thank [Mason](https://mas0n.org) for reporting this issue through responsible disclosure and providing valuable verification assistance during the fix. This spirit of collaboration helps protect all users' data security.
+
+---
+
+**Disclaimer**: This advisory is based on information available at the time of publication. We will continue to monitor related threat intelligence and update this advisory as needed.  
+**Document ID**: MSA-2025-09-001  
+**Classification**: Public  
+**Issued by**: MindReset Security Team
