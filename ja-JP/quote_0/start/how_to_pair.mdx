@@ -1,9 +1,9 @@
 ---
-title: Quote/0 をペアリングする
-description: Quote/0 デバイスのペアリング手順と注意事項
+title: Quote/0のペアリング
+description: Quote/0デバイスのペアリング手順と注意事項
 ---
 
-## どのように Quote/0 をペアリングするか
+## Quote/0のペアリング方法
 
 <Callout type="info">
 	<include>../../dot/install_app.mdx</include>
@@ -14,54 +14,64 @@ description: Quote/0 デバイスのペアリング手順と注意事項
 </Callout>
 
 <Steps>
+<Step>
+
+### 電源に接続
+
+**電源ケーブルをQuote/0に接続**します。
+
+<CustomCloudImage osSrc="dot/docs/user_conf_init.png" alt="Quote/0ユーザーアクティベーション" />
+
+</Step>
+
+<Step>
+
+### Dot.アプリを開く
+
+スマートフォンにDot.アプリがインストールされていることを確認し、アカウントの登録またはログインを行ってください。
+
+<CustomCloudImage osSrc="dot/docs/user_conf_prov.png" alt="Quote/0アクティベーション待機" />
+
+</Step>
     <Step>
-        ### 電源に接続
 
-        「電源ケーブルを Quote/0 に接続」します。
+### デバイスを検索
 
-        <CustomCloudImage osSrc="dot/docs/user_conf_init.png" alt="Quote/0 ユーザーアクティベーション" />
-    </Step>
+Dot.アプリを開き、ホーム右上の「+」ボタンをタップし、表示されたカードから「デバイスを探す」を選択します。しばらく待つと、お使いのデバイスが表示されます。
 
+<div className="flex flex-col md:flex-row gap-4">
+	<CustomCloudImage osSrc="dot/docs/search_device_1.png" alt="デバイス検索 ステップ1" />
+	<CustomCloudImage osSrc="dot/docs/search_device_2.png" alt="デバイス検索 ステップ2" />
+	<CustomCloudImage osSrc="dot/docs/search_device_3.png" alt="デバイス検索 ステップ3" />
+</div>
+
+<Callout type="info">スマートフォンのBluetoothを有効にし、権限が付与されていることを確認してください。</Callout>
+
+</Step>
     <Step>
-        ### Dot. アプリを開く
 
-        スマートフォンに Dot. アプリがインストールされていることを確認し、アカウントの登録またはログインを行ってください。
+### ネットワークに接続
 
-        <CustomCloudImage osSrc="dot/docs/user_conf_prov.png" alt="Quote/0 アクティベーション待機" />
-    </Step>
+ご自宅のWi-Fiネットワークを選択し、正しいパスワードを入力して「デバイスへ送信」をタップします。
+
+<div className="flex flex-col md:flex-row gap-4">
+	<CustomCloudImage osSrc="dot/docs/connect_net_1.png" alt="ネットワーク接続 ステップ1" />
+	<CustomCloudImage osSrc="dot/docs/connect_net_2.png" alt="ネットワーク接続 ステップ2" />
+	<CustomCloudImage osSrc="dot/docs/connect_net_3.png" alt="ネットワーク接続 ステップ3" />
+</div>
+
+</Step>
     <Step>
-        ### デバイスを検索
 
-        Dot. アプリを開き、ホーム右上の「+」ボタンをタップし、表示されたカードから「デバイスを探す」を選択します。しばらく待つと、お使いのデバイスが表示されます。
+### ペアリング完了
 
-        <div className="flex flex-col md:flex-row gap-4">
-            <CustomCloudImage osSrc="dot/docs/search_device_1.png" alt="デバイス検索 ステップ1" />
-            <CustomCloudImage osSrc="dot/docs/search_device_2.png" alt="デバイス検索 ステップ2" />
-            <CustomCloudImage osSrc="dot/docs/search_device_3.png" alt="デバイス検索 ステップ3" />
-        </div>
+しばらく待つと、Quote/0のペアリングが完了し、デバイス一覧に追加されます。画面に「一日一隅」と表示されれば、ペアリング成功です。
 
-        <Callout type="info">スマートフォンの Bluetooth を有効にし、権限が付与されていることを確認してください。</Callout>
-    </Step>
-    <Step>
-        ### ネットワークに接続
+<div className="flex flex-col md:flex-row gap-4">
+	<CustomCloudImage osSrc="dot/docs/pair_done_1.png" alt="ペアリング完了 ステップ1" />
+	<CustomCloudImage osSrc="dot/docs/pair_done_2.png" alt="ペアリング完了 ステップ2" />
+</div>
 
-        ご自宅の Wi‑Fi ネットワークを選択し、正しいパスワードを入力して「デバイスへ送信」をタップします。
-
-        <div className="flex flex-col md:flex-row gap-4">
-            <CustomCloudImage osSrc="dot/docs/connect_net_1.png" alt="ネットワーク接続 ステップ1" />
-            <CustomCloudImage osSrc="dot/docs/connect_net_2.png" alt="ネットワーク接続 ステップ2" />
-            <CustomCloudImage osSrc="dot/docs/connect_net_3.png" alt="ネットワーク接続 ステップ3" />
-        </div>
-    </Step>
-    <Step>
-        ### ペアリング完了
-
-        しばらく待つと、Quote/0 のペアリングが完了し、デバイス一覧に追加されます。画面に「一日一隅」と表示されれば、ペアリング成功のサインです。
-
-        <div className="flex flex-col md:flex-row gap-4">
-            <CustomCloudImage osSrc="dot/docs/pair_done_1.png" alt="ペアリング完了 ステップ1" />
-            <CustomCloudImage osSrc="dot/docs/pair_done_2.png" alt="ペアリング完了 ステップ2" />
-        </div>
-    </Step>
+</Step>
 
 </Steps>
