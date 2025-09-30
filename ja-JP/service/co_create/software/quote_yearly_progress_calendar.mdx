@@ -1,0 +1,42 @@
+---
+title: Quote/0 Yearly Progress Calendar
+---
+
+<DotDocsUrl owner="WayneLu" name="ドキュメント" url="http://xhslink.com/o/AfuT8m3ocoz" />
+
+<DotDocsUrl
+	owner="WayneLu"
+	name="ショートカット"
+	url="https://www.icloud.com/shortcuts/1964249c8c974d5c9562affbec875e50"
+/>
+
+<DotDocsUrl
+	owner="WayneLu"
+	name="カレンダーデータ"
+	url="https://gist.github.com/waynelu2024/bd821a5c437a7e95dacbc2885d49dd15"
+/>
+
+Quote/0 公式の画像 API、Apple ショートカット、ローカル自動化を組み合わせた年間カレンダー表示ソリューションです。毎日、1-bit 風のカレンダー画像を 1 枚デバイスへプッシュし、高頻度のリフレッシュを行わずに、1 年の進捗を直感的に示します。
+
+<CustomCloudImage osSrc="dot/docs/IMG_8498_1758536679651.jpg" alt="Runtime preview" />
+
+## 機能
+
+-   毎日 1 枚のカレンダー画像 (1-bit 風) を自動更新
+-   上部表示: 日付、曜日、バッテリー残量パーセンテージ、その年の日数インデックス
+-   下部の 365 個のドット: 過去/当日/未来を 3 状態で表し、年間の進捗を視覚化
+-   API Key とデバイス ID をカスタマイズ可能
+-   ローカル自動化による定時実行に対応 (手動操作不要)
+
+## 実装アプローチ
+
+1.  リソース生成
+    -   Python で 365 枚のカレンダー画像 (1-bit 風) を一括生成。
+    -   動的要素 (日付、曜日、パーセンテージ等) を独立素材として分離し、プログラムで組み合わせやすくする。
+    -   すべての画像を base64 に変換し、1 つの JSON ファイルにまとめる。
+2.  ショートカット側
+    -   JSON を読み込み、当日の通し番号で画像データを特定。
+    -   「URL の内容を取得」モジュールで Quote/0 画像 API を呼び出し、デバイスへプッシュ。
+3.  表示
+    -   上部: 日付、曜日、パーセンテージ、当年日数。
+    -   下部: 365 ドットで 3 状態表示により年間の進捗を可視化。

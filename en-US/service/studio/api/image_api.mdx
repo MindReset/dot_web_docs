@@ -1,0 +1,439 @@
+---
+title: Image API
+---
+
+import Link from 'fumadocs-core/link';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## Quick Guide
+
+### Prerequisites
+
+1. Make sure you have <Link href="/docs/service/studio/api/get_api">retrieved and saved your API key</Link> in the Dot. App;
+2. Make sure you own at least one device and have <Link href="/docs/service/studio/api/get_device_id">obtained its device serial number</Link>;
+3. Make sure your device is connected to power;
+4. Make sure your device is connected to the network;
+5. Make sure the device has added the Image API content.
+
+<Callout
+	type="info"
+	title="API requests are not limited by the app’s minimum 5‑minute device interval. The API rate limit is 1 request per second. With the API, you can control device behavior and responses more flexibly."
+/>
+
+<Callout
+	type="info"
+	title="Placeholders wrapped in ‘{{variable}}’ indicate values you must replace. Fill them with your actual values and remove the ‘{{}}’ braces."
+/>
+
+### Request Examples
+
+<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer {{API_KEY}}' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "refreshNow": {{show content immediately}},
+        "deviceId": "{{device serial number}}",
+        "image": "{{base64-encoded PNG image data}}",
+        "link": "{{NFC tap redirect link}}",
+        "border": {{edge color index}},
+        "ditherType": "{{dither type}}",
+        "ditherKernel": "{{dither algorithm}}"
+      }'
+    ```
+  </Tab>
+  <Tab value="Python">
+    ```python
+    import requests
+
+    url = "https://dot.mindreset.tech/api/open/image"
+    headers = {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "refreshNow": {{show content immediately}},
+        "deviceId": "{{device serial number}}",
+        "image": "{{base64-encoded PNG image data}}",
+        "link": "{{NFC tap redirect link}}",
+        "border": {{edge color index}},
+        "ditherType": "{{dither type}}",
+        "ditherKernel": "{{dither algorithm}}"
+    }
+    response = requests.post(url, json=data, headers=headers)
+    print(response.json())
+    ```
+
+  </Tab>
+  <Tab value="JavaScript">
+    ```javascript
+    fetch("https://dot.mindreset.tech/api/open/image", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        refreshNow: {{show content immediately}},
+        deviceId: "{{device serial number}}",
+        image: "{{base64-encoded PNG image data}}",
+        link: "{{NFC tap redirect link}}",
+        border: {{edge color index}},
+        ditherType: "{{dither type}}",
+        ditherKernel: "{{dither algorithm}}"
+      })
+    }).then(res => res.json()).then(console.log);
+    ```
+  </Tab>
+  <Tab value="TypeScript">
+    ```typescript
+    type ApiResponse = {
+      code: number;
+      message: string;
+      result?: any;
+    };
+
+    fetch("https://dot.mindreset.tech/api/open/image", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        refreshNow: {{show content immediately}},
+        deviceId: "{{device serial number}}",
+        image: "{{base64-encoded PNG image data}}",
+        link: "{{NFC tap redirect link}}",
+        border: {{edge color index}},
+        ditherType: "{{dither type}}",
+        ditherKernel: "{{dither algorithm}}"
+      })
+    })
+      .then(res => res.json() as Promise<ApiResponse>)
+      .then(data => {
+        console.log(data);
+      });
+    ```
+
+  </Tab>
+  <Tab value="Go">
+    ```go
+    package main
+
+    import (
+      "bytes"
+      "encoding/json"
+      "fmt"
+      "net/http"
+      "io/ioutil"
+    )
+
+    func main() {
+      url := "https://dot.mindreset.tech/api/open/image"
+      payload := map[string]interface{}{
+        "refreshNow": {{show content immediately}},
+        "deviceId": "{{device serial number}}",
+        "image": "{{base64-encoded PNG image data}}",
+        "link": "{{NFC tap redirect link}}",
+        "border": {{edge color index}},
+        "ditherType": "{{dither type}}",
+        "ditherKernel": "{{dither algorithm}}",
+      }
+      body, _ := json.Marshal(payload)
+      req, _ := http.NewRequest("POST", url, bytes.NewBuffer(body))
+      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
+      req.Header.Set("Content-Type", "application/json")
+      client := &http.Client{}
+      resp, _ := client.Do(req)
+      defer resp.Body.Close()
+      respBody, _ := ioutil.ReadAll(resp.Body)
+      fmt.Println(string(respBody))
+    }
+    ```
+
+  </Tab>
+  <Tab value="Rust">
+    ```rust
+    use reqwest::blocking::Client;
+    use serde_json::json;
+
+    fn main() {
+        let client = Client::new();
+        let url = "https://dot.mindreset.tech/api/open/image";
+        let res = client.post(url)
+            .header("Authorization", "Bearer {{API_KEY}}")
+            .header("Content-Type", "application/json")
+            .json(&json!({
+                "refreshNow": {{show content immediately}},
+                "deviceId": "{{device serial number}}",
+                "image": "{{base64-encoded PNG image data}}",
+                "link": "{{NFC tap redirect link}}",
+                "border": {{edge color index}},
+                "ditherType": "{{dither type}}",
+                "ditherKernel": "{{dither algorithm}}"
+            }))
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
+        println!("{}", res);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### Response Example
+
+```json
+{
+	"code": 200,
+	"message": "Device Image API content switched",
+	"result": {
+		"message": "Device ABCD1234ABCD Image API content switched"
+	}
+}
+```
+
+## Reference Usage
+
+1. Simple image without immediate display
+
+<CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B1_1754129505817.png" alt="Actual effect" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "refreshNow": false,
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64-encoded PNG image data}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+2. Complex image
+
+<CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B14_1754130316522.png" alt="Actual effect" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64-encoded PNG image data}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 1
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+3. Text image
+
+Use common image tools (e.g., Figma, Sketch, Adobe Photoshop) to convert text to PNG, then convert it to base64 data.
+
+<CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B13_1754130631116.png" alt="Actual effect" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64-encoded PNG image data}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0,
+        "ditherType": "NONE"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+## Image Dithering
+
+Image dithering uses specific algorithms to reduce visual noise caused by color quantization, making images appear smoother. Common algorithms include Floyd–Steinberg, Atkinson, and Sierra. On e‑ink displays, dithering can further optimize black-and-white rendering so gray-level transitions look more natural.
+
+When using the Image API, if you do not pass the `ditherType` parameter, the default is the error-diffusion Floyd–Steinberg algorithm. You can also disable it or adjust the dithering type and algorithm via parameters.
+
+### Enable Dithering
+
+#### Error Diffusion (default)
+
+Error diffusion distributes each pixel’s quantization error to neighboring pixels to reduce visual noise. It handles high-contrast areas effectively, yielding rich details and smooth gray transitions. Visually, it tends to look natural with no obvious grid and smooth gradients.
+
+<CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B1-1_1755604439407.png" alt="Actual effect" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64-encoded PNG image data}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0,
+        "ditherType": "DIFFUSION"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+##### Supported Error-Diffusion Kernels
+
+Different error-diffusion kernels produce different visual results. Pass the algorithm via `"ditherKernel": "{{dither algorithm}}"`.
+
+<div className="flex flex-col md:flex-row gap-4">
+
+<CustomCloudImage
+	osSrc="dot/docs/layer_1755606583517.png"
+	alt="FLOYD_STEINBERG"
+	caption="FLOYD_STEINBERG"
+/>
+
+<CustomCloudImage osSrc="dot/docs/layer-1_1755606614917.png" alt="ATKINSON" caption="ATKINSON" />
+<CustomCloudImage osSrc="dot/docs/layer-2_1755606637222.png" alt="BURKES" caption="BURKES" />
+
+</div>
+
+<div className="flex flex-col md:flex-row gap-4">
+
+<CustomCloudImage osSrc="dot/docs/layer-3_1755606653679.png" alt="SIERRA2" caption="SIERRA2" />
+
+<CustomCloudImage osSrc="dot/docs/layer-4_1755606678514.png" alt="STUCKI" caption="STUCKI" />
+<CustomCloudImage
+	osSrc="dot/docs/layer-5_1755606710423.png"
+	alt="JARVIS_JUDICE_NINKE"
+	caption="JARVIS_JUDICE_NINKE"
+/>
+
+</div>
+
+<div className="flex flex-col md:flex-row gap-4">
+
+<CustomCloudImage
+	osSrc="dot/docs/layer-6_1755606726561.png"
+	alt="DIFFUSION_ROW"
+	caption="DIFFUSION_ROW"
+/>
+
+<CustomCloudImage
+	osSrc="dot/docs/layer-7_1755606742614.png"
+	alt="DIFFUSION_COLUMN"
+	caption="DIFFUSION_COLUMN"
+/>
+<CustomCloudImage
+	osSrc="dot/docs/layer-8_1755606760506.png"
+	alt="DIFFUSION_2D"
+	caption="DIFFUSION_2D"
+/>
+
+</div>
+
+#### Ordered Dithering
+
+Ordered dithering applies a fixed, periodic threshold matrix to image pixels, unlike error diffusion which propagates the error dynamically. It helps reduce large color patches and banding, creating a visually uniform dot pattern. Due to periodicity, ordered dithered images often show a noticeable regular grid.
+
+<CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B1-2_1755604633182.png" alt="Actual effect" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64-encoded PNG image data}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0,
+        "ditherType": "ORDERED"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+### Disable Dithering
+
+If you primarily display text images via the Image API, we recommend disabling dithering to achieve sharper text.
+
+<CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B1_1755604287570.png" alt="Actual effect" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64-encoded PNG image data}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0,
+        "ditherType": "NONE"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+## Troubleshooting
+
+### Endpoint
+
+`/api/open/image`
+
+### Method
+
+`POST`
+
+### Request Schema
+
+| Field          | Type     | Required | Default           | Description                                                                                                                                                              | Purpose                    |
+| :------------- | :------- | :------- | :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------- |
+| `refreshNow`   | `bool`   | No       | `true`            | Whether to display the content immediately                                                                                                                               | Control display timing     |
+| `deviceId`     | `string` | Yes      |                   | Device serial number                                                                                                                                                     | Identify the device        |
+| `image`        | `string` | Yes      |                   | Base64‑encoded PNG image data (296px×152px)                                                                                                                              | Image to render on screen  |
+| `link`         | `string` | No       |                   | http/https link or URL scheme                                                                                                                                            | NFC tap redirect target    |
+| `border`       | `number` | No       | `0`               | `0` = white border, `1` = black border                                                                                                                                   | Screen border color        |
+| `ditherType`   | `string` | No       | `DIFFUSION`       | Dither type (`DIFFUSION`, `ORDERED`, `NONE`)                                                                                                                             | Control dithering behavior |
+| `ditherKernel` | `string` | No       | `FLOYD_STEINBERG` | Dither algorithm (`THRESHOLD`, `ATKINSON`, `BURKES`, `FLOYD_STEINBERG`, `SIERRA2`, `STUCKI`, `JARVIS_JUDICE_NINKE`, `DIFFUSION_ROW`, `DIFFUSION_COLUMN`, `DIFFUSION2_D`) | Control dither algorithm   |
+
+### Response Schema
+
+| Field     | Type     | Description     |
+| :-------- | :------- | :-------------- |
+| `code`    | `number` | Status code     |
+| `message` | `string` | Description     |
+| `result`  | `object` | Processing data |
+
+### Status Codes
+
+| code  | Meaning                 | Description                                                                                                                                    |
+| :---- | :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- |
+| `200` | Success                 | Image API content switched / Data updated but content not switched                                                                             |
+| `400` | Invalid parameters      | Missing or invalid device ID<br/>Invalid image format<br/>Invalid border (must be 0 or 1)<br/>Invalid dither type<br/>Invalid dither algorithm |
+| `403` | Forbidden               | You do not have permission to operate this device                                                                                              |
+| `404` | Not found               | Device not found or not registered<br/>Image API content not added                                                                             |
+| `500` | Device response failure | Failed to switch Image API content                                                                                                             |

@@ -1,0 +1,314 @@
+---
+title: Text API
+---
+
+import Link from 'fumadocs-core/link';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## Quick Guide
+
+### Prerequisites
+
+1. Make sure you have <Link href="/docs/service/studio/api/get_api">retrieved and saved your API key</Link> in the Dot. App;
+2. Make sure you own at least one device and have <Link href="/docs/service/studio/api/get_device_id">obtained its device serial number</Link>;
+3. Make sure your device is connected to power;
+4. Make sure your device is connected to the network;
+5. Make sure the device has added the Text API content.
+
+<Callout
+	type="info"
+	title="API requests are not limited by the app’s minimum 5‑minute device interval. The API rate limit is 1 request per second. With the API, you can control device behavior and responses more flexibly."
+/>
+
+<Callout
+	type="info"
+	title="Placeholders wrapped in ‘{{variable}}’ indicate values you must replace. Fill them with your actual values and remove the ‘{{}}’ braces."
+/>
+
+### Request Examples
+
+<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/text \
+      -H 'Authorization: Bearer {{API_KEY}}' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "refreshNow": {{show content immediately}},
+        "deviceId": "{{device serial number}}",
+        "title": "{{title}}",
+        "message": "{{content}}",
+        "signature": "{{signature}}",
+        "icon": "{{base64-encoded PNG icon data}}",
+        "link": "{{NFC tap redirect link}}"
+      }'
+    ```
+  </Tab>
+  <Tab value="Python">
+    ```python
+    import requests
+
+    url = "https://dot.mindreset.tech/api/open/text"
+    headers = {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "refreshNow": {{show content immediately}},
+        "deviceId": "{{device serial number}}",
+        "title": "{{title}}",
+        "message": "{{content}}",
+        "signature": "{{signature}}",
+        "icon": "{{base64-encoded PNG icon data}}",
+        "link": "{{NFC tap redirect link}}"
+    }
+    response = requests.post(url, json=data, headers=headers)
+    print(response.json())
+    ```
+
+  </Tab>
+  <Tab value="JavaScript">
+    ```javascript
+    fetch("https://dot.mindreset.tech/api/open/text", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        refreshNow: {{show content immediately}},
+        deviceId: "{{device serial number}}",
+        title: "{{title}}",
+        message: "{{content}}",
+        signature: "{{signature}}",
+        icon: "{{base64-encoded PNG icon data}}",
+        link: "{{NFC tap redirect link}}"
+      })
+    }).then(res => res.json()).then(console.log);
+    ```
+  </Tab>
+  <Tab value="TypeScript">
+    ```typescript
+    type ApiResponse = {
+      code: number;
+      message: string;
+      result?: any;
+    };
+
+    fetch("https://dot.mindreset.tech/api/open/text", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        refreshNow: {{show content immediately}},
+        deviceId: "{{device serial number}}",
+        title: "{{title}}",
+        message: "{{content}}",
+        signature: "{{signature}}",
+        icon: "{{base64-encoded PNG icon data}}",
+        link: "{{NFC tap redirect link}}"
+      })
+    })
+      .then(res => res.json() as Promise<ApiResponse>)
+      .then(data => {
+        console.log(data);
+      });
+    ```
+
+  </Tab>
+  <Tab value="Go">
+    ```go
+    package main
+
+    import (
+      "bytes"
+      "encoding/json"
+      "fmt"
+      "net/http"
+      "io/ioutil"
+    )
+
+    func main() {
+      url := "https://dot.mindreset.tech/api/open/text"
+      payload := map[string]interface{}{
+        "refreshNow": {{show content immediately}},
+        "deviceId": "{{device serial number}}",
+        "title": "{{title}}",
+        "message": "{{content}}",
+        "signature": "{{signature}}",
+        "icon": "{{base64-encoded PNG icon data}}",
+        "link": "{{NFC tap redirect link}}",
+      }
+      body, _ := json.Marshal(payload)
+      req, _ := http.NewRequest("POST", url, bytes.NewBuffer(body))
+      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
+      req.Header.Set("Content-Type", "application/json")
+      client := &http.Client{}
+      resp, _ := client.Do(req)
+      defer resp.Body.Close()
+      respBody, _ := ioutil.ReadAll(resp.Body)
+      fmt.Println(string(respBody))
+    }
+    ```
+
+  </Tab>
+  <Tab value="Rust">
+    ```rust
+    use reqwest::blocking::Client;
+    use serde_json::json;
+
+    fn main() {
+        let client = Client::new();
+        let url = "https://dot.mindreset.tech/api/open/text";
+        let res = client.post(url)
+            .header("Authorization", "Bearer {{API_KEY}}")
+            .header("Content-Type", "application/json")
+            .json(&json!({
+                "refreshNow": {{show content immediately}},
+                "deviceId": "{{device serial number}}",
+                "title": "{{title}}",
+                "message": "{{content}}",
+                "signature": "{{signature}}",
+                "icon": "{{base64-encoded PNG icon data}}",
+                "link": "{{NFC tap redirect link}}"
+            }))
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
+        println!("{}", res);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### Response Example
+
+```json
+{
+	"code": 200,
+	"message": "Device Text API content switched",
+	"result": {
+		"message": "Device ABCD1234ABCD Text API content switched"
+	}
+}
+```
+
+## Reference Usage
+
+1. Simple text without immediate display
+
+<CustomCloudImage osSrc="dot/docs/1_1754308279592.png" alt="Actual effect" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/text \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "refreshNow": false,
+        "deviceId": "ABCD1234ABCD",
+        "title": "evnydd0sf",
+        "message": "我能吞下玻璃而不伤身体"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+2. Complex text and display immediately
+
+<CustomCloudImage osSrc="dot/docs/2_1754308783977.png" alt="Actual effect" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/text \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "title": "验证码小助手",
+        "message": "一个来自「少数派」的验证码\n205112",
+        "signature": "2025年8月4日 19:58"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+3. Complex text with icon and link, display immediately
+
+<CustomCloudImage osSrc="dot/docs/3_1754310143662.png" alt="Actual effect" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/text \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "title": "每日健康",
+        "message": "消耗卡路里：702千卡\n今日步数：4183步\n站立时间：62分钟",
+        "signature": "2025年8月4日 20:16",
+        "icon": "{{base64-encoded PNG image data}}",
+        "link": "x-apple-health://"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+4. Highly customized text or graphics
+
+<Link href="/docs/service/studio/api/image_api#%E5%8F%82%E8%80%83%E4%BD%BF%E7%94%A8">
+	Refer to the Image API section on text-as-image usage
+</Link>
+
+<CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B13_1754130631116.png" alt="Actual effect" />
+
+## Troubleshooting
+
+### Endpoint
+
+`/api/open/text`
+
+### Method
+
+`POST`
+
+### Request Schema
+
+| Field        | Type     | Required | Default | Description                                | Purpose                   |
+| :----------- | :------- | :------- | :------ | :----------------------------------------- | :------------------------ |
+| `refreshNow` | `bool`   | No       | `true`  | Whether to display the content immediately | Control display timing    |
+| `deviceId`   | `string` | Yes      |         | Device serial number                       | Identify the device       |
+| `title`      | `string` | No       |         | Text title                                 | Title shown on screen     |
+| `message`    | `string` | No       |         | Text content                               | Content shown on screen   |
+| `signature`  | `string` | No       |         | Text signature                             | Signature shown on screen |
+| `icon`       | `string` | No       |         | Base64‑encoded PNG icon data (40px×40px)   | Icon shown at bottom-left |
+| `link`       | `string` | No       |         | http/https link or URL scheme              | NFC tap redirect target   |
+
+### Response Schema
+
+| Field     | Type     | Description |
+| :-------- | :------- | :---------- |
+| `code`    | `number` | Status code |
+| `message` | `string` | Message     |
+| `result`  | `object` | Payload     |
+
+### Status Codes
+
+| code  | Meaning                 | Description                                                       |
+| :---- | :---------------------- | :---------------------------------------------------------------- |
+| `200` | Success                 | Text API content switched / Data updated but content not switched |
+| `400` | Invalid parameters      | Invalid icon format                                               |
+| `403` | Forbidden               | You do not have permission to operate this device                 |
+| `404` | Not found               | Device not found or not registered<br/>Text API content not added |
+| `500` | Device response failure | Failed to switch Text API content                                 |

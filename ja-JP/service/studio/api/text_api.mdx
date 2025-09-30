@@ -1,0 +1,314 @@
+---
+title: テキスト API
+---
+
+import Link from 'fumadocs-core/link';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## クイックガイド
+
+### 必要条件
+
+1. Dot. アプリで<Link href="/docs/service/studio/api/get_api">API キーを取得して保存</Link>していること
+2. 自分のデバイスが少なくとも 1 台あり、<Link href="/docs/service/studio/api/get_device_id">デバイスのシリアル番号</Link>を取得していること
+3. デバイスが電源に接続されていること
+4. デバイスがネットワークに接続されていること
+5. デバイスに「テキスト API」コンテンツが追加されていること
+
+<Callout
+	type="info"
+	title="API リクエストはアプリ設定の最短5分制限を受けません。API のリクエスト制限は1秒あたり1回です。したがって、API を使うとデバイスの動作と応答をより柔軟に制御できます。"
+/>
+
+<Callout
+	type="info"
+	title="ドキュメント中の ‘{{変数}}’ は置換が必要なプレースホルダーです。実際の値に置き換え、‘{{}}’ は削除してください。"
+/>
+
+### リクエスト例
+
+<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/text \
+      -H 'Authorization: Bearer {{API_KEY}}' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "refreshNow": {{内容を即時表示するか}},
+        "deviceId": "{{デバイスシリアル番号}}",
+        "title": "{{タイトル}}",
+        "message": "{{内容}}",
+        "signature": "{{署名}}",
+        "icon": "{{base64 エンコードした PNG アイコンデータ}}",
+        "link": "{{タッチ操作時の遷移リンク}}"
+      }'
+    ```
+  </Tab>
+  <Tab value="Python">
+    ```python
+    import requests
+
+    url = "https://dot.mindreset.tech/api/open/text"
+    headers = {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "refreshNow": {{内容を即時表示するか}},
+        "deviceId": "{{デバイスシリアル番号}}",
+        "title": "{{タイトル}}",
+        "message": "{{内容}}",
+        "signature": "{{署名}}",
+        "icon": "{{base64 エンコードした PNG アイコンデータ}}",
+        "link": "{{タッチ操作時の遷移リンク}}"
+    }
+    response = requests.post(url, json=data, headers=headers)
+    print(response.json())
+    ```
+
+  </Tab>
+  <Tab value="JavaScript">
+    ```javascript
+    fetch("https://dot.mindreset.tech/api/open/text", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        refreshNow: {{内容を即時表示するか}},
+        deviceId: "{{デバイスシリアル番号}}",
+        title: "{{タイトル}}",
+        message: "{{内容}}",
+        signature: "{{署名}}",
+        icon: "{{base64 エンコードした PNG アイコンデータ}}",
+        link: "{{タッチ操作時の遷移リンク}}"
+      })
+    }).then(res => res.json()).then(console.log);
+    ```
+  </Tab>
+  <Tab value="TypeScript">
+    ```typescript
+    type ApiResponse = {
+      code: number;
+      message: string;
+      result?: any;
+    };
+
+    fetch("https://dot.mindreset.tech/api/open/text", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        refreshNow: {{内容を即時表示するか}},
+        deviceId: "{{デバイスシリアル番号}}",
+        title: "{{タイトル}}",
+        message: "{{内容}}",
+        signature: "{{署名}}",
+        icon: "{{base64 エンコードした PNG アイコンデータ}}",
+        link: "{{タッチ操作時の遷移リンク}}"
+      })
+    })
+      .then(res => res.json() as Promise<ApiResponse>)
+      .then(data => {
+        console.log(data);
+      });
+    ```
+
+  </Tab>
+  <Tab value="Go">
+    ```go
+    package main
+
+    import (
+      "bytes"
+      "encoding/json"
+      "fmt"
+      "net/http"
+      "io/ioutil"
+    )
+
+    func main() {
+      url := "https://dot.mindreset.tech/api/open/text"
+      payload := map[string]interface{}{
+        "refreshNow": {{内容を即時表示するか}},
+        "deviceId": "{{デバイスシリアル番号}}",
+        "title": "{{タイトル}}",
+        "message": "{{内容}}",
+        "signature": "{{署名}}",
+        "icon": "{{base64 エンコードした PNG アイコンデータ}}",
+        "link": "{{タッチ操作時の遷移リンク}}",
+      }
+      body, _ := json.Marshal(payload)
+      req, _ := http.NewRequest("POST", url, bytes.NewBuffer(body))
+      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
+      req.Header.Set("Content-Type", "application/json")
+      client := &http.Client{}
+      resp, _ := client.Do(req)
+      defer resp.Body.Close()
+      respBody, _ := ioutil.ReadAll(resp.Body)
+      fmt.Println(string(respBody))
+    }
+    ```
+
+  </Tab>
+  <Tab value="Rust">
+    ```rust
+    use reqwest::blocking::Client;
+    use serde_json::json;
+
+    fn main() {
+        let client = Client::new();
+        let url = "https://dot.mindreset.tech/api/open/text";
+        let res = client.post(url)
+            .header("Authorization", "Bearer {{API_KEY}}")
+            .header("Content-Type", "application/json")
+            .json(&json!({
+                "refreshNow": {{内容を即時表示するか}},
+                "deviceId": "{{デバイスシリアル番号}}",
+                "title": "{{タイトル}}",
+                "message": "{{内容}}",
+                "signature": "{{署名}}",
+                "icon": "{{base64 エンコードした PNG アイコンデータ}}",
+                "link": "{{タッチ操作時の遷移リンク}}"
+            }))
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
+        println!("{}", res);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### レスポンス例
+
+```json
+{
+	"code": 200,
+	"message": "デバイスのテキスト API コンテンツを切り替えました",
+	"result": {
+		"message": "デバイス ABCD1234ABCD のテキスト API コンテンツを切り替えました"
+	}
+}
+```
+
+## 参考ユースケース
+
+1. シンプルなテキスト（即時表示しない）
+
+<CustomCloudImage osSrc="dot/docs/1_1754308279592.png" alt="実際の効果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/text \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "refreshNow": false,
+        "deviceId": "ABCD1234ABCD",
+        "title": "evnydd0sf",
+        "message": "我能吞下玻璃而不伤身体"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+2. 複雑なテキスト（即時表示）
+
+<CustomCloudImage osSrc="dot/docs/2_1754308783977.png" alt="実際の効果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/text \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "title": "验证码小助手",
+        "message": "一个来自「少数派」的验证码\n205112",
+        "signature": "2025年8月4日 19:58"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+3. アイコンとリンク付きの複雑テキスト（即時表示）
+
+<CustomCloudImage osSrc="dot/docs/3_1754310143662.png" alt="実際の効果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/text \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "title": "每日健康",
+        "message": "消耗カロリー：702kcal\n本日の歩数：4183歩\nスタンド時間：62分",
+        "signature": "2025年8月4日 20:16",
+        "icon": "{{base64 エンコードした PNG 画像データ}}",
+        "link": "x-apple-health://"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+4. 高度にカスタマイズしたテキストやグラフィック
+
+<Link href="/docs/service/studio/api/image_api#%E5%8F%82%E8%80%83%E4%BD%BF%E7%94%A8">
+	テキスト画像の利用方法は画像 API の該当セクションをご参照ください
+</Link>
+
+<CustomCloudImage osSrc="dot/docs/陰影3_1754130631116.png" alt="実際の効果" />
+
+## トラブルシューティング
+
+### リクエストパス
+
+`/api/open/text`
+
+### メソッド
+
+`POST`
+
+### リクエスト構造
+
+| フィールド名 | 型       | 必須 | デフォルト | 説明                                        | 用途                   |
+| :----------- | :------- | :--- | :--------- | :------------------------------------------ | :--------------------- |
+| `refreshNow` | `bool`   | 否   | `true`     | コンテンツを即時に表示するか                | 表示タイミング制御     |
+| `deviceId`   | `string` | 是   |            | デバイスのシリアル番号                      | デバイス識別           |
+| `title`      | `string` | 否   |            | テキストのタイトル                          | 画面上のタイトル       |
+| `message`    | `string` | 否   |            | テキスト本文                                | 画面上の内容           |
+| `signature`  | `string` | 否   |            | 署名                                        | 画面上の署名           |
+| `icon`       | `string` | 否   |            | base64 エンコード PNG アイコン（40px×40px） | 左下に表示するアイコン |
+| `link`       | `string` | 否   |            | http/https またはスキーム URL               | タッチ操作の遷移先     |
+
+### レスポンス構造
+
+| フィールド名 | 型       | 説明       |
+| :----------- | :------- | :--------- |
+| `code`       | `number` | ステータス |
+| `message`    | `string` | 応答説明   |
+| `result`     | `object` | 応答内容   |
+
+### レスポンスコード
+
+| code  | 意味             | 説明                                                |
+| :---- | :--------------- | :-------------------------------------------------- |
+| `200` | 成功             | テキスト API コンテンツを切替／データ更新（未切替） |
+| `400` | パラメータ不正   | 無効なアイコン形式                                  |
+| `403` | 権限不足         | 当該デバイスを操作する権限がありません              |
+| `404` | 未検出           | デバイスが存在しない・未登録／テキスト API 未追加   |
+| `500` | デバイス応答失敗 | テキスト API コンテンツの切替に失敗                 |

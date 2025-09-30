@@ -3,17 +3,17 @@ title: MSA-2025-09-002
 description: NoSQL Injection
 ---
 
-**Release Date**: Sep 29, 2025  
-**Last Updated**: Sep 29, 2025  
+**Release Date**: Sep 30, 2025  
+**Last Updated**: Sep 30, 2025  
 **Severity**: Critical  
-**Status**: In progress (temporary mitigations in place; permanent fix expedited)  
+**Status**: Fixed  
 **CVSS 3.1 Score**: 9.1 (AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 
 ---
 
 ## Overview
 
-On 2025-09-29T06:23:00Z, we received a security report regarding a NoSQL injection vulnerability in the /api/device/template endpoint. This endpoint was originally intended to provide a set of server-side rendering capabilities. However, because it directly accepts and executes a MongoDB aggregation pipeline structure supplied by the client, an attacker can craft malicious requests to perform, among other things, reading sensitive data, writing/tampering with data, and triggering denial-of-service (DoS), resulting in high risk.
+On 2025-09-29T06:23:00Z, we received a security report regarding a NoSQL injection vulnerability in the `/api/device/template` endpoint. This endpoint was originally intended to provide a set of server-side rendering capabilities. However, because it directly accepts and executes a MongoDB aggregation pipeline structure supplied by the client, an attacker can craft malicious requests to perform, among other things, reading sensitive data, writing/tampering with data, and triggering denial-of-service (DoS), resulting in high risk.
 
 We have immediately enabled temporary mitigations and initiated a permanent remediation process. No evidence of widespread malicious exploitation has been found at this time.
 
@@ -22,38 +22,35 @@ We have immediately enabled temporary mitigations and initiated a permanent reme
 | Item                   | Details                                                                                              |
 | ---------------------- | ---------------------------------------------------------------------------------------------------- |
 | **Affected Product**   | Dot Server-side API                                                                                  |
-| **Affected Version**   | Current production version of /api/device/template                                                   |
+| **Affected Version**   | Current production version of `/api/device/template`                                                 |
 | **Fixed Version**      | To be announced (will be updated after permanent fix is released)                                    |
-| **Affected Component** | /api/device/template (MongoDB aggregation pipeline execution)                                        |
+| **Affected Component** | `/api/device/template`                                                                               |
 | **Attack Vector**      | Network                                                                                              |
 | **Required Privilege** | Low (greater impact with a valid user token; possible abuse under weak validation in some scenarios) |
 
 ## Technical Description
 
--               Root Cause: The endpoint allows clients to directly control aggregation operators and structure, which are executed verbatim on the server, creating a NoSQL injection surface.
--               Reproduction Notes: By crafting an aggregation containing high-risk stages such as $unionWith, it is possible to access data from other collections without authorization.
--               Risk: Confidentiality (C) High, Integrity (I) High, Availability (A) High.
+-   Root Cause: The endpoint allows clients to directly control aggregation operators and structure, which are executed verbatim on the server, creating a NoSQL injection surface.
 
 ## Remediation
 
 To quickly reduce risk and fully eliminate the injection surface, we are proceeding in two phases (mitigation and permanent fix):
 
--               Immediate Actions (in progress):
-    -   Temporarily disable or gradually restrict high-risk operators in /api/device/template, enforce strict field whitelisting and rate limiting, and block suspicious aggregation stages (e.g., $unionWith/$lookup/$out/$merge).
+-   Immediate Actions:
+    -   Temporarily disable or gradually restrict high-risk operators in `/api/device/template`, enforce strict field whitelisting and rate limiting, and block suspicious aggregation stages.
     -   Increase request auditing and alerting to identify suspicious sources and access frequency.
--               Permanent Fix (to be completed and released ASAP):
+-   Permanent Fix:
     -   Introduce server-side parameterization and a query builder so that only controlled aggregation stages are assembled on the server; disallow client-supplied operators or free-form structures.
     -   Minimize returned data (field-level projection and masking) and enforce fine-grained authorization checks based on user and resource boundaries.
     -   Conduct a comprehensive audit of similar historical endpoints to eliminate analogous risks.
 
 ## Impact Assessment
 
--               No evidence of malicious exploitation: Logs show no abnormal bulk access or data exfiltration.
+-   No evidence of malicious exploitation: Logs show no abnormal bulk access or data exfiltration.
 
 ## User Action
 
--               No user-side action is required at this time. We have enabled server-side interception and restriction strategies and will complete the permanent fix as soon as possible.
--               If you observe abnormal responses or suspicious behavior, please report via official channels promptly.
+-   No user-side action is required at this time. We have enabled server-side interception and restriction strategies and will complete the permanent fix as soon as possible.
 
 ## Acknowledgements
 

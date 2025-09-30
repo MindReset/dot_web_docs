@@ -1,0 +1,435 @@
+---
+title: 画像 API
+---
+
+import Link from 'fumadocs-core/link';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## クイックガイド
+
+### 必要条件
+
+1. Dot. アプリで<Link href="/docs/service/studio/api/get_api">API キーを取得して保存</Link>していること
+2. 自分のデバイスが少なくとも 1 台あり、<Link href="/docs/service/studio/api/get_device_id">デバイスのシリアル番号</Link>を取得していること
+3. デバイスが電源に接続されていること
+4. デバイスがネットワークに接続されていること
+5. デバイスに「画像 API」コンテンツが追加されていること
+
+<Callout
+	type="info"
+	title="API リクエストはアプリ設定の最短5分制限を受けません。API のリクエスト制限は1秒あたり1回です。したがって、API を使うとデバイスの動作と応答をより柔軟に制御できます。"
+/>
+
+<Callout
+	type="info"
+	title="ドキュメント中の ‘{{変数}}’ は置換が必要なプレースホルダーです。実際の値に置き換え、‘{{}}’ は削除してください。"
+/>
+
+### リクエスト例
+
+<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer {{API_KEY}}' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "refreshNow": {{内容を即時表示するか}},
+        "deviceId": "{{デバイスシリアル番号}}",
+        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "link": "{{タッチ操作時の遷移リンク}}",
+        "border": {{画面縁の色番号}},
+        "ditherType": "{{ディザ種別}}",
+        "ditherKernel": "{{ディザアルゴリズム}}"
+      }'
+    ```
+  </Tab>
+  <Tab value="Python">
+    ```python
+    import requests
+
+    url = "https://dot.mindreset.tech/api/open/image"
+    headers = {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "refreshNow": {{内容を即時表示するか}},
+        "deviceId": "{{デバイスシリアル番号}}",
+        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "link": "{{タッチ操作時の遷移リンク}}",
+        "border": {{画面縁の色番号}},
+        "ditherType": "{{ディザ種別}}",
+        "ditherKernel": "{{ディザアルゴリズム}}"
+    }
+    response = requests.post(url, json=data, headers=headers)
+    print(response.json())
+    ```
+
+  </Tab>
+  <Tab value="JavaScript">
+    ```javascript
+    fetch("https://dot.mindreset.tech/api/open/image", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        refreshNow: {{内容を即時表示するか}},
+        deviceId: "{{デバイスシリアル番号}}",
+        image: "{{base64 エンコードした PNG 画像データ}}",
+        link: "{{タッチ操作時の遷移リンク}}",
+        border: {{画面縁の色番号}},
+        ditherType: "{{ディザ種別}}",
+        ditherKernel: "{{ディザアルゴリズム}}"
+      })
+    }).then(res => res.json()).then(console.log);
+    ```
+  </Tab>
+  <Tab value="TypeScript">
+    ```typescript
+    type ApiResponse = {
+      code: number;
+      message: string;
+      result?: any;
+    };
+
+    fetch("https://dot.mindreset.tech/api/open/image", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        refreshNow: {{内容を即時表示するか}},
+        deviceId: "{{デバイスシリアル番号}}",
+        image: "{{base64 エンコードした PNG 画像データ}}",
+        link: "{{タッチ操作時の遷移リンク}}",
+        border: {{画面縁の色番号}},
+        ditherType: "{{ディザ種別}}",
+        ditherKernel: "{{ディザアルゴリズム}}"
+      })
+    })
+      .then(res => res.json() as Promise<ApiResponse>)
+      .then(data => {
+        console.log(data);
+      });
+    ```
+
+  </Tab>
+  <Tab value="Go">
+    ```go
+    package main
+
+    import (
+      "bytes"
+      "encoding/json"
+      "fmt"
+      "net/http"
+      "io/ioutil"
+    )
+
+    func main() {
+      url := "https://dot.mindreset.tech/api/open/image"
+      payload := map[string]interface{}{
+        "refreshNow": {{内容を即時表示するか}},
+        "deviceId": "{{デバイスシリアル番号}}",
+        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "link": "{{タッチ操作時の遷移リンク}}",
+        "border": {{画面縁の色番号}},
+        "ditherType": "{{ディザ種別}}",
+        "ditherKernel": "{{ディザアルゴリズム}}",
+      }
+      body, _ := json.Marshal(payload)
+      req, _ := http.NewRequest("POST", url, bytes.NewBuffer(body))
+      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
+      req.Header.Set("Content-Type", "application/json")
+      client := &http.Client{}
+      resp, _ := client.Do(req)
+      defer resp.Body.Close()
+      respBody, _ := ioutil.ReadAll(resp.Body)
+      fmt.Println(string(respBody))
+    }
+    ```
+
+  </Tab>
+  <Tab value="Rust">
+    ```rust
+    use reqwest::blocking::Client;
+    use serde_json::json;
+
+    fn main() {
+        let client = Client::new();
+        let url = "https://dot.mindreset.tech/api/open/image";
+        let res = client.post(url)
+            .header("Authorization", "Bearer {{API_KEY}}")
+            .header("Content-Type", "application/json")
+            .json(&json!({
+                "refreshNow": {{内容を即時表示するか}},
+                "deviceId": "{{デバイスシリアル番号}}",
+                "image": "{{base64 エンコードした PNG 画像データ}}",
+                "link": "{{タッチ操作時の遷移リンク}}",
+                "border": {{画面縁の色番号}},
+                "ditherType": "{{ディザ種別}}",
+                "ditherKernel": "{{ディザアルゴリズム}}"
+            }))
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
+        println!("{}", res);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### レスポンス例
+
+```json
+{
+	"code": 200,
+	"message": "デバイスの画像 API コンテンツを切り替えました",
+	"result": {
+		"message": "デバイス ABCD1234ABCD の画像 API コンテンツを切り替えました"
+	}
+}
+```
+
+## 参考ユースケース
+
+1. シンプル画像（即時表示しない）
+
+<CustomCloudImage osSrc="dot/docs/陰影_1754129505817.png" alt="実際の効果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "refreshNow": false,
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+2. 複雑な画像
+
+<CustomCloudImage osSrc="dot/docs/陰影4_1754130316522.png" alt="実際の効果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 1
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+3. テキスト画像
+
+Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さらに base64 に変換して送信します。
+
+<CustomCloudImage osSrc="dot/docs/陰影3_1754130631116.png" alt="実際の効果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0,
+        "ditherType": "NONE"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+## 画像ディザリング
+
+画像ディザリングは、特定のアルゴリズムで視覚ノイズを低減し、見た目を滑らかにする処理です。Floyd-Steinberg、Atkinson、Sierra などが代表例です。電子ペーパーでは階調の遷移が自然になり、白黒表示の質が向上します。
+
+画像 API では、【`ditherType` を指定しない場合】誤差拡散ディザの Floyd-Steinberg をデフォルトで使用します。パラメータで無効化や種類・アルゴリズムの変更が可能です。
+
+### ディザリングを有効化
+
+#### 誤差拡散ディザ（デフォルト）
+
+<CustomCloudImage osSrc="dot/docs/陰影-1_1755604439407.png" alt="実際の効果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0,
+        "ditherType": "DIFFUSION"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+##### 誤差拡散アルゴリズムの種類
+
+`"ditherKernel"` に以下のいずれかを指定します。
+
+<div className="flex flex-col md:flex-row gap-4">
+
+<CustomCloudImage
+	osSrc="dot/docs/layer_1755606583517.png"
+	alt="FLOYD_STEINBERG"
+	caption="FLOYD_STEINBERG"
+/>
+
+<CustomCloudImage osSrc="dot/docs/layer-1_1755606614917.png" alt="ATKINSON" caption="ATKINSON" />
+<CustomCloudImage osSrc="dot/docs/layer-2_1755606637222.png" alt="BURKES" caption="BURKES" />
+
+</div>
+
+<div className="flex flex-col md:flex-row gap-4">
+
+<CustomCloudImage osSrc="dot/docs/layer-3_1755606653679.png" alt="SIERRA2" caption="SIERRA2" />
+
+<CustomCloudImage osSrc="dot/docs/layer-4_1755606678514.png" alt="STUCKI" caption="STUCKI" />
+<CustomCloudImage
+	osSrc="dot/docs/layer-5_1755606710423.png"
+	alt="JARVIS_JUDICE_NINKE"
+	caption="JARVIS_JUDICE_NINKE"
+/>
+
+</div>
+
+<div className="flex flex-col md:flex-row gap-4">
+
+<CustomCloudImage
+	osSrc="dot/docs/layer-6_1755606726561.png"
+	alt="DIFFUSION_ROW"
+	caption="DIFFUSION_ROW"
+/>
+
+<CustomCloudImage
+	osSrc="dot/docs/layer-7_1755606742614.png"
+	alt="DIFFUSION_COLUMN"
+	caption="DIFFUSION_COLUMN"
+/>
+<CustomCloudImage
+	osSrc="dot/docs/layer-8_1755606760506.png"
+	alt="DIFFUSION_2D"
+	caption="DIFFUSION_2D"
+/>
+
+</div>
+
+#### 有序ディザ（Ordered）
+
+<CustomCloudImage osSrc="dot/docs/陰影-2_1755604633182.png" alt="実際の効果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0,
+        "ditherType": "ORDERED"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+### ディザリングを無効化
+
+テキスト中心の画像では、ディザリングを無効にするとエッジがシャープになり可読性が向上します。
+
+<CustomCloudImage osSrc="dot/docs/陰影_1755604287570.png" alt="実際の効果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0,
+        "ditherType": "NONE"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+## トラブルシューティング
+
+### リクエストパス
+
+`/api/open/image`
+
+### メソッド
+
+`POST`
+
+### リクエスト構造
+
+| フィールド名   | 型       | 必須 | デフォルト        | 説明                                                                                                                                                                        | 用途                 |
+| :------------- | :------- | :--- | :---------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------- |
+| `refreshNow`   | `bool`   | 否   | `true`            | コンテンツを即時に表示するかどうか                                                                                                                                          | 表示タイミング制御   |
+| `deviceId`     | `string` | 是   |                   | デバイスのシリアル番号                                                                                                                                                      | デバイス識別         |
+| `image`        | `string` | 是   |                   | base64 エンコードの PNG 画像データ（296px×152px）                                                                                                                           | 表示する画像         |
+| `link`         | `string` | 否   |                   | http/https またはスキーム URL                                                                                                                                               | タッチ操作の遷移先   |
+| `border`       | `number` | 否   | `0`               | `0` は白枠、`1` は黒枠                                                                                                                                                      | 画面の枠色           |
+| `ditherType`   | `string` | 否   | `DIFFUSION`       | ディザ種別（`DIFFUSION`、`ORDERED`、`NONE`）                                                                                                                                | 画像ディザ効果       |
+| `ditherKernel` | `string` | 否   | `FLOYD_STEINBERG` | ディザアルゴリズム（`THRESHOLD`、`ATKINSON`、`BURKES`、`FLOYD_STEINBERG`、`SIERRA2`、`STUCKI`、`JARVIS_JUDICE_NINKE`、`DIFFUSION_ROW`、`DIFFUSION_COLUMN`、`DIFFUSION2_D`） | ディザのアルゴリズム |
+
+### レスポンス構造
+
+| フィールド名 | 型       | 説明             |
+| :----------- | :------- | :--------------- |
+| `code`       | `number` | ステータスコード |
+| `message`    | `string` | 応答メッセージ   |
+| `result`     | `object` | 処理結果         |
+
+### レスポンスコード
+
+| code  | 意味             | 説明                                                                                                               |
+| :---- | :--------------- | :----------------------------------------------------------------------------------------------------------------- |
+| `200` | 成功             | デバイスの画像 API コンテンツを切り替え／データ更新（ただし表示は切り替わっていない）                              |
+| `400` | パラメータ不正   | デバイス ID の欠如または形式不正／無効な画像形式／border は 0 または 1／無効なディザ種別／無効なディザアルゴリズム |
+| `403` | 権限不足         | 当該デバイスを操作する権限がありません                                                                             |
+| `404` | 未検出           | デバイスが存在しない・未登録／画像 API コンテンツ未追加                                                            |
+| `500` | デバイス応答失敗 | 画像 API コンテンツの切替に失敗                                                                                    |

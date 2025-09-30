@@ -1,0 +1,439 @@
+---
+title: 图像 API
+---
+
+import Link from 'fumadocs-core/link';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## 快速指引
+
+### 必要条件
+
+1. 确保您已在 Dot. App 中<Link href="/docs/service/studio/api/get_api">获取并保存了 API 密钥</Link>；
+2. 确保您至少有一台所属于自己的设备并已<Link href="/docs/service/studio/api/get_device_id">获取设备序列号</Link>；
+3. 确保您的设备已接入电源；
+4. 确保您的设备已接入网络；
+5. 确保设备已添加 `图像 API` 内容。
+
+<Callout
+	type="info"
+	title="API 请求不受 App 设置中设备最短 5 分钟的限制，API 的请求限制为每秒 1 次。因此，通过 API 请求，您可以更灵活地控制设备的行为和响应。"
+/>
+
+<Callout
+	type="info"
+	title="文档中的 ‘{{变量}}’ 花括号表示需要替换的变量，请根据实际情况进行替换，并移除‘{{}}’。"
+/>
+
+### 请求示例
+
+<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer {{API_KEY}}' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "refreshNow": {{是否立刻显示内容}},
+        "deviceId": "{{设备序列号}}",
+        "image": "{{base64 编码 PNG 图像数据}}",
+        "link": "{{碰一碰跳转链接}}",
+        "border": {{屏幕边缘的颜色编号}},
+        "ditherType": "{{抖动类型}}",
+        "ditherKernel": "{{抖动算法}}"
+      }'
+    ```
+  </Tab>
+  <Tab value="Python">
+    ```python
+    import requests
+
+    url = "https://dot.mindreset.tech/api/open/image"
+    headers = {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "refreshNow": {{是否立刻显示内容}},
+        "deviceId": "{{设备序列号}}",
+        "image": "{{base64 编码 PNG 图像数据}}",
+        "link": "{{碰一碰跳转链接}}",
+        "border": {{屏幕边缘的颜色编号}},
+        "ditherType": "{{抖动类型}}",
+        "ditherKernel": "{{抖动算法}}"
+    }
+    response = requests.post(url, json=data, headers=headers)
+    print(response.json())
+    ```
+
+  </Tab>
+  <Tab value="JavaScript">
+    ```javascript
+    fetch("https://dot.mindreset.tech/api/open/image", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        refreshNow: {{是否立刻显示内容}},
+        deviceId: "{{设备序列号}}",
+        image: "{{base64 编码 PNG 图像数据}}",
+        link: "{{碰一碰跳转链接}}",
+        border: {{屏幕边缘的颜色编号}},
+        ditherType: "{{抖动类型}}",
+        ditherKernel: "{{抖动算法}}"
+      })
+    }).then(res => res.json()).then(console.log);
+    ```
+  </Tab>
+  <Tab value="TypeScript">
+    ```typescript
+    type ApiResponse = {
+      code: number;
+      message: string;
+      result?: any;
+    };
+
+    fetch("https://dot.mindreset.tech/api/open/image", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        refreshNow: {{是否立刻显示内容}},
+        deviceId: "{{设备序列号}}",
+        image: "{{base64 编码 PNG 图像数据}}",
+        link: "{{碰一碰跳转链接}}",
+        border: {{屏幕边缘的颜色编号}},
+        ditherType: "{{抖动类型}}",
+        ditherKernel: "{{抖动算法}}"
+      })
+    })
+      .then(res => res.json() as Promise<ApiResponse>)
+      .then(data => {
+        console.log(data);
+      });
+    ```
+
+  </Tab>
+  <Tab value="Go">
+    ```go
+    package main
+
+    import (
+      "bytes"
+      "encoding/json"
+      "fmt"
+      "net/http"
+      "io/ioutil"
+    )
+
+    func main() {
+      url := "https://dot.mindreset.tech/api/open/image"
+      payload := map[string]interface{}{
+        "refreshNow": {{是否立刻显示内容}},
+        "deviceId": "{{设备序列号}}",
+        "image": "{{base64 编码 PNG 图像数据}}",
+        "link": "{{碰一碰跳转链接}}",
+        "border": {{屏幕边缘的颜色编号}},
+        "ditherType": "{{抖动类型}}",
+        "ditherKernel": "{{抖动算法}}"
+      }
+      body, _ := json.Marshal(payload)
+      req, _ := http.NewRequest("POST", url, bytes.NewBuffer(body))
+      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
+      req.Header.Set("Content-Type", "application/json")
+      client := &http.Client{}
+      resp, _ := client.Do(req)
+      defer resp.Body.Close()
+      respBody, _ := ioutil.ReadAll(resp.Body)
+      fmt.Println(string(respBody))
+    }
+    ```
+
+  </Tab>
+  <Tab value="Rust">
+    ```rust
+    use reqwest::blocking::Client;
+    use serde_json::json;
+
+    fn main() {
+        let client = Client::new();
+        let url = "https://dot.mindreset.tech/api/open/image";
+        let res = client.post(url)
+            .header("Authorization", "Bearer {{API_KEY}}")
+            .header("Content-Type", "application/json")
+            .json(&json!({
+                "refreshNow": {{是否立刻显示内容}},
+                "deviceId": "{{设备序列号}}",
+                "image": "{{base64 编码 PNG 图像数据}}",
+                "link": "{{碰一碰跳转链接}}",
+                "border": {{屏幕边缘的颜色编号}},
+                "ditherType": "{{抖动类型}}",
+                "ditherKernel": "{{抖动算法}}"
+            }))
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
+        println!("{}", res);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### 响应示例
+
+```json
+{
+	"code": 200,
+	"message": "设备图像 API 内容已切换",
+	"result": {
+		"message": "设备 ABCD1234ABCD 图像 API 内容已切换"
+	}
+}
+```
+
+## 参考使用
+
+1. 简单图像但不立刻显示
+
+<CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B1_1754129505817.png" alt="实际效果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "refreshNow": false,
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64 编码 PNG 图像数据}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+2. 复杂图像
+
+<CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B14_1754130316522.png" alt="实际效果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64 编码 PNG 图像数据}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 1
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+3. 文本图像
+
+通过常见的图像处理软件，例如 Figma、Sketch、Adobe Photoshop 等，将文本转换为 PNG 后，进一步转换为 base64 数据。
+
+<CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B13_1754130631116.png" alt="实际效果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64 编码 PNG 图像数据}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0,
+        "ditherType": "NONE"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+## 图像抖动
+
+图像抖动是指在图像中使用特定算法来减少颜色带来的视觉噪点，从而使图像看起来更加平滑。常见的抖动算法包括 Floyd-Steinberg、Atkinson 和 Sierra 等。在墨水屏中，图像抖动可以将黑白墨水屏的显示效果进一步优化，使得图像在不同的灰阶之间过渡更加自然。
+
+在使用图像 API 时，**当不传递 `ditherType` 参数时，图像抖动将会默认使用误差扩散抖动中 Floyd-Steinberg 算法**，您也可以通过参数将其关闭或调整抖动类型与算法。
+
+### 开启图像抖动
+
+#### 误差扩散抖动（默认）
+
+误差扩散抖动是通过将每个像素的误差分配给周围像素来减少颜色带来的视觉噪点，从而使图像看起来更加平滑。该算法可以有效地处理图像中的高对比度区域，使得图像在不同的灰阶之间过渡更加自然。通常呈现出点分布较为自然、无明显规则网格的效果，细节表现丰富，灰阶过渡平滑。
+
+<CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B1-1_1755604439407.png" alt="实际效果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64 编码 PNG 图像数据}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0,
+        "ditherType": "DIFFUSION"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+##### 不同的误差扩散算法
+
+不同的误差扩散算法会产生不同的视觉效果。以下是目前支持的算法。在传递参数时通过 `"ditherKernel": "{{抖动算法}}"` 传递。
+
+<div className="flex flex-col md:flex-row gap-4">
+
+<CustomCloudImage
+	osSrc="dot/docs/layer_1755606583517.png"
+	alt="FLOYD_STEINBERG"
+	caption="FLOYD_STEINBERG"
+/>
+
+<CustomCloudImage osSrc="dot/docs/layer-1_1755606614917.png" alt="ATKINSON" caption="ATKINSON" />
+<CustomCloudImage osSrc="dot/docs/layer-2_1755606637222.png" alt="BURKES" caption="BURKES" />
+
+</div>
+
+<div className="flex flex-col md:flex-row gap-4">
+
+<CustomCloudImage osSrc="dot/docs/layer-3_1755606653679.png" alt="SIERRA2" caption="SIERRA2" />
+
+<CustomCloudImage osSrc="dot/docs/layer-4_1755606678514.png" alt="STUCKI" caption="STUCKI" />
+<CustomCloudImage
+	osSrc="dot/docs/layer-5_1755606710423.png"
+	alt="JARVIS_JUDICE_NINKE"
+	caption="JARVIS_JUDICE_NINKE"
+/>
+
+</div>
+
+<div className="flex flex-col md:flex-row gap-4">
+
+<CustomCloudImage
+	osSrc="dot/docs/layer-6_1755606726561.png"
+	alt="DIFFUSION_ROW"
+	caption="DIFFUSION_ROW"
+/>
+
+<CustomCloudImage
+	osSrc="dot/docs/layer-7_1755606742614.png"
+	alt="DIFFUSION_COLUMN"
+	caption="DIFFUSION_COLUMN"
+/>
+<CustomCloudImage
+	osSrc="dot/docs/layer-8_1755606760506.png"
+	alt="DIFFUSION_2D"
+	caption="DIFFUSION_2D"
+/>
+
+</div>
+
+#### 有序抖动
+
+有序抖动是一种通过将规则的抖动矩阵应用于图像像素来实现灰阶或颜色近似的算法。与误差扩散抖动不同，有序抖动并不根据像素误差动态调整周围像素的值，而是预先定义一个固定的抖动矩阵，将其周期性地叠加到整幅图像上。这种方法能够有效地减少大面积的色块和条带现象，使图像在视觉上呈现出较为均匀的点阵分布。由于抖动矩阵的周期性，有序抖动生成的图像通常会带有一定的规则性和网格感
+
+<CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B1-2_1755604633182.png" alt="实际效果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64 编码 PNG 图像数据}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0,
+        "ditherType": "ORDERED"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+### 关闭图像抖动
+
+如果您使用图像 API 用于文本图像来使用，那么则建议您关闭图像抖动以获得更佳锐利的文字效果。
+
+<CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B1_1755604287570.png" alt="实际效果" />
+
+<Tabs items={['cURL']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/open/image \
+      -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "deviceId": "ABCD1234ABCD",
+        "image": "{{base64 编码 PNG 图像数据}}",
+        "link": "https://dot.mindreset.tech",
+        "border": 0,
+        "ditherType": "NONE"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+## 问题排查
+
+### 请求路径
+
+`/api/open/image`
+
+### 请求方法
+
+`POST`
+
+### 请求结构
+
+| 字段名         | 类型     | 必填 | 默认值            | 说明                                                                                                                                                                    | 用途               |
+| -------------- | -------- | ---- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| `refreshNow`   | `bool`   | 否   | `true`            | 是否立刻显示内容                                                                                                                                                        | 控制内容的显示时机 |
+| `deviceId`     | `string` | 是   |                   | 设备序列号                                                                                                                                                              | 分辨不同的设备     |
+| `image`        | `string` | 是   |                   | base64 编码 PNG 图像数据（296px\*152px）                                                                                                                                | 屏幕呈现的图像     |
+| `link`         | `string` | 否   |                   | http/https 链接或 Scheme Url                                                                                                                                            | 碰一碰跳转的内容   |
+| `border`       | `number` | 否   | `0`               | `0` 代表白色边框，`1` 代表黑色边框                                                                                                                                      | 屏幕呈现的边框     |
+| `ditherType`   | `string` | 否   | `DIFFUSION`       | 抖动类型（可选：`DIFFUSION`、`ORDERED`、`NONE`）                                                                                                                        | 控制图像的抖动效果 |
+| `ditherKernel` | `string` | 否   | `FLOYD_STEINBERG` | 抖动算法（可选：`THRESHOLD`、`ATKINSON`、`BURKES`、`FLOYD_STEINBERG`、`SIERRA2`、`STUCKI`、`JARVIS_JUDICE_NINKE`、`DIFFUSION_ROW`、`DIFFUSION_COLUMN`、`DIFFUSION2_D`） | 控制图像的抖动算法 |
+
+### 响应结构
+
+| 字段名    | 类型     | 说明     |
+| --------- | -------- | -------- |
+| `code`    | `number` | 状态码   |
+| `message` | `string` | 响应描述 |
+| `result`  | `object` | 处理结果 |
+
+### 响应说明
+
+| code  | 含义             | 描述                                                                                                                |
+| ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `200` | 成功             | 设备图像 API 内容已切换/数据已更新但未切换内容                                                                      |
+| `400` | 参数错误         | 缺失设备 ID 或格式错误<br/>无效的图像格式<br/>边框参数错误，请提供数字 0 或 1<br/>无效的抖动类型<br/>无效的抖动算法 |
+| `403` | 权限不足         | 您没有权限操作此设备                                                                                                |
+| `404` | 设备或内容不存在 | 设备不存在或未注册<br/>未添加图像 API 内容                                                                          |
+| `500` | 设备响应失败     | 设备图像 API 内容切换失败                                                                                           |
