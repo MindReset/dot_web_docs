@@ -1,0 +1,68 @@
+---
+title: MSA-2025-10-001
+description: Unauthorized STS issuance enabling arbitrary OSS uploads
+---
+
+**Release Date**: Oct 03, 2025  
+**Last Updated**: Oct 03, 2025  
+**Severity**: Critical  
+**Status**: Fixed
+**CVSS 3.1 Score**: 9.9 (AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H)
+
+---
+
+## Overview
+
+On 2025-10-01T10:02:00Z, we received a security report regarding an unauthorized access vulnerability in the `/api/qcloud/sts` endpoint. The endpoint could be accessed without proper authorization checks, returning valid temporary security credentials (tmpSecretId, tmpSecretKey, sessionToken) with upload permissions to our Object Storage (OSS).
+
+An attacker with network access to this endpoint could obtain temporary credentials and upload arbitrary files to specific buckets.
+
+We have fixed the issue server-side and scheduled client-side hardening. No user action is required; please wait for app update v1.1.0 to be fully deployed.
+
+## Impact Scope
+
+| Item               | Details                                                                                              |
+| :----------------- | :--------------------------------------------------------------------------------------------------- |
+| Affected Product   | Dot Server-side API                                                                                  |
+| Affected Version   | Production `/api/qcloud/sts` prior to the fix                                                        |
+| Fixed Version      | Server-side hotfix deployed; client-side hardening in app v1.1.0                                     |
+| Affected Component | `/api/qcloud/sts`                                                                                    |
+| Attack Vector      | Network                                                                                              |
+| Required Privilege | Low (greater impact with a valid user token; possible abuse under weak validation in some scenarios) |
+
+## Technical Description
+
+-   Root Cause: The STS issuance endpoint lacked proper authentication/authorization and scope restriction, allowing any caller to obtain temporary credentials with write permissions to the storage bucket.
+-   Impact Detail: With the issued credentials, attackers could upload arbitrary files to targeted paths (e.g., firmware directories), enabling supply chain compromise through malicious firmware delivery.
+
+## Potential Consequences
+
+-   Supply-chain compromise via malicious firmware:
+-   Device takeover and arbitrary code execution
+-   Botnet formation (DDoS, cryptomining)
+-   Sensitive data exfiltration
+-   Potential hardware damage under certain conditions
+
+## Remediation
+
+-   Disabled unauthenticated access to `/api/qcloud/sts`; enforced strict authentication and authorization checks.
+-   Restricted STS policies to least-privilege, path-scoped, and time-bounded credentials with upload-only where appropriate; eliminated write access to protected firmware paths from client-issued credentials.
+
+## Impact Assessment
+
+-   We found no evidence of malicious exploitation beyond validation/testing uploads provided in the report.
+
+## User Action
+
+-   No action required. The vulnerability is fixed server-side. Please wait for the automatic rollout of app version 1.1.0, which includes additional client-side hardening.
+
+## Acknowledgements
+
+We sincerely thank [Mason](https://mas0n.org) for reporting this issue through responsible disclosure and providing valuable verification assistance during the fix. This spirit of collaboration helps protect all users' data security.
+
+---
+
+**Disclaimer**: This advisory reflects information available at publication. We will monitor for related threats and update this document if material changes occur.  
+**Document ID**: MSA-2025-10-001  
+**Classification**: Public  
+**Issued by**: MindReset Security Team

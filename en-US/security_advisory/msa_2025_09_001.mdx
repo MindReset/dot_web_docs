@@ -19,14 +19,14 @@ We have completed remediation, released App version 1.1.0, and deployed server-s
 
 ## Affected Scope
 
-| Item                     | Details                                                             |
-| ------------------------ | ------------------------------------------------------------------- |
-| ** Affected Product**    | Dot App (NFC Tap feature)                                           |
-| ** Affected Versions**   | App 1.0.x and earlier                                               |
-| ** Fixed Version**       | App 1.1.0 (requires latest server-side policies)                    |
-| ** Affected Components** | Content-read API (`/api/device/content`) and NFC redirect flow      |
-| ** Attack Vector**       | Network (when deviceId is known or guessable)                       |
-| ** Required Privilege**  | None (before fix, sensitive content could be returned without auth) |
+| Item                | Details                                                             |
+| :------------------ | :------------------------------------------------------------------ |
+| Affected Product    | Dot App (NFC Tap feature)                                           |
+| Affected Versions   | App 1.0.x and earlier                                               |
+| Fixed Version       | App 1.1.0 (requires latest server-side policies)                    |
+| Affected Components | Content-read API (`/api/device/content`) and NFC redirect flow      |
+| Attack Vector       | Network (when deviceId is known or guessable)                       |
+| Required Privilege  | None (before fix, sensitive content could be returned without auth) |
 
 ## Technical Description
 
