@@ -9,11 +9,11 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
 ### 必要条件
 
-1. Dot.アプリで<Link href="/docs/server/template/api/get_api">APIキーを取得して保存</Link>していること
-2. 自分のデバイスが少なくとも1台あり、<Link href="/docs/server/template/api/get_device_id">デバイスのシリアル番号</Link>を取得していること
+1. Dot. アプリで<Link href="/docs/service/studio/api/get_api">API キーを取得して保存</Link>していること
+2. 自分のデバイスが少なくとも 1 台あり、<Link href="/docs/service/studio/api/get_device_id">デバイスのシリアル番号</Link>を取得していること
 3. デバイスが電源に接続されていること
 4. デバイスがネットワークに接続されていること
-5. デバイスに「テキストAPI」コンテンツが追加されていること
+5. デバイスに「テキスト API」コンテンツが追加されていること
 
 <Callout
 	type="info"
@@ -267,8 +267,8 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
 4. 高度にカスタマイズしたテキストやグラフィック
 
-<Link href="/docs/server/template/api/image_api#%E5%8F%82%E8%80%83%E4%BD%BF%E7%94%A8">
-	テキスト画像の利用方法は画像APIの該当セクションをご参照ください
+<Link href="/docs/service/studio/api/image_api#%E5%8F%82%E8%80%83%E4%BD%BF%E7%94%A8">
+	テキスト画像の利用方法は画像 API の該当セクションをご参照ください
 </Link>
 
 <CustomCloudImage osSrc="dot/docs/陰影3_1754130631116.png" alt="実際の効果" />
@@ -288,12 +288,12 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 | フィールド名 | 型       | 必須 | デフォルト | 説明                                        | 用途                   |
 | :----------- | :------- | :--- | :--------- | :------------------------------------------ | :--------------------- |
 | `refreshNow` | `bool`   | 否   | `true`     | コンテンツを即時に表示するか                | 表示タイミング制御     |
-| `deviceId`   | `string` | はい   |            | デバイスのシリアル番号                      | デバイス識別           |
+| `deviceId`   | `string` | はい |            | デバイスのシリアル番号                      | デバイス識別           |
 | `title`      | `string` | 否   |            | テキストのタイトル                          | 画面上のタイトル       |
 | `message`    | `string` | 否   |            | テキスト本文                                | 画面上の内容           |
 | `signature`  | `string` | 否   |            | 署名                                        | 画面上の署名           |
-| `icon`       | `string` | 否   |            | base64エンコードPNGアイコン（40px×40px） | 左下に表示するアイコン |
-| `link`       | `string` | 否   |            | http/httpsまたはスキームURL               | タッチ操作の遷移先     |
+| `icon`       | `string` | 否   |            | base64 エンコード PNG アイコン（40px×40px） | 左下に表示するアイコン |
+| `link`       | `string` | 否   |            | http/https またはスキーム URL               | タッチ操作の遷移先     |
 
 ### レスポンス構造
 
@@ -307,8 +307,8 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
 | code  | 意味             | 説明                                                |
 | :---- | :--------------- | :-------------------------------------------------- |
-| `200` | 成功             | テキストAPIコンテンツを切替／データ更新（未切替） |
+| `200` | 成功             | テキスト API コンテンツを切替／データ更新（未切替） |
 | `400` | パラメータ不正   | 無効なアイコン形式                                  |
 | `403` | 権限不足         | 当該デバイスを操作する権限がありません              |
-| `404` | 未検出           | デバイスが存在しない・未登録／テキストAPI未追加   |
-| `500` | デバイス応答失敗 | テキストAPIコンテンツの切替に失敗                 |
+| `404` | 未検出           | デバイスが存在しない・未登録／テキスト API 未追加   |
+| `500` | デバイス応答失敗 | テキスト API コンテンツの切替に失敗                 |

@@ -17,14 +17,14 @@ We received a security report about the Quote/0 device update endpoint on 2025-0
 
 ## Impact Scope
 
-| Item                    | Details                                                |
-| ----------------------- | ------------------------------------------------------ |
-| **Affected Product**    | Quote/0 device update page                             |
-| **Affected Versions**   | None                                                   |
-| **Fixed Version**       | None                                                   |
-| **Affected Component**  | Firmware upgrade API endpoint (`/api/device/firmware`) |
-| **Attack Vector**       | Network                                                |
-| **Required Privileges** | No authentication required                             |
+| Item                | Details                                                |
+| :------------------ | :----------------------------------------------------- |
+| Affected Product    | Quote/0 device update page                             |
+| Affected Versions   | None                                                   |
+| Fixed Version       | None                                                   |
+| Affected Component  | Firmware upgrade API endpoint (`/api/device/firmware`) |
+| Attack Vector       | Network                                                |
+| Required Privileges | No authentication required                             |
 
 ## Technical Details
 
@@ -46,17 +46,7 @@ We implemented the following security improvements:
 ### Long-term Enhancements
 
 -   Conducted a comprehensive audit of authorization models across all API endpoints
-
-## Incident Timeline
-
-| Time                     | Event                                                           |
-| ------------------------ | --------------------------------------------------------------- |
-| **2025-08-26T16:02:00Z** | Security report received                                        |
-| **2025-08-26T16:10:00Z** | Vulnerability confirmed; emergency response initiated           |
-| **2025-08-26T16:12:00Z** | Temporary mitigations deployed (rate limiting + access control) |
-| **2025-08-26T17:20:00Z** | Code fix completed and internally validated                     |
-| **2025-08-26T18:00:00Z** | Fixed version released                                          |
-| **2025-08-29T09:00:00Z** | This security advisory published                                |
+    |
 
 ## Impact Assessment
 
@@ -68,11 +58,11 @@ Based on detailed log analysis and forensic investigation:
 
 ## Acknowledgments
 
-We sincerely thank **Misaka** for reporting this issue through responsible disclosure and providing valuable verification assistance during the fix. This spirit of collaboration helps protect all users’ data security.
+We sincerely thank **Misaka** for reporting this issue through responsible disclosure and providing valuable verification assistance during the fix. This spirit of collaboration helps protect all users' data security.
 
 ---
 
 **Disclaimer**: This advisory is compiled based on currently available information. We will continue to monitor relevant threat intelligence and update this advisory if there are significant changes.  
 **Document ID**: MSA-2025-08-001  
 **Classification**: Public  
-**Issuing Organization**: MindReset Security Team
+**Issued by**: MindReset Security Team
