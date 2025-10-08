@@ -1,0 +1,23 @@
+---
+title: CastCard
+---
+
+<GithubInfo owner="kaminono" repo="CastCard" />
+<DotDocsUrl owner="kaminono" name="オンラインで試す" url="https://castcard.kaminono.com/" />
+
+バックエンド不要の純フロントエンド構成で、静的ホスティング可能な Web アプリです。ブラウザから直接、アプリのインストールなしで Dot 電子ペーパー画面にテキストを送信できます。
+
+<CustomCloudImage
+	osSrc="dot/docs/ea5be17717b9a08f85469f66beb679a2_1759902218768.png"
+	alt="実際の表示"
+/>
+
+## コア機能
+
+-   バックエンド不要：フロントエンドのみで実装し、公式 Dot API を直接呼び出し
+-   静的ホスティング：任意の静的ホスティング（Vercel、Netlify、GitHub Pages など）にデプロイ可能
+-   国際化：中英バイリンガル（zh-CN / en-US）を内蔵
+-   テーマ切替：ライト/ダーク/システムをサポートし、システム設定に自動追従
+-   プライバシー優先：API Key はブラウザセッション内のみに保存。記録・アップロードなし
+-   レート制御：1 request/second の API 制限に自動対応
+-   アクセシビリティ：WCAG AA に準拠。キーボード操作とスクリーンリーダーをサポート
