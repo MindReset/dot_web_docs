@@ -1,5 +1,5 @@
 ---
-title: デバイスをリセットする
+title: デバイスのリセット
 ---
 
 import { DeviceCurrentStatusTypeMap } from '@/dot_platform_share/constants/device/map.ts';
@@ -8,57 +8,62 @@ import { DeviceCurrentStatusTypeMap } from '@/dot_platform_share/constants/devic
 
 <Callout type="info" title="「アプリでリセット」はいつ使うべき？">
 	デバイスが電源に接続され、現在のネットワークが利用可能な場合です。Dot. アプリのデバイス右上に
-	<LucideIcon icon={DeviceCurrentStatusTypeMap['IDLE_POWER'].icon} /> の表示が見えるとき、アプリからリセットできます。
+	<LucideIcon icon={DeviceCurrentStatusTypeMap['IDLE_POWER'].icon} /> のアイコンが表示されているとき、アプリからリセットできます。
 </Callout>
 
 <Steps>
-    <Step>
+<Step>
 
-        ### 「その他」タブへスワイプ
+### 「その他」タブへスワイプ
 
-        <CustomCloudImage osSrc="dot/docs/reset_device_via_app_1.png" alt="「その他」へ移動" />
-    </Step>
+<CustomCloudImage osSrc="dot/docs/reset_device_via_app_1.png" alt="「その他」へ移動" />
 
-    <Step>
+</Step>
 
-        ### アイコンの下にあるデバイス一覧をタップ
+<Step>
 
-        <CustomCloudImage osSrc="dot/docs/reset_device_via_app_2.png" alt="「デバイス一覧」へ" />
-    </Step>
+### アイコンの下にあるデバイス一覧をタップ
 
-    <Step>
+<CustomCloudImage osSrc="dot/docs/reset_device_via_app_2.png" alt="「デバイス一覧」へ" />
 
-        ### デバイスを選択
+</Step>
 
-        <CustomCloudImage osSrc="dot/docs/reset_device_via_app_3.png" alt="デバイスを選択" />
-    </Step>
+<Step>
 
-    <Step>
+### デバイスを選択
 
-        ### 「リセット」をタップ
+<CustomCloudImage osSrc="dot/docs/reset_device_via_app_3.png" alt="デバイスを選択" />
 
-        <div className="flex flex-col md:flex-row gap-4">
-            <CustomCloudImage osSrc="dot/docs/reset_device_via_app_4.png" alt="「デバイス一覧」へ" />
-            <CustomCloudImage osSrc="dot/docs/reset_device_via_app_5.png" alt="「デバイス一覧」へ" />
-        </div>
-    </Step>
+</Step>
 
-    <Step>
+<Step>
 
-        ### リセットを確認
+### 「リセット」をタップ
 
-        <CustomCloudImage osSrc="dot/docs/reset_device_via_app_6.png" alt="リセットを確認" />
-    </Step>
+<div className="flex flex-col md:flex-row gap-4">
+	<CustomCloudImage osSrc="dot/docs/reset_device_via_app_4.png" alt="「デバイス一覧」へ" />
+	<CustomCloudImage osSrc="dot/docs/reset_device_via_app_5.png" alt="「デバイス一覧」へ" />
+</div>
+
+</Step>
+
+<Step>
+
+### リセットを確認
+
+<CustomCloudImage osSrc="dot/docs/reset_device_via_app_6.png" alt="リセットを確認" />
+
+</Step>
 
 </Steps>
 
-## ネットワークツール
+## Webツールでリセット
 
-<Callout type="info" title="「ネットワークツール」はいつ使うべき？">
-	デバイスが元のネットワークに接続できない場合、ウェブツールを使用してネットワークをリセットする必要があります。
+<Callout type="info" title="「Webツールでリセット」はいつ使うべき？">
+	デバイスが元のネットワークに接続できない場合、Webツールを使用してネットワークをリセットする必要があります。
 </Callout>
 
-### デバイスをウェブツールに接続
+### デバイスをWebツールに接続
 
 <include>./device_tool_connect.mdx</include>
 

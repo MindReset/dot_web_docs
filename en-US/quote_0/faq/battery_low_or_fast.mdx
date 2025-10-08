@@ -3,25 +3,24 @@ title: Battery too low / Battery draining too fast
 description: Power issues and solutions for the Dot. App
 ---
 
-Quote/0 is a smart home device with a low-power autonomous wake design. It ships with about 70% battery and is recommended for use only in a stable home environment.
+Quote/0 is a smart home device featuring a low-power autonomous wake design. It ships with approximately 70% battery capacity and is recommended for use exclusively in stable home environments.
 
 <Callout type="info">
 	<include>../start/how_to_charge.mdx</include>
 </Callout>
 
-When powered solely by battery under good signal conditions, with a default update interval of 3 hours or longer, battery life can last up to one year.
+When operating solely on battery power under favorable signal conditions, with a default update interval of 3 hours or longer, the battery can last up to one year.
 
-If you notice that Quote/0’s battery is draining too quickly, please note there are two possible reasons:
+If you observe that Quote/0's battery is draining too quickly, please be aware of two potential causes:
 
-1. Update interval is too short: If you set the update interval to less than 3 hours, the device will wake and fetch content more frequently, causing the battery to drain faster than expected. You can set a longer update interval in the app to significantly reduce power consumption.
-2. Poor Wi‑Fi network: If your Wi‑Fi environment is poor, you use a phone hotspot, or you leave the original network when the device wakes, the device may consume power quickly due to repeated Wi‑Fi reconnection attempts. For this smart‑home‑class device, the specific reconnection logic is:
-    - After a no‑response or error, the device automatically retries 15 times in a loop;
-    - If all attempts fail, the device sleeps for two minutes, then automatically wakes and retries;
-    - This cycle repeats until the device successfully connects to Wi‑Fi.
+1. Update interval is too short: When you set the update interval to less than 3 hours, the device will wake and fetch content more frequently, causing the battery to drain faster than anticipated. You can configure a longer update interval in the app to significantly reduce power consumption.
+2. Poor Wi‑Fi network: If your Wi‑Fi environment is unstable, you use a mobile hotspot, or the device moves outside the original network range when waking, the device may consume power rapidly due to repeated Wi‑Fi reconnection attempts. For this smart home device, the specific reconnection logic is as follows:
+    - Following no response or connection error, the device automatically retries up to 15 times in a loop;
+    - If all attempts fail, the device enters sleep mode for two minutes, then automatically wakes and retries;
+    - This cycle continues until the device successfully establishes a Wi‑Fi connection.
 
-Therefore, please check the Wi‑Fi the device is currently using to ensure power consumption remains reasonable.
+Therefore, please verify the Wi‑Fi network the device is currently using to ensure reasonable power consumption.
 
 <Callout type="info">
-	Lab test results show a single charge supports 3,900 refreshes (with Wi‑Fi reconnection on every
-	wake).
+	Laboratory test results indicate that a single charge supports up to 3,900 refresh cycles (with Wi‑Fi reconnection occurring on each wake).
 </Callout>
