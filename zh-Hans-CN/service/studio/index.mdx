@@ -3,13 +3,12 @@ title: 内容工坊
 description: 在内容工坊中，您可以创建、编辑丰富的内容，探索更多可能性。
 ---
 
-import { getAllTemplate } from '@/src/ui/Template/getAllTemplate';
-import { TemplateFlow } from '@/src/ui/Template/TemplateFlow';
-import { TemplateTable } from '@/src/ui/Template/TemplateTable';
+import { StudioFlow } from '@/src/ui/Template/StudioFlow';
+import { StudioTable } from '@/src/ui/Template/StudioTable';
 import Link from 'fumadocs-core/link';
 
 <div className="bg-muted h-[448px] flex-1 rounded-lg flex flex-col gap-1 overflow-hidden">
-	<TemplateFlow />
+	<StudioFlow />
 </div>
 
 <Callout type="info" title="关联阅读">
@@ -18,4 +17,4 @@ import Link from 'fumadocs-core/link';
 
 ## 当前已开放的内容
 
-<TemplateTable />
+<StudioTable />

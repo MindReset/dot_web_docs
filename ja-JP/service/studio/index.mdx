@@ -3,13 +3,12 @@ title: コンテンツ工房
 description: コンテンツ工房では、豊富なコンテンツの作成・編集ができ、さらなる可能性を探求できます。
 ---
 
-import { getAllTemplate } from '@/src/ui/Template/getAllTemplate';
-import { TemplateFlow } from '@/src/ui/Template/TemplateFlow';
-import { TemplateTable } from '@/src/ui/Template/TemplateTable';
+import { StudioFlow } from '@/src/ui/Template/StudioFlow';
+import { StudioTable } from '@/src/ui/Template/StudioTable';
 import Link from 'fumadocs-core/link';
 
 <div className="bg-muted h-[448px] flex-1 rounded-lg flex flex-col gap-1 overflow-hidden">
-	<TemplateFlow />
+	<StudioFlow />
 </div>
 
 <Callout type="info" title="関連ドキュメント">
@@ -18,4 +17,4 @@ import Link from 'fumadocs-core/link';
 
 ## 現在利用可能なコンテンツ
 
-<TemplateTable />
+<StudioTable />
