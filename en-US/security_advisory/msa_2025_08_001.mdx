@@ -7,7 +7,7 @@ description: Quote/0 firmware upgrade endpoint authorization validation flaw
 **Last Updated**: August 29, 2025  
 **Severity**: High
 **Status**: Fixed  
-**CVSS 3.1 Score**: 7.5 (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N)
+**CVSS 4.0 Score**: 8.7 (AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N)
 
 ---
 
@@ -30,8 +30,8 @@ We received a security report about the Quote/0 device update endpoint on 2025-0
 
 The firmware upgrade endpoint lacked sufficient authorization checks when processing device serial number queries. By crafting specific requests, an attacker could obtain complete device information without authentication, including but not limited to:
 
--   Device configuration metadata
--   Certain user-associated information
+- Device configuration metadata
+- Certain user-associated information
 
 **Note**: This vulnerability requires network access. It does not impact core device functionality, and we have not observed signs of automated bulk data extraction.
 
@@ -41,20 +41,20 @@ We implemented the following security improvements:
 
 ### Immediate Fixes
 
--   Applied data minimization by strictly limiting returned fields
+- Applied data minimization by strictly limiting returned fields
 
 ### Long-term Enhancements
 
--   Conducted a comprehensive audit of authorization models across all API endpoints
-    |
+- Conducted a comprehensive audit of authorization models across all API endpoints
+  |
 
 ## Impact Assessment
 
 Based on detailed log analysis and forensic investigation:
 
--   No evidence of malicious exploitation: no abnormal bulk requests or data extraction
--   Impact is contained: only affects single API responses; no persistence risk
--   User data integrity: core user data and business logic remain unaffected
+- No evidence of malicious exploitation: no abnormal bulk requests or data extraction
+- Impact is contained: only affects single API responses; no persistence risk
+- User data integrity: core user data and business logic remain unaffected
 
 ## Acknowledgments
 

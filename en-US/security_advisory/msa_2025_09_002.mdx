@@ -7,7 +7,7 @@ description: NoSQL Injection
 **Last Updated**: Sep 30, 2025  
 **Severity**: Critical  
 **Status**: Fixed  
-**CVSS 3.1 Score**: 9.1 (AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**CVSS 4.0 Score**: 9.3 (AV:N/AC:L/AT:N/PR:L/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N)
 
 ---
 
@@ -30,27 +30,27 @@ We have immediately enabled temporary mitigations and initiated a permanent reme
 
 ## Technical Description
 
--   Root Cause: The endpoint allows clients to directly control aggregation operators and structure, which are executed verbatim on the server, creating a NoSQL injection surface.
+- Root Cause: The endpoint allows clients to directly control aggregation operators and structure, which are executed verbatim on the server, creating a NoSQL injection surface.
 
 ## Remediation
 
 To quickly reduce risk and fully eliminate the injection surface, we are proceeding in two phases (mitigation and permanent fix):
 
--   Immediate Actions:
-    -   Temporarily disable or gradually restrict high-risk operators in `/api/device/template`, enforce strict field whitelisting and rate limiting, and block suspicious aggregation stages.
-    -   Increase request auditing and alerting to identify suspicious sources and access frequency.
--   Permanent Fix:
-    -   Introduce server-side parameterization and a query builder so that only controlled aggregation stages are assembled on the server; disallow client-supplied operators or free-form structures.
-    -   Minimize returned data (field-level projection and masking) and enforce fine-grained authorization checks based on user and resource boundaries.
-    -   Conduct a comprehensive audit of similar historical endpoints to eliminate analogous risks.
+- Immediate Actions:
+    - Temporarily disable or gradually restrict high-risk operators in `/api/device/template`, enforce strict field whitelisting and rate limiting, and block suspicious aggregation stages.
+    - Increase request auditing and alerting to identify suspicious sources and access frequency.
+- Permanent Fix:
+    - Introduce server-side parameterization and a query builder so that only controlled aggregation stages are assembled on the server; disallow client-supplied operators or free-form structures.
+    - Minimize returned data (field-level projection and masking) and enforce fine-grained authorization checks based on user and resource boundaries.
+    - Conduct a comprehensive audit of similar historical endpoints to eliminate analogous risks.
 
 ## Impact Assessment
 
--   No evidence of malicious exploitation: Logs show no abnormal bulk access or data exfiltration.
+- No evidence of malicious exploitation: Logs show no abnormal bulk access or data exfiltration.
 
 ## User Action
 
--   No user-side action is required at this time. We have enabled server-side interception and restriction strategies and will complete the permanent fix as soon as possible.
+- No user-side action is required at this time. We have enabled server-side interception and restriction strategies and will complete the permanent fix as soon as possible.
 
 ## Acknowledgements
 

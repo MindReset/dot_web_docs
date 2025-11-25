@@ -1,0 +1,121 @@
+---
+title: MSA-2025-10-002
+description: Multiple logic vulnerabilities in user API endpoint
+---
+
+**Release Date**: Nov 25, 2025  
+**Last Updated**: Nov 25, 2025  
+**Severity**: Low  
+**Status**: Fixed  
+**CVSS 4.0 Score**: 4.3 (AV:N/AC:L/AT:N/PR:L/UI:N/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N)
+
+---
+
+## Overview
+
+On 2025-10-08T08:57:00Z, we received a security report identifying multiple logic vulnerabilities in the `/api/authV2/user` endpoint. The endpoint supports multiple operation types and contained several authorization and data integrity issues that could lead to unauthorized device management, information disclosure, and resource cleanup failures.
+
+These vulnerabilities have been completely addressed through a comprehensive API rewrite using RESTful design principles, with strengthened authorization controls and thorough internal security review.
+
+## Impact Scope
+
+| Item               | Details                                                                |
+| :----------------- | :--------------------------------------------------------------------- |
+| Affected Product   | Dot Server-side API                                                    |
+| Affected Version   | Production `/api/authV2/user` prior to the fix                         |
+| Fixed Version      | Server-side complete rewrite; client-side update required (app v1.1.1) |
+| Affected Component | `/api/authV2/user` with multiple operation types                       |
+| Attack Vector      | Network                                                                |
+| Required Privilege | Low (authenticated user)                                               |
+
+## Technical Description
+
+The `/api/authV2/user` endpoint supported multiple operation types through a `type` parameter:
+
+- `GET` - getUserData
+- `UPDATE` - updateUserData
+- `UPDATE_USER_SESSION` - updateUserSession
+- `ADD_DEVICE` - addDeviceToUser
+- `REMOVE_DEVICE` - removeDeviceFromUser
+- `DELETE_FLAG` - flagDeleteUser
+- `DELETE` - deleteUser
+- `SHARE_USER_REJECT`
+- `REVOKE_SHARE_USER`
+- `REVOKE_THIRD_ACCOUNT`
+- `INVITE_SHARE_USER`
+- `SHARE_USER_ACCEPT`
+- `SHARE_USER_VIEW`
+
+### Identified Vulnerabilities
+
+#### 1. Arbitrary Device Addition
+
+The `ADD_DEVICE` operation lacked proper device ownership validation. An attacker could:
+
+- Bind any device by obtaining or brute-forcing deviceId
+- Control devices they don't own
+- Add a single device to multiple user accounts simultaneously
+
+**Business Logic Issue**: The system incorrectly allowed one device to have multiple "owners" instead of enforcing single ownership with a share-based collaboration model.
+
+#### 2. Device State Synchronization Failure
+
+When a device was removed via `REMOVE_DEVICE`, associated sharing invitations were not properly cleaned up, allowing access via previously generated share codes.
+
+**Scenario**:
+
+1. User A adds device
+2. User A shares device with User B via `INVITE_SHARE_USER`
+3. User A removes device via `REMOVE_DEVICE`
+4. User B can still view device information via `SHARE_USER_VIEW`
+
+#### 3. Device Sharing Information Disclosure
+
+The `SHARE_USER_VIEW` operation exposed sensitive device information including:
+
+- Local network IP addresses
+- Firmware versions
+- Online status
+- Manufacturing dates
+
+**Additional Issues**:
+
+- **Short share codes**: 4-character alphanumeric codes (36^4 = 1,679,616 combinations) susceptible to brute-force attacks
+- **Persistent share codes**: Codes remained valid even after share acceptance
+- **Non-functional revocation**: `REVOKE_SHARE_USER` endpoint was non-operational
+- **Missing UI controls**: App provided no mechanism to deactivate shares
+
+## Potential Consequences
+
+- Unauthorized device control through device binding manipulation
+- Privacy violation through device information disclosure
+- Persistent unauthorized access due to improper share code cleanup
+- Potential brute-force attacks on share codes
+
+## Remediation
+
+- **Complete API rewrite**: Redesigned all endpoints using proper RESTful architecture
+- **Authorization hardening**: Implemented strict permission checks for all operations
+- **Device ownership model**: Enforced single-owner device model with share-based collaboration
+- **Resource cleanup**: Implemented proper cascade deletion for device removal
+- **Share code improvements**: Enhanced share code security and lifecycle management
+- **Internal security review**: Conducted comprehensive security audit of all API endpoints
+
+## Impact Assessment
+
+- We found no evidence of malicious exploitation beyond validation/testing described in the report.
+
+## User Action
+
+- **Required**: Please update to app version 1.1.1 when available. The vulnerability is fixed server-side, but the client update includes essential security hardening and UI improvements for share management.
+
+## Acknowledgements
+
+We sincerely thank [Mason](https://mas0n.org) for the detailed security analysis and responsible disclosure. The comprehensive nature of this report enabled us to address not just the reported issues but to fundamentally improve our API security architecture.
+
+---
+
+**Disclaimer**: This advisory reflects information available at publication. We will monitor for related threats and update this document if material changes occur.  
+**Document ID**: MSA-2025-10-002  
+**Classification**: Public  
+**Issued by**: MindReset Security Team

@@ -1,0 +1,92 @@
+---
+title: MSA-2025-10-003
+description: Unauthorized access, sensitive information disclosure, and arbitrary device control in MQTT Broker
+---
+
+**Release Date**: Nov 25, 2025  
+**Last Updated**: Nov 25, 2025  
+**Severity**: Critical  
+**Status**: Fixed  
+**CVSS 4.0 Score**: 10.0 (AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H)
+
+---
+
+## Overview
+
+On 2025-10-15T14:57:00Z, we received a security report identifying critical vulnerabilities in our MQTT Broker infrastructure (handshake-naked.mindreset.tech:11883). The broker had severe security configuration deficiencies including missing authentication, improper authorization controls, and unencrypted communications. These combined issues allowed any attacker to anonymously connect to the service, monitor all device communications in real-time (including highly sensitive user tokens), and send control commands to arbitrary devices, effectively compromising the entire system.
+
+These vulnerabilities have been completely resolved through comprehensive authentication improvements, ACL implementation, and protocol upgrade to encrypted WebSocket connections.
+
+## Impact Scope
+
+| Item               | Details                                                                                 |
+| :----------------- | :-------------------------------------------------------------------------------------- |
+| Affected Product   | Dot MQTT Broker Infrastructure                                                          |
+| Affected Version   | MQTT Broker at handshake-naked.mindreset.tech:11883 prior to the fix                    |
+| Fixed Version      | Server-side: ACL and authentication hardening; Client-side: app v1.1.1, firmware v1.7.0 |
+| Affected Component | MQTT Broker (handshake-naked.mindreset.tech:11883)                                      |
+| Attack Vector      | Network                                                                                 |
+| Required Privilege | None (anonymous access)                                                                 |
+
+## Technical Description
+
+The target MQTT Broker exhibited three critical security deficiencies that compounded to create a complete system compromise scenario:
+
+### Identified Vulnerabilities
+
+#### 1. Missing Authentication
+
+The system allowed clients to connect successfully using empty ClientID, Username, and Password fields. This indicated that the server had no authentication barriers whatsoever, leaving the door wide open for any attacker.
+
+#### 2. Improper Authorization Controls
+
+After successful anonymous connection, the system imposed no restrictions on client subscribe/publish permissions. Attackers could:
+
+- Subscribe to wildcard topics (e.g., `mr/dot/quote/0/2/#`) to monitor all device uplink data, status, and commands
+- Publish messages to any device topic (e.g., `/set` subtopics) to achieve remote control
+- Access all inter-device communications without any authorization checks
+
+#### 3. Unencrypted Communication Channel
+
+The service operated on standard MQTT port 11883 with all traffic transmitted in plaintext without TLS/SSL encryption. This meant:
+
+- All data (including device information, control commands, and user tokens) could be easily intercepted and modified by man-in-the-middle attackers during transmission
+- Even if authentication were added later, credentials would still be exposed during transmission without encryption
+- Network intermediaries could trivially eavesdrop on all communications
+
+## Potential Consequences
+
+- **Large-scale sensitive information disclosure**: Attackers could obtain real-time operational data and status from all devices. Particularly concerning was the exposure of tokens that could be used for identity impersonation in other associated systems (such as App or Web API), enabling deeper system intrusion.
+
+- **Arbitrary remote device control**: The most severe risk. Attackers could send forged commands to any or all devices in the system, including but not limited to: modifying device configurations, shutting down devices, executing malicious operations, and potentially causing physical damage or safety incidents.
+
+- **Complete system disruption**: Attackers could cause the entire IoT system to fall into chaos or complete failure by sending large volumes of garbage messages or malicious commands.
+
+- **Man-in-the-middle attacks**: Due to unencrypted communications, any attacker on the network path could intercept, view, or even modify communication content between devices and servers.
+
+## Remediation
+
+- **Implemented mandatory authentication**: Configured the MQTT Broker to require all client connections to provide unique, valid credentials. Disabled all anonymous access.
+
+- **Implemented strict Access Control Lists (ACL)**: Configured fine-grained ACL rules for each device and user, ensuring they can only publish and subscribe to specific topics within their permission scope.
+
+- **Enabled and enforced TLS/SSL encryption**: Migrated service from insecure plaintext MQTT protocol to `wss://` (MQTT over WebSocket) protocol, fundamentally eliminating eavesdropping and man-in-the-middle attacks.
+
+## Impact Assessment
+
+- We found no evidence of malicious exploitation beyond validation/testing described in the report.
+
+## User Action
+
+- **No action required**. The vulnerability is fixed server-side with enhanced authentication and ACL controls. However, we recommend updating to app version 1.1.1 and device firmware v1.7.0 or above for improved performance and enhanced control experience with the new encrypted WebSocket protocol.
+
+## Acknowledgements
+
+We sincerely thank [Mason](https://mas0n.org) for the thorough security analysis and responsible disclosure of this critical infrastructure vulnerability. The detailed nature of this report enabled us to comprehensively address authentication, authorization, and encryption deficiencies in our IoT communication infrastructure.
+
+---
+
+**Disclaimer**: This advisory reflects information available at publication. We will monitor for related threats and update this document if material changes occur.  
+**Document ID**: MSA-2025-10-003  
+**Classification**: Public  
+**Issued by**: MindReset Security Team
