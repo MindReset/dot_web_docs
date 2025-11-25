@@ -1,0 +1,29 @@
+---
+title: Dot Crypto Ticker
+---
+
+<GithubInfo owner="Linus-Shyu" repo="dot-crypto-ticker" />
+
+A lightweight Rust application that displays real-time cryptocurrency prices on your Dot device, providing instant access to market data right on your desktop companion.
+
+### Features
+
+- **Multi-Crypto Support**: Track Bitcoin (BTC), Ethereum (ETH), and Tether (USDT) prices in real-time
+- **Optimized Display**: Mini mode designed specifically for Dot device screens with clear, readable formatting
+- **Real-time Updates**: Live 24-hour price change indicators with intuitive trend arrows (↗/↘)
+- **Configurable Intervals**: Customize refresh rates to suit your needs (default: 10 minutes)
+- **Secure Configuration**: Environment-based setup for API keys and device credentials
+- **24/7 Background Running**: Support for continuous operation as a macOS background service
+- **Reliable Data**: Uses Binance API for accurate, real-time cryptocurrency market data
+
+### Display Format
+
+The application presents cryptocurrency prices in a compact, easy-to-read format optimized for the Dot device:
+
+```
+BTC $111,266.93 ↗+2.44%
+ETH $4,039.08 ↗+1.23%
+USDT $0.9997 ↗+0.01%
+```
+
+Each entry includes formatted prices with thousand separators, directional indicators, and 24-hour percentage changes.
