@@ -31,7 +31,7 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/text \
+      https://dot.mindreset.tech/api/authV2/open/device/text \
       -H 'Authorization: Bearer {{API_KEY}}' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -49,7 +49,7 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
     ```python
     import requests
 
-    url = "https://dot.mindreset.tech/api/open/text"
+    url = "https://dot.mindreset.tech/api/authV2/open/device/text"
     headers = {
         "Authorization": "Bearer {{API_KEY}}",
         "Content-Type": "application/json"
@@ -70,7 +70,7 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
   </Tab>
   <Tab value="JavaScript">
     ```javascript
-    fetch("https://dot.mindreset.tech/api/open/text", {
+    fetch("https://dot.mindreset.tech/api/authV2/open/device/text", {
       method: "POST",
       headers: {
         "Authorization": "Bearer {{API_KEY}}",
@@ -96,7 +96,7 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
       result?: any;
     };
 
-    fetch("https://dot.mindreset.tech/api/open/text", {
+    fetch("https://dot.mindreset.tech/api/authV2/open/device/text", {
       method: "POST",
       headers: {
         "Authorization": "Bearer {{API_KEY}}",
@@ -132,7 +132,7 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
     )
 
     func main() {
-      url := "https://dot.mindreset.tech/api/open/text"
+      url := "https://dot.mindreset.tech/api/authV2/open/device/text"
       payload := map[string]interface{}{
         "refreshNow": {{内容を即時表示するか}},
         "deviceId": "{{デバイスシリアル番号}}",
@@ -162,7 +162,7 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
     fn main() {
         let client = Client::new();
-        let url = "https://dot.mindreset.tech/api/open/text";
+        let url = "https://dot.mindreset.tech/api/authV2/open/device/text";
         let res = client.post(url)
             .header("Authorization", "Bearer {{API_KEY}}")
             .header("Content-Type", "application/json")
@@ -208,7 +208,7 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/text \
+      https://dot.mindreset.tech/api/authV2/open/device/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -229,7 +229,7 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/text \
+      https://dot.mindreset.tech/api/authV2/open/device/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -250,7 +250,7 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/text \
+      https://dot.mindreset.tech/api/authV2/open/device/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -277,7 +277,7 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
 ### リクエストパス
 
-`/api/open/text`
+`/api/authV2/open/device/text`
 
 ### メソッド
 
