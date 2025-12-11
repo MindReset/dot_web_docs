@@ -4,6 +4,7 @@ title: 文本 API
 
 import Link from 'fumadocs-core/link';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'src/shadcn/components/type-table';
 
 ## 快速指引
 
@@ -285,23 +286,62 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
 ### 请求结构
 
-| 字段名       | 类型     | 必填 | 默认值 | 说明                                   | 用途                     |
-| ------------ | -------- | ---- | ------ | -------------------------------------- | ------------------------ |
-| `refreshNow` | `bool`   | 否   | `true` | 是否立刻显示内容                       | 控制内容的显示时机       |
-| `deviceId`   | `string` | 是   |        | 设备序列号                             | 分辨不同的设备           |
-| `title`      | `string` | 否   |        | 文本标题                               | 显示在屏幕上的标题       |
-| `message`    | `string` | 否   |        | 文本内容                               | 显示在屏幕上的内容       |
-| `signature`  | `string` | 否   |        | 文本签名                               | 显示在屏幕上的签名       |
-| `icon`       | `string` | 否   |        | base64 编码 PNG 图标数据（40px\*40px） | 显示在屏幕左下角上的图标 |
-| `link`       | `string` | 否   |        | http/https 链接或 Scheme Url           | 碰一碰跳转的内容         |
+<TypeTable
+	type={{
+		refreshNow: {
+			description: '是否立刻显示内容（控制内容的显示时机）',
+			type: 'bool',
+			default: 'true',
+		},
+		deviceId: {
+			description: '设备序列号（分辨不同的设备）',
+			type: 'string',
+			required: true,
+		},
+		title: {
+			description: '文本标题（显示在屏幕上的标题）',
+			type: 'string',
+		},
+		message: {
+			description: '文本内容（显示在屏幕上的内容）',
+			type: 'string',
+		},
+		signature: {
+			description: '文本签名（显示在屏幕上的签名）',
+			type: 'string',
+		},
+		icon: {
+			description: 'base64 编码 PNG 图标数据（40px×40px）（显示在屏幕左下角上的图标）',
+			type: 'string',
+		},
+		link: {
+			description: 'http/https 链接或 Scheme Url（碰一碰跳转的内容）',
+			type: 'string',
+		},
+	}}
+/>
 
 ### 响应结构
 
-| 字段名    | 类型     | 说明     |
-| --------- | -------- | -------- |
-| `code`    | `number` | 状态码   |
-| `message` | `string` | 响应描述 |
-| `result`  | `object` | 响应内容 |
+<TypeTable
+	type={{
+		code: {
+			description: '状态码',
+			type: 'number',
+			required: true,
+		},
+		message: {
+			description: '响应描述',
+			type: 'string',
+			required: true,
+		},
+		result: {
+			description: '响应内容',
+			type: 'object',
+			required: true,
+		},
+	}}
+/>
 
 ### 响应说明
 

@@ -4,6 +4,7 @@ title: テキスト API
 
 import Link from 'fumadocs-core/link';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'src/shadcn/components/type-table';
 
 ## クイックガイド
 
@@ -285,23 +286,62 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
 ### リクエスト構造
 
-| フィールド名 | 型       | 必須 | デフォルト | 説明                                        | 用途                   |
-| :----------- | :------- | :--- | :--------- | :------------------------------------------ | :--------------------- |
-| `refreshNow` | `bool`   | 否   | `true`     | コンテンツを即時に表示するか                | 表示タイミング制御     |
-| `deviceId`   | `string` | はい |            | デバイスのシリアル番号                      | デバイス識別           |
-| `title`      | `string` | 否   |            | テキストのタイトル                          | 画面上のタイトル       |
-| `message`    | `string` | 否   |            | テキスト本文                                | 画面上の内容           |
-| `signature`  | `string` | 否   |            | 署名                                        | 画面上の署名           |
-| `icon`       | `string` | 否   |            | base64 エンコード PNG アイコン（40px×40px） | 左下に表示するアイコン |
-| `link`       | `string` | 否   |            | http/https またはスキーム URL               | タッチ操作の遷移先     |
+<TypeTable
+	type={{
+		refreshNow: {
+			description: 'コンテンツを即時に表示するか（表示タイミング制御）',
+			type: 'bool',
+			default: 'true',
+		},
+		deviceId: {
+			description: 'デバイスのシリアル番号（デバイス識別）',
+			type: 'string',
+			required: true,
+		},
+		title: {
+			description: 'テキストのタイトル（画面上のタイトル）',
+			type: 'string',
+		},
+		message: {
+			description: 'テキスト本文（画面上の内容）',
+			type: 'string',
+		},
+		signature: {
+			description: '署名（画面上の署名）',
+			type: 'string',
+		},
+		icon: {
+			description: 'base64 エンコード PNG アイコン（40px×40px）（左下に表示するアイコン）',
+			type: 'string',
+		},
+		link: {
+			description: 'http/https またはスキーム URL（タッチ操作の遷移先）',
+			type: 'string',
+		},
+	}}
+/>
 
 ### レスポンス構造
 
-| フィールド名 | 型       | 説明       |
-| :----------- | :------- | :--------- |
-| `code`       | `number` | ステータス |
-| `message`    | `string` | 応答説明   |
-| `result`     | `object` | 応答内容   |
+<TypeTable
+	type={{
+		code: {
+			description: 'ステータス',
+			type: 'number',
+			required: true,
+		},
+		message: {
+			description: '応答説明',
+			type: 'string',
+			required: true,
+		},
+		result: {
+			description: '応答内容',
+			type: 'object',
+			required: true,
+		},
+	}}
+/>
 
 ### レスポンスコード
 

@@ -4,6 +4,7 @@ title: Text API
 
 import Link from 'fumadocs-core/link';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'src/shadcn/components/type-table';
 
 ## Quick Guide
 
@@ -285,23 +286,62 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
 ### Request Schema
 
-| Field        | Type     | Required | Default | Description                                | Purpose                   |
-| :----------- | :------- | :------- | :------ | :----------------------------------------- | :------------------------ |
-| `refreshNow` | `bool`   | No       | `true`  | Whether to display the content immediately | Control display timing    |
-| `deviceId`   | `string` | Yes      |         | Device serial number                       | Identify the device       |
-| `title`      | `string` | No       |         | Text title                                 | Title shown on screen     |
-| `message`    | `string` | No       |         | Text content                               | Content shown on screen   |
-| `signature`  | `string` | No       |         | Text signature                             | Signature shown on screen |
-| `icon`       | `string` | No       |         | Base64-encoded PNG icon data (40px×40px)   | Icon shown at bottom-left |
-| `link`       | `string` | No       |         | http/https link or URL scheme              | NFC tap redirect target   |
+<TypeTable
+	type={{
+		refreshNow: {
+			description: 'Whether to display the content immediately (Control display timing)',
+			type: 'bool',
+			default: 'true',
+		},
+		deviceId: {
+			description: 'Device serial number (Identify the device)',
+			type: 'string',
+			required: true,
+		},
+		title: {
+			description: 'Text title (Title shown on screen)',
+			type: 'string',
+		},
+		message: {
+			description: 'Text content (Content shown on screen)',
+			type: 'string',
+		},
+		signature: {
+			description: 'Text signature (Signature shown on screen)',
+			type: 'string',
+		},
+		icon: {
+			description: 'Base64-encoded PNG icon data (40px×40px) (Icon shown at bottom-left)',
+			type: 'string',
+		},
+		link: {
+			description: 'http/https link or URL scheme (NFC tap redirect target)',
+			type: 'string',
+		},
+	}}
+/>
 
 ### Response Schema
 
-| Field     | Type     | Description |
-| :-------- | :------- | :---------- |
-| `code`    | `number` | Status code |
-| `message` | `string` | Message     |
-| `result`  | `object` | Payload     |
+<TypeTable
+	type={{
+		code: {
+			description: 'Status code',
+			type: 'number',
+			required: true,
+		},
+		message: {
+			description: 'Message',
+			type: 'string',
+			required: true,
+		},
+		result: {
+			description: 'Payload',
+			type: 'object',
+			required: true,
+		},
+	}}
+/>
 
 ### Status Codes
 

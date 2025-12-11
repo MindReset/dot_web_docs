@@ -4,6 +4,7 @@ title: 画像 API
 
 import Link from 'fumadocs-core/link';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'src/shadcn/components/type-table';
 
 ## クイックガイド
 
@@ -410,23 +411,67 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
 
 ### リクエスト構造
 
-| フィールド名   | 型       | 必須 | デフォルト        | 説明                                                                                                                                                                        | 用途                 |
-| :------------- | :------- | :--- | :---------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------- |
-| `refreshNow`   | `bool`   | 否   | `true`            | コンテンツを即時に表示するかどうか                                                                                                                                          | 表示タイミング制御   |
-| `deviceId`     | `string` | はい |                   | デバイスのシリアル番号                                                                                                                                                      | デバイス識別         |
-| `image`        | `string` | はい |                   | base64 エンコードの PNG 画像データ（296px×152px）                                                                                                                           | 表示する画像         |
-| `link`         | `string` | 否   |                   | http/https またはスキーム URL                                                                                                                                               | タッチ操作の遷移先   |
-| `border`       | `number` | 否   | `0`               | `0`は白枠、`1`は黒枠                                                                                                                                                        | 画面の枠色           |
-| `ditherType`   | `string` | 否   | `DIFFUSION`       | ディザ種別（`DIFFUSION`、`ORDERED`、`NONE`）                                                                                                                                | 画像ディザ効果       |
-| `ditherKernel` | `string` | 否   | `FLOYD_STEINBERG` | ディザアルゴリズム（`THRESHOLD`、`ATKINSON`、`BURKES`、`FLOYD_STEINBERG`、`SIERRA2`、`STUCKI`、`JARVIS_JUDICE_NINKE`、`DIFFUSION_ROW`、`DIFFUSION_COLUMN`、`DIFFUSION2_D`） | ディザのアルゴリズム |
+<TypeTable
+	type={{
+		refreshNow: {
+			description: 'コンテンツを即時に表示するかどうか（表示タイミング制御）',
+			type: 'bool',
+			default: 'true',
+		},
+		deviceId: {
+			description: 'デバイスのシリアル番号（デバイス識別）',
+			type: 'string',
+			required: true,
+		},
+		image: {
+			description: 'base64 エンコードの PNG 画像データ（296px×152px）（表示する画像）',
+			type: 'string',
+			required: true,
+		},
+		link: {
+			description: 'http/https またはスキーム URL（タッチ操作の遷移先）',
+			type: 'string',
+		},
+		border: {
+			description: '0は白枠、1は黒枠（画面の枠色）',
+			type: 'number',
+			default: '0',
+		},
+		ditherType: {
+			description: 'ディザ種別（DIFFUSION、ORDERED、NONE）（画像ディザ効果）',
+			type: 'string',
+			default: 'DIFFUSION',
+		},
+		ditherKernel: {
+			description:
+				'ディザアルゴリズム（THRESHOLD、ATKINSON、BURKES、FLOYD_STEINBERG、SIERRA2、STUCKI、JARVIS_JUDICE_NINKE、DIFFUSION_ROW、DIFFUSION_COLUMN、DIFFUSION_2D）（ディザのアルゴリズム）',
+			type: 'string',
+			default: 'FLOYD_STEINBERG',
+		},
+	}}
+/>
 
 ### レスポンス構造
 
-| フィールド名 | 型       | 説明             |
-| :----------- | :------- | :--------------- |
-| `code`       | `number` | ステータスコード |
-| `message`    | `string` | 応答メッセージ   |
-| `result`     | `object` | 処理結果         |
+<TypeTable
+	type={{
+		code: {
+			description: 'ステータスコード',
+			type: 'number',
+			required: true,
+		},
+		message: {
+			description: '応答メッセージ',
+			type: 'string',
+			required: true,
+		},
+		result: {
+			description: '処理結果',
+			type: 'object',
+			required: true,
+		},
+	}}
+/>
 
 ### レスポンスコード
 

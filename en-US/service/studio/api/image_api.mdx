@@ -4,6 +4,7 @@ title: Image API
 
 import Link from 'fumadocs-core/link';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'src/shadcn/components/type-table';
 
 ## Quick Guide
 
@@ -410,23 +411,67 @@ If you primarily display text images via the Image API, we recommend disabling d
 
 ### Request Schema
 
-| Field          | Type     | Required | Default           | Description                                                                                                                                                              | Purpose                    |
-| :------------- | :------- | :------- | :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------- |
-| `refreshNow`   | `bool`   | No       | `true`            | Whether to display the content immediately                                                                                                                               | Control display timing     |
-| `deviceId`     | `string` | Yes      |                   | Device serial number                                                                                                                                                     | Identify the device        |
-| `image`        | `string` | Yes      |                   | Base64-encoded PNG image data (296px×152px)                                                                                                                              | Image to render on screen  |
-| `link`         | `string` | No       |                   | http/https link or URL scheme                                                                                                                                            | NFC tap redirect target    |
-| `border`       | `number` | No       | `0`               | `0` = white border, `1` = black border                                                                                                                                   | Screen border color        |
-| `ditherType`   | `string` | No       | `DIFFUSION`       | Dither type (`DIFFUSION`, `ORDERED`, `NONE`)                                                                                                                             | Control dithering behavior |
-| `ditherKernel` | `string` | No       | `FLOYD_STEINBERG` | Dither algorithm (`THRESHOLD`, `ATKINSON`, `BURKES`, `FLOYD_STEINBERG`, `SIERRA2`, `STUCKI`, `JARVIS_JUDICE_NINKE`, `DIFFUSION_ROW`, `DIFFUSION_COLUMN`, `DIFFUSION_2D`) | Control dither algorithm   |
+<TypeTable
+	type={{
+		refreshNow: {
+			description: 'Whether to display the content immediately (Control display timing)',
+			type: 'bool',
+			default: 'true',
+		},
+		deviceId: {
+			description: 'Device serial number (Identify the device)',
+			type: 'string',
+			required: true,
+		},
+		image: {
+			description: 'Base64-encoded PNG image data (296px×152px) (Image to render on screen)',
+			type: 'string',
+			required: true,
+		},
+		link: {
+			description: 'http/https link or URL scheme (NFC tap redirect target)',
+			type: 'string',
+		},
+		border: {
+			description: '0 = white border, 1 = black border (Screen border color)',
+			type: 'number',
+			default: '0',
+		},
+		ditherType: {
+			description: 'Dither type (DIFFUSION, ORDERED, NONE) (Control dithering behavior)',
+			type: 'string',
+			default: 'DIFFUSION',
+		},
+		ditherKernel: {
+			description:
+				'Dither algorithm (THRESHOLD, ATKINSON, BURKES, FLOYD_STEINBERG, SIERRA2, STUCKI, JARVIS_JUDICE_NINKE, DIFFUSION_ROW, DIFFUSION_COLUMN, DIFFUSION_2D) (Control dither algorithm)',
+			type: 'string',
+			default: 'FLOYD_STEINBERG',
+		},
+	}}
+/>
 
 ### Response Schema
 
-| Field     | Type     | Description     |
-| :-------- | :------- | :-------------- |
-| `code`    | `number` | Status code     |
-| `message` | `string` | Description     |
-| `result`  | `object` | Processing data |
+<TypeTable
+	type={{
+		code: {
+			description: 'Status code',
+			type: 'number',
+			required: true,
+		},
+		message: {
+			description: 'Description',
+			type: 'string',
+			required: true,
+		},
+		result: {
+			description: 'Processing data',
+			type: 'object',
+			required: true,
+		},
+	}}
+/>
 
 ### Status Codes
 
