@@ -1,5 +1,5 @@
 ---
-title: Text API
+title: Text
 ---
 
 import Link from 'fumadocs-core/link';
@@ -18,7 +18,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 <Callout
 	type="info"
-	title="API requests are not limited by the app's minimum 5-minute device interval. The API rate limit is 1 request per second. With the API, you can control device behavior and responses more flexibly."
+	title="The API rate limit is 10 requests per second. With the API, you can control device behavior and responses more flexibly."
 />
 
 <Callout
@@ -32,7 +32,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/text \
+      https://dot.mindreset.tech/api/authV2/open/device/text \
       -H 'Authorization: Bearer {{API_KEY}}' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -50,7 +50,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     ```python
     import requests
 
-    url = "https://dot.mindreset.tech/api/open/text"
+    url = "https://dot.mindreset.tech/api/authV2/open/device/text"
     headers = {
         "Authorization": "Bearer {{API_KEY}}",
         "Content-Type": "application/json"
@@ -71,7 +71,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   </Tab>
   <Tab value="JavaScript">
     ```javascript
-    fetch("https://dot.mindreset.tech/api/open/text", {
+    fetch("https://dot.mindreset.tech/api/authV2/open/device/text", {
       method: "POST",
       headers: {
         "Authorization": "Bearer {{API_KEY}}",
@@ -97,7 +97,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       result?: any;
     };
 
-    fetch("https://dot.mindreset.tech/api/open/text", {
+    fetch("https://dot.mindreset.tech/api/authV2/open/device/text", {
       method: "POST",
       headers: {
         "Authorization": "Bearer {{API_KEY}}",
@@ -133,7 +133,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     )
 
     func main() {
-      url := "https://dot.mindreset.tech/api/open/text"
+      url := "https://dot.mindreset.tech/api/authV2/open/device/text"
       payload := map[string]interface{}{
         "refreshNow": {{show content immediately}},
         "deviceId": "{{device serial number}}",
@@ -163,7 +163,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     fn main() {
         let client = Client::new();
-        let url = "https://dot.mindreset.tech/api/open/text";
+        let url = "https://dot.mindreset.tech/api/authV2/open/device/text";
         let res = client.post(url)
             .header("Authorization", "Bearer {{API_KEY}}")
             .header("Content-Type", "application/json")
@@ -209,7 +209,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/text \
+      https://dot.mindreset.tech/api/authV2/open/device/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -230,7 +230,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/text \
+      https://dot.mindreset.tech/api/authV2/open/device/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -251,7 +251,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/text \
+      https://dot.mindreset.tech/api/authV2/open/device/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -333,11 +333,6 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		message: {
 			description: 'Message',
 			type: 'string',
-			required: true,
-		},
-		result: {
-			description: 'Payload',
-			type: 'object',
 			required: true,
 		},
 	}}

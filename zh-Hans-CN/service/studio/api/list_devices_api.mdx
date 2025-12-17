@@ -1,0 +1,194 @@
+---
+title: 设备列表
+---
+
+import Link from 'fumadocs-core/link';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## 快速指引
+
+### 必要条件
+
+1. 确保您已在 Dot. App 中<Link href="/docs/service/studio/api/get_api">获取并保存了 API 密钥</Link>；
+
+<Callout
+	type="info"
+	title="API 的请求限制为每秒 10 次,通过 API 请求,您可以更灵活地控制设备的行为和响应。"
+/>
+
+<Callout
+	type="info"
+	title="文档中的 '{{变量}}' 花括号表示需要替换的变量,请根据实际情况进行替换,并移除'{{}}'。"
+/>
+
+### 请求示例
+
+<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X GET \
+      https://dot.mindreset.tech/api/authV2/open/devices \
+      -H 'Authorization: Bearer {{API_KEY}}'
+    ```
+  </Tab>
+  <Tab value="Python">
+    ```python
+    import requests
+
+    url = "https://dot.mindreset.tech/api/authV2/open/devices"
+    headers = {
+        "Authorization": "Bearer {{API_KEY}}"
+    }
+    response = requests.get(url, headers=headers)
+    print(response.json())
+    ```
+
+  </Tab>
+  <Tab value="JavaScript">
+    ```javascript
+    fetch("https://dot.mindreset.tech/api/authV2/open/devices", {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    }).then(res => res.json()).then(console.log);
+    ```
+  </Tab>
+  <Tab value="TypeScript">
+    ```typescript
+    type Device = {
+      id: string;
+      series: string;
+      model: string;
+      edition: number;
+    };
+
+    fetch("https://dot.mindreset.tech/api/authV2/open/devices", {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    })
+      .then(res => res.json() as Promise<Device[]>)
+      .then(data => {
+        console.log(data);
+      });
+    ```
+
+  </Tab>
+  <Tab value="Go">
+    ```go
+    package main
+
+    import (
+      "fmt"
+      "net/http"
+      "io/ioutil"
+    )
+
+    func main() {
+      url := "https://dot.mindreset.tech/api/authV2/open/devices"
+      req, _ := http.NewRequest("GET", url, nil)
+      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
+      client := &http.Client{}
+      resp, _ := client.Do(req)
+      defer resp.Body.Close()
+      respBody, _ := ioutil.ReadAll(resp.Body)
+      fmt.Println(string(respBody))
+    }
+    ```
+
+  </Tab>
+  <Tab value="Rust">
+    ```rust
+    use reqwest::blocking::Client;
+
+    fn main() {
+        let client = Client::new();
+        let url = "https://dot.mindreset.tech/api/authV2/open/devices";
+        let res = client.get(url)
+            .header("Authorization", "Bearer {{API_KEY}}")
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
+        println!("{}", res);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### 响应示例
+
+```json
+[
+	{
+		"series": "quote",
+		"model": "quote_0",
+		"edition": 1,
+		"id": "ABCD1234ABCD"
+	},
+	{
+		"series": "quote",
+		"model": "quote_0",
+		"edition": 2,
+		"id": "ABCD5112ABCD"
+	}
+]
+```
+
+## 问题排查
+
+### 请求路径
+
+`/api/authV2/open/devices`
+
+### 请求方法
+
+`GET`
+
+### 请求结构
+
+此接口不需要请求体,仅需在请求头中提供 API 密钥。
+
+### 响应结构
+
+<TypeTable
+	type={{
+		'[]': {
+			description: '设备列表数组',
+			type: 'array',
+			required: true,
+		},
+		id: {
+			description: '设备序列号',
+			type: 'string',
+			required: true,
+		},
+		series: {
+			description: '设备系列（如 quote）',
+			type: 'string',
+			required: true,
+		},
+		model: {
+			description: '设备型号（如 quote_0）',
+			type: 'string',
+			required: true,
+		},
+		edition: {
+			description: '设备版本（1 或 2）',
+			type: 'number',
+			required: true,
+		},
+	}}
+/>
+
+### 响应说明
+
+| code  | 含义       | 描述                 |
+| ----- | ---------- | -------------------- |
+| `200` | 成功       | 成功获取设备列表     |
+| `401` | 未授权     | API 密钥无效或已过期 |
+| `500` | 服务器错误 | 服务器内部错误       |

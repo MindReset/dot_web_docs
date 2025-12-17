@@ -1,5 +1,5 @@
 ---
-title: 文本 API
+title: 文本
 ---
 
 import Link from 'fumadocs-core/link';
@@ -18,7 +18,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 <Callout
 	type="info"
-	title="API 请求不受 App 设置中设备最短 5 分钟的限制，API 的请求限制为每秒 1 次。因此，通过 API 请求，您可以更灵活地控制设备的行为和响应。"
+	title="API 的请求限制为每秒 10 次，通过 API 请求，您可以更灵活地控制设备的行为和响应。"
 />
 
 <Callout
@@ -32,7 +32,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/text \
+      https://dot.mindreset.tech/api/authV2/open/device/text \
       -H 'Authorization: Bearer {{API_KEY}}' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -50,7 +50,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     ```python
     import requests
 
-    url = "https://dot.mindreset.tech/api/open/text"
+    url = "https://dot.mindreset.tech/api/authV2/open/device/text"
     headers = {
         "Authorization": "Bearer {{API_KEY}}",
         "Content-Type": "application/json"
@@ -71,7 +71,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   </Tab>
   <Tab value="JavaScript">
     ```javascript
-    fetch("https://dot.mindreset.tech/api/open/text", {
+    fetch("https://dot.mindreset.tech/api/authV2/open/device/text", {
       method: "POST",
       headers: {
         "Authorization": "Bearer {{API_KEY}}",
@@ -97,7 +97,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       result?: any;
     };
 
-    fetch("https://dot.mindreset.tech/api/open/text", {
+    fetch("https://dot.mindreset.tech/api/authV2/open/device/text", {
       method: "POST",
       headers: {
         "Authorization": "Bearer {{API_KEY}}",
@@ -133,7 +133,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     )
 
     func main() {
-      url := "https://dot.mindreset.tech/api/open/text"
+      url := "https://dot.mindreset.tech/api/authV2/open/device/text"
       payload := map[string]interface{}{
         "refreshNow": {{是否立刻显示内容}},
         "deviceId": "{{设备序列号}}",
@@ -163,7 +163,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     fn main() {
         let client = Client::new();
-        let url = "https://dot.mindreset.tech/api/open/text";
+        let url = "https://dot.mindreset.tech/api/authV2/open/device/text";
         let res = client.post(url)
             .header("Authorization", "Bearer {{API_KEY}}")
             .header("Content-Type", "application/json")
@@ -209,7 +209,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/text \
+      https://dot.mindreset.tech/api/authV2/open/device/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -230,7 +230,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/text \
+      https://dot.mindreset.tech/api/authV2/open/device/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -251,7 +251,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/text \
+      https://dot.mindreset.tech/api/authV2/open/device/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -333,11 +333,6 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		message: {
 			description: '响应描述',
 			type: 'string',
-			required: true,
-		},
-		result: {
-			description: '响应内容',
-			type: 'object',
 			required: true,
 		},
 	}}

@@ -1,0 +1,224 @@
+---
+title: 设备状态
+---
+
+import Link from 'fumadocs-core/link';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## 快速指引
+
+### 必要条件
+
+1. 确保您已在 Dot. App 中<Link href="/docs/service/studio/api/get_api">获取并保存了 API 密钥</Link>；
+2. 确保您至少有一台所属于自己的设备并已<Link href="/docs/service/studio/api/get_device_id">获取设备序列号</Link>；
+
+<Callout
+	type="info"
+	title="API 的请求限制为每秒 10 次,通过 API 请求,您可以更灵活地控制设备的行为和响应。"
+/>
+
+<Callout
+	type="info"
+	title="文档中的 '{{变量}}' 花括号表示需要替换的变量,请根据实际情况进行替换,并移除'{{}}'。"
+/>
+
+### 请求示例
+
+<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X GET \
+      https://dot.mindreset.tech/api/authV2/open/device/{{DEVICE_ID}}/status \
+      -H 'Authorization: Bearer {{API_KEY}}'
+    ```
+  </Tab>
+  <Tab value="Python">
+    ```python
+    import requests
+
+    device_id = "{{DEVICE_ID}}"
+    url = f"https://dot.mindreset.tech/api/authV2/open/device/{device_id}/status"
+    headers = {
+        "Authorization": "Bearer {{API_KEY}}"
+    }
+    response = requests.get(url, headers=headers)
+    print(response.json())
+    ```
+
+  </Tab>
+  <Tab value="JavaScript">
+    ```javascript
+    const deviceId = "{{DEVICE_ID}}";
+    fetch(`https://dot.mindreset.tech/api/authV2/open/device/${deviceId}/status`, {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    }).then(res => res.json()).then(console.log);
+    ```
+  </Tab>
+  <Tab value="TypeScript">
+    ```typescript
+    type DeviceStatus = {
+      status: string;
+      statusDescription: string;
+      lastRenderTime: string;
+      nextBattRenderTime: string;
+      nextPowerRenderTime: string;
+      deviceId: string;
+      location: string | null;
+      alias: string | null;
+    };
+
+    const deviceId = "{{DEVICE_ID}}";
+    fetch(`https://dot.mindreset.tech/api/authV2/open/device/${deviceId}/status`, {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    })
+      .then(res => res.json() as Promise<DeviceStatus>)
+      .then(data => {
+        console.log(data);
+      });
+    ```
+
+  </Tab>
+  <Tab value="Go">
+    ```go
+    package main
+
+    import (
+      "fmt"
+      "net/http"
+      "io/ioutil"
+    )
+
+    func main() {
+      deviceId := "{{DEVICE_ID}}"
+      url := fmt.Sprintf("https://dot.mindreset.tech/api/authV2/open/device/%s/status", deviceId)
+      req, _ := http.NewRequest("GET", url, nil)
+      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
+      client := &http.Client{}
+      resp, _ := client.Do(req)
+      defer resp.Body.Close()
+      respBody, _ := ioutil.ReadAll(resp.Body)
+      fmt.Println(string(respBody))
+    }
+    ```
+
+  </Tab>
+  <Tab value="Rust">
+    ```rust
+    use reqwest::blocking::Client;
+
+    fn main() {
+        let device_id = "{{DEVICE_ID}}";
+        let url = format!("https://dot.mindreset.tech/api/authV2/open/device/{}/status", device_id);
+        let client = Client::new();
+        let res = client.get(&url)
+            .header("Authorization", "Bearer {{API_KEY}}")
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
+        println!("{}", res);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### 响应示例
+
+```json
+{
+	"status": "在线",
+	"statusDescription": "设备在线且正常工作",
+	"lastRenderTime": "2025 年 12 月 17 日 14:30",
+	"nextBattRenderTime": "2025 年 12 月 17 日 15:00",
+	"nextPowerRenderTime": "2025 年 12 月 17 日 15:30",
+	"deviceId": "ABCD1234ABCD",
+	"location": "书房",
+	"alias": "我的设备"
+}
+```
+
+## 问题排查
+
+### 请求路径
+
+`/api/authV2/open/device/:id/status`
+
+### 请求方法
+
+`GET`
+
+### 路径参数
+
+<TypeTable
+	type={{
+		id: {
+			description: '设备序列号',
+			type: 'string',
+			required: true,
+		},
+	}}
+/>
+
+### 响应结构
+
+<TypeTable
+	type={{
+		status: {
+			description: '设备当前状态',
+			type: 'string',
+			required: true,
+		},
+		statusDescription: {
+			description: '设备状态的详细描述',
+			type: 'string',
+			required: true,
+		},
+		lastRenderTime: {
+			description: '设备最后一次渲染的时间',
+			type: 'string',
+			required: true,
+		},
+		nextBattRenderTime: {
+			description: '电池模式下下次渲染的时间',
+			type: 'string',
+			required: true,
+		},
+		nextPowerRenderTime: {
+			description: '电源模式下下次渲染的时间',
+			type: 'string',
+			required: true,
+		},
+		deviceId: {
+			description: '设备序列号',
+			type: 'string',
+			required: true,
+		},
+		location: {
+			description: '设备位置',
+			type: 'string | null',
+		},
+		alias: {
+			description: '设备别名',
+			type: 'string | null',
+		},
+	}}
+/>
+
+### 响应说明
+
+| code  | 含义       | 描述                 |
+| ----- | ---------- | -------------------- |
+| `200` | 成功       | 成功获取设备状态     |
+| `400` | 参数错误   | 设备 ID 格式错误     |
+| `401` | 未授权     | API 密钥无效或已过期 |
+| `403` | 权限不足   | 您没有权限查看此设备 |
+| `404` | 设备不存在 | 设备不存在或未注册   |
+| `500` | 服务器错误 | 服务器内部错误       |

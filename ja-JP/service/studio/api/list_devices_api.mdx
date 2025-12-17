@@ -1,0 +1,194 @@
+---
+title: デバイス一覧
+---
+
+import Link from 'fumadocs-core/link';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## クイックガイド
+
+### 必要条件
+
+1. Dot. アプリで<Link href="/docs/service/studio/api/get_api">API キーを取得して保存</Link>していること
+
+<Callout
+	type="info"
+	title="APIのリクエスト制限は1秒あたり10回です。APIを使うとデバイスの動作と応答をより柔軟に制御できます。"
+/>
+
+<Callout
+	type="info"
+	title="ドキュメント中の「{{変数}}」は置換が必要なプレースホルダーです。実際の値に置き換え、「{{}}」は削除してください。"
+/>
+
+### リクエスト例
+
+<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X GET \
+      https://dot.mindreset.tech/api/authV2/open/devices \
+      -H 'Authorization: Bearer {{API_KEY}}'
+    ```
+  </Tab>
+  <Tab value="Python">
+    ```python
+    import requests
+
+    url = "https://dot.mindreset.tech/api/authV2/open/devices"
+    headers = {
+        "Authorization": "Bearer {{API_KEY}}"
+    }
+    response = requests.get(url, headers=headers)
+    print(response.json())
+    ```
+
+  </Tab>
+  <Tab value="JavaScript">
+    ```javascript
+    fetch("https://dot.mindreset.tech/api/authV2/open/devices", {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    }).then(res => res.json()).then(console.log);
+    ```
+  </Tab>
+  <Tab value="TypeScript">
+    ```typescript
+    type Device = {
+      id: string;
+      series: string;
+      model: string;
+      edition: number;
+    };
+
+    fetch("https://dot.mindreset.tech/api/authV2/open/devices", {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    })
+      .then(res => res.json() as Promise<Device[]>)
+      .then(data => {
+        console.log(data);
+      });
+    ```
+
+  </Tab>
+  <Tab value="Go">
+    ```go
+    package main
+
+    import (
+      "fmt"
+      "net/http"
+      "io/ioutil"
+    )
+
+    func main() {
+      url := "https://dot.mindreset.tech/api/authV2/open/devices"
+      req, _ := http.NewRequest("GET", url, nil)
+      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
+      client := &http.Client{}
+      resp, _ := client.Do(req)
+      defer resp.Body.Close()
+      respBody, _ := ioutil.ReadAll(resp.Body)
+      fmt.Println(string(respBody))
+    }
+    ```
+
+  </Tab>
+  <Tab value="Rust">
+    ```rust
+    use reqwest::blocking::Client;
+
+    fn main() {
+        let client = Client::new();
+        let url = "https://dot.mindreset.tech/api/authV2/open/devices";
+        let res = client.get(url)
+            .header("Authorization", "Bearer {{API_KEY}}")
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
+        println!("{}", res);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### レスポンス例
+
+```json
+[
+	{
+		"series": "quote",
+		"model": "quote_0",
+		"edition": 1,
+		"id": "ABCD1234ABCD"
+	},
+	{
+		"series": "quote",
+		"model": "quote_0",
+		"edition": 2,
+		"id": "ABCD5112ABCD"
+	}
+]
+```
+
+## トラブルシューティング
+
+### リクエストパス
+
+`/api/authV2/open/devices`
+
+### メソッド
+
+`GET`
+
+### リクエスト構造
+
+このインターフェースはリクエストボディを必要とせず、リクエストヘッダーにAPI キーを提供するだけです。
+
+### レスポンス構造
+
+<TypeTable
+	type={{
+		'[]': {
+			description: 'デバイスリスト配列',
+			type: 'array',
+			required: true,
+		},
+		id: {
+			description: 'デバイスのシリアル番号',
+			type: 'string',
+			required: true,
+		},
+		series: {
+			description: 'デバイスシリーズ（例：quote）',
+			type: 'string',
+			required: true,
+		},
+		model: {
+			description: 'デバイスモデル（例：quote_0）',
+			type: 'string',
+			required: true,
+		},
+		edition: {
+			description: 'デバイスエディション（1 または 2）',
+			type: 'number',
+			required: true,
+		},
+	}}
+/>
+
+### レスポンスコード
+
+| code  | 意味           | 説明                         |
+| :---- | :------------- | :--------------------------- |
+| `200` | 成功           | デバイスリストの取得に成功   |
+| `401` | 未認証         | API キーが無効または期限切れ |
+| `500` | サーバーエラー | サーバー内部エラー           |

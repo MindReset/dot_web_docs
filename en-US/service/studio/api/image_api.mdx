@@ -1,5 +1,5 @@
 ---
-title: Image API
+title: Image
 ---
 
 import Link from 'fumadocs-core/link';
@@ -18,7 +18,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 <Callout
 	type="info"
-	title="API requests are not limited by the app’s minimum 5‑minute device interval. The API rate limit is 1 request per second. With the API, you can control device behavior and responses more flexibly."
+	title="The API rate limit is 10 requests per second. With the API, you can control device behavior and responses more flexibly."
 />
 
 <Callout
@@ -32,7 +32,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/image \
+      https://dot.mindreset.tech/api/authV2/open/device/image \
       -H 'Authorization: Bearer {{API_KEY}}' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -50,7 +50,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     ```python
     import requests
 
-    url = "https://dot.mindreset.tech/api/open/image"
+    url = "https://dot.mindreset.tech/api/authV2/open/device/image"
     headers = {
         "Authorization": "Bearer {{API_KEY}}",
         "Content-Type": "application/json"
@@ -71,7 +71,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   </Tab>
   <Tab value="JavaScript">
     ```javascript
-    fetch("https://dot.mindreset.tech/api/open/image", {
+    fetch("https://dot.mindreset.tech/api/authV2/open/device/image", {
       method: "POST",
       headers: {
         "Authorization": "Bearer {{API_KEY}}",
@@ -97,7 +97,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       result?: any;
     };
 
-    fetch("https://dot.mindreset.tech/api/open/image", {
+    fetch("https://dot.mindreset.tech/api/authV2/open/device/image", {
       method: "POST",
       headers: {
         "Authorization": "Bearer {{API_KEY}}",
@@ -133,7 +133,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     )
 
     func main() {
-      url := "https://dot.mindreset.tech/api/open/image"
+      url := "https://dot.mindreset.tech/api/authV2/open/device/image"
       payload := map[string]interface{}{
         "refreshNow": {{show content immediately}},
         "deviceId": "{{device serial number}}",
@@ -163,7 +163,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     fn main() {
         let client = Client::new();
-        let url = "https://dot.mindreset.tech/api/open/image";
+        let url = "https://dot.mindreset.tech/api/authV2/open/device/image";
         let res = client.post(url)
             .header("Authorization", "Bearer {{API_KEY}}")
             .header("Content-Type", "application/json")
@@ -209,7 +209,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/image \
+      https://dot.mindreset.tech/api/authV2/open/device/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -231,7 +231,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/image \
+      https://dot.mindreset.tech/api/authV2/open/device/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -254,7 +254,7 @@ Use common image tools (e.g., Figma, Sketch, Adobe Photoshop) to convert text to
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/image \
+      https://dot.mindreset.tech/api/authV2/open/device/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -286,7 +286,7 @@ Error diffusion distributes each pixel’s quantization error to neighboring pix
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/image \
+      https://dot.mindreset.tech/api/authV2/open/device/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -361,7 +361,7 @@ Ordered dithering applies a fixed, periodic threshold matrix to image pixels, un
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/image \
+      https://dot.mindreset.tech/api/authV2/open/device/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -385,7 +385,7 @@ If you primarily display text images via the Image API, we recommend disabling d
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/image \
+      https://dot.mindreset.tech/api/authV2/open/device/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -463,11 +463,6 @@ If you primarily display text images via the Image API, we recommend disabling d
 		message: {
 			description: 'Description',
 			type: 'string',
-			required: true,
-		},
-		result: {
-			description: 'Processing data',
-			type: 'object',
 			required: true,
 		},
 	}}

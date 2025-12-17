@@ -1,0 +1,202 @@
+---
+title: Device Switch
+---
+
+import Link from 'fumadocs-core/link';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## Quick Guide
+
+### Prerequisites
+
+1. Make sure you have <Link href="/docs/service/studio/api/get_api">retrieved and saved your API key</Link> in the Dot. App;
+2. Make sure you own at least one device and have <Link href="/docs/service/studio/api/get_device_id">obtained its device serial number</Link>;
+3. Make sure your device is connected to power;
+4. Make sure your device is connected to the network;
+
+<Callout
+	type="info"
+	title="The API rate limit is 10 requests per second. With the API, you can control device behavior and responses more flexibly."
+/>
+
+<Callout
+	type="info"
+	title="Placeholders wrapped in '{{variable}}' indicate values you must replace. Fill them with your actual values and remove the '{{}}' braces."
+/>
+
+### Request Examples
+
+<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/authV2/open/device/{{DEVICE_ID}}/next \
+      -H 'Authorization: Bearer {{API_KEY}}'
+    ```
+  </Tab>
+  <Tab value="Python">
+    ```python
+    import requests
+
+    device_id = "{{DEVICE_ID}}"
+    url = f"https://dot.mindreset.tech/api/authV2/open/device/{device_id}/next"
+    headers = {
+        "Authorization": "Bearer {{API_KEY}}"
+    }
+    response = requests.post(url, headers=headers)
+    print(response.json())
+    ```
+
+  </Tab>
+  <Tab value="JavaScript">
+    ```javascript
+    const deviceId = "{{DEVICE_ID}}";
+    fetch(`https://dot.mindreset.tech/api/authV2/open/device/${deviceId}/next`, {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    }).then(res => res.json()).then(console.log);
+    ```
+  </Tab>
+  <Tab value="TypeScript">
+    ```typescript
+    type ApiResponse = {
+      code: number;
+      message: string;
+      result?: any;
+    };
+
+    const deviceId = "{{DEVICE_ID}}";
+    fetch(`https://dot.mindreset.tech/api/authV2/open/device/${deviceId}/next`, {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    })
+      .then(res => res.json() as Promise<ApiResponse>)
+      .then(data => {
+        console.log(data);
+      });
+    ```
+
+  </Tab>
+  <Tab value="Go">
+    ```go
+    package main
+
+    import (
+      "fmt"
+      "net/http"
+      "io/ioutil"
+    )
+
+    func main() {
+      deviceId := "{{DEVICE_ID}}"
+      url := fmt.Sprintf("https://dot.mindreset.tech/api/authV2/open/device/%s/next", deviceId)
+      req, _ := http.NewRequest("POST", url, nil)
+      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
+      client := &http.Client{}
+      resp, _ := client.Do(req)
+      defer resp.Body.Close()
+      respBody, _ := ioutil.ReadAll(resp.Body)
+      fmt.Println(string(respBody))
+    }
+    ```
+
+  </Tab>
+  <Tab value="Rust">
+    ```rust
+    use reqwest::blocking::Client;
+
+    fn main() {
+        let device_id = "{{DEVICE_ID}}";
+        let url = format!("https://dot.mindreset.tech/api/authV2/open/device/{}/next", device_id);
+        let client = Client::new();
+        let res = client.post(&url)
+            .header("Authorization", "Bearer {{API_KEY}}")
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
+        println!("{}", res);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### Response Example
+
+```json
+{
+	"code": 200,
+	"message": "Device ABCD1234ABCD successfully switched to next content",
+	"result": {
+		"message": "Device ABCD1234ABCD successfully switched to next content"
+	}
+}
+```
+
+## Reference Usage
+
+This API allows you to control the device to immediately switch to the next item in the content loop without waiting for the scheduled refresh time. This is particularly useful for:
+
+- Remotely triggering content updates
+- Testing content switching functionality
+- Implementing custom content scheduling logic
+
+## Troubleshooting
+
+### Endpoint
+
+`/api/authV2/open/device/:id/next`
+
+### Method
+
+`POST`
+
+### Path Parameters
+
+<TypeTable
+	type={{
+		id: {
+			description: 'Device serial number',
+			type: 'string',
+			required: true,
+		},
+	}}
+/>
+
+### Request Schema
+
+This interface does not require a request body, only an API key in the request header and a device ID in the path parameter.
+
+### Response Schema
+
+<TypeTable
+	type={{
+		code: {
+			description: 'Status code',
+			type: 'number',
+			required: true,
+		},
+		message: {
+			description: 'Response description',
+			type: 'string',
+			required: true,
+		},
+	}}
+/>
+
+### Status Codes
+
+| code  | Meaning                 | Description                                  |
+| :---- | :---------------------- | :------------------------------------------- |
+| `200` | Success                 | Device successfully switched to next content |
+| `400` | Invalid params          | Invalid device ID format                     |
+| `401` | Unauthorized            | Invalid or expired API key                   |
+| `403` | Forbidden               | No permission to operate this device         |
+| `404` | Not found               | Device not found or not registered           |
+| `500` | Device response failure | Device offline or switch failed              |

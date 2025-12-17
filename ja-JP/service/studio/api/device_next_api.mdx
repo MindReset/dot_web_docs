@@ -1,0 +1,202 @@
+---
+title: デバイス切替
+---
+
+import Link from 'fumadocs-core/link';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## クイックガイド
+
+### 必要条件
+
+1. Dot. アプリで<Link href="/docs/service/studio/api/get_api">API キーを取得して保存</Link>していること
+2. 自分のデバイスが少なくとも 1 台あり、<Link href="/docs/service/studio/api/get_device_id">デバイスのシリアル番号</Link>を取得していること
+3. デバイスが電源に接続されていること
+4. デバイスがネットワークに接続されていること
+
+<Callout
+	type="info"
+	title="APIのリクエスト制限は1秒あたり10回です。APIを使うとデバイスの動作と応答をより柔軟に制御できます。"
+/>
+
+<Callout
+	type="info"
+	title="ドキュメント中の「{{変数}}」は置換が必要なプレースホルダーです。実際の値に置き換え、「{{}}」は削除してください。"
+/>
+
+### リクエスト例
+
+<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/authV2/open/device/{{DEVICE_ID}}/next \
+      -H 'Authorization: Bearer {{API_KEY}}'
+    ```
+  </Tab>
+  <Tab value="Python">
+    ```python
+    import requests
+
+    device_id = "{{DEVICE_ID}}"
+    url = f"https://dot.mindreset.tech/api/authV2/open/device/{device_id}/next"
+    headers = {
+        "Authorization": "Bearer {{API_KEY}}"
+    }
+    response = requests.post(url, headers=headers)
+    print(response.json())
+    ```
+
+  </Tab>
+  <Tab value="JavaScript">
+    ```javascript
+    const deviceId = "{{DEVICE_ID}}";
+    fetch(`https://dot.mindreset.tech/api/authV2/open/device/${deviceId}/next`, {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    }).then(res => res.json()).then(console.log);
+    ```
+  </Tab>
+  <Tab value="TypeScript">
+    ```typescript
+    type ApiResponse = {
+      code: number;
+      message: string;
+      result?: any;
+    };
+
+    const deviceId = "{{DEVICE_ID}}";
+    fetch(`https://dot.mindreset.tech/api/authV2/open/device/${deviceId}/next`, {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    })
+      .then(res => res.json() as Promise<ApiResponse>)
+      .then(data => {
+        console.log(data);
+      });
+    ```
+
+  </Tab>
+  <Tab value="Go">
+    ```go
+    package main
+
+    import (
+      "fmt"
+      "net/http"
+      "io/ioutil"
+    )
+
+    func main() {
+      deviceId := "{{DEVICE_ID}}"
+      url := fmt.Sprintf("https://dot.mindreset.tech/api/authV2/open/device/%s/next", deviceId)
+      req, _ := http.NewRequest("POST", url, nil)
+      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
+      client := &http.Client{}
+      resp, _ := client.Do(req)
+      defer resp.Body.Close()
+      respBody, _ := ioutil.ReadAll(resp.Body)
+      fmt.Println(string(respBody))
+    }
+    ```
+
+  </Tab>
+  <Tab value="Rust">
+    ```rust
+    use reqwest::blocking::Client;
+
+    fn main() {
+        let device_id = "{{DEVICE_ID}}";
+        let url = format!("https://dot.mindreset.tech/api/authV2/open/device/{}/next", device_id);
+        let client = Client::new();
+        let res = client.post(&url)
+            .header("Authorization", "Bearer {{API_KEY}}")
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
+        println!("{}", res);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### レスポンス例
+
+```json
+{
+	"code": 200,
+	"message": "デバイス ABCD1234ABCD が次のコンテンツに正常に切り替わりました",
+	"result": {
+		"message": "デバイス ABCD1234ABCD が次のコンテンツに正常に切り替わりました"
+	}
+}
+```
+
+## 参考ユースケース
+
+この API を使用すると、予定されたリフレッシュ時刻を待つことなく、デバイスをコンテンツループ内の次の項目に即座に切り替えることができます。以下のシナリオで特に役立ちます:
+
+- リモートでコンテンツ更新をトリガー
+- コンテンツ切替機能のテスト
+- カスタムコンテンツスケジューリングロジックの実装
+
+## トラブルシューティング
+
+### リクエストパス
+
+`/api/authV2/open/device/:id/next`
+
+### メソッド
+
+`POST`
+
+### パスパラメータ
+
+<TypeTable
+	type={{
+		id: {
+			description: 'デバイスのシリアル番号',
+			type: 'string',
+			required: true,
+		},
+	}}
+/>
+
+### リクエスト構造
+
+このインターフェースはリクエストボディを必要とせず、リクエストヘッダーに API キーとパスパラメータにデバイス ID を提供するだけです。
+
+### レスポンス構造
+
+<TypeTable
+	type={{
+		code: {
+			description: 'ステータスコード',
+			type: 'number',
+			required: true,
+		},
+		message: {
+			description: '応答説明',
+			type: 'string',
+			required: true,
+		},
+	}}
+/>
+
+### レスポンスコード
+
+| code  | 意味             | 説明                                   |
+| :---- | :--------------- | :------------------------------------- |
+| `200` | 成功             | デバイスが次のコンテンツに切り替え成功 |
+| `400` | パラメータ不正   | デバイスIDの形式エラー                 |
+| `401` | 未認証           | API キーが無効または期限切れ           |
+| `403` | 権限不足         | このデバイスを操作する権限なし         |
+| `404` | 未検出           | デバイスが存在しない・未登録           |
+| `500` | デバイス応答失敗 | デバイスがオフラインまたは切替失敗     |

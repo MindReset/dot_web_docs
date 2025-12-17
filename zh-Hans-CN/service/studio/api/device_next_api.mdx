@@ -1,0 +1,202 @@
+---
+title: 设备切换
+---
+
+import Link from 'fumadocs-core/link';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## 快速指引
+
+### 必要条件
+
+1. 确保您已在 Dot. App 中<Link href="/docs/service/studio/api/get_api">获取并保存了 API 密钥</Link>；
+2. 确保您至少有一台所属于自己的设备并已<Link href="/docs/service/studio/api/get_device_id">获取设备序列号</Link>；
+3. 确保您的设备已接入电源；
+4. 确保您的设备已接入网络；
+
+<Callout
+	type="info"
+	title="API 的请求限制为每秒 10 次,通过 API 请求,您可以更灵活地控制设备的行为和响应。"
+/>
+
+<Callout
+	type="info"
+	title="文档中的 '{{变量}}' 花括号表示需要替换的变量,请根据实际情况进行替换,并移除'{{}}'。"
+/>
+
+### 请求示例
+
+<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X POST \
+      https://dot.mindreset.tech/api/authV2/open/device/{{DEVICE_ID}}/next \
+      -H 'Authorization: Bearer {{API_KEY}}'
+    ```
+  </Tab>
+  <Tab value="Python">
+    ```python
+    import requests
+
+    device_id = "{{DEVICE_ID}}"
+    url = f"https://dot.mindreset.tech/api/authV2/open/device/{device_id}/next"
+    headers = {
+        "Authorization": "Bearer {{API_KEY}}"
+    }
+    response = requests.post(url, headers=headers)
+    print(response.json())
+    ```
+
+  </Tab>
+  <Tab value="JavaScript">
+    ```javascript
+    const deviceId = "{{DEVICE_ID}}";
+    fetch(`https://dot.mindreset.tech/api/authV2/open/device/${deviceId}/next`, {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    }).then(res => res.json()).then(console.log);
+    ```
+  </Tab>
+  <Tab value="TypeScript">
+    ```typescript
+    type ApiResponse = {
+      code: number;
+      message: string;
+      result?: any;
+    };
+
+    const deviceId = "{{DEVICE_ID}}";
+    fetch(`https://dot.mindreset.tech/api/authV2/open/device/${deviceId}/next`, {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    })
+      .then(res => res.json() as Promise<ApiResponse>)
+      .then(data => {
+        console.log(data);
+      });
+    ```
+
+  </Tab>
+  <Tab value="Go">
+    ```go
+    package main
+
+    import (
+      "fmt"
+      "net/http"
+      "io/ioutil"
+    )
+
+    func main() {
+      deviceId := "{{DEVICE_ID}}"
+      url := fmt.Sprintf("https://dot.mindreset.tech/api/authV2/open/device/%s/next", deviceId)
+      req, _ := http.NewRequest("POST", url, nil)
+      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
+      client := &http.Client{}
+      resp, _ := client.Do(req)
+      defer resp.Body.Close()
+      respBody, _ := ioutil.ReadAll(resp.Body)
+      fmt.Println(string(respBody))
+    }
+    ```
+
+  </Tab>
+  <Tab value="Rust">
+    ```rust
+    use reqwest::blocking::Client;
+
+    fn main() {
+        let device_id = "{{DEVICE_ID}}";
+        let url = format!("https://dot.mindreset.tech/api/authV2/open/device/{}/next", device_id);
+        let client = Client::new();
+        let res = client.post(&url)
+            .header("Authorization", "Bearer {{API_KEY}}")
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
+        println!("{}", res);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### 响应示例
+
+```json
+{
+	"code": 200,
+	"message": "设备 ABCD1234ABCD 已成功切换到下一个内容",
+	"result": {
+		"message": "设备 ABCD1234ABCD 已成功切换到下一个内容"
+	}
+}
+```
+
+## 参考使用
+
+此 API 允许您控制设备立即切换到内容循环中的下一个项目,无需等待预定的刷新时间。这对于以下场景特别有用:
+
+- 远程触发内容更新
+- 测试内容切换功能
+- 实现自定义的内容调度逻辑
+
+## 问题排查
+
+### 请求路径
+
+`/api/authV2/open/device/:id/next`
+
+### 请求方法
+
+`POST`
+
+### 路径参数
+
+<TypeTable
+	type={{
+		id: {
+			description: '设备序列号',
+			type: 'string',
+			required: true,
+		},
+	}}
+/>
+
+### 请求结构
+
+此接口不需要请求体,仅需在请求头中提供 API 密钥和路径参数中的设备 ID。
+
+### 响应结构
+
+<TypeTable
+	type={{
+		code: {
+			description: '状态码',
+			type: 'number',
+			required: true,
+		},
+		message: {
+			description: '响应描述',
+			type: 'string',
+			required: true,
+		},
+	}}
+/>
+
+### 响应说明
+
+| code  | 含义         | 描述                       |
+| ----- | ------------ | -------------------------- |
+| `200` | 成功         | 设备已成功切换到下一个内容 |
+| `400` | 参数错误     | 设备 ID 格式错误           |
+| `401` | 未授权       | API 密钥无效或已过期       |
+| `403` | 权限不足     | 您没有权限操作此设备       |
+| `404` | 设备不存在   | 设备不存在或未注册         |
+| `500` | 设备响应失败 | 设备离线或切换内容失败     |

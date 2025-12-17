@@ -1,5 +1,5 @@
 ---
-title: 画像 API
+title: 画像
 ---
 
 import Link from 'fumadocs-core/link';
@@ -18,7 +18,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 <Callout
 	type="info"
-	title="APIリクエストはアプリ設定の最短5分制限を受けません。APIのリクエスト制限は1秒あたり1回です。したがって、APIを使うとデバイスの動作と応答をより柔軟に制御できます。"
+	title="APIのリクエスト制限は1秒あたり10回です。APIを使うとデバイスの動作と応答をより柔軟に制御できます。"
 />
 
 <Callout
@@ -32,7 +32,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/image \
+      https://dot.mindreset.tech/api/authV2/open/device/image \
       -H 'Authorization: Bearer {{API_KEY}}' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -50,7 +50,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     ```python
     import requests
 
-    url = "https://dot.mindreset.tech/api/open/image"
+    url = "https://dot.mindreset.tech/api/authV2/open/device/image"
     headers = {
         "Authorization": "Bearer {{API_KEY}}",
         "Content-Type": "application/json"
@@ -71,7 +71,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   </Tab>
   <Tab value="JavaScript">
     ```javascript
-    fetch("https://dot.mindreset.tech/api/open/image", {
+    fetch("https://dot.mindreset.tech/api/authV2/open/device/image", {
       method: "POST",
       headers: {
         "Authorization": "Bearer {{API_KEY}}",
@@ -97,7 +97,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       result?: any;
     };
 
-    fetch("https://dot.mindreset.tech/api/open/image", {
+    fetch("https://dot.mindreset.tech/api/authV2/open/device/image", {
       method: "POST",
       headers: {
         "Authorization": "Bearer {{API_KEY}}",
@@ -133,7 +133,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     )
 
     func main() {
-      url := "https://dot.mindreset.tech/api/open/image"
+      url := "https://dot.mindreset.tech/api/authV2/open/device/image"
       payload := map[string]interface{}{
         "refreshNow": {{内容を即時表示するか}},
         "deviceId": "{{デバイスシリアル番号}}",
@@ -163,7 +163,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     fn main() {
         let client = Client::new();
-        let url = "https://dot.mindreset.tech/api/open/image";
+        let url = "https://dot.mindreset.tech/api/authV2/open/device/image";
         let res = client.post(url)
             .header("Authorization", "Bearer {{API_KEY}}")
             .header("Content-Type", "application/json")
@@ -209,7 +209,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/image \
+      https://dot.mindreset.tech/api/authV2/open/device/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -231,7 +231,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/image \
+      https://dot.mindreset.tech/api/authV2/open/device/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -254,7 +254,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/image \
+      https://dot.mindreset.tech/api/authV2/open/device/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -286,7 +286,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/image \
+      https://dot.mindreset.tech/api/authV2/open/device/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -361,7 +361,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/image \
+      https://dot.mindreset.tech/api/authV2/open/device/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -385,7 +385,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/open/image \
+      https://dot.mindreset.tech/api/authV2/open/device/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
@@ -463,11 +463,6 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
 		message: {
 			description: '応答メッセージ',
 			type: 'string',
-			required: true,
-		},
-		result: {
-			description: '処理結果',
-			type: 'object',
 			required: true,
 		},
 	}}

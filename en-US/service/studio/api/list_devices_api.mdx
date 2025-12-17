@@ -1,0 +1,194 @@
+---
+title: Device List
+---
+
+import Link from 'fumadocs-core/link';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## Quick Guide
+
+### Prerequisites
+
+1. Make sure you have <Link href="/docs/service/studio/api/get_api">retrieved and saved your API key</Link> in the Dot. App;
+
+<Callout
+	type="info"
+	title="The API rate limit is 10 requests per second. With the API, you can control device behavior and responses more flexibly."
+/>
+
+<Callout
+	type="info"
+	title="Placeholders wrapped in '{{variable}}' indicate values you must replace. Fill them with your actual values and remove the '{{}}' braces."
+/>
+
+### Request Examples
+
+<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X GET \
+      https://dot.mindreset.tech/api/authV2/open/devices \
+      -H 'Authorization: Bearer {{API_KEY}}'
+    ```
+  </Tab>
+  <Tab value="Python">
+    ```python
+    import requests
+
+    url = "https://dot.mindreset.tech/api/authV2/open/devices"
+    headers = {
+        "Authorization": "Bearer {{API_KEY}}"
+    }
+    response = requests.get(url, headers=headers)
+    print(response.json())
+    ```
+
+  </Tab>
+  <Tab value="JavaScript">
+    ```javascript
+    fetch("https://dot.mindreset.tech/api/authV2/open/devices", {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    }).then(res => res.json()).then(console.log);
+    ```
+  </Tab>
+  <Tab value="TypeScript">
+    ```typescript
+    type Device = {
+      id: string;
+      series: string;
+      model: string;
+      edition: number;
+    };
+
+    fetch("https://dot.mindreset.tech/api/authV2/open/devices", {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    })
+      .then(res => res.json() as Promise<Device[]>)
+      .then(data => {
+        console.log(data);
+      });
+    ```
+
+  </Tab>
+  <Tab value="Go">
+    ```go
+    package main
+
+    import (
+      "fmt"
+      "net/http"
+      "io/ioutil"
+    )
+
+    func main() {
+      url := "https://dot.mindreset.tech/api/authV2/open/devices"
+      req, _ := http.NewRequest("GET", url, nil)
+      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
+      client := &http.Client{}
+      resp, _ := client.Do(req)
+      defer resp.Body.Close()
+      respBody, _ := ioutil.ReadAll(resp.Body)
+      fmt.Println(string(respBody))
+    }
+    ```
+
+  </Tab>
+  <Tab value="Rust">
+    ```rust
+    use reqwest::blocking::Client;
+
+    fn main() {
+        let client = Client::new();
+        let url = "https://dot.mindreset.tech/api/authV2/open/devices";
+        let res = client.get(url)
+            .header("Authorization", "Bearer {{API_KEY}}")
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
+        println!("{}", res);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### Response Example
+
+```json
+[
+	{
+		"series": "quote",
+		"model": "quote_0",
+		"edition": 1,
+		"id": "ABCD1234ABCD"
+	},
+	{
+		"series": "quote",
+		"model": "quote_0",
+		"edition": 2,
+		"id": "ABCD5112ABCD"
+	}
+]
+```
+
+## Troubleshooting
+
+### Endpoint
+
+`/api/authV2/open/devices`
+
+### Method
+
+`GET`
+
+### Request Schema
+
+This interface does not require a request body, only an API key in the request header.
+
+### Response Schema
+
+<TypeTable
+	type={{
+		'[]': {
+			description: 'Device list array',
+			type: 'array',
+			required: true,
+		},
+		id: {
+			description: 'Device serial number',
+			type: 'string',
+			required: true,
+		},
+		series: {
+			description: 'Device series (e.g., quote)',
+			type: 'string',
+			required: true,
+		},
+		model: {
+			description: 'Device model (e.g., quote_0)',
+			type: 'string',
+			required: true,
+		},
+		edition: {
+			description: 'Device edition (1 or 2)',
+			type: 'number',
+			required: true,
+		},
+	}}
+/>
+
+### Status Codes
+
+| code  | Meaning      | Description                        |
+| :---- | :----------- | :--------------------------------- |
+| `200` | Success      | Successfully retrieved device list |
+| `401` | Unauthorized | Invalid or expired API key         |
+| `500` | Server Error | Internal server error              |

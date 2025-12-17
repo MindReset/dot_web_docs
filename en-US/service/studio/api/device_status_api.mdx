@@ -1,0 +1,224 @@
+---
+title: Device Status
+---
+
+import Link from 'fumadocs-core/link';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## Quick Guide
+
+### Prerequisites
+
+1. Make sure you have <Link href="/docs/service/studio/api/get_api">retrieved and saved your API key</Link> in the Dot. App;
+2. Make sure you own at least one device and have <Link href="/docs/service/studio/api/get_device_id">obtained its device serial number</Link>;
+
+<Callout
+	type="info"
+	title="The API rate limit is 10 requests per second. With the API, you can control device behavior and responses more flexibly."
+/>
+
+<Callout
+	type="info"
+	title="Placeholders wrapped in '{{variable}}' indicate values you must replace. Fill them with your actual values and remove the '{{}}' braces."
+/>
+
+### Request Examples
+
+<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
+  <Tab value="cURL">
+    ```bash
+    curl -X GET \
+      https://dot.mindreset.tech/api/authV2/open/device/{{DEVICE_ID}}/status \
+      -H 'Authorization: Bearer {{API_KEY}}'
+    ```
+  </Tab>
+  <Tab value="Python">
+    ```python
+    import requests
+
+    device_id = "{{DEVICE_ID}}"
+    url = f"https://dot.mindreset.tech/api/authV2/open/device/{device_id}/status"
+    headers = {
+        "Authorization": "Bearer {{API_KEY}}"
+    }
+    response = requests.get(url, headers=headers)
+    print(response.json())
+    ```
+
+  </Tab>
+  <Tab value="JavaScript">
+    ```javascript
+    const deviceId = "{{DEVICE_ID}}";
+    fetch(`https://dot.mindreset.tech/api/authV2/open/device/${deviceId}/status`, {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    }).then(res => res.json()).then(console.log);
+    ```
+  </Tab>
+  <Tab value="TypeScript">
+    ```typescript
+    type DeviceStatus = {
+      status: string;
+      statusDescription: string;
+      lastRenderTime: string;
+      nextBattRenderTime: string;
+      nextPowerRenderTime: string;
+      deviceId: string;
+      location: string | null;
+      alias: string | null;
+    };
+
+    const deviceId = "{{DEVICE_ID}}";
+    fetch(`https://dot.mindreset.tech/api/authV2/open/device/${deviceId}/status`, {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    })
+      .then(res => res.json() as Promise<DeviceStatus>)
+      .then(data => {
+        console.log(data);
+      });
+    ```
+
+  </Tab>
+  <Tab value="Go">
+    ```go
+    package main
+
+    import (
+      "fmt"
+      "net/http"
+      "io/ioutil"
+    )
+
+    func main() {
+      deviceId := "{{DEVICE_ID}}"
+      url := fmt.Sprintf("https://dot.mindreset.tech/api/authV2/open/device/%s/status", deviceId)
+      req, _ := http.NewRequest("GET", url, nil)
+      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
+      client := &http.Client{}
+      resp, _ := client.Do(req)
+      defer resp.Body.Close()
+      respBody, _ := ioutil.ReadAll(resp.Body)
+      fmt.Println(string(respBody))
+    }
+    ```
+
+  </Tab>
+  <Tab value="Rust">
+    ```rust
+    use reqwest::blocking::Client;
+
+    fn main() {
+        let device_id = "{{DEVICE_ID}}";
+        let url = format!("https://dot.mindreset.tech/api/authV2/open/device/{}/status", device_id);
+        let client = Client::new();
+        let res = client.get(&url)
+            .header("Authorization", "Bearer {{API_KEY}}")
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
+        println!("{}", res);
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### Response Example
+
+```json
+{
+	"status": "Online",
+	"statusDescription": "Device is online and operating normally",
+	"lastRenderTime": "12/17/2025 14:30",
+	"nextBattRenderTime": "12/17/2025 15:00",
+	"nextPowerRenderTime": "12/17/2025 15:30",
+	"deviceId": "ABCD1234ABCD",
+	"location": "Study Room",
+	"alias": "My Device"
+}
+```
+
+## Troubleshooting
+
+### Endpoint
+
+`/api/authV2/open/device/:id/status`
+
+### Method
+
+`GET`
+
+### Path Parameters
+
+<TypeTable
+	type={{
+		id: {
+			description: 'Device serial number',
+			type: 'string',
+			required: true,
+		},
+	}}
+/>
+
+### Response Schema
+
+<TypeTable
+	type={{
+		status: {
+			description: 'Current device status',
+			type: 'string',
+			required: true,
+		},
+		statusDescription: {
+			description: 'Detailed description of device status',
+			type: 'string',
+			required: true,
+		},
+		lastRenderTime: {
+			description: 'Time when device last rendered',
+			type: 'string',
+			required: true,
+		},
+		nextBattRenderTime: {
+			description: 'Next rendering time in battery mode',
+			type: 'string',
+			required: true,
+		},
+		nextPowerRenderTime: {
+			description: 'Next rendering time in power mode',
+			type: 'string',
+			required: true,
+		},
+		deviceId: {
+			description: 'Device serial number',
+			type: 'string',
+			required: true,
+		},
+		location: {
+			description: 'Device location',
+			type: 'string | null',
+		},
+		alias: {
+			description: 'Device alias',
+			type: 'string | null',
+		},
+	}}
+/>
+
+### Status Codes
+
+| code  | Meaning        | Description                          |
+| :---- | :------------- | :----------------------------------- |
+| `200` | Success        | Successfully retrieved device status |
+| `400` | Invalid params | Invalid device ID format             |
+| `401` | Unauthorized   | Invalid or expired API key           |
+| `403` | Forbidden      | No permission to view this device    |
+| `404` | Not found      | Device not found or not registered   |
+| `500` | Server Error   | Internal server error                |
