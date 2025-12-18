@@ -1,9 +1,10 @@
 ---
-title: 图像
+title: 控制图像内容
 ---
 
 import Link from 'fumadocs-core/link';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
 
 ## 快速指引
@@ -28,164 +29,49 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### 请求示例
 
-<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
-  <Tab value="cURL">
-    ```bash
-    curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
-      -H 'Authorization: Bearer {{API_KEY}}' \
-      -H 'Content-Type: application/json' \
-      -d '{
-        "refreshNow": {{是否立刻显示内容}},
-        "deviceId": "{{设备序列号}}",
-        "image": "{{base64 编码 PNG 图像数据}}",
-        "link": "{{碰一碰跳转链接}}",
-        "border": {{屏幕边缘的颜色编号}},
-        "ditherType": "{{抖动类型}}",
-        "ditherKernel": "{{抖动算法}}"
-      }'
-    ```
-  </Tab>
-  <Tab value="Python">
-    ```python
-    import requests
-
-    url = "https://dot.mindreset.tech/api/authV2/open/device/image"
-    headers = {
-        "Authorization": "Bearer {{API_KEY}}",
-        "Content-Type": "application/json"
-    }
-    data = {
-        "refreshNow": {{是否立刻显示内容}},
-        "deviceId": "{{设备序列号}}",
-        "image": "{{base64 编码 PNG 图像数据}}",
-        "link": "{{碰一碰跳转链接}}",
-        "border": {{屏幕边缘的颜色编号}},
-        "ditherType": "{{抖动类型}}",
-        "ditherKernel": "{{抖动算法}}"
-    }
-    response = requests.post(url, json=data, headers=headers)
-    print(response.json())
-    ```
-
-  </Tab>
-  <Tab value="JavaScript">
-    ```javascript
-    fetch("https://dot.mindreset.tech/api/authV2/open/device/image", {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer {{API_KEY}}",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        refreshNow: {{是否立刻显示内容}},
-        deviceId: "{{设备序列号}}",
-        image: "{{base64 编码 PNG 图像数据}}",
-        link: "{{碰一碰跳转链接}}",
-        border: {{屏幕边缘的颜色编号}},
-        ditherType: "{{抖动类型}}",
-        ditherKernel: "{{抖动算法}}"
-      })
-    }).then(res => res.json()).then(console.log);
-    ```
-  </Tab>
-  <Tab value="TypeScript">
-    ```typescript
-    type ApiResponse = {
-      code: number;
-      message: string;
-      result?: any;
-    };
-
-    fetch("https://dot.mindreset.tech/api/authV2/open/device/image", {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer {{API_KEY}}",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        refreshNow: {{是否立刻显示内容}},
-        deviceId: "{{设备序列号}}",
-        image: "{{base64 编码 PNG 图像数据}}",
-        link: "{{碰一碰跳转链接}}",
-        border: {{屏幕边缘的颜色编号}},
-        ditherType: "{{抖动类型}}",
-        ditherKernel: "{{抖动算法}}"
-      })
-    })
-      .then(res => res.json() as Promise<ApiResponse>)
-      .then(data => {
-        console.log(data);
-      });
-    ```
-
-  </Tab>
-  <Tab value="Go">
-    ```go
-    package main
-
-    import (
-      "bytes"
-      "encoding/json"
-      "fmt"
-      "net/http"
-      "io/ioutil"
-    )
-
-    func main() {
-      url := "https://dot.mindreset.tech/api/authV2/open/device/image"
-      payload := map[string]interface{}{
-        "refreshNow": {{是否立刻显示内容}},
-        "deviceId": "{{设备序列号}}",
-        "image": "{{base64 编码 PNG 图像数据}}",
-        "link": "{{碰一碰跳转链接}}",
-        "border": {{屏幕边缘的颜色编号}},
-        "ditherType": "{{抖动类型}}",
-        "ditherKernel": "{{抖动算法}}"
-      }
-      body, _ := json.Marshal(payload)
-      req, _ := http.NewRequest("POST", url, bytes.NewBuffer(body))
-      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
-      req.Header.Set("Content-Type", "application/json")
-      client := &http.Client{}
-      resp, _ := client.Do(req)
-      defer resp.Body.Close()
-      respBody, _ := ioutil.ReadAll(resp.Body)
-      fmt.Println(string(respBody))
-    }
-    ```
-
-  </Tab>
-  <Tab value="Rust">
-    ```rust
-    use reqwest::blocking::Client;
-    use serde_json::json;
-
-    fn main() {
-        let client = Client::new();
-        let url = "https://dot.mindreset.tech/api/authV2/open/device/image";
-        let res = client.post(url)
-            .header("Authorization", "Bearer {{API_KEY}}")
-            .header("Content-Type", "application/json")
-            .json(&json!({
-                "refreshNow": {{是否立刻显示内容}},
-                "deviceId": "{{设备序列号}}",
-                "image": "{{base64 编码 PNG 图像数据}}",
-                "link": "{{碰一碰跳转链接}}",
-                "border": {{屏幕边缘的颜色编号}},
-                "ditherType": "{{抖动类型}}",
-                "ditherKernel": "{{抖动算法}}"
-            }))
-            .send()
-            .unwrap()
-            .text()
-            .unwrap();
-        println!("{}", res);
-    }
-    ```
-
-  </Tab>
-</Tabs>
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/device/image"
+	method="POST"
+	bodyParams={{
+		refreshNow: {
+			type: 'boolean',
+			name: '是否立刻显示内容',
+			default: true,
+		},
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: '设备序列号',
+		},
+		image: {
+			type: 'textarea',
+			required: true,
+			name: 'base64 编码 PNG 图像数据',
+		},
+		link: {
+			type: 'string',
+			name: '碰一碰跳转链接',
+		},
+		border: {
+			type: 'number',
+			name: '屏幕边缘的颜色编号',
+			default: 0,
+		},
+		ditherType: {
+			type: 'string',
+			name: '抖动类型',
+			default: 'DIFFUSION',
+		},
+		ditherKernel: {
+			type: 'string',
+			name: '抖动算法',
+			default: 'FLOYD_STEINBERG',
+		},
+	}}
+	auth={true}
+	defaultOpen={false}
+/>
 
 ### 响应示例
 

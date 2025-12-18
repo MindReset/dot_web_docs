@@ -1,9 +1,9 @@
 ---
-title: Device List
+title: Get Device List
 ---
 
 import Link from 'fumadocs-core/link';
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
 
 ## Quick Guide
@@ -24,101 +24,13 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### Request Examples
 
-<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
-  <Tab value="cURL">
-    ```bash
-    curl -X GET \
-      https://dot.mindreset.tech/api/authV2/open/devices \
-      -H 'Authorization: Bearer {{API_KEY}}'
-    ```
-  </Tab>
-  <Tab value="Python">
-    ```python
-    import requests
-
-    url = "https://dot.mindreset.tech/api/authV2/open/devices"
-    headers = {
-        "Authorization": "Bearer {{API_KEY}}"
-    }
-    response = requests.get(url, headers=headers)
-    print(response.json())
-    ```
-
-  </Tab>
-  <Tab value="JavaScript">
-    ```javascript
-    fetch("https://dot.mindreset.tech/api/authV2/open/devices", {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer {{API_KEY}}"
-      }
-    }).then(res => res.json()).then(console.log);
-    ```
-  </Tab>
-  <Tab value="TypeScript">
-    ```typescript
-    type Device = {
-      id: string;
-      series: string;
-      model: string;
-      edition: number;
-    };
-
-    fetch("https://dot.mindreset.tech/api/authV2/open/devices", {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer {{API_KEY}}"
-      }
-    })
-      .then(res => res.json() as Promise<Device[]>)
-      .then(data => {
-        console.log(data);
-      });
-    ```
-
-  </Tab>
-  <Tab value="Go">
-    ```go
-    package main
-
-    import (
-      "fmt"
-      "net/http"
-      "io/ioutil"
-    )
-
-    func main() {
-      url := "https://dot.mindreset.tech/api/authV2/open/devices"
-      req, _ := http.NewRequest("GET", url, nil)
-      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
-      client := &http.Client{}
-      resp, _ := client.Do(req)
-      defer resp.Body.Close()
-      respBody, _ := ioutil.ReadAll(resp.Body)
-      fmt.Println(string(respBody))
-    }
-    ```
-
-  </Tab>
-  <Tab value="Rust">
-    ```rust
-    use reqwest::blocking::Client;
-
-    fn main() {
-        let client = Client::new();
-        let url = "https://dot.mindreset.tech/api/authV2/open/devices";
-        let res = client.get(url)
-            .header("Authorization", "Bearer {{API_KEY}}")
-            .send()
-            .unwrap()
-            .text()
-            .unwrap();
-        println!("{}", res);
-    }
-    ```
-
-  </Tab>
-</Tabs>
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/devices"
+	method="GET"
+	auth={true}
+	defaultOpen={false}
+/>
 
 ### Response Example
 
@@ -161,26 +73,28 @@ This interface does not require a request body, only an API key in the request h
 			description: 'Device list array',
 			type: 'array',
 			required: true,
-		},
-		id: {
-			description: 'Device serial number',
-			type: 'string',
-			required: true,
-		},
-		series: {
-			description: 'Device series (e.g., quote)',
-			type: 'string',
-			required: true,
-		},
-		model: {
-			description: 'Device model (e.g., quote_0)',
-			type: 'string',
-			required: true,
-		},
-		edition: {
-			description: 'Device edition (1 or 2)',
-			type: 'number',
-			required: true,
+			items: {
+				id: {
+					description: 'Device serial number',
+					type: 'string',
+					required: true,
+				},
+				series: {
+					description: 'Device series (e.g., quote)',
+					type: 'string',
+					required: true,
+				},
+				model: {
+					description: 'Device model (e.g., quote_0)',
+					type: 'string',
+					required: true,
+				},
+				edition: {
+					description: 'Device edition (1 or 2)',
+					type: 'number',
+					required: true,
+				},
+			},
 		},
 	}}
 />

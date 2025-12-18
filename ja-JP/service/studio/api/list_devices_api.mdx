@@ -1,9 +1,9 @@
 ---
-title: デバイス一覧
+title: デバイス一覧を取得
 ---
 
 import Link from 'fumadocs-core/link';
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
 
 ## クイックガイド
@@ -24,101 +24,13 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### リクエスト例
 
-<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
-  <Tab value="cURL">
-    ```bash
-    curl -X GET \
-      https://dot.mindreset.tech/api/authV2/open/devices \
-      -H 'Authorization: Bearer {{API_KEY}}'
-    ```
-  </Tab>
-  <Tab value="Python">
-    ```python
-    import requests
-
-    url = "https://dot.mindreset.tech/api/authV2/open/devices"
-    headers = {
-        "Authorization": "Bearer {{API_KEY}}"
-    }
-    response = requests.get(url, headers=headers)
-    print(response.json())
-    ```
-
-  </Tab>
-  <Tab value="JavaScript">
-    ```javascript
-    fetch("https://dot.mindreset.tech/api/authV2/open/devices", {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer {{API_KEY}}"
-      }
-    }).then(res => res.json()).then(console.log);
-    ```
-  </Tab>
-  <Tab value="TypeScript">
-    ```typescript
-    type Device = {
-      id: string;
-      series: string;
-      model: string;
-      edition: number;
-    };
-
-    fetch("https://dot.mindreset.tech/api/authV2/open/devices", {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer {{API_KEY}}"
-      }
-    })
-      .then(res => res.json() as Promise<Device[]>)
-      .then(data => {
-        console.log(data);
-      });
-    ```
-
-  </Tab>
-  <Tab value="Go">
-    ```go
-    package main
-
-    import (
-      "fmt"
-      "net/http"
-      "io/ioutil"
-    )
-
-    func main() {
-      url := "https://dot.mindreset.tech/api/authV2/open/devices"
-      req, _ := http.NewRequest("GET", url, nil)
-      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
-      client := &http.Client{}
-      resp, _ := client.Do(req)
-      defer resp.Body.Close()
-      respBody, _ := ioutil.ReadAll(resp.Body)
-      fmt.Println(string(respBody))
-    }
-    ```
-
-  </Tab>
-  <Tab value="Rust">
-    ```rust
-    use reqwest::blocking::Client;
-
-    fn main() {
-        let client = Client::new();
-        let url = "https://dot.mindreset.tech/api/authV2/open/devices";
-        let res = client.get(url)
-            .header("Authorization", "Bearer {{API_KEY}}")
-            .send()
-            .unwrap()
-            .text()
-            .unwrap();
-        println!("{}", res);
-    }
-    ```
-
-  </Tab>
-</Tabs>
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/devices"
+	method="GET"
+	auth={true}
+	defaultOpen={false}
+/>
 
 ### レスポンス例
 
@@ -161,26 +73,28 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			description: 'デバイスリスト配列',
 			type: 'array',
 			required: true,
-		},
-		id: {
-			description: 'デバイスのシリアル番号',
-			type: 'string',
-			required: true,
-		},
-		series: {
-			description: 'デバイスシリーズ（例：quote）',
-			type: 'string',
-			required: true,
-		},
-		model: {
-			description: 'デバイスモデル（例：quote_0）',
-			type: 'string',
-			required: true,
-		},
-		edition: {
-			description: 'デバイスエディション（1 または 2）',
-			type: 'number',
-			required: true,
+			items: {
+				id: {
+					description: 'デバイスのシリアル番号',
+					type: 'string',
+					required: true,
+				},
+				series: {
+					description: 'デバイスシリーズ（例：quote）',
+					type: 'string',
+					required: true,
+				},
+				model: {
+					description: 'デバイスモデル（例：quote_0）',
+					type: 'string',
+					required: true,
+				},
+				edition: {
+					description: 'デバイスエディション（1 または 2）',
+					type: 'number',
+					required: true,
+				},
+			},
 		},
 	}}
 />

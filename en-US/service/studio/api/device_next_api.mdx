@@ -1,9 +1,9 @@
 ---
-title: Device Switch
+title: Switch to Next Content
 ---
 
 import Link from 'fumadocs-core/link';
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
 
 ## Quick Guide
@@ -27,105 +27,20 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### Request Examples
 
-<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
-  <Tab value="cURL">
-    ```bash
-    curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/{{DEVICE_ID}}/next \
-      -H 'Authorization: Bearer {{API_KEY}}'
-    ```
-  </Tab>
-  <Tab value="Python">
-    ```python
-    import requests
-
-    device_id = "{{DEVICE_ID}}"
-    url = f"https://dot.mindreset.tech/api/authV2/open/device/{device_id}/next"
-    headers = {
-        "Authorization": "Bearer {{API_KEY}}"
-    }
-    response = requests.post(url, headers=headers)
-    print(response.json())
-    ```
-
-  </Tab>
-  <Tab value="JavaScript">
-    ```javascript
-    const deviceId = "{{DEVICE_ID}}";
-    fetch(`https://dot.mindreset.tech/api/authV2/open/device/${deviceId}/next`, {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer {{API_KEY}}"
-      }
-    }).then(res => res.json()).then(console.log);
-    ```
-  </Tab>
-  <Tab value="TypeScript">
-    ```typescript
-    type ApiResponse = {
-      code: number;
-      message: string;
-      result?: any;
-    };
-
-    const deviceId = "{{DEVICE_ID}}";
-    fetch(`https://dot.mindreset.tech/api/authV2/open/device/${deviceId}/next`, {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer {{API_KEY}}"
-      }
-    })
-      .then(res => res.json() as Promise<ApiResponse>)
-      .then(data => {
-        console.log(data);
-      });
-    ```
-
-  </Tab>
-  <Tab value="Go">
-    ```go
-    package main
-
-    import (
-      "fmt"
-      "net/http"
-      "io/ioutil"
-    )
-
-    func main() {
-      deviceId := "{{DEVICE_ID}}"
-      url := fmt.Sprintf("https://dot.mindreset.tech/api/authV2/open/device/%s/next", deviceId)
-      req, _ := http.NewRequest("POST", url, nil)
-      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
-      client := &http.Client{}
-      resp, _ := client.Do(req)
-      defer resp.Body.Close()
-      respBody, _ := ioutil.ReadAll(resp.Body)
-      fmt.Println(string(respBody))
-    }
-    ```
-
-  </Tab>
-  <Tab value="Rust">
-    ```rust
-    use reqwest::blocking::Client;
-
-    fn main() {
-        let device_id = "{{DEVICE_ID}}";
-        let url = format!("https://dot.mindreset.tech/api/authV2/open/device/{}/next", device_id);
-        let client = Client::new();
-        let res = client.post(&url)
-            .header("Authorization", "Bearer {{API_KEY}}")
-            .send()
-            .unwrap()
-            .text()
-            .unwrap();
-        println!("{}", res);
-    }
-    ```
-
-  </Tab>
-</Tabs>
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/device/:id/next"
+	method="POST"
+	pathParams={{
+		id: {
+			type: 'string',
+			required: true,
+			name: 'Device serial number',
+		},
+	}}
+	auth={true}
+	defaultOpen={false}
+/>
 
 ### Response Example
 

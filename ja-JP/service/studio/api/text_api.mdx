@@ -1,9 +1,10 @@
 ---
-title: テキスト
+title: テキスト内容を制御
 ---
 
 import Link from 'fumadocs-core/link';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
 
 ## クイックガイド
@@ -28,164 +29,45 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### リクエスト例
 
-<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
-  <Tab value="cURL">
-    ```bash
-    curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/text \
-      -H 'Authorization: Bearer {{API_KEY}}' \
-      -H 'Content-Type: application/json' \
-      -d '{
-        "refreshNow": {{内容を即時表示するか}},
-        "deviceId": "{{デバイスシリアル番号}}",
-        "title": "{{タイトル}}",
-        "message": "{{内容}}",
-        "signature": "{{署名}}",
-        "icon": "{{base64 エンコードした PNG アイコンデータ}}",
-        "link": "{{タッチ操作時の遷移リンク}}"
-      }'
-    ```
-  </Tab>
-  <Tab value="Python">
-    ```python
-    import requests
-
-    url = "https://dot.mindreset.tech/api/authV2/open/device/text"
-    headers = {
-        "Authorization": "Bearer {{API_KEY}}",
-        "Content-Type": "application/json"
-    }
-    data = {
-        "refreshNow": {{内容を即時表示するか}},
-        "deviceId": "{{デバイスシリアル番号}}",
-        "title": "{{タイトル}}",
-        "message": "{{内容}}",
-        "signature": "{{署名}}",
-        "icon": "{{base64 エンコードした PNG アイコンデータ}}",
-        "link": "{{タッチ操作時の遷移リンク}}"
-    }
-    response = requests.post(url, json=data, headers=headers)
-    print(response.json())
-    ```
-
-  </Tab>
-  <Tab value="JavaScript">
-    ```javascript
-    fetch("https://dot.mindreset.tech/api/authV2/open/device/text", {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer {{API_KEY}}",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        refreshNow: {{内容を即時表示するか}},
-        deviceId: "{{デバイスシリアル番号}}",
-        title: "{{タイトル}}",
-        message: "{{内容}}",
-        signature: "{{署名}}",
-        icon: "{{base64 エンコードした PNG アイコンデータ}}",
-        link: "{{タッチ操作時の遷移リンク}}"
-      })
-    }).then(res => res.json()).then(console.log);
-    ```
-  </Tab>
-  <Tab value="TypeScript">
-    ```typescript
-    type ApiResponse = {
-      code: number;
-      message: string;
-      result?: any;
-    };
-
-    fetch("https://dot.mindreset.tech/api/authV2/open/device/text", {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer {{API_KEY}}",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        refreshNow: {{内容を即時表示するか}},
-        deviceId: "{{デバイスシリアル番号}}",
-        title: "{{タイトル}}",
-        message: "{{内容}}",
-        signature: "{{署名}}",
-        icon: "{{base64 エンコードした PNG アイコンデータ}}",
-        link: "{{タッチ操作時の遷移リンク}}"
-      })
-    })
-      .then(res => res.json() as Promise<ApiResponse>)
-      .then(data => {
-        console.log(data);
-      });
-    ```
-
-  </Tab>
-  <Tab value="Go">
-    ```go
-    package main
-
-    import (
-      "bytes"
-      "encoding/json"
-      "fmt"
-      "net/http"
-      "io/ioutil"
-    )
-
-    func main() {
-      url := "https://dot.mindreset.tech/api/authV2/open/device/text"
-      payload := map[string]interface{}{
-        "refreshNow": {{内容を即時表示するか}},
-        "deviceId": "{{デバイスシリアル番号}}",
-        "title": "{{タイトル}}",
-        "message": "{{内容}}",
-        "signature": "{{署名}}",
-        "icon": "{{base64 エンコードした PNG アイコンデータ}}",
-        "link": "{{タッチ操作時の遷移リンク}}",
-      }
-      body, _ := json.Marshal(payload)
-      req, _ := http.NewRequest("POST", url, bytes.NewBuffer(body))
-      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
-      req.Header.Set("Content-Type", "application/json")
-      client := &http.Client{}
-      resp, _ := client.Do(req)
-      defer resp.Body.Close()
-      respBody, _ := ioutil.ReadAll(resp.Body)
-      fmt.Println(string(respBody))
-    }
-    ```
-
-  </Tab>
-  <Tab value="Rust">
-    ```rust
-    use reqwest::blocking::Client;
-    use serde_json::json;
-
-    fn main() {
-        let client = Client::new();
-        let url = "https://dot.mindreset.tech/api/authV2/open/device/text";
-        let res = client.post(url)
-            .header("Authorization", "Bearer {{API_KEY}}")
-            .header("Content-Type", "application/json")
-            .json(&json!({
-                "refreshNow": {{内容を即時表示するか}},
-                "deviceId": "{{デバイスシリアル番号}}",
-                "title": "{{タイトル}}",
-                "message": "{{内容}}",
-                "signature": "{{署名}}",
-                "icon": "{{base64 エンコードした PNG アイコンデータ}}",
-                "link": "{{タッチ操作時の遷移リンク}}"
-            }))
-            .send()
-            .unwrap()
-            .text()
-            .unwrap();
-        println!("{}", res);
-    }
-    ```
-
-  </Tab>
-</Tabs>
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/device/text"
+	method="POST"
+	bodyParams={{
+		refreshNow: {
+			type: 'boolean',
+			name: '内容を即時表示するか',
+			default: true,
+		},
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: 'デバイスシリアル番号',
+		},
+		title: {
+			type: 'string',
+			name: 'タイトル',
+		},
+		message: {
+			type: 'string',
+			name: '内容',
+		},
+		signature: {
+			type: 'string',
+			name: '署名',
+		},
+		icon: {
+			type: 'textarea',
+			name: 'base64 エンコードした PNG アイコンデータ',
+		},
+		link: {
+			type: 'string',
+			name: 'タッチ操作時の遷移リンク',
+		},
+	}}
+	auth={true}
+	defaultOpen={false}
+/>
 
 ### レスポンス例
 

@@ -1,9 +1,10 @@
 ---
-title: Text
+title: Control Text Content
 ---
 
 import Link from 'fumadocs-core/link';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
 
 ## Quick Guide
@@ -28,164 +29,45 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### Request Examples
 
-<Tabs items={['cURL', 'Python', 'JavaScript', 'TypeScript', 'Go', 'Rust']}>
-  <Tab value="cURL">
-    ```bash
-    curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/text \
-      -H 'Authorization: Bearer {{API_KEY}}' \
-      -H 'Content-Type: application/json' \
-      -d '{
-        "refreshNow": {{show content immediately}},
-        "deviceId": "{{device serial number}}",
-        "title": "{{title}}",
-        "message": "{{content}}",
-        "signature": "{{signature}}",
-        "icon": "{{base64-encoded PNG icon data}}",
-        "link": "{{NFC tap redirect link}}"
-      }'
-    ```
-  </Tab>
-  <Tab value="Python">
-    ```python
-    import requests
-
-    url = "https://dot.mindreset.tech/api/authV2/open/device/text"
-    headers = {
-        "Authorization": "Bearer {{API_KEY}}",
-        "Content-Type": "application/json"
-    }
-    data = {
-        "refreshNow": {{show content immediately}},
-        "deviceId": "{{device serial number}}",
-        "title": "{{title}}",
-        "message": "{{content}}",
-        "signature": "{{signature}}",
-        "icon": "{{base64-encoded PNG icon data}}",
-        "link": "{{NFC tap redirect link}}"
-    }
-    response = requests.post(url, json=data, headers=headers)
-    print(response.json())
-    ```
-
-  </Tab>
-  <Tab value="JavaScript">
-    ```javascript
-    fetch("https://dot.mindreset.tech/api/authV2/open/device/text", {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer {{API_KEY}}",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        refreshNow: {{show content immediately}},
-        deviceId: "{{device serial number}}",
-        title: "{{title}}",
-        message: "{{content}}",
-        signature: "{{signature}}",
-        icon: "{{base64-encoded PNG icon data}}",
-        link: "{{NFC tap redirect link}}"
-      })
-    }).then(res => res.json()).then(console.log);
-    ```
-  </Tab>
-  <Tab value="TypeScript">
-    ```typescript
-    type ApiResponse = {
-      code: number;
-      message: string;
-      result?: any;
-    };
-
-    fetch("https://dot.mindreset.tech/api/authV2/open/device/text", {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer {{API_KEY}}",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        refreshNow: {{show content immediately}},
-        deviceId: "{{device serial number}}",
-        title: "{{title}}",
-        message: "{{content}}",
-        signature: "{{signature}}",
-        icon: "{{base64-encoded PNG icon data}}",
-        link: "{{NFC tap redirect link}}"
-      })
-    })
-      .then(res => res.json() as Promise<ApiResponse>)
-      .then(data => {
-        console.log(data);
-      });
-    ```
-
-  </Tab>
-  <Tab value="Go">
-    ```go
-    package main
-
-    import (
-      "bytes"
-      "encoding/json"
-      "fmt"
-      "net/http"
-      "io/ioutil"
-    )
-
-    func main() {
-      url := "https://dot.mindreset.tech/api/authV2/open/device/text"
-      payload := map[string]interface{}{
-        "refreshNow": {{show content immediately}},
-        "deviceId": "{{device serial number}}",
-        "title": "{{title}}",
-        "message": "{{content}}",
-        "signature": "{{signature}}",
-        "icon": "{{base64-encoded PNG icon data}}",
-        "link": "{{NFC tap redirect link}}",
-      }
-      body, _ := json.Marshal(payload)
-      req, _ := http.NewRequest("POST", url, bytes.NewBuffer(body))
-      req.Header.Set("Authorization", "Bearer {{API_KEY}}")
-      req.Header.Set("Content-Type", "application/json")
-      client := &http.Client{}
-      resp, _ := client.Do(req)
-      defer resp.Body.Close()
-      respBody, _ := ioutil.ReadAll(resp.Body)
-      fmt.Println(string(respBody))
-    }
-    ```
-
-  </Tab>
-  <Tab value="Rust">
-    ```rust
-    use reqwest::blocking::Client;
-    use serde_json::json;
-
-    fn main() {
-        let client = Client::new();
-        let url = "https://dot.mindreset.tech/api/authV2/open/device/text";
-        let res = client.post(url)
-            .header("Authorization", "Bearer {{API_KEY}}")
-            .header("Content-Type", "application/json")
-            .json(&json!({
-                "refreshNow": {{show content immediately}},
-                "deviceId": "{{device serial number}}",
-                "title": "{{title}}",
-                "message": "{{content}}",
-                "signature": "{{signature}}",
-                "icon": "{{base64-encoded PNG icon data}}",
-                "link": "{{NFC tap redirect link}}"
-            }))
-            .send()
-            .unwrap()
-            .text()
-            .unwrap();
-        println!("{}", res);
-    }
-    ```
-
-  </Tab>
-</Tabs>
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/device/text"
+	method="POST"
+	bodyParams={{
+		refreshNow: {
+			type: 'boolean',
+			name: 'Show immediately',
+			default: true,
+		},
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: 'Device serial number',
+		},
+		title: {
+			type: 'string',
+			name: 'Title',
+		},
+		message: {
+			type: 'string',
+			name: 'Message',
+		},
+		signature: {
+			type: 'string',
+			name: 'Signature',
+		},
+		icon: {
+			type: 'string',
+			name: 'Base64-encoded PNG icon data',
+		},
+		link: {
+			type: 'string',
+			name: 'NFC tap redirect link',
+		},
+	}}
+	auth={true}
+	defaultOpen={false}
+/>
 
 ### Response Example
 
