@@ -31,18 +31,20 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 <ApiPlayground
 	baseUrl="https://dot.mindreset.tech"
-	endpoint="/api/authV2/open/device/image"
+	endpoint="/api/authV2/open/device/:deviceId/image"
 	method="POST"
+	pathParams={{
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: '设备序列号',
+		},
+	}}
 	bodyParams={{
 		refreshNow: {
 			type: 'boolean',
 			name: '是否立刻显示内容',
 			default: true,
-		},
-		deviceId: {
-			type: 'string',
-			required: true,
-			name: '设备序列号',
 		},
 		image: {
 			type: 'textarea',
@@ -54,19 +56,40 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			name: '碰一碰跳转链接',
 		},
 		border: {
-			type: 'number',
-			name: '屏幕边缘的颜色编号',
+			type: 'select',
+			name: '屏幕边框颜色',
 			default: 0,
+			options: [
+				{ value: 0, label: '白色' },
+				{ value: 1, label: '黑色' },
+			],
 		},
 		ditherType: {
-			type: 'string',
+			type: 'select',
 			name: '抖动类型',
 			default: 'DIFFUSION',
+			options: [
+				{ value: 'DIFFUSION', label: '误差扩散' },
+				{ value: 'ORDERED', label: '有序抖动' },
+				{ value: 'NONE', label: '关闭抖动' },
+			],
 		},
 		ditherKernel: {
-			type: 'string',
+			type: 'select',
 			name: '抖动算法',
 			default: 'FLOYD_STEINBERG',
+			options: [
+				{ value: 'THRESHOLD' },
+				{ value: 'ATKINSON' },
+				{ value: 'BURKES' },
+				{ value: 'FLOYD_STEINBERG' },
+				{ value: 'SIERRA2' },
+				{ value: 'STUCKI' },
+				{ value: 'JARVIS_JUDICE_NINKE' },
+				{ value: 'DIFFUSION_ROW' },
+				{ value: 'DIFFUSION_COLUMN' },
+				{ value: 'DIFFUSION_2D' },
+			],
 		},
 	}}
 	auth={true}
@@ -95,12 +118,11 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
         "refreshNow": false,
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64 编码 PNG 图像数据}}",
         "link": "https://dot.mindreset.tech",
         "border": 0
@@ -117,11 +139,10 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64 编码 PNG 图像数据}}",
         "link": "https://dot.mindreset.tech",
         "border": 1
@@ -140,11 +161,10 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64 编码 PNG 图像数据}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
@@ -172,11 +192,10 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64 编码 PNG 图像数据}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
@@ -247,11 +266,10 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64 编码 PNG 图像数据}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
@@ -271,11 +289,10 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64 编码 PNG 图像数据}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
@@ -289,7 +306,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### 请求路径
 
-`/api/authV2/open/device/image`
+`/api/authV2/open/device/:deviceId/image`
 
 ### 请求方法
 
@@ -303,11 +320,6 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			description: '是否立刻显示内容（控制内容的显示时机）',
 			type: 'bool',
 			default: 'true',
-		},
-		deviceId: {
-			description: '设备序列号（分辨不同的设备）',
-			type: 'string',
-			required: true,
 		},
 		image: {
 			description: 'base64 编码 PNG 图像数据（296px×152px）（屏幕呈现的图像）',

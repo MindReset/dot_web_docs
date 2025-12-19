@@ -31,18 +31,20 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 <ApiPlayground
 	baseUrl="https://dot.mindreset.tech"
-	endpoint="/api/authV2/open/device/image"
+	endpoint="/api/authV2/open/device/:deviceId/image"
 	method="POST"
+	pathParams={{
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: 'Device serial number',
+		},
+	}}
 	bodyParams={{
 		refreshNow: {
 			type: 'boolean',
 			name: 'Show immediately',
 			default: true,
-		},
-		deviceId: {
-			type: 'string',
-			required: true,
-			name: 'Device serial number',
 		},
 		image: {
 			type: 'string',
@@ -54,19 +56,40 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			name: 'NFC tap redirect link',
 		},
 		border: {
-			type: 'number',
-			name: 'Edge color index',
+			type: 'select',
+			name: 'Border color',
 			default: 0,
+			options: [
+				{ value: 0, label: 'White' },
+				{ value: 1, label: 'Black' },
+			],
 		},
 		ditherType: {
-			type: 'string',
+			type: 'select',
 			name: 'Dither type',
 			default: 'DIFFUSION',
+			options: [
+				{ value: 'DIFFUSION', label: 'Diffusion' },
+				{ value: 'ORDERED', label: 'Ordered' },
+				{ value: 'NONE', label: 'None' },
+			],
 		},
 		ditherKernel: {
-			type: 'string',
+			type: 'select',
 			name: 'Dither algorithm',
 			default: 'FLOYD_STEINBERG',
+			options: [
+				{ value: 'THRESHOLD' },
+				{ value: 'ATKINSON' },
+				{ value: 'BURKES' },
+				{ value: 'FLOYD_STEINBERG' },
+				{ value: 'SIERRA2' },
+				{ value: 'STUCKI' },
+				{ value: 'JARVIS_JUDICE_NINKE' },
+				{ value: 'DIFFUSION_ROW' },
+				{ value: 'DIFFUSION_COLUMN' },
+				{ value: 'DIFFUSION_2D' },
+			],
 		},
 	}}
 	auth={true}
@@ -95,12 +118,11 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
         "refreshNow": false,
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64-encoded PNG image data}}",
         "link": "https://dot.mindreset.tech",
         "border": 0
@@ -117,11 +139,10 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64-encoded PNG image data}}",
         "link": "https://dot.mindreset.tech",
         "border": 1
@@ -140,11 +161,10 @@ Use common image tools (e.g., Figma, Sketch, Adobe Photoshop) to convert text to
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64-encoded PNG image data}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
@@ -172,11 +192,10 @@ Error diffusion distributes each pixel’s quantization error to neighboring pix
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64-encoded PNG image data}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
@@ -247,11 +266,10 @@ Ordered dithering applies a fixed, periodic threshold matrix to image pixels, un
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64-encoded PNG image data}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
@@ -271,11 +289,10 @@ If you primarily display text images via the Image API, we recommend disabling d
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64-encoded PNG image data}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
@@ -289,7 +306,7 @@ If you primarily display text images via the Image API, we recommend disabling d
 
 ### Endpoint
 
-`/api/authV2/open/device/image`
+`/api/authV2/open/device/:deviceId/image`
 
 ### Method
 
@@ -303,11 +320,6 @@ If you primarily display text images via the Image API, we recommend disabling d
 			description: 'Whether to display the content immediately (Control display timing)',
 			type: 'bool',
 			default: 'true',
-		},
-		deviceId: {
-			description: 'Device serial number (Identify the device)',
-			type: 'string',
-			required: true,
 		},
 		image: {
 			description: 'Base64-encoded PNG image data (296px×152px) (Image to render on screen)',

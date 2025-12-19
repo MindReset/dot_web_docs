@@ -31,18 +31,20 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 <ApiPlayground
 	baseUrl="https://dot.mindreset.tech"
-	endpoint="/api/authV2/open/device/text"
+	endpoint="/api/authV2/open/device/:deviceId/text"
 	method="POST"
+	pathParams={{
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: 'Device serial number',
+		},
+	}}
 	bodyParams={{
 		refreshNow: {
 			type: 'boolean',
 			name: 'Show immediately',
 			default: true,
-		},
-		deviceId: {
-			type: 'string',
-			required: true,
-			name: 'Device serial number',
 		},
 		title: {
 			type: 'string',
@@ -91,12 +93,11 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/text \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
         "refreshNow": false,
-        "deviceId": "ABCD1234ABCD",
         "title": "evnydd0sf",
         "message": "我能吞下玻璃而不伤身体"
       }'
@@ -112,11 +113,10 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/text \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "title": "验证码小助手",
         "message": "一个来自「少数派」的验证码\n205112",
         "signature": "2025年8月4日 19:58"
@@ -133,11 +133,10 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/text \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "title": "每日健康",
         "message": "消耗卡路里：702千卡\n今日步数：4183步\n站立时间：62分钟",
         "signature": "2025年8月4日 20:16",
@@ -160,7 +159,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### Endpoint
 
-`/api/authV2/open/device/text`
+`/api/authV2/open/device/:deviceId/text`
 
 ### Method
 
@@ -174,11 +173,6 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			description: 'Whether to display the content immediately (Control display timing)',
 			type: 'bool',
 			default: 'true',
-		},
-		deviceId: {
-			description: 'Device serial number (Identify the device)',
-			type: 'string',
-			required: true,
 		},
 		title: {
 			description: 'Text title (Title shown on screen)',

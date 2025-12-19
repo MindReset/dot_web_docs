@@ -31,18 +31,20 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 <ApiPlayground
 	baseUrl="https://dot.mindreset.tech"
-	endpoint="/api/authV2/open/device/image"
+	endpoint="/api/authV2/open/device/:deviceId/image"
 	method="POST"
+	pathParams={{
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: 'デバイスシリアル番号',
+		},
+	}}
 	bodyParams={{
 		refreshNow: {
 			type: 'boolean',
 			name: '内容を即時表示するか',
 			default: true,
-		},
-		deviceId: {
-			type: 'string',
-			required: true,
-			name: 'デバイスシリアル番号',
 		},
 		image: {
 			type: 'textarea',
@@ -54,19 +56,40 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			name: 'タッチ操作時の遷移リンク',
 		},
 		border: {
-			type: 'number',
-			name: '画面縁の色番号',
+			type: 'select',
+			name: '画面枠の色',
 			default: 0,
+			options: [
+				{ value: 0, label: '白' },
+				{ value: 1, label: '黒' },
+			],
 		},
 		ditherType: {
-			type: 'string',
+			type: 'select',
 			name: 'ディザ種別',
 			default: 'DIFFUSION',
+			options: [
+				{ value: 'DIFFUSION', label: '誤差拡散' },
+				{ value: 'ORDERED', label: '順序ディザ' },
+				{ value: 'NONE', label: 'なし' },
+			],
 		},
 		ditherKernel: {
-			type: 'string',
+			type: 'select',
 			name: 'ディザアルゴリズム',
 			default: 'FLOYD_STEINBERG',
+			options: [
+				{ value: 'THRESHOLD' },
+				{ value: 'ATKINSON' },
+				{ value: 'BURKES' },
+				{ value: 'FLOYD_STEINBERG' },
+				{ value: 'SIERRA2' },
+				{ value: 'STUCKI' },
+				{ value: 'JARVIS_JUDICE_NINKE' },
+				{ value: 'DIFFUSION_ROW' },
+				{ value: 'DIFFUSION_COLUMN' },
+				{ value: 'DIFFUSION_2D' },
+			],
 		},
 	}}
 	auth={true}
@@ -78,9 +101,9 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 ```json
 {
 	"code": 200,
-	"message": "デバイスの画像APIコンテンツを切り替えました",
+	"message": "デバイスの画像 API コンテンツを切り替えました",
 	"result": {
-		"message": "デバイスABCD1234ABCDの画像APIコンテンツを切り替えました"
+		"message": "デバイス ABCD1234ABCD の画像 API コンテンツを切り替えました"
 	}
 }
 ```
@@ -95,12 +118,11 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
         "refreshNow": false,
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64 エンコードした PNG 画像データ}}",
         "link": "https://dot.mindreset.tech",
         "border": 0
@@ -117,11 +139,10 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64 エンコードした PNG 画像データ}}",
         "link": "https://dot.mindreset.tech",
         "border": 1
@@ -140,11 +161,10 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64 エンコードした PNG 画像データ}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
@@ -172,11 +192,10 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64 エンコードした PNG 画像データ}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
@@ -247,11 +266,10 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64 エンコードした PNG 画像データ}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
@@ -271,11 +289,10 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/image \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "image": "{{base64 エンコードした PNG 画像データ}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
@@ -289,7 +306,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
 
 ### リクエストパス
 
-`/api/authV2/open/device/image`
+`/api/authV2/open/device/:deviceId/image`
 
 ### メソッド
 
@@ -303,11 +320,6 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
 			description: 'コンテンツを即時に表示するかどうか（表示タイミング制御）',
 			type: 'bool',
 			default: 'true',
-		},
-		deviceId: {
-			description: 'デバイスのシリアル番号（デバイス識別）',
-			type: 'string',
-			required: true,
 		},
 		image: {
 			description: 'base64 エンコードの PNG 画像データ（296px×152px）（表示する画像）',

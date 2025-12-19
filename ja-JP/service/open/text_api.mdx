@@ -31,18 +31,20 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 <ApiPlayground
 	baseUrl="https://dot.mindreset.tech"
-	endpoint="/api/authV2/open/device/text"
+	endpoint="/api/authV2/open/device/:deviceId/text"
 	method="POST"
+	pathParams={{
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: 'デバイスシリアル番号',
+		},
+	}}
 	bodyParams={{
 		refreshNow: {
 			type: 'boolean',
 			name: '内容を即時表示するか',
 			default: true,
-		},
-		deviceId: {
-			type: 'string',
-			required: true,
-			name: 'デバイスシリアル番号',
 		},
 		title: {
 			type: 'string',
@@ -74,9 +76,9 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 ```json
 {
 	"code": 200,
-	"message": "デバイスのテキストAPIコンテンツを切り替えました",
+	"message": "デバイスのテキスト API コンテンツを切り替えました",
 	"result": {
-		"message": "デバイスABCD1234ABCDのテキストAPIコンテンツを切り替えました"
+		"message": "デバイス ABCD1234ABCD のテキスト API コンテンツを切り替えました"
 	}
 }
 ```
@@ -91,12 +93,11 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/text \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
         "refreshNow": false,
-        "deviceId": "ABCD1234ABCD",
         "title": "evnydd0sf",
         "message": "我能吞下玻璃而不伤身体"
       }'
@@ -112,14 +113,13 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/text \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "title": "验证码小助手",
         "message": "一个来自「少数派」的验证码\n205112",
-        "signature": "2025年8月4日 19:58"
+		"signature": "2025 年 8 月 4 日 19:58"
       }'
     ```
   </Tab>
@@ -133,14 +133,13 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   <Tab value="cURL">
     ```bash
     curl -X POST \
-      https://dot.mindreset.tech/api/authV2/open/device/text \
+		  https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/text \
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "deviceId": "ABCD1234ABCD",
         "title": "每日健康",
-        "message": "消耗カロリー：702kcal\n本日の歩数：4183歩\nスタンド時間：62分",
-        "signature": "2025年8月4日 20:16",
+        "message": "消耗カロリー：702kcal\n本日の歩数：4183 歩\nスタンド時間：62 分",
+		"signature": "2025 年 8 月 4 日 20:16",
         "icon": "{{base64 エンコードした PNG 画像データ}}",
         "link": "x-apple-health://"
       }'
@@ -160,7 +159,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### リクエストパス
 
-`/api/authV2/open/device/text`
+`/api/authV2/open/device/:deviceId/text`
 
 ### メソッド
 
@@ -174,11 +173,6 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			description: 'コンテンツを即時に表示するか（表示タイミング制御）',
 			type: 'bool',
 			default: 'true',
-		},
-		deviceId: {
-			description: 'デバイスのシリアル番号（デバイス識別）',
-			type: 'string',
-			required: true,
 		},
 		title: {
 			description: 'テキストのタイトル（画面上のタイトル）',
