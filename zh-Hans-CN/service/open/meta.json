@@ -1,6 +1,7 @@
 {
-    "title": "API",
+    "title": "开发者平台",
     "pages": [
+        "what_is_api",
         "get_api",
         "get_device_id",
         "list_devices_api",

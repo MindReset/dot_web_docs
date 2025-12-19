@@ -15,6 +15,7 @@
         "service/studio",
         "service/shortcut",
         "service/co_create",
+        "service/open",
         "service/update_plan",
         "---Explore More Possibilities---",
         "[Request New Content](/submit#idea)",

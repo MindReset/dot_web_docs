@@ -15,6 +15,7 @@
         "service/studio",
         "service/shortcut",
         "service/co_create",
+        "service/open",
         "service/update_plan",
         "---拓展更多可能---",
         "[许愿新内容](/submit#idea)",

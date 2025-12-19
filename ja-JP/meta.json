@@ -15,6 +15,7 @@
                 "service/studio",
                 "service/shortcut",
                 "service/co_create",
+                "service/open",
                 "service/update_plan",
                 "---さらに可能性を広げる---",
                 "[あなたのアイデアを投稿](/submit#idea)",

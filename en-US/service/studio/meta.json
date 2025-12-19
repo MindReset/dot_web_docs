@@ -1,8 +1,7 @@
 {
     "title": "Content Studio",
     "pages": [
-        "rss_feed",
-        "api"
+        "rss_feed"
     ],
     "defaultOpen": true
 }
