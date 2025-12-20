@@ -7,6 +7,18 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
 
+<Callout type="warning" title="API Migration Notice">
+	The legacy endpoint `https://dot.mindreset.tech/api/open/image` will be retired soon.
+	To reduce migration effort, requests sent to the legacy endpoint will be automatically forwarded
+	to the new API, but this compatibility behavior may be removed in the future.
+
+    We strongly recommend completing the following updates as soon as possible:
+    - Update the request URL to the new endpoint: `/api/authV2/open/device/:deviceId/image`
+    - Send parameters according to this document (e.g. `refreshNow` / `image` / `link` / `border` / `ditherType` / `ditherKernel`)
+    - If you rely on legacy response payloads or error codes, adapt your integration to the new API responses
+
+</Callout>
+
 ## Quick Guide
 
 ### Prerequisites

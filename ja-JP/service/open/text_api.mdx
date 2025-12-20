@@ -7,6 +7,18 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
 
+<Callout type="warning" title="API 移行のお知らせ">
+	旧エンドポイント `https://dot.mindreset.tech/api/open/text` は近日中に廃止予定です。
+	移行負担を軽減するため、旧エンドポイントへのリクエストは新しい API へ自動転送されますが、
+	この互換動作は将来的に廃止される可能性があります。
+
+    できるだけ早く以下の対応を行うことを強く推奨します：
+    - リクエスト URL を新しいエンドポイントへ更新：`/api/authV2/open/device/:deviceId/text`
+    - 本ドキュメントのリクエスト構造に従ってパラメータを送信（例：`refreshNow` / `title` / `message` / `signature` / `icon` / `link`）
+    - 旧版のレスポンス内容やエラーコードに依存している場合は、新版 API のレスポンスに合わせて調整
+
+</Callout>
+
 ## クイックガイド
 
 ### 必要条件
