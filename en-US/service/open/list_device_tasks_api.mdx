@@ -1,0 +1,183 @@
+---
+title: List Device Tasks
+---
+
+import Link from 'fumadocs-core/link';
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## Quick Guide
+
+### Prerequisites
+
+1. Make sure you have <Link href="/docs/service/studio/api/get_api">retrieved and saved your API key</Link> in the Dot. App;
+2. Make sure you own at least one device and have <Link href="/docs/service/studio/api/get_device_id">obtained its device serial number</Link>;
+
+<Callout
+	type="info"
+	title="The API rate limit is 10 requests per second. With the API, you can control device behavior and responses more flexibly."
+/>
+
+<Callout
+	type="info"
+	title="Placeholders wrapped in ‘{{variable}}’ indicate values you must replace. Fill them with your actual values and remove the ‘{{}}’ braces."
+/>
+
+### Request Examples
+
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/device/:deviceId/:taskType/list"
+	method="GET"
+	pathParams={{
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: 'Device serial number',
+		},
+		taskType: {
+			type: 'select',
+			required: true,
+			name: 'Task type',
+			default: 'loop',
+			options: [{ value: 'loop', label: 'Loop task' }],
+			description: 'Currently, only loop task queries are available.',
+		},
+	}}
+	auth={true}
+	defaultOpen={false}
+/>
+
+### Response Example
+
+```json
+[
+	{
+		"type": "TEXT_API",
+		"key": "text_task_1",
+		"refreshNow": true,
+		"title": "Hello",
+		"message": "World"
+	},
+	{
+		"type": "IMAGE_API",
+		"key": "image_task_1",
+		"refreshNow": true,
+		"border": 0,
+		"ditherType": "DIFFUSION",
+		"ditherKernel": "FLOYD_STEINBERG"
+	}
+]
+```
+
+## Troubleshooting
+
+### Endpoint
+
+`/api/authV2/open/device/:deviceId/:taskType/list`
+
+### Method
+
+`GET`
+
+### Path Parameters
+
+<TypeTable
+	type={{
+		deviceId: {
+			description: 'Device serial number',
+			type: 'string',
+			required: true,
+		},
+		taskType: {
+			description: 'Task type (currently only loop is available)',
+			type: "'loop'",
+			required: true,
+		},
+	}}
+/>
+
+### Request Schema
+
+This interface does not require a request body, only an API key in the request header.
+
+- `deviceId`: device serial number
+- `taskType`: task type, currently only `loop` is available
+
+### Response Schema
+
+The response is an array of tasks.
+
+- `type`: content type (only `TEXT_API` / `IMAGE_API` are returned)
+- `key`: task identifier (can be `null`)
+- Other fields: the task input payload (varies by task type)
+
+<TypeTable
+	type={{
+		'[]': {
+			description: 'Task array',
+			type: 'array',
+			required: true,
+			items: {
+				type: {
+					description: 'Content type',
+					type: 'string',
+					required: true,
+				},
+				key: {
+					description: 'Task identifier (used as taskKey for Text/Image API)',
+					type: 'string | null',
+					required: true,
+				},
+				refreshNow: {
+					description: 'Show immediately (may exist)',
+					type: 'boolean',
+				},
+				title: {
+					description: 'Title (Text API may exist)',
+					type: 'string',
+				},
+				message: {
+					description: 'Message (Text API may exist)',
+					type: 'string',
+				},
+				signature: {
+					description: 'Signature (Text API may exist)',
+					type: 'string',
+				},
+				icon: {
+					description: 'Icon (Text API may exist)',
+					type: 'string',
+				},
+				link: {
+					description: 'NFC redirect link (may exist)',
+					type: 'string',
+				},
+				image: {
+					description: 'Image data (Image API may exist)',
+					type: 'string',
+				},
+				border: {
+					description: 'Border color (Image API may exist)',
+					type: '0 | 1',
+				},
+				ditherType: {
+					description: 'Dither type (Image API may exist)',
+					type: 'string',
+				},
+				ditherKernel: {
+					description: 'Dither algorithm (Image API may exist)',
+					type: 'string',
+				},
+			},
+		},
+	}}
+/>
+
+### Status Codes
+
+| code  | Meaning      | Description                      |
+| :---- | :----------- | :------------------------------- |
+| `200` | Success      | Successfully retrieved task list |
+| `401` | Unauthorized | Invalid or expired API key       |
+| `500` | Server Error | Internal server error            |

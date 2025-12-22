@@ -14,7 +14,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     We strongly recommend completing the following updates as soon as possible:
     - Update the request URL to the new endpoint: `/api/authV2/open/device/:deviceId/image`
-    - Send parameters according to this document (e.g. `refreshNow` / `image` / `link` / `border` / `ditherType` / `ditherKernel`)
+    - Send parameters according to this document (e.g. `refreshNow` / `image` / `link` / `border` / `ditherType` / `ditherKernel` / `taskKey`)
     - If you rely on legacy response payloads or error codes, adapt your integration to the new API responses
 
 </Callout>
@@ -57,6 +57,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'boolean',
 			name: 'Show immediately',
 			default: true,
+		},
+		taskKey: {
+			type: 'string',
+			name: 'Task identifier',
+			description:
+				"Retrieve it via the 'List Device Tasks' API (used to target a specific Image API content when multiple exist).",
 		},
 		image: {
 			type: 'string',
@@ -357,6 +363,11 @@ If you primarily display text images via the Image API, we recommend disabling d
 				'Dither algorithm (THRESHOLD, ATKINSON, BURKES, FLOYD_STEINBERG, SIERRA2, STUCKI, JARVIS_JUDICE_NINKE, DIFFUSION_ROW, DIFFUSION_COLUMN, DIFFUSION_2D) (Control dither algorithm)',
 			type: 'string',
 			default: 'FLOYD_STEINBERG',
+		},
+		taskKey: {
+			description:
+				"When multiple Image API contents exist on the device, use this taskKey to specify which content to update and switch. You can retrieve it via the 'List Device Tasks' API. If omitted, the first Image API content is used.",
+			type: 'string',
 		},
 	}}
 />

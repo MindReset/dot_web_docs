@@ -49,6 +49,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 	"alias": null,
 	"location": null,
 	"status": {
+		"version": "1.0.0",
 		"current": "电源活跃中",
 		"description": "设备电源活跃中，随时可以使用",
 		"battery": "充电中",
@@ -56,6 +57,11 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 	},
 	"renderInfo": {
 		"last": "2025 年 12 月 18 日 14:11",
+		"current": {
+			"rotated": false,
+			"border": 0,
+			"image": ["https://example.com/render/0.png", "https://example.com/render/1.png"]
+		},
 		"next": {
 			"battery": "2025 年 12 月 18 日 17:11",
 			"power": "2025 年 12 月 18 日 14:16"
@@ -78,7 +84,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 <TypeTable
 	type={{
-		deviceId: {
+		id: {
 			description: '设备序列号',
 			type: 'string',
 			required: true,
@@ -108,6 +114,11 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'object',
 			required: true,
 			parameters: {
+				version: {
+					description: '系统版本',
+					type: 'string',
+					required: true,
+				},
 				current: {
 					description: '设备当前状态',
 					type: 'string',
@@ -131,7 +142,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			},
 		},
 		renderInfo: {
-			description: '渲染时间信息',
+			description: '渲染信息',
 			type: 'object',
 			required: true,
 			parameters: {
@@ -139,6 +150,27 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 					description: '设备最后一次渲染的时间',
 					type: 'string',
 					required: true,
+				},
+				current: {
+					description: '当前渲染信息',
+					type: 'object',
+					required: true,
+					parameters: {
+						rotated: {
+							description: '屏幕是否旋转',
+							type: 'boolean',
+							required: true,
+						},
+						border: {
+							description: '屏幕边框颜色（0 白色，1 黑色）',
+							type: 'number',
+							required: true,
+						},
+						image: {
+							description: '当前渲染图片 URL 列表',
+							type: 'string[] | null',
+						},
+					},
 				},
 				next: {
 					description: '下次计划渲染时间',

@@ -14,7 +14,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     できるだけ早く以下の対応を行うことを強く推奨します：
     - リクエスト URL を新しいエンドポイントへ更新：`/api/authV2/open/device/:deviceId/image`
-    - 本ドキュメントのリクエスト構造に従ってパラメータを送信（例：`refreshNow` / `image` / `link` / `border` / `ditherType` / `ditherKernel`）
+    - 本ドキュメントのリクエスト構造に従ってパラメータを送信（例：`refreshNow` / `image` / `link` / `border` / `ditherType` / `ditherKernel` / `taskKey`）
     - 旧版のレスポンス内容やエラーコードに依存している場合は、新版 API のレスポンスに合わせて調整
 
 </Callout>
@@ -57,6 +57,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'boolean',
 			name: '内容を即時表示するか',
 			default: true,
+		},
+		taskKey: {
+			type: 'string',
+			name: 'タスク識別子',
+			description:
+				'「デバイスタスク一覧」API で取得できます（複数の「画像 API」コンテンツがある場合に対象を指定）。',
 		},
 		image: {
 			type: 'textarea',
@@ -357,6 +363,11 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
 				'ディザアルゴリズム（THRESHOLD、ATKINSON、BURKES、FLOYD_STEINBERG、SIERRA2、STUCKI、JARVIS_JUDICE_NINKE、DIFFUSION_ROW、DIFFUSION_COLUMN、DIFFUSION_2D）（ディザのアルゴリズム）',
 			type: 'string',
 			default: 'FLOYD_STEINBERG',
+		},
+		taskKey: {
+			description:
+				'デバイスに複数の「画像 API」コンテンツがある場合、更新して切り替える対象を taskKey で指定します。taskKey は「デバイスタスク一覧」で取得できます。未指定の場合は最初の画像 API コンテンツが選択されます。',
+			type: 'string',
 		},
 	}}
 />

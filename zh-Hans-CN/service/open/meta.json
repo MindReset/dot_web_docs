@@ -7,6 +7,7 @@
         "list_devices_api",
         "device_status_api",
         "device_next_api",
+        "list_device_tasks_api",
         "text_api",
         "image_api"
     ],

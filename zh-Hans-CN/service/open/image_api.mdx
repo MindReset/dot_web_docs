@@ -13,7 +13,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     建议您尽快完成以下调整：
     - 将请求地址更新为新版接口：`/api/authV2/open/device/:deviceId/image`
-    - 按本文档的请求结构发送参数（例如 `refreshNow` / `image` / `link` / `border` / `ditherType` / `ditherKernel`）
+    - 按本文档的请求结构发送参数（例如 `refreshNow` / `image` / `link` / `border` / `ditherType` / `ditherKernel` / `taskKey`）
     - 如您依赖旧版接口的返回内容或错误码，请以新版接口的响应为准进行适配
 
 </Callout>
@@ -56,6 +56,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'boolean',
 			name: '是否立刻显示内容',
 			default: true,
+		},
+		taskKey: {
+			type: 'string',
+			name: '任务唯一标识',
+			description:
+				'可通过「列出设备任务」接口获取（当设备存在多个「图像 API」内容时用于指定目标内容）。',
 		},
 		image: {
 			type: 'textarea',
@@ -356,6 +362,11 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 				'抖动算法（可选：THRESHOLD、ATKINSON、BURKES、FLOYD_STEINBERG、SIERRA2、STUCKI、JARVIS_JUDICE_NINKE、DIFFUSION_ROW、DIFFUSION_COLUMN、DIFFUSION_2D）（控制图像的抖动算法）',
 			type: 'string',
 			default: 'FLOYD_STEINBERG',
+		},
+		taskKey: {
+			description:
+				'当设备存在多个「图像 API」内容时，用于指定要更新并切换的目标内容 taskKey。可通过「列出设备任务」获取。不传递则默认选择第一个图像 API 内容。',
+			type: 'string',
 		},
 	}}
 />

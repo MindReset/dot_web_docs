@@ -1,0 +1,183 @@
+---
+title: デバイスタスク一覧
+---
+
+import Link from 'fumadocs-core/link';
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## クイックガイド
+
+### 必要条件
+
+1. Dot. アプリで<Link href="/docs/service/studio/api/get_api">API キーを取得して保存</Link>していること
+2. 自分のデバイスが少なくとも 1 台あり、<Link href="/docs/service/studio/api/get_device_id">デバイスのシリアル番号</Link>を取得していること
+
+<Callout
+	type="info"
+	title="APIのリクエスト制限は1秒あたり10回です。APIを使うとデバイスの動作と応答をより柔軟に制御できます。"
+/>
+
+<Callout
+	type="info"
+	title="ドキュメント中の「{{変数}}」は置換が必要なプレースホルダーです。実際の値に置き換え、「{{}}」は削除してください。"
+/>
+
+### リクエスト例
+
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/device/:deviceId/:taskType/list"
+	method="GET"
+	pathParams={{
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: 'デバイスシリアル番号',
+		},
+		taskType: {
+			type: 'select',
+			required: true,
+			name: 'タスク種別',
+			default: 'loop',
+			options: [{ value: 'loop', label: 'ループタスク' }],
+			description: '現在はループタスクのみ取得できます。',
+		},
+	}}
+	auth={true}
+	defaultOpen={false}
+/>
+
+### レスポンス例
+
+```json
+[
+	{
+		"type": "TEXT_API",
+		"key": "text_task_1",
+		"refreshNow": true,
+		"title": "Hello",
+		"message": "World"
+	},
+	{
+		"type": "IMAGE_API",
+		"key": "image_task_1",
+		"refreshNow": true,
+		"border": 0,
+		"ditherType": "DIFFUSION",
+		"ditherKernel": "FLOYD_STEINBERG"
+	}
+]
+```
+
+## トラブルシューティング
+
+### リクエストパス
+
+`/api/authV2/open/device/:deviceId/:taskType/list`
+
+### メソッド
+
+`GET`
+
+### パスパラメータ
+
+<TypeTable
+	type={{
+		deviceId: {
+			description: 'デバイスのシリアル番号',
+			type: 'string',
+			required: true,
+		},
+		taskType: {
+			description: 'タスク種別（現在は loop のみ対応）',
+			type: "'loop'",
+			required: true,
+		},
+	}}
+/>
+
+### リクエスト構造
+
+このインターフェースはリクエストボディを必要とせず、リクエストヘッダーに API キーを提供するだけです。
+
+- `deviceId`: デバイスのシリアル番号
+- `taskType`: タスク種別（現在は `loop` のみ対応）
+
+### レスポンス構造
+
+レスポンスはタスク配列です。
+
+- `type`: コンテンツ種別（`TEXT_API` / `IMAGE_API` のみ返却）
+- `key`: タスク識別子（`null` の場合あり）
+- その他のフィールド：タスクの入力データ（タスク種別により異なる）
+
+<TypeTable
+	type={{
+		'[]': {
+			description: 'タスク配列',
+			type: 'array',
+			required: true,
+			items: {
+				type: {
+					description: 'コンテンツ種別',
+					type: 'string',
+					required: true,
+				},
+				key: {
+					description: 'タスク識別子（Text/Image API の taskKey として使用）',
+					type: 'string | null',
+					required: true,
+				},
+				refreshNow: {
+					description: '即時表示（存在する場合）',
+					type: 'boolean',
+				},
+				title: {
+					description: 'タイトル（Text API で存在する場合）',
+					type: 'string',
+				},
+				message: {
+					description: '内容（Text API で存在する場合）',
+					type: 'string',
+				},
+				signature: {
+					description: '署名（Text API で存在する場合）',
+					type: 'string',
+				},
+				icon: {
+					description: 'アイコン（Text API で存在する場合）',
+					type: 'string',
+				},
+				link: {
+					description: 'タッチ操作時の遷移リンク（存在する場合）',
+					type: 'string',
+				},
+				image: {
+					description: '画像データ（Image API で存在する場合）',
+					type: 'string',
+				},
+				border: {
+					description: '枠色（Image API で存在する場合）',
+					type: '0 | 1',
+				},
+				ditherType: {
+					description: 'ディザ種別（Image API で存在する場合）',
+					type: 'string',
+				},
+				ditherKernel: {
+					description: 'ディザアルゴリズム（Image API で存在する場合）',
+					type: 'string',
+				},
+			},
+		},
+	}}
+/>
+
+### レスポンスコード
+
+| code  | 意味           | 説明                         |
+| :---- | :------------- | :--------------------------- |
+| `200` | 成功           | タスクリストの取得に成功     |
+| `401` | 未認証         | API キーが無効または期限切れ |
+| `500` | サーバーエラー | サーバー内部エラー           |

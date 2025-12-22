@@ -48,6 +48,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 	"alias": null,
 	"location": null,
 	"status": {
+		"version": "1.0.0",
 		"current": "電源アクティブ",
 		"description": "デバイスは電源アクティブで、すぐに使用できます。",
 		"battery": "充電中",
@@ -55,6 +56,11 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 	},
 	"renderInfo": {
 		"last": "12/18/2025 14:11",
+		"current": {
+			"rotated": false,
+			"border": 0,
+			"image": ["https://example.com/render/0.png", "https://example.com/render/1.png"]
+		},
 		"next": {
 			"battery": "12/18/2025 17:11",
 			"power": "12/18/2025 14:16"
@@ -107,6 +113,11 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'object',
 			required: true,
 			parameters: {
+				version: {
+					description: 'ソフトウェアバージョン',
+					type: 'string',
+					required: true,
+				},
 				current: {
 					description: 'デバイスの現在のステータス',
 					type: 'string',
@@ -130,7 +141,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			},
 		},
 		renderInfo: {
-			description: 'レンダリング時間情報',
+			description: 'レンダリング情報',
 			type: 'object',
 			required: true,
 			parameters: {
@@ -138,6 +149,27 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 					description: 'デバイスが最後にレンダリングした時刻',
 					type: 'string',
 					required: true,
+				},
+				current: {
+					description: '現在のレンダリング情報',
+					type: 'object',
+					required: true,
+					parameters: {
+						rotated: {
+							description: '画面が回転しているかどうか',
+							type: 'boolean',
+							required: true,
+						},
+						border: {
+							description: '画面のボーダーカラー（0=白、1=黒）',
+							type: 'number',
+							required: true,
+						},
+						image: {
+							description: '現在のレンダリング画像 URL 一覧',
+							type: 'string[] | null',
+						},
+					},
 				},
 				next: {
 					description: '次回のスケジュールされたレンダリング時刻',
