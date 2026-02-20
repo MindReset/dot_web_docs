@@ -1,0 +1,58 @@
+---
+title: Quote0 Client Python SDK
+new: true
+---
+
+<GithubInfo owner="YetYeti" repo="quote0-client" />
+
+Dot. App API を通じて Quote0 電子ペーパーデバイスを制御するための Python SDK です。PyPI からインストールして利用できます。
+
+### 機能
+
+- Quote0 の全 6 つの API エンドポイントをカバー
+- Pydantic v2 モデルによる型安全性
+- 型付き例外による包括的なエラーハンドリング
+- テキストおよび画像コンテンツのプッシュに対応
+- デバイスタスク管理
+- シンプルな同期クライアントインターフェース
+
+### インストール
+
+```bash
+pip install quote0-client
+# または uv を使用
+uv add quote0-client
+```
+
+### クイックスタート
+
+```python
+from quote0_client.client import Quote0Client
+from quote0_client.models import TextContentRequest
+
+client = Quote0Client(api_key="your-api-key-from-dot-app")
+
+# デバイス一覧の取得
+devices = client.get_devices()
+
+# テキストコンテンツの送信
+response = client.send_text(devices[0].id, TextContentRequest(
+    title="こんにちは",
+    message="Quote0 デバイス！"
+))
+```
+
+### API 一覧
+
+| メソッド                           | 説明                       |
+| ---------------------------------- | -------------------------- |
+| `get_devices()`                    | デバイス一覧を取得         |
+| `get_device_status(device_id)`     | デバイスのステータスを取得 |
+| `switch_to_next(device_id)`        | 次のコンテンツに切り替え   |
+| `list_tasks(device_id, task_type)` | デバイスタスクの一覧表示   |
+| `send_text(device_id, content)`    | テキストコンテンツを送信   |
+| `send_image(device_id, content)`   | 画像コンテンツを送信       |
+
+### エラーハンドリング
+
+SDK は型付き例外を提供します：`AuthenticationError`、`NotFoundError`、`PermissionError`、`ValidationError`、`RateLimitError`（レート制限：10 回/秒）。

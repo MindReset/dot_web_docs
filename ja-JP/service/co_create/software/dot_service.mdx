@@ -1,0 +1,41 @@
+---
+title: Dot Service
+new: true
+---
+
+<GithubInfo owner="Ebispongebob" repo="dot-service" />
+
+MindReset Dot. Quote/0 電子ペーパーデバイス向けに設計されたセルフホスト型 Web コントロールサービスです。モダンな Web インターフェースと拡張 REST API を提供し、デバイスの状態管理、テキストレイアウトのプッシュ、画像のアップロード、自動化ワークフローとのシームレスな統合を実現します。
+
+### 機能
+
+- **モダン Web コンソール** — レスポンシブデザインでデスクトップ・モバイル対応、システムに連動したダーク/ライトモード切替
+- **デバイス概要** — オンライン状態、バッテリー残量、Wi-Fi 信号強度、ファームウェアバージョン、現在の画面プレビューをリアルタイム表示
+- **強力なテキストプッシュ** — タイトル・本文・署名の自動レイアウト；デバイス内蔵タイポグラフィ API またはサーバーサイドテキスト→画像変換の 2 つのレンダリングモード
+- **スマート画像処理** — 296×152 への自動リサイズ/クロップ；Floyd-Steinberg、Atkinson、Sierra 等の複数ディザリングアルゴリズム；リアルタイムプレビュー対応
+- **拡張 REST API** — FastAPI ベースで Swagger/OpenAPI ドキュメント自動生成；Dot Cloud Auth V2 プロトコルをカプセル化
+
+### 主要 API
+
+- `GET /devices` — デバイス一覧取得
+- `POST /text` — テキストコンテンツ送信
+- `POST /image` — Base64 エンコード画像の送信
+- `POST /image/upload` — 画像ファイルのアップロード
+
+起動後、`http://localhost:8000/docs` で完全な Swagger ドキュメントを参照できます。
+
+### クイックスタート
+
+```bash
+# 依存関係のインストール
+pip install -r requirements.txt
+
+# 環境変数の設定
+cp .env.example .env
+# .env に DOT_API_KEY と DOT_DEFAULT_DEVICE_ID を入力
+
+# サービスの起動
+python run.py
+```
+
+`http://localhost:8000` にアクセスしてコンソールを開きます。

@@ -1,0 +1,48 @@
+---
+title: Quote0 API Serverless Microservice
+new: true
+---
+
+<GithubInfo owner="matchy-in" repo="quote0_api" />
+
+A serverless microservice built on AWS Lambda and DynamoDB that displays upcoming events on your Quote/0 reminder device, with automatic bin collection schedule integration.
+
+### Features
+
+- **Scheduled Updates** — Automatic pushes at 01:10, 07:10, 12:10, 17:10 daily
+- **Bin Collection Integration** — Reading Council API with smart 12-hour caching
+- **Event Management** — DynamoDB-backed custom events
+- **Quote/0 Display** — Format-compliant (25/29 char constraints)
+- **Serverless** — AWS Lambda + DynamoDB, pay-per-use
+- **Auto-Scaling** — Handles traffic spikes automatically
+- **Cost-Effective** — ~$1.18/month for typical usage
+
+### Architecture
+
+EventBridge Cron triggers Lambda functions, exposed via API Gateway:
+
+- `GET /api/display` — Returns formatted display data for the Quote/0 device
+- `PUT /api/events` — Creates a new event in DynamoDB
+
+The Quote/0 device pulls display data hourly, while the iPhone App writes events directly via the API.
+
+### Tech Stack
+
+| Component    | Technology                         |
+| ------------ | ---------------------------------- |
+| Runtime      | AWS Lambda (Node.js 18)            |
+| Database     | Amazon DynamoDB                    |
+| Scheduling   | AWS EventBridge                    |
+| API          | API Gateway HTTP API               |
+| External API | Reading Council Bin Collection API |
+
+### Scheduled Update Times
+
+| Time (UTC) | Description                   |
+| ---------- | ----------------------------- |
+| 01:10      | Early morning refresh         |
+| 07:10      | Morning update before workday |
+| 12:10      | Midday refresh                |
+| 17:10      | Evening update after work     |
+
+Adjust times in `serverless.yml` for your timezone.

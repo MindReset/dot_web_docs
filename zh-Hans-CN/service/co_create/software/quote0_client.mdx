@@ -1,0 +1,58 @@
+---
+title: Quote0 Client Python SDK
+new: true
+---
+
+<GithubInfo owner="YetYeti" repo="quote0-client" />
+
+用于通过 Dot. App API 控制 Quote0 电子墨水设备的 Python SDK，可通过 pip 安装使用。
+
+### 功能特性
+
+- 完整覆盖 Quote0 的全部 6 个 API 端点
+- 基于 Pydantic v2 模型的类型安全
+- 全面的错误处理与异常分类
+- 支持文本和图像内容推送
+- 设备任务管理
+- 简洁的同步客户端接口
+
+### 安装
+
+```bash
+pip install quote0-client
+# 或使用 uv
+uv add quote0-client
+```
+
+### 快速开始
+
+```python
+from quote0_client.client import Quote0Client
+from quote0_client.models import TextContentRequest
+
+client = Quote0Client(api_key="your-api-key-from-dot-app")
+
+# 获取设备列表
+devices = client.get_devices()
+
+# 发送文本内容
+response = client.send_text(devices[0].id, TextContentRequest(
+    title="你好",
+    message="Quote0 设备！"
+))
+```
+
+### API 一览
+
+| 方法                               | 说明             |
+| ---------------------------------- | ---------------- |
+| `get_devices()`                    | 获取所有设备列表 |
+| `get_device_status(device_id)`     | 获取设备状态     |
+| `switch_to_next(device_id)`        | 切换到下一个内容 |
+| `list_tasks(device_id, task_type)` | 列出设备任务     |
+| `send_text(device_id, content)`    | 发送文本内容     |
+| `send_image(device_id, content)`   | 发送图像内容     |
+
+### 错误处理
+
+SDK 提供细粒度的异常类型：`AuthenticationError`、`NotFoundError`、`PermissionError`、`ValidationError`、`RateLimitError`（限速 10 次/秒）。

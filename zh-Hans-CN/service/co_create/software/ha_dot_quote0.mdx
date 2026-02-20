@@ -1,0 +1,56 @@
+---
+title: Dot Quote/0 Home Assistant 集成
+new: true
+---
+
+<GithubInfo owner="Never2land" repo="HA-dot-quote0" />
+
+适用于 Dot. Quote/0 墨水屏设备的 Home Assistant 自定义集成，让你可以直接从 Home Assistant 监控设备状态，并向 Quote/0 推送文字或图片内容。
+
+### 功能特性
+
+#### 传感器
+
+- **电源状态**：当前设备电源模式（充电激活、电池激活等）
+- **电池状态**：充电状态
+- **Wi-Fi 信号**：信号强度（dBm）
+- **固件版本**：当前固件版本
+- **上次渲染**：最近一次屏幕更新的时间戳
+- **下次渲染**：分别显示电池模式和电源模式下的预计下次更新时间
+
+#### 二值传感器
+
+- **在线状态**：设备连接状态
+
+#### 设备控制
+
+- **下一个内容**：切换到内容循环中的下一项
+- **发送文字**：通过标题、正文和署名输入框向设备推送文字
+- **发送图片**：通过图片数据输入框向设备推送图片
+- **图片数据**：支持 Base64 编码的 PNG（296×152px）或绝对文件路径
+- **抖动类型**：下拉选择抖动算法（DIFFUSION、ORDERED、NONE）
+
+#### 服务动作
+
+- `dot_quote0.send_text` — 完整参数控制的文字内容推送
+- `dot_quote0.send_image` — 带抖动和边框选项的图片内容推送
+
+### 安装
+
+#### HACS（推荐）
+
+1. 打开 HACS → 集成 → ⋮ 菜单 → 自定义存储库
+2. 添加 `https://github.com/Never2land/HA-dot-quote0`，类别选择 Integration
+3. 安装 Dot. Quote/0
+4. 重启 Home Assistant
+
+#### 手动安装
+
+将 `custom_components/dot_quote0/` 文件夹复制到 Home Assistant 的 `config/custom_components/` 目录，然后重启。
+
+### 配置
+
+1. 前往 设置 → 设备与服务 → 添加集成
+2. 搜索 Dot. Quote/0
+3. 输入你的 API Key
+4. 所有 Quote/0 设备将被自动发现

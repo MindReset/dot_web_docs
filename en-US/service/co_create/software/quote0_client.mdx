@@ -1,0 +1,58 @@
+---
+title: Quote0 Client Python SDK
+new: true
+---
+
+<GithubInfo owner="YetYeti" repo="quote0-client" />
+
+A Python SDK for controlling Quote0 e-ink devices via the Dot. App API, available on PyPI.
+
+### Features
+
+- Full coverage of all 6 Quote0 API endpoints
+- Type-safe with Pydantic v2 models
+- Comprehensive error handling with typed exceptions
+- Text and image content support
+- Device task management
+- Easy-to-use synchronous client
+
+### Installation
+
+```bash
+pip install quote0-client
+# or with uv
+uv add quote0-client
+```
+
+### Quick Start
+
+```python
+from quote0_client.client import Quote0Client
+from quote0_client.models import TextContentRequest
+
+client = Quote0Client(api_key="your-api-key-from-dot-app")
+
+# List devices
+devices = client.get_devices()
+
+# Send text content
+response = client.send_text(devices[0].id, TextContentRequest(
+    title="Hello",
+    message="Quote0 device!"
+))
+```
+
+### API Reference
+
+| Method                             | Description            |
+| ---------------------------------- | ---------------------- |
+| `get_devices()`                    | Get all devices        |
+| `get_device_status(device_id)`     | Get device status      |
+| `switch_to_next(device_id)`        | Switch to next content |
+| `list_tasks(device_id, task_type)` | List device tasks      |
+| `send_text(device_id, content)`    | Send text content      |
+| `send_image(device_id, content)`   | Send image content     |
+
+### Error Handling
+
+The SDK provides typed exceptions: `AuthenticationError`, `NotFoundError`, `PermissionError`, `ValidationError`, and `RateLimitError` (rate limit: 10 req/sec).

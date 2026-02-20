@@ -1,0 +1,41 @@
+---
+title: Dot Service
+new: true
+---
+
+<GithubInfo owner="Ebispongebob" repo="dot-service" />
+
+A self-hosted web control service designed specifically for MindReset Dot. Quote/0 e-ink devices. It provides a modern web interface and an enhanced REST API, making it easy to manage device status, push text layouts, upload images, and integrate seamlessly into your automation workflows.
+
+### Features
+
+- **Modern Web Console** — Responsive design for desktop and mobile, with automatic dark/light mode based on system settings
+- **Device Overview** — Real-time view of device online status, battery level, Wi-Fi signal, firmware version, and current screen preview
+- **Powerful Text Push** — Auto-layout for title, body, and signature; dual rendering modes: device built-in typography API or server-side text-to-image for full font control
+- **Smart Image Processing** — Auto resize/crop to 296×152; multiple dithering algorithms (Floyd-Steinberg, Atkinson, Sierra, etc.); real-time dither preview
+- **Enhanced REST API** — Built on FastAPI with auto-generated Swagger/OpenAPI docs; wraps the Dot Cloud Auth V2 protocol
+
+### Core API
+
+- `GET /devices` — List devices
+- `POST /text` — Send text content
+- `POST /image` — Send Base64-encoded image
+- `POST /image/upload` — Upload an image file
+
+Full Swagger documentation is available at `http://localhost:8000/docs` after startup.
+
+### Quick Start
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your DOT_API_KEY and DOT_DEFAULT_DEVICE_ID
+
+# Start the service
+python run.py
+```
+
+Then visit `http://localhost:8000` to access the console.

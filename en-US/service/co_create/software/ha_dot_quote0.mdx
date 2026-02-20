@@ -1,0 +1,56 @@
+---
+title: Dot Quote/0 Home Assistant Integration
+new: true
+---
+
+<GithubInfo owner="Never2land" repo="HA-dot-quote0" />
+
+A custom Home Assistant integration for Dot. Quote/0 e-ink devices by MindReset. Monitor device status and push text or image content to your Quote/0 directly from Home Assistant.
+
+### Features
+
+#### Sensors
+
+- **Power State** — current device power mode (Power Active, Battery Active, etc.)
+- **Battery Status** — charging state
+- **Wi-Fi Signal** — signal strength in dBm
+- **Firmware Version** — current firmware
+- **Last Render** — timestamp of the last screen update
+- **Next Render (Battery / Power)** — scheduled next update times
+
+#### Binary Sensor
+
+- **Online** — connectivity status
+
+#### Controls (on the device page)
+
+- **Next Content** — cycle to the next item in the content loop
+- **Send Text** — push text to the device using the Title, Message, and Signature input fields
+- **Send Image** — push an image to the device using the Image Data input field
+- **Image Data** — base64-encoded PNG (296×152px) or an absolute file path
+- **Dither Type** — dropdown to select dithering algorithm (DIFFUSION, ORDERED, NONE)
+
+#### Service Actions
+
+- `dot_quote0.send_text` — push text content with full parameter control
+- `dot_quote0.send_image` — push image content with dithering and border options
+
+### Installation
+
+#### HACS (Recommended)
+
+1. Open HACS → Integrations → ⋮ menu → Custom repositories
+2. Add `https://github.com/Never2land/HA-dot-quote0` with category Integration
+3. Install Dot. Quote/0
+4. Restart Home Assistant
+
+#### Manual
+
+Copy the `custom_components/dot_quote0/` folder into your Home Assistant `config/custom_components/` directory, then restart.
+
+### Configuration
+
+1. Go to Settings → Devices & Services → Add Integration
+2. Search for Dot. Quote/0
+3. Enter your API key
+4. All your Quote/0 devices will be discovered automatically
