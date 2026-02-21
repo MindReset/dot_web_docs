@@ -1,5 +1,5 @@
 ---
-title: List Device Tasks
+title: List Device Content
 ---
 
 import Link from 'fumadocs-core/link';
@@ -38,10 +38,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		taskType: {
 			type: 'select',
 			required: true,
-			name: 'Task type',
+			name: 'Content type',
 			default: 'loop',
-			options: [{ value: 'loop', label: 'Loop task' }],
-			description: 'Currently, only loop task queries are available.',
+			options: [
+				{ value: 'loop', label: 'Loop content' },
+				{ value: 'fixed', label: 'Fixed content' },
+			],
 		},
 	}}
 	auth={true}
@@ -90,8 +92,8 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			required: true,
 		},
 		taskType: {
-			description: 'Task type (currently only loop is available)',
-			type: "'loop'",
+			description: 'Content type',
+			type: 'string',
 			required: true,
 		},
 	}}
@@ -102,30 +104,30 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 This interface does not require a request body, only an API key in the request header.
 
 - `deviceId`: device serial number
-- `taskType`: task type, currently only `loop` is available
+- `taskType`: content type, e.g. `loop` (loop content)
 
 ### Response Schema
 
-The response is an array of tasks.
+The response is an array of content items.
 
-- `type`: content type (only `TEXT_API` / `IMAGE_API` are returned)
-- `key`: task identifier (can be `null`)
-- Other fields: the task input payload (varies by task type)
+- `type`: content type (`TEXT_API` / `IMAGE_API` / `GENERAL`)
+- `key`: content identifier (can be `null`)
+- Other fields: the content input payload (varies by content type)
 
 <TypeTable
 	type={{
 		'[]': {
-			description: 'Task array',
+			description: 'Content array',
 			type: 'array',
 			required: true,
 			items: {
 				type: {
-					description: 'Content type',
-					type: 'string',
+					description: 'Content type (`TEXT_API` / `IMAGE_API` / `GENERAL`)',
+					type: "'TEXT_API' | 'IMAGE_API' | 'GENERAL'",
 					required: true,
 				},
 				key: {
-					description: 'Task identifier (used as taskKey for Text/Image API)',
+					description: 'Content identifier (used as taskKey for Text/Image API)',
 					type: 'string | null',
 					required: true,
 				},
@@ -176,8 +178,8 @@ The response is an array of tasks.
 
 ### Status Codes
 
-| code  | Meaning      | Description                      |
-| :---- | :----------- | :------------------------------- |
-| `200` | Success      | Successfully retrieved task list |
-| `401` | Unauthorized | Invalid or expired API key       |
-| `500` | Server Error | Internal server error            |
+| code  | Meaning      | Description                         |
+| :---- | :----------- | :---------------------------------- |
+| `200` | Success      | Successfully retrieved content list |
+| `401` | Unauthorized | Invalid or expired API key          |
+| `500` | Server Error | Internal server error               |

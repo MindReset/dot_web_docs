@@ -38,10 +38,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		taskType: {
 			type: 'select',
 			required: true,
-			name: 'タスク種別',
+			name: 'コンテンツ種別',
 			default: 'loop',
-			options: [{ value: 'loop', label: 'ループタスク' }],
-			description: '現在はループタスクのみ取得できます。',
+			options: [
+				{ value: 'loop', label: 'ループコンテンツ' },
+				{ value: 'fixed', label: '固定コンテンツ' },
+			],
 		},
 	}}
 	auth={true}
@@ -90,8 +92,8 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			required: true,
 		},
 		taskType: {
-			description: 'タスク種別（現在は loop のみ対応）',
-			type: "'loop'",
+			description: 'コンテンツ種別',
+			type: 'string',
 			required: true,
 		},
 	}}
@@ -102,30 +104,30 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 このインターフェースはリクエストボディを必要とせず、リクエストヘッダーに API キーを提供するだけです。
 
 - `deviceId`: デバイスのシリアル番号
-- `taskType`: タスク種別（現在は `loop` のみ対応）
+- `taskType`: コンテンツ種別（例: `loop` ループコンテンツ）
 
 ### レスポンス構造
 
-レスポンスはタスク配列です。
+レスポンスはコンテンツ配列です。
 
-- `type`: コンテンツ種別（`TEXT_API` / `IMAGE_API` のみ返却）
-- `key`: タスク識別子（`null` の場合あり）
-- その他のフィールド：タスクの入力データ（タスク種別により異なる）
+- `type`: コンテンツ種別（`TEXT_API` / `IMAGE_API` / `GENERAL`）
+- `key`: コンテンツ識別子（`null` の場合あり）
+- その他のフィールド：コンテンツの入力データ（コンテンツ種別により異なる）
 
 <TypeTable
 	type={{
 		'[]': {
-			description: 'タスク配列',
+			description: 'コンテンツ配列',
 			type: 'array',
 			required: true,
 			items: {
 				type: {
-					description: 'コンテンツ種別',
-					type: 'string',
+					description: 'コンテンツ種別（`TEXT_API` / `IMAGE_API` / `GENERAL`）',
+					type: "'TEXT_API' | 'IMAGE_API' | 'GENERAL'",
 					required: true,
 				},
 				key: {
-					description: 'タスク識別子（Text/Image API の taskKey として使用）',
+					description: 'コンテンツ識別子（Text/Image API の taskKey として使用）',
 					type: 'string | null',
 					required: true,
 				},
@@ -178,6 +180,6 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 | code  | 意味           | 説明                         |
 | :---- | :------------- | :--------------------------- |
-| `200` | 成功           | タスクリストの取得に成功     |
+| `200` | 成功           | コンテンツリストの取得に成功 |
 | `401` | 未認証         | API キーが無効または期限切れ |
 | `500` | サーバーエラー | サーバー内部エラー           |
