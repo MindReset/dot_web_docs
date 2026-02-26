@@ -1,0 +1,30 @@
+---
+title: Quote/0 Agent Skill (YangguangZhou)
+new: true
+---
+
+<DotDocsUrl owner="YangguangZhou" name="quote0" url="https://clawhub.ai/YangguangZhou/quote0" />
+
+通过本地 `quote0.js` 脚本调用 Dot Developer Platform API，控制 Quote/0 设备的 ClawHub AI 技能。支持推送文本与图片、查询设备状态、切换内容等操作。
+
+### 命令
+
+- **devices** — 获取设备列表
+- **status** — 获取设备状态
+- **next** — 切换下一条内容
+- **list** — 列出设备内容项
+- **text** — 推送文本内容
+- **image** — 推送图像内容
+
+### 使用方式
+
+```bash
+node quote0.js <command> [options]
+```
+
+通过 `DOT_API_KEY` 和 `DOT_DEVICE_ID` 环境变量，或在命令中直接传参配置凭据：
+
+```bash
+node quote0.js text --message "你好，Quote/0"
+node quote0.js image --imageFile ./card.png --border 0
+```
