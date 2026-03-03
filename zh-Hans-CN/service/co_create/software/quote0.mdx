@@ -1,0 +1,38 @@
+---
+title: Quote0 SDK & CLI (MrWillCom)
+new: true
+---
+
+<GithubInfo owner="MrWillCom" repo="quote0" />
+
+为 Quote/0 设备提供的 TypeScript SDK 与命令行工具，支持以编程方式或通过终端推送文字与图片内容。
+
+> **注意**：当前处于早期开发阶段，API 尚未稳定，可能在未来版本中发生变化。
+
+### 功能特性
+
+- TypeScript SDK，支持 `pushText` 等 API 方法
+- 命令行工具，可直接在终端操作 Quote/0 设备
+- 持续发布（通过 pkg.pr.new）
+
+### 安装
+
+#### CLI
+
+```bash
+npm install -g quote0@alpha
+```
+
+#### SDK
+
+```bash
+npm install quote0@alpha
+```
+
+```ts
+import Quote0 from 'quote0'
+
+const quote0 = new Quote0({
+  apiKey: 'dot_app_ABCD1234....EFGH5678',
+})
+```

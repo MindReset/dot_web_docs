@@ -1,0 +1,38 @@
+---
+title: Quote0 SDK & CLI (MrWillCom)
+new: true
+---
+
+<GithubInfo owner="MrWillCom" repo="quote0" />
+
+Quote/0 デバイス向けの TypeScript SDK および CLI ツールです。コードやターミナルからテキスト・画像コンテンツをプッシュできます。
+
+> **注意**：現在は早期開発段階です。API は安定しておらず、予告なく変更される場合があります。
+
+### 機能
+
+- `pushText` などの API メソッドを備えた TypeScript SDK
+- ターミナルから Quote/0 デバイスを直接操作できる CLI ツール
+- pkg.pr.new による継続的リリース
+
+### インストール
+
+#### CLI
+
+```bash
+npm install -g quote0@alpha
+```
+
+#### SDK
+
+```bash
+npm install quote0@alpha
+```
+
+```ts
+import Quote0 from 'quote0'
+
+const quote0 = new Quote0({
+  apiKey: 'dot_app_ABCD1234....EFGH5678',
+})
+```
