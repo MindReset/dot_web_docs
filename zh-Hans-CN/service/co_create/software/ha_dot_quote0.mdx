@@ -5,7 +5,7 @@ new: true
 
 <GithubInfo owner="Never2land" repo="HA-dot-quote0" />
 
-适用于 Dot. Quote/0 墨水屏设备的 Home Assistant 自定义集成，让你可以直接从 Home Assistant 监控设备状态，并向 Quote/0 推送文字或图片内容。
+适用于 Dot. Quote/0 墨水屏设备的 Home Assistant 自定义集成，让你可以直接从 Home Assistant 监控设备状态，并向 Quote/0 推送文字、图片、天气、日历与系统状态内容。
 
 ### 功能特性
 
@@ -17,6 +17,7 @@ new: true
 - **固件版本**：当前固件版本
 - **上次渲染**：最近一次屏幕更新的时间戳
 - **下次渲染**：分别显示电池模式和电源模式下的预计下次更新时间
+- **内容任务数**：内容循环中的任务数量（完整任务列表可从属性中查看）
 
 #### 二值传感器
 
@@ -34,6 +35,27 @@ new: true
 
 - `dot_quote0.send_text` — 完整参数控制的文字内容推送
 - `dot_quote0.send_image` — 带抖动和边框选项的图片内容推送
+- `dot_quote0.send_weather` — 推送天气实体的当前天气与预报
+- `dot_quote0.send_calendar` — 推送日历实体的即将到来的事件
+- `dot_quote0.send_system_status` — 推送 Home Assistant 系统状态（版本、CPU、内存、磁盘、实体数量）
+
+#### 诊断
+
+- 支持从 Home Assistant 下载设备诊断信息，便于排查连接和渲染问题
+
+### 与 HA-dot-quote0-card 的配套关系
+
+- **定位分工**：`HA-dot-quote0` 负责设备接入、实体与服务动作；`HA-dot-quote0-card` 负责仪表盘前端交互
+- **先后顺序**：先安装本集成，再安装卡片，卡片会读取已发现的 Quote/0 设备并提供可视化控制
+- **推荐搭配**：在卡片内进行发送文字/图片、预览与快捷操作，在自动化中调用本集成服务（如天气、日历、系统状态）
+
+了解卡片项目：[/docs/service/co_create/software/ha_dot_quote0_card](/docs/service/co_create/software/ha_dot_quote0_card)
+
+### 前置条件
+
+1. 已配对并联网的 Quote/0 设备
+2. Dot App 中创建的 API Key
+3. 设备序列号（可在 Dot App 设备信息中查看）
 
 ### 安装
 
@@ -54,3 +76,17 @@ new: true
 2. 搜索 Dot. Quote/0
 3. 输入你的 API Key
 4. 所有 Quote/0 设备将被自动发现
+
+### 自动化示例
+
+使用服务动作把天气推送到设备：
+
+```yaml
+service: dot_quote0.send_weather
+data:
+	serial: "YOUR_DEVICE_SERIAL"
+	weather_entity: weather.home
+	include_forecast: true
+	forecast_days: 3
+	refresh_now: true
+```

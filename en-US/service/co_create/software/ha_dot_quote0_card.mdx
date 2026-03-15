@@ -1,0 +1,66 @@
+---
+title: Dot Quote/0 Home Assistant Dashboard Card
+new: true
+---
+
+<GithubInfo owner="Never2land" repo="HA-dot-quote0-card" />
+
+A custom Lovelace card for Dot. Quote/0 in Home Assistant, providing a unified visual control panel for your device.
+
+This card is designed to work with `HA-dot-quote0`: the integration handles device connectivity and service actions, while the card handles frontend UI and interactions.
+
+### Core Features
+
+- **E-ink preview hero**: live-style display preview at the top of the card, including a pre-send preview state
+- **Device status chips**: online status, power state, battery, Wi-Fi, firmware version, and render timestamps
+- **Next Content**: one-click action to move to the next item in the content loop
+- **Send Text**: compose and send title, message, and signature directly from the card
+- **Send Image**: upload a 296×152 PNG, choose dithering and border, then send
+- **Device picker**: select from Quote/0 devices already discovered by Home Assistant
+- **Visual editor**: configure card options directly in the dashboard UI
+- **AI image generation**: optional Gemini API support for generating pixel-art preview before sending
+
+### Relationship With HA-dot-quote0
+
+- **Dependency**: install `HA-dot-quote0` first so the card can discover devices and execute actions
+- **Capability boundary**:
+  - `HA-dot-quote0`: integration, sensors, and service actions (text/image/weather/calendar/system status)
+  - `HA-dot-quote0-card`: dashboard interactions, preview, quick sends, and device selection
+- **Recommended workflow**:
+  - manual daily operations in the card
+  - scheduled/conditional tasks via integration service actions in automations
+
+Companion integration page: [/docs/service/co_create/software/ha_dot_quote0](/docs/service/co_create/software/ha_dot_quote0)
+
+### Installation
+
+#### HACS (Recommended)
+
+1. Open HACS → Frontend → ⋮ menu → Custom repositories
+2. Add `https://github.com/Never2land/HA-dot-quote0-card` with category Dashboard
+3. Install Dot. Quote/0 Card
+4. Hard-refresh your browser
+
+#### Manual
+
+1. Download `dist/dot-quote0-card.js` from releases
+2. Copy it to Home Assistant `config/www/`
+3. Add a dashboard resource in Settings → Dashboards → Resources:
+   - URL: `/local/dot-quote0-card.js`
+   - Type: JavaScript Module
+4. Refresh your browser
+
+### Configuration
+
+Use the visual editor first: add a new card, search Dot. Quote/0 Card, choose your device, and save.
+
+You can also configure it in YAML:
+
+```yaml
+type: custom:dot-quote0-card
+device_id: ABCD1234ABCD
+show_preview: true
+show_send_text: true
+show_send_image: true
+gemini_api_key: AIzaSy...
+```

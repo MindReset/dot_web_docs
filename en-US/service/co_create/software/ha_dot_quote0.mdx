@@ -5,7 +5,7 @@ new: true
 
 <GithubInfo owner="Never2land" repo="HA-dot-quote0" />
 
-A custom Home Assistant integration for Dot. Quote/0 e-ink devices by MindReset. Monitor device status and push text or image content to your Quote/0 directly from Home Assistant.
+A custom Home Assistant integration for Dot. Quote/0 e-ink devices by MindReset. Monitor device status and push text, image, weather, calendar, and system status content to your Quote/0 directly from Home Assistant.
 
 ### Features
 
@@ -17,6 +17,7 @@ A custom Home Assistant integration for Dot. Quote/0 e-ink devices by MindReset.
 - **Firmware Version** — current firmware
 - **Last Render** — timestamp of the last screen update
 - **Next Render (Battery / Power)** — scheduled next update times
+- **Content Tasks** — number of content tasks in the device loop (full task list available as attributes)
 
 #### Binary Sensor
 
@@ -34,6 +35,27 @@ A custom Home Assistant integration for Dot. Quote/0 e-ink devices by MindReset.
 
 - `dot_quote0.send_text` — push text content with full parameter control
 - `dot_quote0.send_image` — push image content with dithering and border options
+- `dot_quote0.send_weather` — push current weather conditions and forecast from any HA weather entity
+- `dot_quote0.send_calendar` — push upcoming events from any HA calendar entity
+- `dot_quote0.send_system_status` — push Home Assistant system status (version, CPU, memory, disk, entity count)
+
+#### Diagnostics
+
+- Download device diagnostics from Home Assistant to troubleshoot connectivity and rendering issues
+
+### Works With HA-dot-quote0-card
+
+- **Role split**: `HA-dot-quote0` handles device integration, entities, and service actions; `HA-dot-quote0-card` provides dashboard UI interactions
+- **Install order**: install this integration first, then install the card; the card discovers Quote/0 devices that are already available in Home Assistant
+- **Recommended usage**: use the card for daily manual actions and preview; use integration service actions in automations (weather, calendar, system status)
+
+Companion card page: [/docs/service/co_create/software/ha_dot_quote0_card](/docs/service/co_create/software/ha_dot_quote0_card)
+
+### Prerequisites
+
+1. A paired Quote/0 device connected to Wi-Fi
+2. An API key from the Dot App
+3. Your device serial number
 
 ### Installation
 
@@ -54,3 +76,17 @@ Copy the `custom_components/dot_quote0/` folder into your Home Assistant `config
 2. Search for Dot. Quote/0
 3. Enter your API key
 4. All your Quote/0 devices will be discovered automatically
+
+### Automation Example
+
+Use a service action to push weather content to the device:
+
+```yaml
+service: dot_quote0.send_weather
+data:
+	serial: "YOUR_DEVICE_SERIAL"
+	weather_entity: weather.home
+	include_forecast: true
+	forecast_days: 3
+	refresh_now: true
+```

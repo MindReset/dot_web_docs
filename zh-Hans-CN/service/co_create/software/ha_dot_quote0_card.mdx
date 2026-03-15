@@ -1,0 +1,66 @@
+---
+title: Dot Quote/0 Home Assistant 仪表盘卡片
+new: true
+---
+
+<GithubInfo owner="Never2land" repo="HA-dot-quote0-card" />
+
+适用于 Dot. Quote/0 的 Home Assistant 自定义 Lovelace 卡片，为设备提供统一的可视化控制面板。
+
+该卡片需与 `HA-dot-quote0` 集成配套使用：集成负责设备连接与服务动作，卡片负责前端展示与交互。
+
+### 核心特性
+
+- **墨水屏预览区**：卡片顶部显示设备画面预览，发送前会显示“仅预览未发送”状态
+- **设备状态信息**：在线状态、电源状态、电池、Wi-Fi、固件版本、渲染时间
+- **下一个内容**：一键切换到内容循环中的下一项
+- **发送文字**：在卡片内直接填写标题、正文、署名并发送
+- **发送图片**：上传 296×152 PNG，选择抖动算法与边框后发送
+- **设备选择器**：从 Home Assistant 已发现的 Quote/0 设备中直接选择
+- **可视化编辑器**：支持在仪表盘 UI 中配置卡片参数
+- **AI 生成图像**：可选接入 Gemini API，在发送前生成像素风图片预览
+
+### 与 HA-dot-quote0 的关联
+
+- **依赖关系**：必须先安装 `HA-dot-quote0`，卡片才可发现设备并执行动作
+- **能力边界**：
+  - `HA-dot-quote0`：设备接入、传感器、服务动作（文字/图片/天气/日历/系统状态）
+  - `HA-dot-quote0-card`：仪表盘交互、预览、快捷发送与设备选择
+- **推荐实践**：
+  - 日常手动操作使用卡片
+  - 定时或条件任务使用集成服务动作写自动化
+
+查看配套集成：[/docs/service/co_create/software/ha_dot_quote0](/docs/service/co_create/software/ha_dot_quote0)
+
+### 安装
+
+#### HACS（推荐）
+
+1. 打开 HACS → 前端 → ⋮ 菜单 → 自定义存储库
+2. 添加 `https://github.com/Never2land/HA-dot-quote0-card`，类别选择 Dashboard
+3. 安装 Dot. Quote/0 Card
+4. 强制刷新浏览器
+
+#### 手动安装
+
+1. 从 releases 下载 `dist/dot-quote0-card.js`
+2. 复制到 Home Assistant 的 `config/www/`
+3. 在 设置 → 仪表盘 → 资源 中添加：
+   - URL：`/local/dot-quote0-card.js`
+   - 类型：JavaScript Module
+4. 刷新浏览器
+
+### 配置
+
+优先使用可视化编辑器：添加卡片时搜索 Dot. Quote/0 Card，选择设备后保存。
+
+也可手动使用 YAML：
+
+```yaml
+type: custom:dot-quote0-card
+device_id: ABCD1234ABCD
+show_preview: true
+show_send_text: true
+show_send_image: true
+gemini_api_key: AIzaSy...
+```
