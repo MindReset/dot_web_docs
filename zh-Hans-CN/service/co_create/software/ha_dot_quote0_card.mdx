@@ -24,11 +24,11 @@ new: true
 
 - **依赖关系**：必须先安装 `HA-dot-quote0`，卡片才可发现设备并执行动作
 - **能力边界**：
-  - `HA-dot-quote0`：设备接入、传感器、服务动作（文字/图片/天气/日历/系统状态）
-  - `HA-dot-quote0-card`：仪表盘交互、预览、快捷发送与设备选择
+    - `HA-dot-quote0`：设备接入、传感器、服务动作（文字/图片/天气/日历/系统状态）
+    - `HA-dot-quote0-card`：仪表盘交互、预览、快捷发送与设备选择
 - **推荐实践**：
-  - 日常手动操作使用卡片
-  - 定时或条件任务使用集成服务动作写自动化
+    - 日常手动操作使用卡片
+    - 定时或条件任务使用集成服务动作写自动化
 
 查看配套集成：[/docs/service/co_create/software/ha_dot_quote0](/docs/service/co_create/software/ha_dot_quote0)
 
@@ -46,8 +46,8 @@ new: true
 1. 从 releases 下载 `dist/dot-quote0-card.js`
 2. 复制到 Home Assistant 的 `config/www/`
 3. 在 设置 → 仪表盘 → 资源 中添加：
-   - URL：`/local/dot-quote0-card.js`
-   - 类型：JavaScript Module
+    - URL：`/local/dot-quote0-card.js`
+    - 类型：JavaScript Module
 4. 刷新浏览器
 
 ### 配置
