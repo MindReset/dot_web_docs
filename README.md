@@ -1,6 +1,6 @@
 # Dot. Documentation
 
-**Languages:** [English](README.md) | [简体中文](README.zh-Hans-CN.md) | [日本語](README.ja.md)
+**Languages:** [English](README.md) | [简体中文](README.zh-Hans-CN.md) | [日本語](README.ja-JP.md)
 
 [![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-blue.svg)](LICENSE)
 

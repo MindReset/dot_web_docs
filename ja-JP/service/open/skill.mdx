@@ -1,0 +1,82 @@
+---
+title: AI Skill
+description: AI Skill を使用して、AI アシスタント（GitHub Copilot、Claude、ChatGPT など）が Dot. デバイスを直接制御できるようにします。
+new: true
+---
+
+## Dot Skill とは？
+
+Dot Skill は、AI アシスタントが自然言語コマンドを通じて Dot. デバイスと連携できるようにするオープンソースツールです。API リクエストを手動で書く必要はありません。AI にやりたいことを伝えるだけです。
+
+## 対応 AI アシスタント
+
+- **GitHub Copilot** (VS Code / JetBrains)
+- **Claude** (Claude Code / Claude Desktop)
+- **ChatGPT** (カスタム GPTs 経由)
+- **Skills/Agents をサポートするその他の AI ツール**
+
+## 機能
+
+- 🔌 **プラグアンドプレイ** - インストール後、自然言語でデバイスを制御
+- 📝 **テキスト送信** - "デバイスに ToDo リストを表示して"
+- 🖼️ **画像送信** - "この画像を Dot. に送信して"
+- 📊 **状態確認** - "デバイスのバッテリー残量は？"
+- 🔄 **コンテンツ切り替え** - "次のコンテンツに切り替えて"
+- 🐍 **ヘルパースクリプト** - 自動化用の Python スクリプト
+
+## クイックスタート
+
+### 1. Skill の取得
+
+最新バージョンは GitHub リポジトリから：
+
+👉 **[MindReset/dot_skill](https://github.com/MindReset/dot_skill)**
+
+### 2. Skill のインストール
+
+#### 方法 1: npx 経由でインストール（推奨）
+
+```bash
+npx skills add MindReset/dot_skill
+```
+
+#### 方法 2: 手動インストール
+
+```bash
+mkdir -p ~/.agents/skills
+ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
+```
+
+### 3. 環境変数の設定
+
+```bash
+export DOT_API_KEY="dot_app_your_api_key"
+```
+
+### 4. 使用開始
+
+インストール後、AI アシスタントに以下のように話しかけるだけ：
+
+- "デバイス ABCD1234ABCD に '会議は午後 3 時から' と表示して"
+- "デバイスの状態を確認して"
+- "次のコンテンツに切り替えて"
+
+## ドキュメント言語
+
+Skill ドキュメントは以下の言語で提供されています：
+
+- **[English](https://github.com/MindReset/dot_skill/blob/master/README.md)**
+- **[简体中文](https://github.com/MindReset/dot_skill/blob/master/README.zh-CN.md)**
+- **[日本語](https://github.com/MindReset/dot_skill/blob/master/README.ja-JP.md)**
+
+## ソースコードとコントリビューション
+
+- **GitHub**: [MindReset/dot_skill](https://github.com/MindReset/dot_skill)
+- **ライセンス**: MIT
+- **コントリビューション歓迎**: Issue や Pull Request を送信してください
+
+## 関連リンク
+
+- [API キーの取得](/docs/service/open/get_api)
+- [デバイス ID の取得](/docs/service/open/get_device_id)
+- [API ドキュメント索引](/docs/service/open)
