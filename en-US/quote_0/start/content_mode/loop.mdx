@@ -5,12 +5,18 @@ description: Learn about the loop content mode in Quote/0.
 
 ## Loop Content
 
-Loop content refers to "the duration to wait between each item in the loop":
+Loop Content mode functions similarly to a music player's playlist feature. You can add Telegram Channel, RSS feeds, and photos to the list, and the device will display them sequentially in a continuous loop according to the configured order and interval.
 
-- The device displays content according to the sequence in the loop list
-- You can press and hold to reorder items in the loop list
-- You can tap "More" on the right to immediately display the current content
+In Loop Content mode, the device will continue rotating through the list until you switch to [Fixed Content](/docs/quote_0/start/content_mode/fixed) mode or manually intervene.
 
-In the App, you can tap "Adjust Interval" above the loop list to set different interval times.
+<Callout type="info" title="Mechanisms and Update Intervals">
+The mechanism for Loop Content operates as follows:
 
-When the device runs on battery, longer intervals correspondingly extend the usage time since the interval determines how long the device sleeps between updates. However, less frequent updates reduce real-time relevance. If the device is plugged into power, the loop interval can be as short as 5 minutes, maximizing real-time relevance.
+- The device displays content following the sequence in the loop list;
+- In the App's loop list, you can press, hold, and drag to reorder items;
+- By tapping "More" next to an item, you can immediately display it on the device;
+- Tap "Adjust Interval" above the loop list in the App to modify the global content switching interval.
+
+**Battery Life and Update Frequency:**
+When running on battery power, a longer interval extends the device's sleep time between updates, thereby increasing battery life but reducing content freshness. When the device is connected to power, the minimum loop interval can be set to **1 minute**, enabling the highest frequency of content updates.
+</Callout>

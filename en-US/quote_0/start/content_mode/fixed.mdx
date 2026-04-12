@@ -5,4 +5,15 @@ description: Learn about the fixed content mode in Quote/0.
 
 ## Fixed Content
 
-(To be added)
+Fixed Content mode allows users to schedule specific content to be displayed during designated time periods, functioning similarly to a timetable. For example, you can configure the device to display weather information from 7:00 AM to 9:00 AM on weekdays, and Douban Movie rankings from 8:00 PM to 10:00 PM on weekends.
+
+Outside the time periods set for fixed content, the device will automatically switch to [Loop Content](/docs/quote_0/start/content_mode/loop) mode.
+
+<Callout type="info" title="Overlapping Time and Display Logic">
+Content can be fixed to specific days of the week or all days within a designated time range. During the display period, content refreshes according to the configured update interval.
+
+When multiple fixed content schedules overlap, the system applies the following priority rules:
+1. Prioritize the content with the **earlier end time**;
+2. If end times are identical, prioritize the content with the **later start time**;
+3. If both start and end times are identical, the device will **randomly select** one of the overlapping contents to display.
+</Callout>
