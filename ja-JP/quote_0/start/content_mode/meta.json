@@ -1,0 +1,8 @@
+{
+    "title": "コンテンツモード",
+    "pages": [
+        "loop",
+        "fixed"
+    ],
+    "defaultOpen": false
+}

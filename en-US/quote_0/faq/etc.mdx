@@ -28,20 +28,18 @@ Quote/0 is a smart home device featuring a low-power autonomous wake design.
 
 When the device is not actively fetching or refreshing content, it disconnects from the network and enters sleep mode. Your configuration settings are stored on the server; when the device wakes, it retrieves your saved settings and applies them automatically. Therefore, simply configure normally—changes will be applied during the next wake cycle.
 
-## What Is the Logic for Content Updates?
+## Content Modes
 
-Quote/0 supports multiple content modes: loop, fixed, and temporary.
+Quote/0 supports multiple content modes. Please refer to the following documentation for details:
 
-The current app has enabled loop mode; other modes will be deployed via hot updates.
-Loop content refers to "the duration to wait between each item in the loop":
-
--   The device displays content according to the sequence in the loop list
--   You can long-press and drag to reorder items within the loop
--   You can tap "More" on the right to immediately display the current item
-
-In the app, tap "Adjust Interval Time" above the loop list to configure different intervals.
-
-When operating on battery power, longer intervals extend battery life because the device sleeps during intervals; however, content freshness decreases. If the device is connected to power, the loop interval can be as short as 5 minutes, maximizing content timeliness.
+<Cards>
+    <Card href="/docs/quote_0/start/content_mode/loop" title="Loop Content">
+        Learn about the loop content mode in Quote/0
+    </Card>
+    <Card href="/docs/quote_0/start/content_mode/fixed" title="Fixed Content">
+        Learn about the fixed content mode in Quote/0
+    </Card>
+</Cards>
 
 ## Magnetic Attachment Is Not Firm
 
