@@ -1,5 +1,6 @@
 ---
 title: 获取设备列表
+new: true
 ---
 
 import Link from 'fumadocs-core/link';
@@ -37,12 +38,16 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 ```json
 [
 	{
+		"alias": "我的 Dot",
+		"location": "书房",
 		"series": "quote",
 		"model": "quote_0",
 		"edition": 1,
 		"id": "ABCD1234ABCD"
 	},
 	{
+		"alias": "工作台 Dot",
+		"location": "办公室",
 		"series": "quote",
 		"model": "quote_0",
 		"edition": 2,
@@ -74,6 +79,14 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'array',
 			required: true,
 			items: {
+				alias: {
+					description: '设备别名',
+					type: 'string',
+				},
+				location: {
+					description: '设备位置',
+					type: 'string',
+				},
 				id: {
 					description: '设备序列号',
 					type: 'string',

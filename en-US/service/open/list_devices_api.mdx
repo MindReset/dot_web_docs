@@ -1,5 +1,6 @@
 ---
 title: Get Device List
+new: true
 ---
 
 import Link from 'fumadocs-core/link';
@@ -37,12 +38,16 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 ```json
 [
 	{
+		"alias": "My Dot",
+		"location": "Study",
 		"series": "quote",
 		"model": "quote_0",
 		"edition": 1,
 		"id": "ABCD1234ABCD"
 	},
 	{
+		"alias": "Desk Dot",
+		"location": "Office",
 		"series": "quote",
 		"model": "quote_0",
 		"edition": 2,
@@ -74,6 +79,14 @@ This interface does not require a request body, only an API key in the request h
 			type: 'array',
 			required: true,
 			items: {
+				alias: {
+					description: 'Device alias',
+					type: 'string',
+				},
+				location: {
+					description: 'Device location',
+					type: 'string',
+				},
 				id: {
 					description: 'Device serial number',
 					type: 'string',

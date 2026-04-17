@@ -1,5 +1,6 @@
 ---
 title: デバイス一覧を取得
+new: true
 ---
 
 import Link from 'fumadocs-core/link';
@@ -37,12 +38,16 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 ```json
 [
 	{
+		"alias": "マイ Dot",
+		"location": "書斎",
 		"series": "quote",
 		"model": "quote_0",
 		"edition": 1,
 		"id": "ABCD1234ABCD"
 	},
 	{
+		"alias": "デスク Dot",
+		"location": "オフィス",
 		"series": "quote",
 		"model": "quote_0",
 		"edition": 2,
@@ -74,6 +79,14 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'array',
 			required: true,
 			items: {
+				alias: {
+					description: 'デバイスの別名',
+					type: 'string',
+				},
+				location: {
+					description: 'デバイスの設置場所',
+					type: 'string',
+				},
 				id: {
 					description: 'デバイスのシリアル番号',
 					type: 'string',
