@@ -1,0 +1,65 @@
+---
+title: Download Pocket NFC App
+description: Download the Pocket NFC Android utility app for Rand/0 The Pocket Prophet.
+---
+
+## Download Pocket NFC App
+
+Pocket NFC is an Android utility app for Rand/0 The Pocket Prophet, used for NFC card-related features.
+
+Download: [Android package](https://os-cdn.mindreset.tech/dot/device/rand_0/pocket-nfc-n1.2-c3_1777091076104.apk)
+
+For Android devices. If your browser blocks the installation, open the APK from the system notification or file manager after the download completes.
+
+<Callout type="warn" title="Compatibility">
+
+-   Pocket NFC currently provides an Android installation package only;
+-   If you cannot download it from the WeChat in-app browser, reopen this page in the system browser;
+-   Before installing the APK, follow the system prompt to allow app installation from the current browser or file manager.
+
+</Callout>
+
+## Why iOS Is Not Supported
+
+iOS does not fully open its NFC capabilities, so Pocket NFC cannot read and write physical NFC cards on iPhone.
+
+You can borrow someone else's Android device to complete the NFC operation. After the content is written, Rand/0 can use the NFC feature independently. You only need Pocket NFC App again when you want to change the NFC content.
+
+## Supported Cards
+
+Rand/0 includes passive NFC capability and can write a personal physical NFC card that you own into the device. The device does not provide financial IC properties or capabilities. This feature is only intended for cards you personally own. Please keep your device secure, do not write other people's information, and do not share security cards with others.
+
+Currently supported card parameters:
+
+| Item     | Specification                     |
+| :------- | :-------------------------------- |
+| NFC Type | CUID                              |
+| ATQA     | 0x0004                            |
+| SAK      | 0x08                              |
+| RAM      | 1kBytes (16 bytes Per Block)      |
+
+## App Preview
+
+<div className="grid gap-4 md:grid-cols-3">
+	<CustomCloudImage
+		osSrc="dot/device/rand_0/Mockup_1776825518901.png"
+		alt="Pocket NFC app main screen"
+		width={300}
+		height={600}
+		className="h-auto w-full"
+	/>
+	<CustomCloudImage
+		osSrc="dot/device/rand_0/Mockup-1_1776825539441.png"
+		alt="Pocket NFC app screenshot 1"
+		width={300}
+		height={600}
+		className="h-auto w-full"
+	/>
+	<CustomCloudImage
+		osSrc="dot/device/rand_0/Mockup-2_1776825553060.png"
+		alt="Pocket NFC app screenshot 2"
+		width={300}
+		height={600}
+		className="h-auto w-full"
+	/>
+</div>

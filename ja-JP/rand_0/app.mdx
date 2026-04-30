@@ -1,0 +1,65 @@
+---
+title: 口袋 NFC App をダウンロード
+description: Rand/0 ポケットの予言者向けの口袋 NFC Android ユーティリティ App をダウンロードします。
+---
+
+## 口袋 NFC App をダウンロード
+
+口袋 NFC は、Rand/0 ポケットの予言者向けの Android ユーティリティ App で、NFC カード関連機能に使用します。
+
+ダウンロード：[Android インストールパッケージ](https://os-cdn.mindreset.tech/dot/device/rand_0/pocket-nfc-n1.2-c3_1777091076104.apk)
+
+Android 端末で利用できます。ブラウザでインストールがブロックされた場合は、ダウンロード完了後にシステム通知またはファイルマネージャーから APK を開いてください。
+
+<Callout type="warn" title="互換性について">
+
+-   口袋 NFC は現在 Android インストールパッケージのみを提供しています；
+-   WeChat 内蔵ブラウザでダウンロードできない場合は、システムブラウザでこのページを開き直してください；
+-   APK をインストールする前に、現在のブラウザまたはファイルマネージャーからのアプリインストールを許可するよう、システムの案内に従ってください。
+
+</Callout>
+
+## iOS に対応していない理由
+
+iOS では NFC 機能が完全には開放されていないため、Pocket NFC は iPhone 上で物理 NFC カードの読み取りと書き込みを完了できません。
+
+他の方の Android 端末を借りて NFC 操作を完了できます。書き込み後、Rand/0 はその NFC 機能を単独で利用できます。NFC 内容を変更する場合にのみ、再度 Pocket NFC App が必要になります。
+
+## 対応カード
+
+Rand/0 はパッシブ NFC 機能を内蔵しており、本人が所有する物理 NFC カードを端末に書き込めます。この端末は金融 IC としての属性や機能を備えていません。この機能は本人所有の NFC 実体カードにのみ使用してください。端末を慎重に保管し、他人の情報を書き込んだり、安全カードを他人と共有したりしないでください。
+
+現在対応しているカードパラメータ：
+
+| 項目     | 仕様                              |
+| :------- | :-------------------------------- |
+| NFC Type | CUID                              |
+| ATQA     | 0x0004                            |
+| SAK      | 0x08                              |
+| RAM      | 1kBytes (16 bytes Per Block)      |
+
+## App プレビュー
+
+<div className="grid gap-4 md:grid-cols-3">
+	<CustomCloudImage
+		osSrc="dot/device/rand_0/Mockup_1776825518901.png"
+		alt="口袋 NFC App メイン画面"
+		width={300}
+		height={600}
+		className="h-auto w-full"
+	/>
+	<CustomCloudImage
+		osSrc="dot/device/rand_0/Mockup-1_1776825539441.png"
+		alt="口袋 NFC App スクリーンショット 1"
+		width={300}
+		height={600}
+		className="h-auto w-full"
+	/>
+	<CustomCloudImage
+		osSrc="dot/device/rand_0/Mockup-2_1776825553060.png"
+		alt="口袋 NFC App スクリーンショット 2"
+		width={300}
+		height={600}
+		className="h-auto w-full"
+	/>
+</div>

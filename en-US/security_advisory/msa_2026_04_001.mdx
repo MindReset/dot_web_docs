@@ -1,0 +1,72 @@
+---
+title: MSA-2026-04-001
+description: Hardcoded bearer token in OTA firmware enabling arbitrary firmware record tampering
+---
+
+**Release Date**: Apr 30, 2026  
+**Last Updated**: Apr 30, 2026  
+**Severity**: High  
+**Status**: Fixed  
+**CVSS 4.0 Score**: 8.7 (AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:N/SC:H/SI:H/SA:L)
+
+---
+
+## Overview
+
+On 2026-04-30T09:03:00Z, we received a security report identifying that the OTA firmware of the `rand` device series contained a hardcoded bearer token. This token was accepted by the backend API endpoint `/api/authV2/panel/device/firmware/post`. Using this extracted credential, an attacker could create or overwrite arbitrary firmware records in the database — a capability that could facilitate large-scale supply chain attacks or device botnet takeover.
+
+These vulnerabilities have been fully remediated through credential rotation, endpoint privilege isolation, and removal of write access from device-class bearer tokens.
+
+## Impact Scope
+
+| Item               | Details                                                                    |
+| :----------------- | :------------------------------------------------------------------------- |
+| Affected Product   | Dot Server-side API                                                        |
+| Affected Version   | Production firmware query/post endpoints prior to the fix                  |
+| Fixed Version      | Server-side fix                                                            |
+| Affected Component | `/api/authV2/panel/device/firmware/query`, `/api/authV2/panel/device/firmware/post` |
+| Attack Vector      | Network                                                                    |
+| Required Privilege | None (token extractable from publicly available `rand` firmware binary)    |
+
+## Technical Description
+
+The `rand` device firmware included a hardcoded bearer token used for OTA version checking. This same token was validated against the shared system-level `BEARER_KEY`, which was accepted by all system-bearer-protected endpoints — including the administrative firmware write endpoint.
+
+### Identified Vulnerability
+
+#### Unauthorized Firmware Record Write
+
+More critically, the `/api/authV2/panel/device/firmware/post` endpoint also accepted the same shared `BEARER_KEY`. An attacker could use the extracted token to create or overwrite firmware records for any series and edition, including injecting arbitrary `path`, `sha256`, `size`, `version`, and additional custom fields into the database. These tampered records would be served to real devices upon the next OTA query, potentially delivering malicious firmware.
+
+Proof-of-concept provided in the report demonstrated successful insertion of a fake edition-2 record under `rand/rand_0` with attacker-controlled field values, which was subsequently returned by the query endpoint.
+
+## Potential Consequences
+
+- **Supply chain attack**: By poisoning firmware records, an attacker could cause devices to receive and install attacker-controlled firmware paths, enabling remote code execution at scale.
+- **Device botnet takeover**: A successful supply chain injection could allow weaponization of deployed devices for DDoS, cryptomining, or data exfiltration.
+
+## Remediation
+
+- **Rotated the shared `BEARER_KEY`**: The previously hardcoded token is immediately invalidated across all endpoints.
+- **Introduced a scoped `DEVICE_FIRMWARE_QUERY_BEARER_KEY`**: A new, dedicated credential is issued exclusively for OTA version queries. This key is accepted only by `/api/authV2/panel/device/firmware/query` and carries no write privileges.
+- **Endpoint privilege isolation**: `/api/authV2/panel/device/firmware/post` is now restricted to the primary system `BEARER_KEY` only. Device-class bearer tokens cannot access write endpoints.
+- **Removed system bearer fallback from panel endpoints**: Multiple panel API endpoints that previously fell back to system bearer authentication have been migrated to require authenticated panel sessions with explicit permission checks, reducing the blast radius of any future credential exposure.
+
+## Impact Assessment
+
+- We found no evidence of malicious exploitation beyond the validation and proof-of-concept testing described in the report. The test-generated dirty data records have been cleaned up from the database.
+
+## User Action
+
+- **No action required.** The vulnerability is fully remediated server-side. No client or firmware update is needed to address this issue.
+
+## Acknowledgements
+
+We sincerely thank [Mason](https://mas0n.org) for the thorough security analysis, responsible disclosure, and the detailed proof-of-concept that enabled precise and comprehensive remediation of this vulnerability.
+
+---
+
+**Disclaimer**: This advisory reflects information available at publication. We will monitor for related threats and update this document if material changes occur.  
+**Document ID**: MSA-2026-04-001  
+**Classification**: Public  
+**Issued by**: MindReset Security Team
