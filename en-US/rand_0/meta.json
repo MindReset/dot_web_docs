@@ -1,8 +1,11 @@
 {
     "title": "Rand/0",
     "pages": [
-        "rand_0",
         "start",
+        "wifi",
+        "wallpaper",
+        "features",
+        "bluetooth_pager",
         "app"
     ],
     "defaultOpen": true

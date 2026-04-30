@@ -1,0 +1,14 @@
+{
+    "title": "功能",
+    "pages": [
+        "mbti_guide",
+        "answers",
+        "fortune",
+        "coin",
+        "dice",
+        "merit",
+        "num",
+        "clock"
+    ],
+    "defaultOpen": true
+}
