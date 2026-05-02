@@ -6,7 +6,8 @@
                 "wallpaper",
                 "features",
                 "bluetooth_pager",
-                "app"
+                "app",
+                "firmware"
         ],
         "defaultOpen": true
 }

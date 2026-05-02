@@ -1,0 +1,9 @@
+{
+    "title": "Update and Reset",
+    "pages": [
+        "update_firmware",
+        "reset_device",
+        "changelog"
+    ],
+    "defaultOpen": true
+}
