@@ -1,22 +1,54 @@
 ---
-title: Tap-to-Interact Launch Issues / App Clip Unavailable
+title: App Clip and Tap-to-Interact
+new: true
+description: Learn why Quote/0 opens content through the Dot. App or App Clip, and what to check when tap-to-interact cannot launch.
 ---
 
-import Link from 'fumadocs-core/link';
+## Why tap-to-interact opens the App Clip / App
 
-## How to Perform "Tap-to-Interact"
+Quote/0 tap-to-interact does not open a fixed web page. It opens a content handling entry point.
+
+Because the content currently shown on the device can change, and different content types need different presentation methods, the Dot. App or App Clip needs to retrieve the current content, perform unified permission checks, and choose the appropriate way to open it.
+
+### NFC launches the entry point, not the content itself
+
+Quote/0 has an NFC module in the blank area on the right side. When a phone is brought near the device, NFC triggers a fixed entry point that opens the Dot. App or App Clip.
+
+This entry point does not directly store the current screen content, nor does it decide whether the final result should open a web page, text, photo, or third-party app.
+
+### The App retrieves current content and checks permission
+
+After tap-to-interact opens the App, the App retrieves the content associated with the current device screen.
+
+This keeps the NFC entry point stable while allowing the opened content to change with the device's current state. Even if the NFC tag itself does not change, the final content can still update based on what the device is showing.
+
+Before showing content, the App performs a unified permission check. This permission check is not specific to one content type; it is a base step in the tap-to-interact flow.
+
+After permission passes, the App chooses the display method based on the content type.
+
+### Different content needs different opening methods
+
+| Content type | Opening method |
+| --- | --- |
+| News or article content | Open a web page |
+| Third-party app content | Jump to the corresponding app |
+| API or plain text | Display as plain text |
+| Structured text | Display as Markdown |
+| Image content | Display as a photo |
+
+If NFC directly opened a fixed web page, it could not adapt to these content forms or complete unified permission checks before opening.
+
+### This design also keeps power consumption low
+
+Quote/0 can keep NFC as a low-power trigger entry point instead of keeping the device powered or online just for tap-to-interact.
+
+Content retrieval, permission checks, and display method selection are handled by the App, while the device itself can keep the low-power behavior of an e-ink screen and battery mode.
+
+## How to use tap-to-interact
 
 <include>../start/action.mdx</include>
 
-## “App Clip” unavailable
-
-<CustomCloudImage osSrc="dot/docs/action_clip_app_not_available.png" alt="“App Clip” unavailable" />
-
-If you encounter "App Clip unavailable" after a tap-to-interact action, it indicates that you have not yet installed the Dot. App. After <Link href="/docs/dot/install_app">installing the latest version of the app</Link>, you can use tap-to-interact functionality.
-
-This error occurs because the current App Clip size exceeds Apple's system size limit for "launching an App Clip without installing the main app." We are actively working to reduce the App Clip size so it can be invoked directly without requiring the main app installation.
-
-## Cannot launch
+## Why the App Clip / App may not launch
 
 <CustomCloudImage osSrc="dot/docs/action_location.png" alt="Activation area" />
 

@@ -1,5 +1,6 @@
 ---
 title: Bluetooth Remote
+new: true
 description: Rand/0 Bluetooth Remote.
 ---
 
@@ -11,6 +12,98 @@ Bluetooth Remote lets Rand/0 connect to different devices for page turning, remo
 -   Connect to a phone and use it as a remote camera shutter.
 -   Connect to a computer and use it as a presentation remote for Keynote, PowerPoint, Figma, and more.
 -   Firmware 1.2.0 and later versions improve Bluetooth encrypted verification for Apple devices for better connection compatibility.
+
+## Button Modes
+
+Rand/0 Bluetooth Remote supports multiple button output modes. In different modes, the up and down buttons send different Bluetooth button events to the connected device.
+
+| Mode | Scenario | Description |
+| --- | --- | --- |
+| Yuexingtong protocol | Hardware devices that support the Yuexingtong protocol | Works with compatible hardware reading devices. |
+| PPT Remote | Keynote, PowerPoint, Figma Slides, and other presentation scenarios | Controls previous / next slide during presentations. |
+| Mobile Page Turning | Short-video apps, feeds, and mobile apps that support vertical switching | Switches content up and down on phones or tablets. |
+| Camera Remote | System camera apps or camera apps that support volume-key shutter | Works as a remote shutter. |
+| Media Control | Music, video, or apps that support media keys | Controls previous / next track and similar media actions. |
+| Reading Mode | WeRead, Apple Books, e-readers, and other reading scenarios | Turns pages while reading. |
+| Suixiang Coding | Workflows or apps that support AI shortcut actions | The default up button is **AI Accept**, and the default down button is **AI Summon**. |
+| Custom | Scenarios that need custom up/down button behavior | Assign different button events to the up and down buttons. |
+
+<Callout type="info" title="About Suixiang Coding">
+In Suixiang Coding mode, the up button is set to **AI Accept** by default, and the down button is set to **AI Summon** by default. The actual effect depends on whether the connected device or app supports the corresponding button events.
+</Callout>
+
+### Custom Buttons
+
+In Custom mode, both the up and down buttons can be assigned from the following button events.
+
+| Category | Available button events |
+| --- | --- |
+| No action | None |
+| Camera / Volume | Camera / Volume+, Camera / Volume- |
+| Media control | Play / Pause, Next Track, Previous Track |
+| Common keyboard | Enter, Space, Page Up, Page Down, Left Arrow, Right Arrow |
+| Page-turner control | Page-turner Previous Page, Page-turner Next Page, Page-turner Back, Page-turner Confirm, Page-turner Sleep, Page-turner Power Off, Page-turner Before Power Off |
+| Presentation control | F5 Present, Esc Exit, B Black Screen |
+| AI control | AI Summon, AI Accept, AI Inline |
+
+## Known Support
+
+The following list summarizes compatibility we have confirmed and continue to maintain. Because apps, systems, and hardware firmware are updated over time, actual behavior may change across versions.
+
+### Phone Camera
+
+| App / Hardware | Support | Notes |
+| --- | --- | --- |
+| iPhone system camera | Confirmed support | Can be used as a remote shutter. |
+| Android system camera | May support | Some Android camera apps support volume-key shutter, but behavior may vary by brand, system version, and camera app. |
+
+### Presentation and Design Tools
+
+| App / Hardware | Support | Notes |
+| --- | --- | --- |
+| Keynote | Confirmed support | Can control previous / next slide during presentations. |
+| PowerPoint | Confirmed support | Can control previous / next slide during presentations. |
+| Figma presentation / prototype preview | Confirmed support | Can control previous / next frame during presentations or prototype preview. |
+| Figma Slides | Confirmed support | Can control slides during presentations. |
+
+### Short-Video Apps
+
+| App / Hardware | Platform / Model | Support | Notes |
+| --- | --- | --- | --- |
+| Douyin | Web, macOS, iPadOS | Confirmed support | Can switch content up and down. |
+| Douyin | iOS | Not supported | Due to app-side interaction limitations, Rand/0 cannot currently control this version. |
+| Douyin AI | iOS | Confirmed support | Can switch content up and down. |
+
+### Audio Players
+
+| App / Hardware | Platform / Model | Support | Notes |
+| --- | --- | --- | --- |
+| Common audio players | Apps that support media-key control | May support | Usually works for previous / next track control. Actual behavior depends on whether the app responds to system media keys. |
+
+### Reading Apps and E-Readers
+
+| App / Hardware | Platform / Model | Support | Notes |
+| --- | --- | --- | --- |
+| WeRead | iOS, iPadOS | Confirmed support | Can turn pages while reading. |
+| Apple Books | iOS, iPadOS, macOS | Confirmed support | Can turn pages while reading. |
+| Yuexingtong | X3, X4 | Confirmed support | Can turn pages while reading. |
+| Kindle | Paperwhite 6 | Not supported | The stock system is not supported. It may work after jailbreaking and installing third-party plugins such as KOReader, but this is outside the official support scope. |
+| Onyx BOOX | Series devices | Confirmed support | Can turn pages while reading. |
+| iReader | Series devices | Confirmed support | Can turn pages while reading. |
+| Hanvon | Series devices | Confirmed support | Can turn pages while reading. |
+| iFLYTEK Qidian Reader | Series devices | Confirmed support | Can turn pages while reading. |
+| QQ E-book Reader | Series devices | May support | Can turn pages while reading. |
+| Tomato Novel | App | Not supported | Rand/0 cannot currently control this app. |
+| E-readers that support Bluetooth or keyboard page turning | General | May support | Depends on whether the e-reader or reading app supports Bluetooth button page turning. |
+| Reading apps that support keyboard page turning | General | May support | Depends on whether the app supports external keyboard or Bluetooth button events. |
+
+<Callout type="info" title="About Compatibility">
+Actual Bluetooth Remote support depends on Rand/0 firmware, the connected device, and whether the corresponding app or hardware supports Bluetooth button events.
+
+As apps, systems, or hardware firmware are updated, something that worked before may temporarily stop working; the opposite may also happen when a previously unsupported app or device starts supporting the relevant input.
+
+If you notice a compatibility change, please leave us feedback. We will update this table and, when necessary, try to contact the corresponding app or hardware vendor to seek better compatibility support.
+</Callout>
 
 ## Controls
 

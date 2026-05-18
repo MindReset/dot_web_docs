@@ -29,6 +29,10 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 4. Make sure your device is connected to the network;
 5. Make sure you've added the Image API content to the device task from the Content Studio in the Dot. App.
 
+<Callout type="info" title="About API display timing">
+	The API's immediate display capability depends on whether the device is currently online. If the device is running on battery and asleep, the content is saved to the server first and displayed after the device wakes automatically. Read <Link href="/docs/quote_0/faq/refresh_timing">Timing</Link> to learn more.
+</Callout>
+
 <Callout
 	type="info"
 	title="The API rate limit is 10 requests per second. With the API, you can control device behavior and responses more flexibly."

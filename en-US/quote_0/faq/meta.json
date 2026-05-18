@@ -3,6 +3,7 @@
     "pages": [
         "pair_issues",
         "offline",
+        "refresh_timing",
         "action_issues",
         "change_network",
         "content_not_refresh",

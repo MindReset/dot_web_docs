@@ -1,0 +1,138 @@
+---
+title: Timing
+new: true
+description: Learn how Quote/0 calculates refresh timing when connected to power, running on battery, sleeping, cycling content, showing fixed content, or controlled through the API.
+---
+
+Quote/0 content refreshes do not work like a fixed alarm clock. The device dynamically calculates the next refresh time based on the current time, power state, content mode, sleep state, and server scheduling.
+
+If you want to use the API to show content at a more precise time, we recommend keeping Quote/0 connected to power.
+
+## How refresh timing is calculated
+
+<Steps>
+<Step>
+
+### Check whether the device is connected to power
+
+When connected to power, the device can maintain a more stable network connection. This is better for always-online information display scenarios, such as a desktop status screen, automation reminder display, or home information terminal.
+
+When running on battery, the device prioritizes battery life. When it does not need to refresh content, it enters low-power sleep and does not keep a continuous network connection.
+
+</Step>
+
+<Step>
+
+### Check whether the device is in a sleep window
+
+When the device is in a sleep window, the system prioritizes waiting until sleep ends instead of repeatedly waking the device according to the normal loop interval.
+
+If you set new text or image content through the API while the device is asleep, the content is saved to the server first. The device will retrieve and display the latest content after its next automatic wake, Wi-Fi reconnection, and server connection.
+
+</Step>
+
+<Step>
+
+### Calculate refresh candidates from the content mode
+
+The device combines different content modes to calculate possible next refresh times:
+
+- Loop content: calculates the next switch time from the loop list and refresh interval;
+- Fixed content: checks whether content should switch based on the fixed content start and end times;
+- Sleep settings: checks whether refresh should be delayed based on sleep start and end times;
+- Midnight boundary: in some scenarios, crossing into a new day may also trigger recalculation.
+
+When multiple timing points exist, the system selects the more suitable earlier point to perform the refresh.
+
+</Step>
+
+<Step>
+
+### Use the last actual refresh as the new timing baseline
+
+The next automatic refresh usually uses the last actual refresh time as its new baseline, rather than staying fixed to the top or half of the hour.
+
+For example, if you set the refresh interval to 30 minutes:
+
+| Action | Next refresh time |
+| --- | --- |
+| Automatic refresh at 5:45 | Around 6:15 |
+| Manual refresh at 6:10 | Around 6:40 |
+
+Manual refreshes, content switches in the Dot. App, and immediate API switches may all change the baseline used for the next automatic refresh.
+
+</Step>
+
+<Step>
+
+### Allow necessary server scheduling variation
+
+To prevent a large number of devices from requesting the server at the same time, the system keeps a necessary amount of timing variation. This improves overall stability and reduces request blocking or timeouts.
+
+As a result, Quote/0 automatic refresh is better suited for periodic information display, rather than strict scheduled triggering.
+
+</Step>
+</Steps>
+
+## Power connection vs. battery power
+
+When connected to power, Quote/0 can maintain a more stable network connection and is better suited as an always-online information terminal. In this state, using the API with `refreshNow` set to `true` is better for script triggers, automation reminders, and real-time status displays.
+
+When running on battery, Quote/0 prioritizes battery life. The device does not keep a continuous network connection while asleep. Content submitted through the API is saved to the server first, then retrieved and displayed after the device wakes automatically.
+
+## How fixed and loop content affect refreshes
+
+Loop content switches according to the list order and configured interval.
+
+Fixed content becomes active during a specified time window. When entering or leaving a fixed content window, the device may switch content first instead of waiting for the normal loop interval to end.
+
+If the device encounters sleep, fixed content changes, loop intervals, and other timing points at the same time, the system evaluates these candidates together and chooses the more suitable refresh timing.
+
+## Common scenarios
+
+### Scenario 1: The device is connected to power and the API requests immediate display
+
+The device is connected to power and has a stable network connection. You submit content through the Text API or Image API with `refreshNow` set to `true`.
+
+In this case, the device can usually receive the refresh task from the server quickly and switch to the new content. This is suitable for verification codes, calendar reminders, automation script results, desktop status screens, and other scenarios that are sensitive to display timing.
+
+### Scenario 2: The device is running on battery and is asleep
+
+When running on battery, the device enters low-power sleep when it does not need to refresh content. You submit new text content through the API while the device is asleep.
+
+The content is saved to the server first. The device will not immediately keep itself online because of this API request. Instead, after the next automatic wake, it reconnects to Wi-Fi and the server, then retrieves and displays the latest content.
+
+For this reason, battery power is better suited for fixed content, loop content, weather, RSS, calendar summaries, and other content that is not sensitive to exact display timing.
+
+### Scenario 3: The device refreshes loop content every 30 minutes
+
+Assume the loop refresh interval is set to 30 minutes, and the device completed a content refresh at 5:45.
+
+If nothing else happens, the next automatic refresh will occur around 6:15.
+
+If you manually switch content in the Dot. App at 6:10, or immediately switch content through the API, the 6:10 refresh becomes the new timing baseline. The next automatic refresh will occur around 6:40 instead of the original 6:15.
+
+### Scenario 4: The device has a fixed content time window
+
+Assume you set a fixed content item to display every day from 9:00 to 10:00. The device is currently showing loop content, and the loop interval has not ended yet.
+
+As the time approaches 9:00, the fixed content start time becomes a more important refresh candidate. The device may switch to the fixed content first instead of continuing to wait for the current loop interval to end.
+
+After the fixed content window ends, the device recalculates subsequent refresh timing and returns to the appropriate non-fixed content logic.
+
+### Scenario 5: Many devices need to refresh at the same time
+
+If many devices are configured to refresh at the same time, the server keeps necessary scheduling variation to avoid too many devices requesting content simultaneously and causing blocking or timeouts.
+
+Therefore, even when the device is connected to power, automatic refresh should not be understood as a strict second-level timer. For content that needs to appear closer to an exact moment, use a device connected to power and actively control display through the API.
+
+## API usage recommendations
+
+If your content is sensitive to display timing, such as verification codes, calendar reminders, automation script results, or real-time status, we recommend:
+
+1. Keep the device connected to power;
+2. Keep the device network stable;
+3. Set content through the API;
+4. Set `refreshNow` to `true`.
+
+If the device runs on battery, we recommend showing fixed content, loop content, weather, RSS, calendar summaries, and other content that is less sensitive to display timing.

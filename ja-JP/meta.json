@@ -1,10 +1,6 @@
 {
         "root": true,
         "pages": [
-                "---よくある質問---",
-                "quote_0/faq/change_network",
-                "quote_0/faq/pair_issues",
-                "quote_0/faq/action_issues",
                 "---Dot.---",
                 "dot/install_app",
                 "dot/diagnostic_tool",
