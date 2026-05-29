@@ -1,0 +1,31 @@
+---
+title: Quote/0 AI 使用量ダッシュボード
+new: true
+---
+
+<GithubInfo owner="ajaxjiang96" repo="quote0-burnout" />
+
+OpenAI Codex と DeepSeek の使用状況を電子ペーパー向けの画面にレンダリングし、Quote/0 API 経由でデバイスへプッシュする AI 使用量ダッシュボードです。
+
+<CustomCloudImage osSrc="dot/docs/quote0-burnout-preview_1780027183143.jpg" alt="Quote/0 AI 使用量ダッシュボードのプレビュー" />
+
+### 機能
+
+- **Codex 使用量表示**：5 時間枠と週間枠の使用率、残り容量、リセットまでの時間を表示
+- **DeepSeek 残高表示**：アカウント残高を取得し、同じ画面にステータスを表示
+- **画像とテキストのプッシュ**：Image API による画面レンダリングに加え、Text API fallback にも対応
+- **ローカルプレビューとセルフチェック**：プレビュー画像を生成し、環境変数、認証情報、レンダリング、Quote/0 API 接続を確認
+- **定期実行**：macOS launchd の例を含み、ローカル環境や小型サーバーで継続更新しやすい構成
+- **デスクトップとモバイルの連携**：Quote/0 の表示内容を iOS にミラーする JSBox ウィジェット例も同梱
+
+### 向いている用途
+
+- AI ツールの使用量を常時見えるデスクトップ表示にしたい
+- Quote/0 Image API、Text API、`taskKey`、`refreshNow` の組み合わせを参考にしたい
+- Python で定期プッシュ用のセルフホストスクリプトを作りたい
+
+<Callout type="warn" title="設定時の注意">
+  このプロジェクトはユーザーのローカル Codex ログイン情報を読み取り、Quote/0 と
+  DeepSeek の API Key
+  設定が必要です。導入前にソースコードを確認し、認証情報を安全に管理してください。
+</Callout>

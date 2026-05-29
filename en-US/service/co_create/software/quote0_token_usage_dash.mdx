@@ -1,0 +1,31 @@
+---
+title: Quote/0 Token Usage Dashboard
+new: true
+---
+
+<GithubInfo owner="zellux" repo="quote0-token-usage-dash" />
+
+A self-hosted dashboard that pushes Claude and OpenAI Codex subscription usage to Quote/0. It renders usage data as a 296 × 152 image and displays it on the e-ink screen through the Image API.
+
+<CustomCloudImage osSrc="dot/docs/quote0-token-usage-dash-preview_1780027183145.jpg" alt="Quote/0 Token Usage Dashboard preview" />
+
+### Features
+
+- **Claude usage display**: Reads 5-hour and 7-day usage windows, remaining quota, and reset time
+- **OpenAI Codex usage display**: Shows Codex 5-hour and weekly usage windows
+- **E-ink image rendering**: Generates a black-and-white PNG tailored to the Quote/0 resolution
+- **Image API push**: Updates the device through the Quote/0 Image API
+- **Looped updates**: Supports one-shot runs or continuous refresh with a custom interval
+- **Clear structure**: Separates usage fetching, screen rendering, and device pushing, making it a useful automation reference
+
+### Good For
+
+- Monitoring Claude and Codex subscription usage together
+- Referencing a lightweight Quote/0 Image API automation example
+- Adapting the script into a custom usage, status, or monitoring dashboard
+
+<Callout type="warn" title="Configuration note">
+  This project reads the user's local Claude and Codex tool credentials and
+  requires a Quote/0 API key. Review the source code before deployment and keep
+  credentials secure.
+</Callout>

@@ -1,0 +1,31 @@
+---
+title: Quote/0 AI Usage Dashboard
+new: true
+---
+
+<GithubInfo owner="ajaxjiang96" repo="quote0-burnout" />
+
+An AI usage dashboard for Quote/0 that renders OpenAI Codex and DeepSeek usage into an e-ink screen layout, then pushes it to the device through the Quote/0 API.
+
+<CustomCloudImage osSrc="dot/docs/quote0-burnout-preview_1780027183143.jpg" alt="Quote/0 AI Usage Dashboard preview" />
+
+### Features
+
+- **Codex usage display**: Shows 5-hour and weekly usage, remaining quota, and reset countdowns
+- **DeepSeek balance display**: Reads account balance and shows status in the same screen
+- **Image and text push**: Supports Image API rendering, with a Text API fallback
+- **Local preview and checks**: Generates a preview image and checks environment variables, credentials, rendering, and Quote/0 API connectivity
+- **Scheduled updates**: Includes a macOS launchd example for continuous local or server-side updates
+- **Desktop and mobile companion**: Includes a JSBox widget example that mirrors the Quote/0 display on iOS
+
+### Good For
+
+- Turning AI tool usage into an always-visible desk display
+- Referencing combined Quote/0 Image API, Text API, `taskKey`, and `refreshNow` usage
+- Building a Python-based self-hosted script for scheduled pushes
+
+<Callout type="warn" title="Configuration note">
+  This project reads the user's local Codex login credentials and requires
+  Quote/0 and DeepSeek API keys. Review the source code before deployment and
+  keep credentials secure.
+</Callout>

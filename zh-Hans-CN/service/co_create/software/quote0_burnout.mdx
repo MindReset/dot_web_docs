@@ -1,0 +1,30 @@
+---
+title: Quote/0 AI 用量仪表盘
+new: true
+---
+
+<GithubInfo owner="ajaxjiang96" repo="quote0-burnout" />
+
+一个面向 Quote/0 的 AI 用量仪表盘，可将 OpenAI Codex 与 DeepSeek 的使用状态渲染成墨水屏画面，并通过 Quote/0 API 推送到设备。
+
+<CustomCloudImage osSrc="dot/docs/quote0-burnout-preview_1780027183143.jpg" alt="Quote/0 AI 用量仪表盘预览" />
+
+### 功能特性
+
+- **Codex 用量展示**：显示 5 小时与每周窗口的使用比例、剩余额度和重置倒计时
+- **DeepSeek 余额展示**：读取账户余额并在同一画面中显示状态
+- **图片与文本推送**：支持 Image API 渲染画面，也保留 Text API fallback
+- **本地预览与自检**：可先生成预览图片，并检查环境变量、凭证、渲染与 Quote/0 API 连通性
+- **定时运行**：提供 macOS launchd 示例，适合放在本机或小型服务器上持续更新
+- **桌面与手机联动**：项目内还包含可镜像 Quote/0 显示内容的 JSBox 小组件示例
+
+### 适合场景
+
+- 想把 AI 工具用量变成桌面常驻信息面板
+- 想参考 Quote/0 Image API、Text API、`taskKey` 与 `refreshNow` 的组合用法
+- 想用 Python 快速搭建一个可定时推送的自托管脚本
+
+<Callout type="warn" title="配置提醒">
+  该项目会读取用户本地 Codex 登录凭证，并需要自行配置 Quote/0 与 DeepSeek 的 API
+  Key。部署前请阅读源码，妥善保管凭证。
+</Callout>

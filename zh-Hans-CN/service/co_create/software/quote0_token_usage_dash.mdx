@@ -1,0 +1,30 @@
+---
+title: Quote/0 Token 用量仪表盘
+new: true
+---
+
+<GithubInfo owner="zellux" repo="quote0-token-usage-dash" />
+
+一个将 Claude 与 OpenAI Codex 订阅用量推送到 Quote/0 的自托管仪表盘。项目会把用量数据渲染为 296 × 152 图片，并通过 Image API 显示在墨水屏上。
+
+<CustomCloudImage osSrc="dot/docs/quote0-token-usage-dash-preview_1780027183145.jpg" alt="Quote/0 Token 用量仪表盘预览" />
+
+### 功能特性
+
+- **Claude 用量展示**：读取 5 小时与 7 天窗口的使用比例、剩余额度和重置时间
+- **OpenAI Codex 用量展示**：展示 Codex 5 小时与每周窗口的用量状态
+- **墨水屏图片渲染**：专为 Quote/0 分辨率生成黑白 PNG
+- **Image API 推送**：将渲染结果通过 Quote/0 Image API 更新到设备
+- **循环更新**：支持单次运行或按自定义间隔持续刷新
+- **结构清晰**：数据获取、画面渲染和设备推送分文件组织，适合作为自动化推送参考
+
+### 适合场景
+
+- 想同时观察 Claude 与 Codex 的订阅用量
+- 想参考更轻量的 Quote/0 Image API 自动化示例
+- 想基于现有脚本改造成自己的用量、状态或监控面板
+
+<Callout type="warn" title="配置提醒">
+  该项目会读取用户本地 Claude 与 Codex 工具凭证，并需要自行配置 Quote/0 API
+  Key。部署前请阅读源码，妥善保管凭证。
+</Callout>

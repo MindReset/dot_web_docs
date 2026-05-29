@@ -1,0 +1,31 @@
+---
+title: Quote/0 Token 使用量ダッシュボード
+new: true
+---
+
+<GithubInfo owner="zellux" repo="quote0-token-usage-dash" />
+
+Claude と OpenAI Codex のサブスクリプション使用量を Quote/0 に表示するセルフホスト型ダッシュボードです。使用量データを 296 × 152 の画像としてレンダリングし、Image API 経由で電子ペーパー画面に表示します。
+
+<CustomCloudImage osSrc="dot/docs/quote0-token-usage-dash-preview_1780027183145.jpg" alt="Quote/0 Token 使用量ダッシュボードのプレビュー" />
+
+### 機能
+
+- **Claude 使用量表示**：5 時間枠と 7 日間枠の使用率、残り容量、リセット時間を取得
+- **OpenAI Codex 使用量表示**：Codex の 5 時間枠と週間枠の使用状況を表示
+- **電子ペーパー画像レンダリング**：Quote/0 の解像度に合わせた白黒 PNG を生成
+- **Image API プッシュ**：Quote/0 Image API 経由でデバイスを更新
+- **ループ更新**：単発実行または任意の間隔での継続更新に対応
+- **見通しのよい構成**：使用量取得、画面レンダリング、デバイスへのプッシュが分かれており、自動化の参考にしやすい構成
+
+### 向いている用途
+
+- Claude と Codex のサブスクリプション使用量を同時に確認したい
+- 軽量な Quote/0 Image API 自動化サンプルを参考にしたい
+- 既存スクリプトを自分用の使用量、ステータス、監視ダッシュボードに改造したい
+
+<Callout type="warn" title="設定時の注意">
+  このプロジェクトはユーザーのローカル Claude / Codex
+  ツール認証情報を読み取り、Quote/0 API Key
+  の設定が必要です。導入前にソースコードを確認し、認証情報を安全に管理してください。
+</Callout>
