@@ -1,5 +1,6 @@
 ---
 title: 控制图像内容
+new: true
 ---
 
 import Link from 'fumadocs-core/link';
@@ -26,10 +27,32 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 2. 确保您至少有一台所属于自己的设备并已<Link href="/docs/service/studio/api/get_device_id">获取设备序列号</Link>；
 3. 确保您的设备已接入电源；
 4. 确保您的设备已接入网络；
-5. 确保已从 Dot. App 内容工坊中添加 `图像 API` 内容到设备任务中。
+5. 确保已从 Dot. App 内容工坊中添加 `图像 API` 内容到设备**循环**任务中。
 
 <Callout type="info" title="关于 API 显示时机">
 	API 的即时显示能力依赖设备当前是否在线。若设备使用电池供电并处于睡眠状态，内容会先保存至服务器，并在设备下一次自动唤醒后显示。您可以阅读<Link href="/docs/quote_0/faq/refresh_timing">时间机制</Link>了解更多。
+</Callout>
+
+<Callout type="info" title="关于图像输入">
+	`image` 字段支持传递 PNG Base64 数据，也支持传递完整的在线 `http(s)` 图片 URL。远程图片链接必须可匿名访问、无需鉴权或特殊 Referer，并直接返回 `image/*` 内容。
+</Callout>
+
+<Callout type="info" title="可用于调试的测试图片链接">
+	以下链接当前可直接匿名访问，并返回可用于 Image API 的图片内容：
+
+	- `https://placehold.co/600x400/png`
+	- `https://httpbin.org/image/png`
+
+	如果您想先验证自己的图片链接是否可用，可以先执行：
+
+	```bash
+	curl -I 'https://your-image-url'
+	```
+
+	通常需要确认响应中至少满足两点：
+
+	- HTTP 状态码为 `200`
+	- `Content-Type` 为 `image/*`，例如 `image/png` 或 `image/jpeg`
 </Callout>
 
 <Callout
@@ -70,7 +93,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		image: {
 			type: 'textarea',
 			required: true,
-			name: 'base64 编码 PNG 图像数据',
+			name: 'PNG Base64 图像数据或 http(s) 图片 URL',
 		},
 		link: {
 			type: 'string',
@@ -144,7 +167,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Content-Type: application/json' \
       -d '{
         "refreshNow": false,
-        "image": "{{base64 编码 PNG 图像数据}}",
+        "image": "{{PNG Base64 图像数据或 http(s) 图片 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0
       }'
@@ -164,7 +187,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64 编码 PNG 图像数据}}",
+        "image": "{{PNG Base64 图像数据或 http(s) 图片 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 1
       }'
@@ -186,7 +209,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64 编码 PNG 图像数据}}",
+        "image": "{{PNG Base64 图像数据或 http(s) 图片 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "NONE"
@@ -217,7 +240,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64 编码 PNG 图像数据}}",
+        "image": "{{PNG Base64 图像数据或 http(s) 图片 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "DIFFUSION"
@@ -291,7 +314,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64 编码 PNG 图像数据}}",
+        "image": "{{PNG Base64 图像数据或 http(s) 图片 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "ORDERED"
@@ -314,7 +337,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64 编码 PNG 图像数据}}",
+        "image": "{{PNG Base64 图像数据或 http(s) 图片 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "NONE"
@@ -343,7 +366,8 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			default: 'true',
 		},
 		image: {
-			description: 'base64 编码 PNG 图像数据（296px×152px）（屏幕呈现的图像）',
+			description:
+				'PNG Base64 图像数据或完整 http(s) 图片 URL（296px×152px，且远程链接需可匿名访问并直接返回 image/*）（屏幕呈现的图像）',
 			type: 'string',
 			required: true,
 		},
@@ -399,5 +423,5 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 | `200` | 成功             | 设备图像 API 内容已切换/数据已更新但未切换内容                                                                      |
 | `400` | 参数错误         | 缺失设备 ID 或格式错误<br/>无效的图像格式<br/>边框参数错误，请提供数字 0 或 1<br/>无效的抖动类型<br/>无效的抖动算法 |
 | `403` | 权限不足         | 您没有权限操作此设备                                                                                                |
-| `404` | 设备或内容不存在 | 设备不存在或未注册<br/>未添加图像 API 内容                                                                          |
+| `404` | 设备或内容不存在 | 设备不存在或未注册<br/>未添加图像 API 内容到循环任务中                                                               |
 | `500` | 设备响应失败     | 设备图像 API 内容切换失败                                                                                           |

@@ -1,9 +1,11 @@
 ---
 title: Control Text Content
+new: true
 ---
 
 import Link from 'fumadocs-core/link';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { getOpenTextApiFontFamilyOptions } from 'dot_platform_share/constants/open';
 import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
 
@@ -14,7 +16,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     We strongly recommend completing the following updates as soon as possible:
     - Update the request URL to the new endpoint: `/api/authV2/open/device/:deviceId/text`
-    - Send parameters according to this document (e.g. `refreshNow` / `title` / `message` / `signature` / `icon` / `link` / `taskKey`)
+    - Send parameters according to this document (e.g. `refreshNow` / `title` / `message` / `signature` / `icon` / `link` / `taskKey` / `styles`)
     - If you rely on legacy response payloads or error codes, adapt your integration to the new API responses
 
 </Callout>
@@ -27,10 +29,32 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 2. Make sure you own at least one device and have <Link href="/docs/service/studio/api/get_device_id">obtained its device serial number</Link>;
 3. Make sure your device is connected to power;
 4. Make sure your device is connected to the network;
-5. Make sure you've added the Text API content to the device task from the Content Studio in the Dot. App.
+5. Make sure you've added the Text API content to the device **Loop** task from the Content Studio in the Dot. App.
 
 <Callout type="info" title="About API display timing">
 	The API's immediate display capability depends on whether the device is currently online. If the device is running on battery and asleep, the content is saved to the server first and displayed after the device wakes automatically. Read <Link href="/docs/quote_0/faq/refresh_timing">Timing</Link> to learn more.
+</Callout>
+
+<Callout type="info" title="About icon input">
+	The `icon` field supports either PNG Base64 data or a full online `http(s)` image URL. Remote icon URLs must be anonymously accessible, require no authentication or special Referer, and return `image/*` content directly.
+</Callout>
+
+<Callout type="info" title="Test icon URLs for debugging">
+	The following URLs are currently anonymously accessible and return image content that can be used for the Text API `icon` field:
+
+	- `https://placehold.co/40x40/png`
+	- `https://httpbin.org/image/png`
+
+	If you want to verify your own icon URL first, run:
+
+	```bash
+	curl -I 'https://your-icon-url'
+	```
+
+	In most cases, you should confirm at least:
+
+	- The HTTP status code is `200`
+	- The `Content-Type` is `image/*`, such as `image/png` or `image/jpeg`
 </Callout>
 
 <Callout
@@ -73,7 +97,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			name: 'Title',
 		},
 		message: {
-			type: 'string',
+			type: 'textarea',
 			name: 'Message',
 		},
 		signature: {
@@ -81,12 +105,69 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			name: 'Signature',
 		},
 		icon: {
-			type: 'string',
-			name: 'Base64-encoded PNG icon data',
+			type: 'textarea',
+			name: 'PNG Base64 icon data or http(s) image URL',
 		},
 		link: {
 			type: 'string',
 			name: 'NFC tap redirect link',
+		},
+		'styles.title.fontFamily': {
+			type: 'select',
+			name: 'Title font',
+			options: getOpenTextApiFontFamilyOptions('en-US'),
+		},
+		'styles.title.fontSize': {
+			type: 'number',
+			name: 'Title font size',
+			description: '8-48, in px.',
+			example: 30,
+		},
+		'styles.title.fontWeight': {
+			type: 'number',
+			name: 'Title font weight',
+			description: '100, 200, 300, 400, 500, 600, 700, 800, or 900.',
+			example: 700,
+		},
+		'styles.message.fontFamily': {
+			type: 'select',
+			name: 'Message font',
+			options: getOpenTextApiFontFamilyOptions('en-US'),
+		},
+		'styles.message.fontSize': {
+			type: 'number',
+			name: 'Message font size',
+			description: '8-48, in px.',
+			example: 22,
+		},
+		'styles.message.fontWeight': {
+			type: 'number',
+			name: 'Message font weight',
+			description: '100, 200, 300, 400, 500, 600, 700, 800, or 900.',
+			example: 400,
+		},
+		'styles.message.lineHeight': {
+			type: 'number',
+			name: 'Message line height',
+			description: '0.8-3.',
+			example: 1.25,
+		},
+		'styles.signature.fontFamily': {
+			type: 'select',
+			name: 'Signature font',
+			options: getOpenTextApiFontFamilyOptions('en-US'),
+		},
+		'styles.signature.fontSize': {
+			type: 'number',
+			name: 'Signature font size',
+			description: '8-48, in px.',
+			example: 16,
+		},
+		'styles.signature.fontWeight': {
+			type: 'number',
+			name: 'Signature font weight',
+			description: '100, 200, 300, 400, 500, 600, 700, 800, or 900.',
+			example: 400,
 		},
 	}}
 	auth={true}
@@ -140,8 +221,13 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Content-Type: application/json' \
       -d '{
         "title": "验证码小助手",
-        "message": "一个来自「少数派」的验证码\n205112",
-        "signature": "2025年8月4日 19:58"
+		"message": "一个来自「少数派」的验证码\n205112",
+        "signature": "2025年8月4日 19:58",
+        "styles": {
+          "title": { "fontFamily": "ChillDuanSans", "fontSize": 30, "fontWeight": 700 },
+          "message": { "fontFamily": "FusionPixel12", "fontSize": 22, "lineHeight": 1.25 },
+          "signature": { "fontFamily": "ChillDuanSans", "fontSize": 16 }
+        }
       }'
     ```
   </Tab>
@@ -162,7 +248,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
         "title": "每日健康",
         "message": "消耗卡路里：702千卡\n今日步数：4183步\n站立时间：62分钟",
         "signature": "2025年8月4日 20:16",
-        "icon": "{{base64-encoded PNG image data}}",
+        "icon": "{{base64-encoded PNG icon data or http(s) image URL}}",
         "link": "x-apple-health://"
       }'
     ```
@@ -176,6 +262,19 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 </Link>
 
 <CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B13_1754130631116.png" alt="Actual effect" />
+
+### Line Breaks and Tabs
+
+Text API preserves line breaks and tabs in `message`.
+
+- Use `\n` for a new line and `\t` for a tab in the JSON request body.
+- If your JSON is embedded inside another string literal, such as shell, JavaScript, Python, templates, or tool configs, you often need to write `\\n` and `\\t` in the outer string so the final JSON still contains `\n` and `\t`.
+- If you want the device to literally display the characters `\n` or `\t`, make the final JSON payload contain `\\n` or `\\t`.
+
+```json
+{ "message": "Line 1\n\tIndented line 2" }
+{ "message": "Show literal \\n and \\t" }
+```
 
 ## Troubleshooting
 
@@ -201,7 +300,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'string',
 		},
 		message: {
-			description: 'Text content (Content shown on screen)',
+			description: 'Text content (supports \\n line breaks and \\t tabs)',
 			type: 'string',
 		},
 		signature: {
@@ -209,7 +308,8 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'string',
 		},
 		icon: {
-			description: 'Base64-encoded PNG icon data (40px×40px) (Icon shown at bottom-left)',
+			description:
+				'Base64-encoded PNG icon data or full http(s) image URL (40px×40px, and remote URLs must be anonymously accessible and return image/* directly) (Icon shown at bottom-left)',
 			type: 'string',
 		},
 		link: {
@@ -221,8 +321,40 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 				"When multiple Text API contents exist on the device, use this taskKey to specify which content to update and switch. You can retrieve it via the 'List Device Tasks' API. If omitted, the first Text API content is used.",
 			type: 'string',
 		},
+		styles: {
+			description:
+				'Optional typography overrides. styles.title and styles.signature support fontFamily, fontSize, and fontWeight; styles.message additionally supports lineHeight.',
+			type: 'object',
+		},
 	}}
 />
+
+### Supported Fonts
+
+Use the exact `fontFamily` value in `styles.*.fontFamily`.
+
+| fontFamily | Notes |
+| :-- | :-- |
+| `ChillDuanSans` | General CJK sans |
+| `ChillKSans` | General sans |
+| `ChillOrganic` | Organic display style |
+| `ChillRoundF` | Rounded display style |
+| `ChillRoundGothic` | Bold rounded gothic |
+| `Cusong16` | 16px pixel Song style |
+| `DotGothic16` | 16px pixel gothic |
+| `FusionPixel8` | 8px pixel font |
+| `FusionPixel10` | 10px pixel font |
+| `FusionPixel12` | 12px pixel font |
+| `Liusong24` | 24px pixel Song style |
+| `LogoSCUnboundedSans` | Display sans |
+| `MaokenYingBiKaiShuJ0.09` | Handwriting display style |
+| `PlayfairDisplay` | Latin serif display |
+| `Quan8` | 8px pixel font |
+| `Unifont16` | 16px broad Unicode coverage |
+| `UnifontExMono16` | 16px mono Unicode coverage |
+| `XiaoyaPixel12` | 12px pixel style |
+| `Zihunzhoukesong` | CJK Song style |
+| `Zpix12` | 12px CJK pixel font |
 
 ### Response Schema
 
@@ -248,5 +380,5 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 | `200` | Success                 | Text API content switched / Data updated but content not switched |
 | `400` | Invalid parameters      | Invalid icon format                                               |
 | `403` | Forbidden               | You do not have permission to operate this device                 |
-| `404` | Not found               | Device not found or not registered<br/>Text API content not added |
+| `404` | Not found               | Device not found or not registered<br/>Text API content not added to the loop task |
 | `500` | Device response failure | Failed to switch Text API content                                 |

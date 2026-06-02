@@ -1,9 +1,11 @@
 ---
 title: テキスト内容を制御
+new: true
 ---
 
 import Link from 'fumadocs-core/link';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { getOpenTextApiFontFamilyOptions } from 'dot_platform_share/constants/open';
 import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
 
@@ -14,7 +16,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     できるだけ早く以下の対応を行うことを強く推奨します：
     - リクエスト URL を新しいエンドポイントへ更新：`/api/authV2/open/device/:deviceId/text`
-    - 本ドキュメントのリクエスト構造に従ってパラメータを送信（例：`refreshNow` / `title` / `message` / `signature` / `icon` / `link` / `taskKey`）
+    - 本ドキュメントのリクエスト構造に従ってパラメータを送信（例：`refreshNow` / `title` / `message` / `signature` / `icon` / `link` / `taskKey` / `styles`）
     - 旧版のレスポンス内容やエラーコードに依存している場合は、新版 API のレスポンスに合わせて調整
 
 </Callout>
@@ -27,10 +29,32 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 2. 自分のデバイスが少なくとも 1 台あり、<Link href="/docs/service/studio/api/get_device_id">デバイスのシリアル番号</Link>を取得していること
 3. デバイスが電源に接続されていること
 4. デバイスがネットワークに接続されていること
-5. Dot. アプリの創造所から「テキスト API」コンテンツをデバイスタスクに追加していること
+5. Dot. アプリの創造所から「テキスト API」コンテンツをデバイスの **ループ** タスクに追加していること
 
 <Callout type="info" title="API の表示タイミングについて">
 	API の即時表示は、デバイスが現在オンラインかどうかに依存します。デバイスがバッテリー駆動でスリープ中の場合、内容はまずサーバーに保存され、デバイスが次回自動起動したあとに表示されます。詳しくは<Link href="/docs/quote_0/faq/refresh_timing">時間の仕組み</Link>をご覧ください。
+</Callout>
+
+<Callout type="info" title="アイコン入力について">
+	`icon` フィールドには、PNG Base64 データまたは完全なオンライン `http(s)` 画像 URL を指定できます。リモートアイコン URL は匿名で直接アクセスでき、認証や特別な Referer を必要とせず、`image/*` を返す必要があります。
+</Callout>
+
+<Callout type="info" title="デバッグ用のテストアイコン URL">
+	以下の URL は現時点で匿名アクセス可能で、Text API の `icon` フィールドに利用できる画像コンテンツを返します。
+
+	- `https://placehold.co/40x40/png`
+	- `https://httpbin.org/image/png`
+
+	自分のアイコン URL が使えるか先に確認したい場合は、次を実行してください。
+
+	```bash
+	curl -I 'https://your-icon-url'
+	```
+
+	通常は少なくとも次の 2 点を確認してください。
+
+	- HTTP ステータスコードが `200`
+	- `Content-Type` が `image/*` であること。例: `image/png`、`image/jpeg`
 </Callout>
 
 <Callout
@@ -73,7 +97,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			name: 'タイトル',
 		},
 		message: {
-			type: 'string',
+			type: 'textarea',
 			name: '内容',
 		},
 		signature: {
@@ -82,11 +106,68 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		},
 		icon: {
 			type: 'textarea',
-			name: 'base64 エンコードした PNG アイコンデータ',
+			name: 'PNG Base64 アイコンデータまたは http(s) 画像 URL',
 		},
 		link: {
 			type: 'string',
 			name: 'タッチ操作時の遷移リンク',
+		},
+		'styles.title.fontFamily': {
+			type: 'select',
+			name: 'タイトルフォント',
+			options: getOpenTextApiFontFamilyOptions('ja-JP'),
+		},
+		'styles.title.fontSize': {
+			type: 'number',
+			name: 'タイトル文字サイズ',
+			description: '8-48、単位は px。',
+			example: 30,
+		},
+		'styles.title.fontWeight': {
+			type: 'number',
+			name: 'タイトルの太さ',
+			description: '100、200、300、400、500、600、700、800、900 のいずれか。',
+			example: 700,
+		},
+		'styles.message.fontFamily': {
+			type: 'select',
+			name: '本文フォント',
+			options: getOpenTextApiFontFamilyOptions('ja-JP'),
+		},
+		'styles.message.fontSize': {
+			type: 'number',
+			name: '本文文字サイズ',
+			description: '8-48、単位は px。',
+			example: 22,
+		},
+		'styles.message.fontWeight': {
+			type: 'number',
+			name: '本文の太さ',
+			description: '100、200、300、400、500、600、700、800、900 のいずれか。',
+			example: 400,
+		},
+		'styles.message.lineHeight': {
+			type: 'number',
+			name: '本文行高',
+			description: '0.8-3。',
+			example: 1.25,
+		},
+		'styles.signature.fontFamily': {
+			type: 'select',
+			name: '署名フォント',
+			options: getOpenTextApiFontFamilyOptions('ja-JP'),
+		},
+		'styles.signature.fontSize': {
+			type: 'number',
+			name: '署名文字サイズ',
+			description: '8-48、単位は px。',
+			example: 16,
+		},
+		'styles.signature.fontWeight': {
+			type: 'number',
+			name: '署名の太さ',
+			description: '100、200、300、400、500、600、700、800、900 のいずれか。',
+			example: 400,
 		},
 	}}
 	auth={true}
@@ -141,7 +222,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -d '{
         "title": "验证码小助手",
         "message": "一个来自「少数派」的验证码\n205112",
-		"signature": "2025 年 8 月 4 日 19:58"
+		"signature": "2025 年 8 月 4 日 19:58",
+        "styles": {
+          "title": { "fontFamily": "ChillDuanSans", "fontSize": 30, "fontWeight": 700 },
+          "message": { "fontFamily": "FusionPixel12", "fontSize": 22, "lineHeight": 1.25 },
+          "signature": { "fontFamily": "ChillDuanSans", "fontSize": 16 }
+        }
       }'
     ```
   </Tab>
@@ -162,7 +248,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
         "title": "每日健康",
         "message": "消耗カロリー：702kcal\n本日の歩数：4183 歩\nスタンド時間：62 分",
 		"signature": "2025 年 8 月 4 日 20:16",
-        "icon": "{{base64 エンコードした PNG 画像データ}}",
+        "icon": "{{PNG Base64 アイコンデータまたは http(s) 画像 URL}}",
         "link": "x-apple-health://"
       }'
     ```
@@ -176,6 +262,19 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 </Link>
 
 <CustomCloudImage osSrc="dot/docs/陰影3_1754130631116.png" alt="実際の効果" />
+
+### 改行とタブ
+
+Text API は `message` 内の改行とタブを保持します。
+
+- JSON リクエスト本文では、改行に `\n`、タブに `\t` を使います。
+- JSON が shell、JavaScript、Python、テンプレート、ツール設定など別の文字列リテラルの中に入る場合、最終的な JSON に `\n` と `\t` を残すために、外側では `\\n` と `\\t` と書く必要があることがよくあります。
+- デバイス上に文字どおり `\n` や `\t` を表示したい場合は、最終的な JSON ペイロードに `\\n` や `\\t` を含めてください。
+
+```json
+{ "message": "1行目\n\tインデントした2行目" }
+{ "message": "文字どおりの \\n と \\t を表示" }
+```
 
 ## トラブルシューティング
 
@@ -201,7 +300,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'string',
 		},
 		message: {
-			description: 'テキスト本文（画面上の内容）',
+			description: 'テキスト本文（\\n 改行と \\t タブに対応）',
 			type: 'string',
 		},
 		signature: {
@@ -209,7 +308,8 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'string',
 		},
 		icon: {
-			description: 'base64 エンコード PNG アイコン（40px×40px）（左下に表示するアイコン）',
+			description:
+				'PNG Base64 アイコンデータまたは完全な http(s) 画像 URL（40px×40px、かつリモート URL は匿名アクセスで image/* を直接返す必要があります）（左下に表示するアイコン）',
 			type: 'string',
 		},
 		link: {
@@ -221,8 +321,40 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 				'デバイスに複数の「テキスト API」コンテンツがある場合、更新して切り替える対象を taskKey で指定します。taskKey は「デバイスタスク一覧」で取得できます。未指定の場合は最初のテキスト API コンテンツが選択されます。',
 			type: 'string',
 		},
+		styles: {
+			description:
+				'任意のタイポグラフィ上書き。styles.title と styles.signature は fontFamily、fontSize、fontWeight に対応し、styles.message のみ lineHeight を追加指定できます。',
+			type: 'object',
+		},
 	}}
 />
+
+### 対応フォント
+
+`styles.*.fontFamily` には、下記の `fontFamily` 値をそのまま指定してください。
+
+| fontFamily | メモ |
+| :-- | :-- |
+| `ChillDuanSans` | 汎用 CJK サンセリフ |
+| `ChillKSans` | 汎用サンセリフ |
+| `ChillOrganic` | 有機的な表示書体 |
+| `ChillRoundF` | 丸みのある表示書体 |
+| `ChillRoundGothic` | 太めの丸ゴシック |
+| `Cusong16` | 16px ピクセル宋体風 |
+| `DotGothic16` | 16px ピクセルゴシック |
+| `FusionPixel8` | 8px ピクセルフォント |
+| `FusionPixel10` | 10px ピクセルフォント |
+| `FusionPixel12` | 12px ピクセルフォント |
+| `Liusong24` | 24px ピクセル宋体風 |
+| `LogoSCUnboundedSans` | 表示用サンセリフ |
+| `MaokenYingBiKaiShuJ0.09` | 手書き表示スタイル |
+| `PlayfairDisplay` | ラテンセリフ表示書体 |
+| `Quan8` | 8px ピクセルフォント |
+| `Unifont16` | 16px 広範囲 Unicode 対応 |
+| `UnifontExMono16` | 16px 等幅 Unicode 対応 |
+| `XiaoyaPixel12` | 12px ピクセルスタイル |
+| `Zihunzhoukesong` | CJK 宋体風 |
+| `Zpix12` | 12px CJK ピクセルフォント |
 
 ### レスポンス構造
 
@@ -248,5 +380,5 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 | `200` | 成功             | テキスト API コンテンツを切替／データ更新（未切替） |
 | `400` | パラメータ不正   | 無効なアイコン形式                                  |
 | `403` | 権限不足         | 当該デバイスを操作する権限がありません              |
-| `404` | 未検出           | デバイスが存在しない・未登録／テキスト API 未追加   |
+| `404` | 未検出           | デバイスが存在しない・未登録／テキスト API コンテンツがループタスクに未追加   |
 | `500` | デバイス応答失敗 | テキスト API コンテンツの切替に失敗                 |

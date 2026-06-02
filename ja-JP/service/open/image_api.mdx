@@ -1,5 +1,6 @@
 ---
 title: 画像内容を制御
+new: true
 ---
 
 import Link from 'fumadocs-core/link';
@@ -27,10 +28,32 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 2. 自分のデバイスが少なくとも 1 台あり、<Link href="/docs/service/studio/api/get_device_id">デバイスのシリアル番号</Link>を取得していること
 3. デバイスが電源に接続されていること
 4. デバイスがネットワークに接続されていること
-5. Dot. アプリの創造所から「画像 API」コンテンツをデバイスタスクに追加していること
+5. Dot. アプリの創造所から「画像 API」コンテンツをデバイスの **ループ** タスクに追加していること
 
 <Callout type="info" title="API の表示タイミングについて">
 	API の即時表示は、デバイスが現在オンラインかどうかに依存します。デバイスがバッテリー駆動でスリープ中の場合、内容はまずサーバーに保存され、デバイスが次回自動起動したあとに表示されます。詳しくは<Link href="/docs/quote_0/faq/refresh_timing">時間の仕組み</Link>をご覧ください。
+</Callout>
+
+<Callout type="info" title="画像入力について">
+	`image` フィールドには、PNG Base64 データまたは完全なオンライン `http(s)` 画像 URL を指定できます。リモート画像 URL は匿名で直接アクセスでき、認証や特別な Referer を必要とせず、`image/*` を返す必要があります。
+</Callout>
+
+<Callout type="info" title="デバッグ用のテスト画像 URL">
+	以下の URL は現時点で匿名アクセス可能で、Image API で利用できる画像コンテンツを返します。
+
+	- `https://placehold.co/600x400/png`
+	- `https://httpbin.org/image/png`
+
+	自分の画像 URL が使えるか先に確認したい場合は、次を実行してください。
+
+	```bash
+	curl -I 'https://your-image-url'
+	```
+
+	通常は少なくとも次の 2 点を確認してください。
+
+	- HTTP ステータスコードが `200`
+	- `Content-Type` が `image/*` であること。例: `image/png`、`image/jpeg`
 </Callout>
 
 <Callout
@@ -71,7 +94,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		image: {
 			type: 'textarea',
 			required: true,
-			name: 'base64 エンコードした PNG 画像データ',
+			name: 'PNG Base64 画像データまたは http(s) 画像 URL',
 		},
 		link: {
 			type: 'string',
@@ -145,7 +168,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Content-Type: application/json' \
       -d '{
         "refreshNow": false,
-        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "image": "{{PNG Base64 画像データまたは http(s) 画像 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0
       }'
@@ -165,7 +188,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "image": "{{PNG Base64 画像データまたは http(s) 画像 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 1
       }'
@@ -187,7 +210,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "image": "{{PNG Base64 画像データまたは http(s) 画像 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "NONE"
@@ -218,7 +241,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "image": "{{PNG Base64 画像データまたは http(s) 画像 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "DIFFUSION"
@@ -292,7 +315,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "image": "{{PNG Base64 画像データまたは http(s) 画像 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "ORDERED"
@@ -315,7 +338,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64 エンコードした PNG 画像データ}}",
+        "image": "{{PNG Base64 画像データまたは http(s) 画像 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "NONE"
@@ -344,7 +367,8 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
 			default: 'true',
 		},
 		image: {
-			description: 'base64 エンコードの PNG 画像データ（296px×152px）（表示する画像）',
+			description:
+				'PNG Base64 画像データまたは完全な http(s) 画像 URL（296px×152px、かつリモート URL は匿名アクセスで image/* を直接返す必要があります）（表示する画像）',
 			type: 'string',
 			required: true,
 		},
@@ -400,5 +424,5 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
 | `200` | 成功             | デバイスの画像 API コンテンツを切り替え／データ更新（ただし表示は切り替わっていない）                              |
 | `400` | パラメータ不正   | デバイス ID の欠如または形式不正／無効な画像形式／border は 0 または 1／無効なディザ種別／無効なディザアルゴリズム |
 | `403` | 権限不足         | 当該デバイスを操作する権限がありません                                                                             |
-| `404` | 未検出           | デバイスが存在しない・未登録／画像 API コンテンツ未追加                                                            |
+| `404` | 未検出           | デバイスが存在しない・未登録／画像 API コンテンツがループタスクに未追加                                           |
 | `500` | デバイス応答失敗 | 画像 API コンテンツの切替に失敗                                                                                    |

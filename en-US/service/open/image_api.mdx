@@ -1,5 +1,6 @@
 ---
 title: Control Image Content
+new: true
 ---
 
 import Link from 'fumadocs-core/link';
@@ -27,10 +28,32 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 2. Make sure you own at least one device and have <Link href="/docs/service/studio/api/get_device_id">obtained its device serial number</Link>;
 3. Make sure your device is connected to power;
 4. Make sure your device is connected to the network;
-5. Make sure you've added the Image API content to the device task from the Content Studio in the Dot. App.
+5. Make sure you've added the Image API content to the device **Loop** task from the Content Studio in the Dot. App.
 
 <Callout type="info" title="About API display timing">
 	The API's immediate display capability depends on whether the device is currently online. If the device is running on battery and asleep, the content is saved to the server first and displayed after the device wakes automatically. Read <Link href="/docs/quote_0/faq/refresh_timing">Timing</Link> to learn more.
+</Callout>
+
+<Callout type="info" title="About image input">
+	The `image` field supports either PNG Base64 data or a full online `http(s)` image URL. Remote image URLs must be anonymously accessible, require no authentication or special Referer, and return `image/*` content directly.
+</Callout>
+
+<Callout type="info" title="Test image URLs for debugging">
+	The following URLs are currently anonymously accessible and return image content that can be used with the Image API:
+
+	- `https://placehold.co/600x400/png`
+	- `https://httpbin.org/image/png`
+
+	If you want to verify your own image URL first, run:
+
+	```bash
+	curl -I 'https://your-image-url'
+	```
+
+	In most cases, you should confirm at least:
+
+	- The HTTP status code is `200`
+	- The `Content-Type` is `image/*`, such as `image/png` or `image/jpeg`
 </Callout>
 
 <Callout
@@ -69,9 +92,9 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 				"Retrieve it via the 'List Device Tasks' API (used to target a specific Image API content when multiple exist).",
 		},
 		image: {
-			type: 'string',
+			type: 'textarea',
 			required: true,
-			name: 'Base64-encoded PNG image data',
+			name: 'PNG Base64 image data or http(s) image URL',
 		},
 		link: {
 			type: 'string',
@@ -145,7 +168,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Content-Type: application/json' \
       -d '{
         "refreshNow": false,
-        "image": "{{base64-encoded PNG image data}}",
+        "image": "{{base64-encoded PNG image data or http(s) image URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0
       }'
@@ -165,7 +188,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64-encoded PNG image data}}",
+        "image": "{{base64-encoded PNG image data or http(s) image URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 1
       }'
@@ -187,7 +210,7 @@ Use common image tools (e.g., Figma, Sketch, Adobe Photoshop) to convert text to
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64-encoded PNG image data}}",
+        "image": "{{base64-encoded PNG image data or http(s) image URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "NONE"
@@ -218,7 +241,7 @@ Error diffusion distributes each pixel’s quantization error to neighboring pix
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64-encoded PNG image data}}",
+        "image": "{{base64-encoded PNG image data or http(s) image URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "DIFFUSION"
@@ -292,7 +315,7 @@ Ordered dithering applies a fixed, periodic threshold matrix to image pixels, un
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64-encoded PNG image data}}",
+        "image": "{{base64-encoded PNG image data or http(s) image URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "ORDERED"
@@ -315,7 +338,7 @@ If you primarily display text images via the Image API, we recommend disabling d
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64-encoded PNG image data}}",
+        "image": "{{base64-encoded PNG image data or http(s) image URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "NONE"
@@ -344,7 +367,8 @@ If you primarily display text images via the Image API, we recommend disabling d
 			default: 'true',
 		},
 		image: {
-			description: 'Base64-encoded PNG image data (296px×152px) (Image to render on screen)',
+			description:
+				'Base64-encoded PNG image data or full http(s) image URL (296px×152px, and remote URLs must be anonymously accessible and return image/* directly) (Image to render on screen)',
 			type: 'string',
 			required: true,
 		},
@@ -400,5 +424,5 @@ If you primarily display text images via the Image API, we recommend disabling d
 | `200` | Success                 | Image API content switched / Data updated but content not switched                                                                             |
 | `400` | Invalid parameters      | Missing or invalid device ID<br/>Invalid image format<br/>Invalid border (must be 0 or 1)<br/>Invalid dither type<br/>Invalid dither algorithm |
 | `403` | Forbidden               | You do not have permission to operate this device                                                                                              |
-| `404` | Not found               | Device not found or not registered<br/>Image API content not added                                                                             |
+| `404` | Not found               | Device not found or not registered<br/>Image API content not added to the loop task                                                            |
 | `500` | Device response failure | Failed to switch Image API content                                                                                                             |

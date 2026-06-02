@@ -1,9 +1,11 @@
 ---
 title: 控制文本内容
+new: true
 ---
 
 import Link from 'fumadocs-core/link';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { getOpenTextApiFontFamilyOptions } from 'dot_platform_share/constants/open';
 import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
 
@@ -13,7 +15,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     建议您尽快完成以下调整：
     - 将请求地址更新为新版接口：`/api/authV2/open/device/:deviceId/text`
-    - 按本文档的请求结构发送参数（例如 `refreshNow` / `title` / `message` / `signature` / `icon` / `link` / `taskKey`）
+    - 按本文档的请求结构发送参数（例如 `refreshNow` / `title` / `message` / `signature` / `icon` / `link` / `taskKey` / `styles`）
     - 如您依赖旧版接口的返回内容或错误码，请以新版接口的响应为准进行适配
 
 </Callout>
@@ -26,10 +28,32 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 2. 确保您至少有一台所属于自己的设备并已<Link href="/docs/service/studio/api/get_device_id">获取设备序列号</Link>；
 3. 确保您的设备已接入电源；
 4. 确保您的设备已接入网络；
-5. 确保已从 Dot. App 内容工坊中添加 `文本 API` 内容到设备任务中。
+5. 确保已从 Dot. App 内容工坊中添加 `文本 API` 内容到设备**循环**任务中。
 
 <Callout type="info" title="关于 API 显示时机">
 	API 的即时显示能力依赖设备当前是否在线。若设备使用电池供电并处于睡眠状态，内容会先保存至服务器，并在设备下一次自动唤醒后显示。您可以阅读<Link href="/docs/quote_0/faq/refresh_timing">时间机制</Link>了解更多。
+</Callout>
+
+<Callout type="info" title="关于图标输入">
+	`icon` 字段支持传递 PNG Base64 数据，也支持传递完整的在线 `http(s)` 图片 URL。远程图标链接必须可匿名访问、无需鉴权或特殊 Referer，并直接返回 `image/*` 内容。
+</Callout>
+
+<Callout type="info" title="可用于调试的测试图标链接">
+	以下链接当前可直接匿名访问，并返回可用于 Text API `icon` 的图片内容：
+
+	- `https://placehold.co/40x40/png`
+	- `https://httpbin.org/image/png`
+
+	如果您想先验证自己的图标链接是否可用，可以先执行：
+
+	```bash
+	curl -I 'https://your-icon-url'
+	```
+
+	通常需要确认响应中至少满足两点：
+
+	- HTTP 状态码为 `200`
+	- `Content-Type` 为 `image/*`，例如 `image/png` 或 `image/jpeg`
 </Callout>
 
 <Callout
@@ -72,7 +96,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			name: '标题',
 		},
 		message: {
-			type: 'string',
+			type: 'textarea',
 			name: '内容',
 		},
 		signature: {
@@ -81,11 +105,68 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		},
 		icon: {
 			type: 'textarea',
-			name: 'base64 编码 PNG 图标数据',
+			name: 'PNG Base64 图标数据或 http(s) 图片 URL',
 		},
 		link: {
 			type: 'string',
 			name: '碰一碰跳转链接',
+		},
+		'styles.title.fontFamily': {
+			type: 'select',
+			name: '标题字体',
+			options: getOpenTextApiFontFamilyOptions('zh-Hans-CN'),
+		},
+		'styles.title.fontSize': {
+			type: 'number',
+			name: '标题字号',
+			description: '8-48，单位 px。',
+			example: 30,
+		},
+		'styles.title.fontWeight': {
+			type: 'number',
+			name: '标题字重',
+			description: '100、200、300、400、500、600、700、800 或 900。',
+			example: 700,
+		},
+		'styles.message.fontFamily': {
+			type: 'select',
+			name: '正文字体',
+			options: getOpenTextApiFontFamilyOptions('zh-Hans-CN'),
+		},
+		'styles.message.fontSize': {
+			type: 'number',
+			name: '正文字号',
+			description: '8-48，单位 px。',
+			example: 22,
+		},
+		'styles.message.fontWeight': {
+			type: 'number',
+			name: '正文字重',
+			description: '100、200、300、400、500、600、700、800 或 900。',
+			example: 400,
+		},
+		'styles.message.lineHeight': {
+			type: 'number',
+			name: '正文行高',
+			description: '0.8-3。',
+			example: 1.25,
+		},
+		'styles.signature.fontFamily': {
+			type: 'select',
+			name: '签名字体',
+			options: getOpenTextApiFontFamilyOptions('zh-Hans-CN'),
+		},
+		'styles.signature.fontSize': {
+			type: 'number',
+			name: '签名字号',
+			description: '8-48，单位 px。',
+			example: 16,
+		},
+		'styles.signature.fontWeight': {
+			type: 'number',
+			name: '签名字重',
+			description: '100、200、300、400、500、600、700、800 或 900。',
+			example: 400,
 		},
 	}}
 	auth={true}
@@ -140,7 +221,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -d '{
         "title": "验证码小助手",
         "message": "一个来自「少数派」的验证码\n205112",
-        "signature": "2025年8月4日 19:58"
+        "signature": "2025年8月4日 19:58",
+        "styles": {
+          "title": { "fontFamily": "ChillDuanSans", "fontSize": 30, "fontWeight": 700 },
+          "message": { "fontFamily": "FusionPixel12", "fontSize": 22, "lineHeight": 1.25 },
+          "signature": { "fontFamily": "ChillDuanSans", "fontSize": 16 }
+        }
       }'
     ```
   </Tab>
@@ -161,7 +247,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
         "title": "每日健康",
         "message": "消耗卡路里：702千卡\n今日步数：4183步\n站立时间：62分钟",
         "signature": "2025年8月4日 20:16",
-        "icon": "{{base64 编码 PNG 图像数据}}",
+        "icon": "{{PNG Base64 图标数据或 http(s) 图片 URL}}",
         "link": "x-apple-health://"
       }'
     ```
@@ -175,6 +261,19 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 </Link>
 
 <CustomCloudImage osSrc="dot/docs/%E9%98%B4%E5%BD%B13_1754130631116.png" alt="实际效果" />
+
+### 文本中的换行与制表符
+
+Text API 会保留 `message` 中的换行和制表符。
+
+- 在 JSON 请求体中，使用 `\n` 表示换行，使用 `\t` 表示制表符。
+- 如果您的 JSON 外面还包了一层 shell、JavaScript、Python、模板引擎或工具配置字符串，通常需要在外层写成 `\\n` 和 `\\t`，让最终发出的 JSON 仍然包含 `\n` 和 `\t`。
+- 如果您希望设备显示字面量字符 `\n` 或 `\t`，请让最终 JSON 载荷中包含 `\\n` 或 `\\t`。
+
+```json
+{ "message": "第一行\n\t缩进后的第二行" }
+{ "message": "显示字面量 \\n 和 \\t" }
+```
 
 ## 问题排查
 
@@ -200,7 +299,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'string',
 		},
 		message: {
-			description: '文本内容（显示在屏幕上的内容）',
+			description: '文本内容（支持 \\n 换行与 \\t 制表符）',
 			type: 'string',
 		},
 		signature: {
@@ -208,7 +307,8 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'string',
 		},
 		icon: {
-			description: 'base64 编码 PNG 图标数据（40px×40px）（显示在屏幕左下角上的图标）',
+			description:
+				'PNG Base64 图标数据或完整 http(s) 图片 URL（40px×40px，且远程链接需可匿名访问并直接返回 image/*）（显示在屏幕左下角上的图标）',
 			type: 'string',
 		},
 		link: {
@@ -220,8 +320,40 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 				'当设备存在多个「文本 API」内容时，用于指定要更新并切换的目标内容 taskKey。可通过「列出设备任务」获取。不传递则默认选择第一个文本 API 内容。',
 			type: 'string',
 		},
+		styles: {
+			description:
+				'可选排版覆盖。styles.title 和 styles.signature 支持 fontFamily、fontSize、fontWeight；styles.message 额外支持 lineHeight。',
+			type: 'object',
+		},
 	}}
 />
+
+### 支持的字体
+
+在 `styles.*.fontFamily` 中请使用完全一致的 `fontFamily` 值。
+
+| fontFamily | 说明 |
+| --- | --- |
+| `ChillDuanSans` | 通用中日韩无衬线 |
+| `ChillKSans` | 通用无衬线 |
+| `ChillOrganic` | 手作感展示字体 |
+| `ChillRoundF` | 圆角展示字体 |
+| `ChillRoundGothic` | 圆角黑体 |
+| `Cusong16` | 16px 点阵宋体风格 |
+| `DotGothic16` | 16px 点阵黑体风格 |
+| `FusionPixel8` | 8px 点阵字体 |
+| `FusionPixel10` | 10px 点阵字体 |
+| `FusionPixel12` | 12px 点阵字体 |
+| `Liusong24` | 24px 点阵宋体风格 |
+| `LogoSCUnboundedSans` | 展示无衬线 |
+| `MaokenYingBiKaiShuJ0.09` | 手写展示风格 |
+| `PlayfairDisplay` | 西文衬线展示字体 |
+| `Quan8` | 8px 点阵字体 |
+| `Unifont16` | 16px 广字符覆盖字体 |
+| `UnifontExMono16` | 16px 等宽广字符覆盖字体 |
+| `XiaoyaPixel12` | 12px 点阵风格 |
+| `Zihunzhoukesong` | 中文宋体风格 |
+| `Zpix12` | 12px 中日韩点阵字体 |
 
 ### 响应结构
 
@@ -247,5 +379,5 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 | `200` | 成功             | 设备文本 API 内容已切换/数据已更新但未切换内容 |
 | `400` | 参数错误         | 无效的图标格式                                 |
 | `403` | 权限不足         | 您没有权限操作此设备                           |
-| `404` | 设备或内容不存在 | 设备不存在或未注册<br/>未添加文本 API 内容     |
+| `404` | 设备或内容不存在 | 设备不存在或未注册<br/>未添加文本 API 内容到循环任务中 |
 | `500` | 设备响应失败     | 设备文本 API 内容切换失败                      |
