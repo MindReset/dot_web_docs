@@ -193,6 +193,78 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 - 最外层容器无需额外添加 padding；需要覆盖 FULL 布局时使用 `layoutFull.tw` 或 `layoutFull.style`；
 - 请求体会限制结构复杂度和体积，避免过大的画面影响设备渲染。
 
+### 支持的样式与自定义 Tailwind 类
+
+画板 API 支持一组面向设备静态渲染的样式能力。你可以把它理解为：**React object-like 元素结构 + 静态 CSS 子集**，再加上 Dot. 为设备渲染补充的自定义 Tailwind 字体类、断点处理和图片处理类。
+
+| 写法 | 支持来源 | 说明 |
+| --- | --- | --- |
+| `props.style` | Dot Canvas 静态样式子集 | 适合写确定性的像素值和复杂样式 |
+| `props.tw` | Tailwind-like 写法 + Dot. 扩展 | 适合快速写布局、颜色、间距、字体类和图片处理类 |
+| `layoutFull.tw` / `layoutFull.style` | Dot. layout 外壳覆盖 | 用于全屏无留白、背景和 padding 覆盖 |
+
+Dot Canvas 的 `props.style` 支持清单按静态 CSS 支持表整理，常用类别包括：CSS 变量、`display`、`position`、`color`、`margin`、`padding`、`top/right/bottom/left`、`width/height`、`minWidth/minHeight/maxWidth/maxHeight`、`border*`、`borderRadius*`、Flexbox、`gap`、`fontFamily`、`fontSize`、`fontWeight`、`fontStyle`、`tabSize`、`textAlign`、`textIndent`、`textTransform`、`textOverflow`、`textDecoration`、`textShadow`、`letterSpacing`、`lineHeight`、`whiteSpace`、`lineClamp`、`wordBreak`、`textWrap`、`backgroundColor`、`backgroundImage`、`backgroundPosition`、`backgroundSize`、`backgroundClip`、`backgroundRepeat`、`transform`、`transformOrigin`、`objectFit`、`objectPosition`、`opacity`、`boxSizing`、`boxShadow`、`overflow`、`filter`、`clipPath`、`mask*`、`WebkitTextStroke*`。
+
+这里的样式清单只描述 `props.style`。下面的字体类、断点处理和 `img-*` 图片处理类属于 Dot. 在 `props.tw` 上增加的自定义 Tailwind 扩展层。
+
+请注意几个边界：画板 API 不是完整浏览器环境，不支持 `<style>`、外部 `<link>`、`<script>`，不支持三维 transform、`z-index`、`calc()`；`currentColor` 只在 `color` 属性上可靠；高级排版特性和 RTL 语言支持也不是当前重点。画板 API 同样不支持 JSX、任意 JS 表达式、React hooks、浏览器 API、外部 CSS 或自定义组件。
+
+常用 `props.tw` 写法包括：`flex`、`flex-row`、`flex-col`、`flex-1`、`shrink-0`、`grow`、`items-*`、`justify-*`、`w-full`、`h-full`、`w-[84px]`、`h-[40px]`、`min-w-0`、`min-h-0`、`max-h-[200px]`、`gap-*`、`gap-[5px]`、`p-*`、`px-[8px]`、`py-[5px]`、`bg-*`、`text-*`、`border*`、`rounded*`、`overflow-hidden`、`box-border`、`box-content`、`fill-black`、`fill-white`。如果某个 Tailwind 写法不确定，优先改用 `props.style`。
+
+文字支持两类字体写法：
+
+| 类型 | 写法 | 示例 |
+| --- | --- | --- |
+| 普通字体 | `text-{size}-{font}` | `text-18-chillduansans` |
+| 普通字体任意字号 | `text-[Npx]-{font}` | `text-[20px]-playfairdisplay` |
+| Tailwind 字号 | `text-{xs/sm/base/lg/xl/2xl...}-{font}` | `text-lg-chillduansans` |
+| 点阵字体 | `text-pixel-{size}[-variant]` | `text-pixel-12-zpix` |
+
+常用普通字体 key：`chillduansans`、`chillksans`、`chillorganic`、`chillroundf`、`chillroundgothic`、`logoscunboundedsans`、`maokenyingbikaishuj0.09`、`playfairdisplay`、`zihunzhoukesong`。
+
+点阵字体类：`text-pixel-8`、`text-pixel-8-quan`、`text-pixel-10`、`text-pixel-12`、`text-pixel-12-xiaoya`、`text-pixel-12-zpix`、`text-pixel-16`、`text-pixel-16-cusong`、`text-pixel-16-unifont`、`text-pixel-16-unifontmono`、`text-pixel-24`。
+
+文本排版建议优先使用这些 `props.style` 字段：`fontSize`、`fontWeight`、`lineHeight`、`letterSpacing`、`whiteSpace`、`wordBreak`、`lineClamp`、`textOverflow`、`overflow`。例如多行正文通常使用：
+
+```json
+{
+	"tw": "text-18-chillduansans",
+	"style": {
+		"lineHeight": "20px",
+		"whiteSpace": "pre-wrap",
+		"wordBreak": "break-word",
+		"overflow": "hidden"
+	}
+}
+```
+
+图片节点支持额外的墨水屏图片处理类，仅写在 `img.props.tw` 中：
+
+```txt
+img-dither-none
+img-dither-diffusion
+img-dither-ordered
+
+img-kernel-threshold
+img-kernel-atkinson
+img-kernel-burkes
+img-kernel-floyd-steinberg
+img-kernel-sierra2
+img-kernel-stucki
+img-kernel-jarvis-judice-ninke
+img-kernel-diffusion-row
+img-kernel-diffusion-column
+img-kernel-diffusion-2d
+
+img-levels-2
+img-levels-3
+img-levels-4
+img-levels-8
+img-levels-16
+```
+
+图片排版建议使用 `style.objectFit` 和 `style.objectPosition`，例如 `contain` / `center bottom`。不建议依赖 `aspect-ratio`、CSS Grid、绝对定位、伪类、媒体查询、外部 CSS、脚本或自定义组件；这些能力不是画板 API 的稳定支持范围。
+
 ### 响应示例
 
 ```json

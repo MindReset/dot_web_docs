@@ -193,6 +193,78 @@ To avoid conflicting meanings, do not use `type`, `key`, `windowData`, `layoutFu
 - The outermost container does not need extra padding; use `layoutFull.tw` or `layoutFull.style` when you need to override the FULL layout;
 - The request is limited by template size and complexity to keep rendering stable.
 
+### Supported Styles And Custom Tailwind Classes
+
+Canvas API supports a device-oriented static rendering style surface. In practice, the styling boundary is: **React object-like elements + a static CSS subset**, plus Dot.'s custom Tailwind font utilities, breakpoint handling, and image-processing classes.
+
+| Syntax | Source | Notes |
+| --- | --- | --- |
+| `props.style` | Dot Canvas static style subset | Best for deterministic pixel values and explicit styles. |
+| `props.tw` | Tailwind-like syntax + Dot. extensions | Best for quick layout, color, spacing, font classes, and image-processing classes. |
+| `layoutFull.tw` / `layoutFull.style` | Dot. layout wrapper override | Use for full-bleed screens, background, and padding overrides. |
+
+The `props.style` support list is aligned with the static CSS support table. Common categories include CSS variables, `display`, `position`, `color`, `margin`, `padding`, `top/right/bottom/left`, `width/height`, `minWidth/minHeight/maxWidth/maxHeight`, `border*`, `borderRadius*`, Flexbox, `gap`, `fontFamily`, `fontSize`, `fontWeight`, `fontStyle`, `tabSize`, `textAlign`, `textIndent`, `textTransform`, `textOverflow`, `textDecoration`, `textShadow`, `letterSpacing`, `lineHeight`, `whiteSpace`, `lineClamp`, `wordBreak`, `textWrap`, `backgroundColor`, `backgroundImage`, `backgroundPosition`, `backgroundSize`, `backgroundClip`, `backgroundRepeat`, `transform`, `transformOrigin`, `objectFit`, `objectPosition`, `opacity`, `boxSizing`, `boxShadow`, `overflow`, `filter`, `clipPath`, `mask*`, and `WebkitTextStroke*`.
+
+This style list only describes `props.style`. The font classes, breakpoint processing, and `img-*` image-processing classes below are Dot. custom Tailwind extensions on top of `props.tw`.
+
+Important boundaries: Canvas API is not a full browser environment. It does not support `<style>`, external `<link>`, or `<script>`; it does not support 3D transforms, `z-index`, or `calc()`; `currentColor` is only reliable on the `color` property; advanced typography features and RTL languages are not the current focus. Canvas API also does not support JSX, arbitrary JS expressions, React hooks, browser APIs, external CSS, or custom components.
+
+Common `props.tw` classes include `flex`, `flex-row`, `flex-col`, `flex-1`, `shrink-0`, `grow`, `items-*`, `justify-*`, `w-full`, `h-full`, `w-[84px]`, `h-[40px]`, `min-w-0`, `min-h-0`, `max-h-[200px]`, `gap-*`, `gap-[5px]`, `p-*`, `px-[8px]`, `py-[5px]`, `bg-*`, `text-*`, `border*`, `rounded*`, `overflow-hidden`, `box-border`, `box-content`, `fill-black`, and `fill-white`. If a Tailwind class is uncertain, prefer `props.style`.
+
+Text supports two font families of class patterns:
+
+| Type | Syntax | Example |
+| --- | --- | --- |
+| Regular font | `text-{size}-{font}` | `text-18-chillduansans` |
+| Regular font with arbitrary px size | `text-[Npx]-{font}` | `text-[20px]-playfairdisplay` |
+| Tailwind font size key | `text-{xs/sm/base/lg/xl/2xl...}-{font}` | `text-lg-chillduansans` |
+| Pixel font | `text-pixel-{size}[-variant]` | `text-pixel-12-zpix` |
+
+Common regular font keys: `chillduansans`, `chillksans`, `chillorganic`, `chillroundf`, `chillroundgothic`, `logoscunboundedsans`, `maokenyingbikaishuj0.09`, `playfairdisplay`, `zihunzhoukesong`.
+
+Pixel font classes: `text-pixel-8`, `text-pixel-8-quan`, `text-pixel-10`, `text-pixel-12`, `text-pixel-12-xiaoya`, `text-pixel-12-zpix`, `text-pixel-16`, `text-pixel-16-cusong`, `text-pixel-16-unifont`, `text-pixel-16-unifontmono`, `text-pixel-24`.
+
+For text layout, prefer these `props.style` fields: `fontSize`, `fontWeight`, `lineHeight`, `letterSpacing`, `whiteSpace`, `wordBreak`, `lineClamp`, `textOverflow`, and `overflow`. A multi-line body usually looks like:
+
+```json
+{
+	"tw": "text-18-chillduansans",
+	"style": {
+		"lineHeight": "20px",
+		"whiteSpace": "pre-wrap",
+		"wordBreak": "break-word",
+		"overflow": "hidden"
+	}
+}
+```
+
+Image elements support extra e-ink image-processing classes in `img.props.tw`:
+
+```txt
+img-dither-none
+img-dither-diffusion
+img-dither-ordered
+
+img-kernel-threshold
+img-kernel-atkinson
+img-kernel-burkes
+img-kernel-floyd-steinberg
+img-kernel-sierra2
+img-kernel-stucki
+img-kernel-jarvis-judice-ninke
+img-kernel-diffusion-row
+img-kernel-diffusion-column
+img-kernel-diffusion-2d
+
+img-levels-2
+img-levels-3
+img-levels-4
+img-levels-8
+img-levels-16
+```
+
+For image layout, use `style.objectFit` and `style.objectPosition`, such as `contain` / `center bottom`. Avoid relying on `aspect-ratio`, CSS Grid, absolute positioning, pseudo classes, media queries, external CSS, scripts, or custom components; these are not part of the stable Canvas API surface.
+
 ### Response
 
 ```json

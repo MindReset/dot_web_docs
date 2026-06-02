@@ -193,6 +193,78 @@ Canvas API のリクエストは、内容データと画面構造を組み合わ
 - 最外層コンテナに追加の padding は不要です。FULL レイアウトを上書きしたい場合は `layoutFull.tw` または `layoutFull.style` を使用します；
 - 安定したレンダリングのため、リクエストのサイズと複雑さには制限があります。
 
+### 対応しているスタイルとカスタム Tailwind クラス
+
+Canvas API は、デバイス向けの静的レンダリングに適したスタイル能力を提供します。スタイルの境界は **React object-like 要素構造 + 静的 CSS サブセット**に、Dot. 独自の Tailwind フォント utility、ブレークポイント処理、画像処理クラスを足したものです。
+
+| 書き方 | 対応元 | 説明 |
+| --- | --- | --- |
+| `props.style` | Dot Canvas 静的スタイルサブセット | ピクセル値や明示的なスタイルに向いています。 |
+| `props.tw` | Tailwind-like 構文 + Dot. 拡張 | レイアウト、色、余白、フォントクラス、画像処理クラスを素早く書く用途に向いています。 |
+| `layoutFull.tw` / `layoutFull.style` | Dot. layout 外枠の上書き | 全画面表示、背景、padding の上書きに使います。 |
+
+Dot Canvas の `props.style` サポート一覧は、静的 CSS の対応表に合わせています。主なカテゴリには、CSS 変数、`display`、`position`、`color`、`margin`、`padding`、`top/right/bottom/left`、`width/height`、`minWidth/minHeight/maxWidth/maxHeight`、`border*`、`borderRadius*`、Flexbox、`gap`、`fontFamily`、`fontSize`、`fontWeight`、`fontStyle`、`tabSize`、`textAlign`、`textIndent`、`textTransform`、`textOverflow`、`textDecoration`、`textShadow`、`letterSpacing`、`lineHeight`、`whiteSpace`、`lineClamp`、`wordBreak`、`textWrap`、`backgroundColor`、`backgroundImage`、`backgroundPosition`、`backgroundSize`、`backgroundClip`、`backgroundRepeat`、`transform`、`transformOrigin`、`objectFit`、`objectPosition`、`opacity`、`boxSizing`、`boxShadow`、`overflow`、`filter`、`clipPath`、`mask*`、`WebkitTextStroke*` があります。
+
+このスタイル一覧は `props.style` の範囲だけを示します。以下のフォントクラス、ブレークポイント処理、`img-*` 画像処理クラスは、Dot. が `props.tw` に追加しているカスタム Tailwind 拡張レイヤーです。
+
+重要な制限：Canvas API は完全なブラウザ環境ではありません。`<style>`、外部 `<link>`、`<script>` は使えません。3D transform、`z-index`、`calc()` も対応していません。`currentColor` は `color` プロパティでのみ信頼できます。高度な組版機能や RTL 言語も現在の主な対象ではありません。Canvas API でも JSX、任意の JS 式、React hooks、ブラウザ API、外部 CSS、カスタムコンポーネントは使えません。
+
+よく使う `props.tw` には、`flex`、`flex-row`、`flex-col`、`flex-1`、`shrink-0`、`grow`、`items-*`、`justify-*`、`w-full`、`h-full`、`w-[84px]`、`h-[40px]`、`min-w-0`、`min-h-0`、`max-h-[200px]`、`gap-*`、`gap-[5px]`、`p-*`、`px-[8px]`、`py-[5px]`、`bg-*`、`text-*`、`border*`、`rounded*`、`overflow-hidden`、`box-border`、`box-content`、`fill-black`、`fill-white` があります。Tailwind クラスが不確かな場合は `props.style` を優先してください。
+
+文字には次のフォントクラスを使えます：
+
+| 種類 | 構文 | 例 |
+| --- | --- | --- |
+| 通常フォント | `text-{size}-{font}` | `text-18-chillduansans` |
+| 任意 px サイズ | `text-[Npx]-{font}` | `text-[20px]-playfairdisplay` |
+| Tailwind サイズキー | `text-{xs/sm/base/lg/xl/2xl...}-{font}` | `text-lg-chillduansans` |
+| ピクセルフォント | `text-pixel-{size}[-variant]` | `text-pixel-12-zpix` |
+
+よく使う通常フォント key：`chillduansans`、`chillksans`、`chillorganic`、`chillroundf`、`chillroundgothic`、`logoscunboundedsans`、`maokenyingbikaishuj0.09`、`playfairdisplay`、`zihunzhoukesong`。
+
+ピクセルフォントクラス：`text-pixel-8`、`text-pixel-8-quan`、`text-pixel-10`、`text-pixel-12`、`text-pixel-12-xiaoya`、`text-pixel-12-zpix`、`text-pixel-16`、`text-pixel-16-cusong`、`text-pixel-16-unifont`、`text-pixel-16-unifontmono`、`text-pixel-24`。
+
+テキスト組版では、`props.style` に `fontSize`、`fontWeight`、`lineHeight`、`letterSpacing`、`whiteSpace`、`wordBreak`、`lineClamp`、`textOverflow`、`overflow` を使うのが安定しています。複数行本文の例：
+
+```json
+{
+	"tw": "text-18-chillduansans",
+	"style": {
+		"lineHeight": "20px",
+		"whiteSpace": "pre-wrap",
+		"wordBreak": "break-word",
+		"overflow": "hidden"
+	}
+}
+```
+
+画像要素では、`img.props.tw` に電子ペーパー向け画像処理クラスを追加できます：
+
+```txt
+img-dither-none
+img-dither-diffusion
+img-dither-ordered
+
+img-kernel-threshold
+img-kernel-atkinson
+img-kernel-burkes
+img-kernel-floyd-steinberg
+img-kernel-sierra2
+img-kernel-stucki
+img-kernel-jarvis-judice-ninke
+img-kernel-diffusion-row
+img-kernel-diffusion-column
+img-kernel-diffusion-2d
+
+img-levels-2
+img-levels-3
+img-levels-4
+img-levels-8
+img-levels-16
+```
+
+画像の配置には `style.objectFit` と `style.objectPosition`、たとえば `contain` / `center bottom` を使ってください。`aspect-ratio`、CSS Grid、絶対配置、疑似クラス、メディアクエリ、外部 CSS、スクリプト、カスタムコンポーネントには依存しないでください。これらは Canvas API の安定サポート範囲ではありません。
+
 ### レスポンス
 
 ```json
