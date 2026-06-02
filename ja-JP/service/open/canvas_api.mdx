@@ -1,0 +1,206 @@
+---
+title: Canvas コンテンツを制御
+new: true
+---
+
+import Link from 'fumadocs-core/link';
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+
+## クイックスタート
+
+### 必要条件
+
+1. Dot. App で API キーを取得して保存します；
+2. 所有しているデバイスのシリアル番号を取得します；
+3. デバイスが電源とネットワークに接続されていることを確認します；
+4. Dot. App のコンテンツ工房で `Canvas API` コンテンツをデバイスの**ループ**タスクに追加します。
+
+<Callout type="info" title="Canvas API の用途">
+	Text API はテキストカードをすばやく送る用途に向いており、Image API は 1 枚の画像表示に向いています。Canvas API では、自分のデータからカード、ダッシュボード、小さなビジュアル実験を作れます。
+</Callout>
+
+<Callout type="info" title="windowData はオブジェクト要素で画面を表します">
+	`windowData` は React-elements-like objects に近い書き方です。各要素はオブジェクトで、`type` が要素種別、`props` がスタイルと内容、`props.children` がテキスト、子要素、または子要素の配列になります。
+</Callout>
+
+<Callout type="info" title="最外層コンテナには通常 padding は不要です">
+	デバイスのレイアウトは `windowData.default` の外側で基本的な余白を処理します。最外層要素は構造、背景、整列を優先してください。全面表示、背景色変更、FULL レイアウトの上書きが必要な場合は `layoutFull` を渡します。
+</Callout>
+
+### Playground
+
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/device/:deviceId/canvas"
+	method="POST"
+	pathParams={{
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: 'デバイスシリアル番号',
+		},
+	}}
+	bodyParams={{
+		refreshNow: {
+			type: 'boolean',
+			name: 'すぐに表示',
+			default: true,
+		},
+		taskKey: {
+			type: 'string',
+			name: 'タスクキー',
+			description:
+				'同じデバイスに複数の Canvas API コンテンツがある場合、タスク一覧 API で取得した値を指定します。',
+		},
+		data: {
+			type: 'object',
+			name: 'ユーザーデータ JSON',
+			example: JSON.stringify(
+				{
+					title: 'Canvas API',
+					message: 'data と windowData で画面全体を描画します。',
+					badge: 'OPENAPI',
+				},
+				null,
+				2
+			),
+		},
+		windowData: {
+			type: 'object',
+			required: true,
+			name: 'V2 windowData',
+			example: JSON.stringify(
+				{
+					default: [
+						{
+							type: 'div',
+							props: {
+								tw: 'flex flex-col flex-1 w-full h-full bg-[#0B1020] text-white gap-[8px]',
+								children: [
+									{
+										type: 'div',
+										props: {
+											tw: 'text-14-chillduansans text-cyan-200',
+											children: '{{get inputData "badge" default="OPENAPI"}}',
+										},
+									},
+									{
+										type: 'div',
+										props: {
+											tw: 'text-28-chillduansans font-bold leading-none',
+											lineClamp: 1,
+											textOverflow: 'ellipsis',
+											overflow: 'hidden',
+											children: '{{get inputData "title" default="Canvas API"}}',
+										},
+									},
+									{
+										type: 'div',
+										props: {
+											tw: 'text-18-chillduansans leading-[1.18]',
+											lineClamp: 4,
+											textOverflow: 'ellipsis',
+											overflow: 'hidden',
+											children: '{{get inputData "message" default=""}}',
+										},
+									},
+								],
+							},
+						},
+					],
+				},
+				null,
+				2
+			),
+		},
+		layoutFull: {
+			type: 'object',
+			name: 'FULL レイアウト上書き',
+			example: JSON.stringify(
+				{
+					tw: 'p-0 bg-[#0B1020]',
+					style: {
+						padding: 0,
+						backgroundColor: '#0B1020',
+					},
+				},
+				null,
+				2
+			),
+		},
+		link: {
+			type: 'string',
+			name: 'タップリンク',
+		},
+		border: {
+			type: 'select',
+			name: '画面の枠色',
+			default: 0,
+			options: [
+				{ value: 0, label: '白' },
+				{ value: 1, label: '黒' },
+			],
+		},
+	}}
+	auth={true}
+	defaultOpen={false}
+/>
+
+### リクエスト本文
+
+Canvas API のリクエストは、内容データと画面構造を組み合わせて送信します。`data` には画面から読み取る値を入れ、`windowData` には要素構造を記述します。必要に応じて、`layoutFull` で FULL レイアウトを調整し、`link` でタップリンクを設定し、`border` で画面の枠色を選択できます。
+
+フィールドの意味が衝突しないように、`data` の中では `type`、`key`、`windowData`、`layoutFull`、`link`、`border`、`__proto__`、`constructor`、`prototype` をキーとして使用しないでください。
+
+```json
+{
+	"refreshNow": true,
+	"data": {
+		"title": "Canvas API",
+		"message": "Hello Dot."
+	},
+	"windowData": {
+		"default": [
+			{
+				"type": "div",
+				"props": {
+					"tw": "flex flex-1 bg-white text-black",
+					"children": "{{get inputData \"title\"}}"
+				}
+			}
+		]
+	},
+	"layoutFull": {
+		"tw": "p-0 bg-white",
+		"style": {
+			"padding": 0
+		}
+	},
+	"link": "https://dot.mindreset.tech",
+	"border": 0
+}
+```
+
+### windowData の書き方
+
+- `windowData` には `default` レイヤー配列が必要です；
+- 要素は通常 `{ "type": "div", "props": { ... } }` の形で書きます；
+- `props.tw` には Tailwind-like なスタイル、`props.style` には明示的なインラインスタイルを書きます；
+- `props.children` は文字列、1 つの要素オブジェクト、または要素配列を指定できます；
+- 動的な内容は `{{get inputData "user.name" default="-"}}` のように、リクエスト `data` の値を読み取れます；
+- よく使う要素は `div`、`span`、`img` です；
+- 画像には data URI または匿名アクセス可能な `http(s)` 画像 URL を使用できます；
+- 最外層コンテナに追加の padding は不要です。FULL レイアウトを上書きしたい場合は `layoutFull.tw` または `layoutFull.style` を使用します；
+- 安定したレンダリングのため、リクエストのサイズと複雑さには制限があります。
+
+### レスポンス
+
+```json
+{
+	"code": 200,
+	"message": "デバイス ABCD1234ABCD Canvas API コンテンツが切り替わりました。",
+	"result": {
+		"message": "デバイス ABCD1234ABCD Canvas API コンテンツが切り替わりました。"
+	}
+}
+```

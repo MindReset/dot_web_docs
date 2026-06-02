@@ -1,0 +1,206 @@
+---
+title: 控制画板内容
+new: true
+---
+
+import Link from 'fumadocs-core/link';
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+
+## 快速指引
+
+### 必要条件
+
+1. 确保您已在 Dot. App 中<Link href="/docs/service/studio/api/get_api">获取并保存了 API 密钥</Link>；
+2. 确保您至少有一台所属于自己的设备并已<Link href="/docs/service/studio/api/get_device_id">获取设备序列号</Link>；
+3. 确保您的设备已接入电源和网络；
+4. 确保已从 Dot. App 内容工坊中添加 `画板 API` 内容到设备**循环**任务中。
+
+<Callout type="info" title="Canvas API 的定位">
+	文本 API 适合快速发送一段文字，图像 API 适合显示一张图片。画板 API 则适合把自己的数据组合成信息卡片、仪表盘或小型视觉实验。
+</Callout>
+
+<Callout type="info" title="windowData 使用对象元素描述画面">
+	`windowData` 的写法接近 React elements-like objects：每个元素都是一个对象，`type` 表示元素类型，`props` 表示样式和内容，`props.children` 可以是一段文字、一个子元素，或一组子元素。
+</Callout>
+
+<Callout type="info" title="最外层容器通常不需要 padding">
+	设备布局会在 `windowData.default` 外层处理基础留白。最外层元素请优先负责结构、背景和对齐；如果您需要全屏无留白、修改背景色或覆盖 FULL 布局样式，可以传递 `layoutFull`。
+</Callout>
+
+### 请求示例
+
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/device/:deviceId/canvas"
+	method="POST"
+	pathParams={{
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: '设备序列号',
+		},
+	}}
+	bodyParams={{
+		refreshNow: {
+			type: 'boolean',
+			name: '是否立刻显示内容',
+			default: true,
+		},
+		taskKey: {
+			type: 'string',
+			name: '任务唯一标识',
+			description:
+				'可通过「列出设备任务」接口获取（当设备存在多个「画板 API」内容时用于指定目标内容）。',
+		},
+		data: {
+			type: 'object',
+			name: '用户数据 JSON',
+			example: JSON.stringify(
+				{
+					title: 'Canvas API',
+					message: '用 data 和 windowData 绘制完整画面',
+					badge: 'OPENAPI',
+				},
+				null,
+				2
+			),
+		},
+		windowData: {
+			type: 'object',
+			required: true,
+			name: '二代渲染 windowData',
+			example: JSON.stringify(
+				{
+					default: [
+						{
+							type: 'div',
+							props: {
+								tw: 'flex flex-col flex-1 w-full h-full bg-[#0B1020] text-white gap-[8px]',
+								children: [
+									{
+										type: 'div',
+										props: {
+											tw: 'text-14-chillduansans text-cyan-200',
+											children: '{{get inputData "badge" default="OPENAPI"}}',
+										},
+									},
+									{
+										type: 'div',
+										props: {
+											tw: 'text-28-chillduansans font-bold leading-none',
+											lineClamp: 1,
+											textOverflow: 'ellipsis',
+											overflow: 'hidden',
+											children: '{{get inputData "title" default="Canvas API"}}',
+										},
+									},
+									{
+										type: 'div',
+										props: {
+											tw: 'text-18-chillduansans leading-[1.18]',
+											lineClamp: 4,
+											textOverflow: 'ellipsis',
+											overflow: 'hidden',
+											children: '{{get inputData "message" default=""}}',
+										},
+									},
+								],
+							},
+						},
+					],
+				},
+				null,
+				2
+			),
+		},
+		layoutFull: {
+			type: 'object',
+			name: 'FULL 布局覆盖',
+			example: JSON.stringify(
+				{
+					tw: 'p-0 bg-[#0B1020]',
+					style: {
+						padding: 0,
+						backgroundColor: '#0B1020',
+					},
+				},
+				null,
+				2
+			),
+		},
+		link: {
+			type: 'string',
+			name: '碰一碰跳转链接',
+		},
+		border: {
+			type: 'select',
+			name: '屏幕边框颜色',
+			default: 0,
+			options: [
+				{ value: 0, label: '白色' },
+				{ value: 1, label: '黑色' },
+			],
+		},
+	}}
+	auth={true}
+	defaultOpen={false}
+/>
+
+### 请求参数说明
+
+画板 API 的请求由内容数据和画面结构两部分组成：`data` 提供可被画面读取的内容，`windowData` 描述具体的元素结构。您还可以通过 `layoutFull` 调整 FULL 布局，通过 `link` 设置碰一碰跳转，通过 `border` 设置屏幕边框。
+
+为了避免字段含义冲突，请不要在 `data` 中使用 `type`、`key`、`windowData`、`layoutFull`、`link`、`border`、`__proto__`、`constructor` 或 `prototype`。
+
+```json
+{
+	"refreshNow": true,
+	"data": {
+		"title": "Canvas API",
+		"message": "Hello Dot."
+	},
+	"windowData": {
+		"default": [
+			{
+				"type": "div",
+				"props": {
+					"tw": "flex flex-1 bg-white text-black",
+					"children": "{{get inputData \"title\"}}"
+				}
+			}
+		]
+	},
+	"layoutFull": {
+		"tw": "p-0 bg-white",
+		"style": {
+			"padding": 0
+		}
+	},
+	"link": "https://dot.mindreset.tech",
+	"border": 0
+}
+```
+
+### windowData 写法
+
+- `windowData` 必须包含 `default` 图层数组；
+- 每个元素通常写成 `{ "type": "div", "props": { ... } }`；
+- `props.tw` 用于写 Tailwind-like 样式，`props.style` 用于写更明确的内联样式；
+- `props.children` 可以是字符串、一个元素对象，或元素数组；
+- 动态内容可以通过 `{{get inputData "user.name" default="-"}}` 读取请求 `data` 中的值；
+- 常用元素为 `div`、`span`、`img`；
+- 图片可使用 data URI 或可匿名访问的 `http(s)` 图片链接；
+- 最外层容器无需额外添加 padding；需要覆盖 FULL 布局时使用 `layoutFull.tw` 或 `layoutFull.style`；
+- 请求体会限制结构复杂度和体积，避免过大的画面影响设备渲染。
+
+### 响应示例
+
+```json
+{
+	"code": 200,
+	"message": "设备画板 API 内容已切换",
+	"result": {
+		"message": "设备 ABCD1234ABCD 画板 API 内容已切换"
+	}
+}
+```

@@ -69,6 +69,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		"border": 0,
 		"ditherType": "DIFFUSION",
 		"ditherKernel": "FLOYD_STEINBERG"
+	},
+	{
+		"type": "CANVAS_API",
+		"key": "canvas_task_1",
+		"border": 0,
+		"link": "https://dot.mindreset.tech"
 	}
 ]
 ```
@@ -111,7 +117,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 返回值为内容数组。
 
-- `type`: 内容类型（返回 `TEXT_API` / `IMAGE_API` / `GENERAL`）
+- `type`: 内容类型（返回 `TEXT_API` / `IMAGE_API` / `CANVAS_API` / `GENERAL`）
 - `key`: 内容唯一标识（可能为 `null`）
 - 其余字段：该内容的输入参数（不同类型的内容字段不同，例如 Text API 的 `title` / `message`，Image API 的 `border` / `ditherType` 等）
 
@@ -123,12 +129,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			required: true,
 			items: {
 				type: {
-					description: '内容类型（`TEXT_API` / `IMAGE_API` / `GENERAL`）',
-					type: "'TEXT_API' | 'IMAGE_API' | 'GENERAL'",
+					description: '内容类型（`TEXT_API` / `IMAGE_API` / `CANVAS_API` / `GENERAL`）',
+					type: "'TEXT_API' | 'IMAGE_API' | 'CANVAS_API' | 'GENERAL'",
 					required: true,
 				},
 				key: {
-					description: '内容唯一标识（可用于 Text/Image API 的 taskKey 参数）',
+					description: '内容唯一标识（可用于 Text/Image/Canvas API 的 taskKey 参数）',
 					type: 'string | null',
 					required: true,
 				},

@@ -69,6 +69,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		"border": 0,
 		"ditherType": "DIFFUSION",
 		"ditherKernel": "FLOYD_STEINBERG"
+	},
+	{
+		"type": "CANVAS_API",
+		"key": "canvas_task_1",
+		"border": 0,
+		"link": "https://dot.mindreset.tech"
 	}
 ]
 ```
@@ -111,7 +117,7 @@ This interface does not require a request body, only an API key in the request h
 
 The response is an array of content items.
 
-- `type`: content type (`TEXT_API` / `IMAGE_API` / `GENERAL`)
+- `type`: content type (`TEXT_API` / `IMAGE_API` / `CANVAS_API` / `GENERAL`)
 - `key`: content identifier (can be `null`)
 - Other fields: the content input payload (varies by content type)
 
@@ -123,12 +129,12 @@ The response is an array of content items.
 			required: true,
 			items: {
 				type: {
-					description: 'Content type (`TEXT_API` / `IMAGE_API` / `GENERAL`)',
-					type: "'TEXT_API' | 'IMAGE_API' | 'GENERAL'",
+					description: 'Content type (`TEXT_API` / `IMAGE_API` / `CANVAS_API` / `GENERAL`)',
+					type: "'TEXT_API' | 'IMAGE_API' | 'CANVAS_API' | 'GENERAL'",
 					required: true,
 				},
 				key: {
-					description: 'Content identifier (used as taskKey for Text/Image API)',
+					description: 'Content identifier (used as taskKey for Text/Image/Canvas API)',
 					type: 'string | null',
 					required: true,
 				},

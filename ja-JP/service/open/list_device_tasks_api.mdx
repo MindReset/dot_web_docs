@@ -69,6 +69,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		"border": 0,
 		"ditherType": "DIFFUSION",
 		"ditherKernel": "FLOYD_STEINBERG"
+	},
+	{
+		"type": "CANVAS_API",
+		"key": "canvas_task_1",
+		"border": 0,
+		"link": "https://dot.mindreset.tech"
 	}
 ]
 ```
@@ -111,7 +117,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 レスポンスはコンテンツ配列です。
 
-- `type`: コンテンツ種別（`TEXT_API` / `IMAGE_API` / `GENERAL`）
+- `type`: コンテンツ種別（`TEXT_API` / `IMAGE_API` / `CANVAS_API` / `GENERAL`）
 - `key`: コンテンツ識別子（`null` の場合あり）
 - その他のフィールド：コンテンツの入力データ（コンテンツ種別により異なる）
 
@@ -123,12 +129,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			required: true,
 			items: {
 				type: {
-					description: 'コンテンツ種別（`TEXT_API` / `IMAGE_API` / `GENERAL`）',
-					type: "'TEXT_API' | 'IMAGE_API' | 'GENERAL'",
+					description: 'コンテンツ種別（`TEXT_API` / `IMAGE_API` / `CANVAS_API` / `GENERAL`）',
+					type: "'TEXT_API' | 'IMAGE_API' | 'CANVAS_API' | 'GENERAL'",
 					required: true,
 				},
 				key: {
-					description: 'コンテンツ識別子（Text/Image API の taskKey として使用）',
+					description: 'コンテンツ識別子（Text/Image/Canvas API の taskKey として使用）',
 					type: 'string | null',
 					required: true,
 				},

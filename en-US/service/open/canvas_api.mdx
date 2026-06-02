@@ -1,0 +1,206 @@
+---
+title: Control Canvas Content
+new: true
+---
+
+import Link from 'fumadocs-core/link';
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+
+## Quick Start
+
+### Requirements
+
+1. Get and save an API key from Dot. App;
+2. Get the serial number of a device you own;
+3. Make sure the device is powered and online;
+4. Add the `Canvas API` content to the device **loop** task in Dot. App Content Studio.
+
+<Callout type="info" title="What Canvas API is for">
+	Text API is best for quickly sending a text card, and Image API is best for showing one image. Canvas API lets you turn your own data into custom cards, dashboards, or small visual experiments.
+</Callout>
+
+<Callout type="info" title="windowData uses object elements">
+	`windowData` is written with React-elements-like objects: each element is an object, `type` selects the element type, `props` contains style and content, and `props.children` can be text, one child element, or an array of child elements.
+</Callout>
+
+<Callout type="info" title="The outer container usually needs no padding">
+	The device layout handles the basic spacing outside `windowData.default`. Let the outer element focus on structure, background, and alignment. When you need edge-to-edge rendering, a custom background, or FULL layout overrides, pass `layoutFull`.
+</Callout>
+
+### Playground
+
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/device/:deviceId/canvas"
+	method="POST"
+	pathParams={{
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: 'Device serial number',
+		},
+	}}
+	bodyParams={{
+		refreshNow: {
+			type: 'boolean',
+			name: 'Display immediately',
+			default: true,
+		},
+		taskKey: {
+			type: 'string',
+			name: 'Task key',
+			description:
+				'Use the task list endpoint to get this value when the device has multiple Canvas API contents.',
+		},
+		data: {
+			type: 'object',
+			name: 'User data JSON',
+			example: JSON.stringify(
+				{
+					title: 'Canvas API',
+					message: 'Draw a full screen with data and windowData.',
+					badge: 'OPENAPI',
+				},
+				null,
+				2
+			),
+		},
+		windowData: {
+			type: 'object',
+			required: true,
+			name: 'V2 windowData',
+			example: JSON.stringify(
+				{
+					default: [
+						{
+							type: 'div',
+							props: {
+								tw: 'flex flex-col flex-1 w-full h-full bg-[#0B1020] text-white gap-[8px]',
+								children: [
+									{
+										type: 'div',
+										props: {
+											tw: 'text-14-chillduansans text-cyan-200',
+											children: '{{get inputData "badge" default="OPENAPI"}}',
+										},
+									},
+									{
+										type: 'div',
+										props: {
+											tw: 'text-28-chillduansans font-bold leading-none',
+											lineClamp: 1,
+											textOverflow: 'ellipsis',
+											overflow: 'hidden',
+											children: '{{get inputData "title" default="Canvas API"}}',
+										},
+									},
+									{
+										type: 'div',
+										props: {
+											tw: 'text-18-chillduansans leading-[1.18]',
+											lineClamp: 4,
+											textOverflow: 'ellipsis',
+											overflow: 'hidden',
+											children: '{{get inputData "message" default=""}}',
+										},
+									},
+								],
+							},
+						},
+					],
+				},
+				null,
+				2
+			),
+		},
+		layoutFull: {
+			type: 'object',
+			name: 'FULL layout override',
+			example: JSON.stringify(
+				{
+					tw: 'p-0 bg-[#0B1020]',
+					style: {
+						padding: 0,
+						backgroundColor: '#0B1020',
+					},
+				},
+				null,
+				2
+			),
+		},
+		link: {
+			type: 'string',
+			name: 'Tap link',
+		},
+		border: {
+			type: 'select',
+			name: 'Screen border color',
+			default: 0,
+			options: [
+				{ value: 0, label: 'White' },
+				{ value: 1, label: 'Black' },
+			],
+		},
+	}}
+	auth={true}
+	defaultOpen={false}
+/>
+
+### Request Body
+
+Canvas API requests combine content data with a screen description. Use `data` for values the screen can read, and use `windowData` to describe the element structure. You can also pass `layoutFull` to adjust the FULL layout, `link` to set the tap-to-open URL, and `border` to choose the screen border color.
+
+To avoid conflicting meanings, do not use `type`, `key`, `windowData`, `layoutFull`, `link`, `border`, `__proto__`, `constructor`, or `prototype` as keys inside `data`.
+
+```json
+{
+	"refreshNow": true,
+	"data": {
+		"title": "Canvas API",
+		"message": "Hello Dot."
+	},
+	"windowData": {
+		"default": [
+			{
+				"type": "div",
+				"props": {
+					"tw": "flex flex-1 bg-white text-black",
+					"children": "{{get inputData \"title\"}}"
+				}
+			}
+		]
+	},
+	"layoutFull": {
+		"tw": "p-0 bg-white",
+		"style": {
+			"padding": 0
+		}
+	},
+	"link": "https://dot.mindreset.tech",
+	"border": 0
+}
+```
+
+### Writing windowData
+
+- `windowData` must contain a `default` layer array;
+- Elements are usually written as `{ "type": "div", "props": { ... } }`;
+- `props.tw` writes Tailwind-like styles, while `props.style` writes explicit inline styles;
+- `props.children` can be a string, one element object, or an array of elements;
+- Dynamic content can read request `data` with `{{get inputData "user.name" default="-"}}`;
+- Common element types are `div`, `span`, and `img`;
+- Images may use data URIs or anonymously accessible `http(s)` image URLs;
+- The outermost container does not need extra padding; use `layoutFull.tw` or `layoutFull.style` when you need to override the FULL layout;
+- The request is limited by template size and complexity to keep rendering stable.
+
+### Response
+
+```json
+{
+	"code": 200,
+	"message": "Device Canvas API content switched.",
+	"result": {
+		"message": "Device ABCD1234ABCD Canvas API content switched."
+	}
+}
+```
