@@ -16,7 +16,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     We strongly recommend completing the following updates as soon as possible:
     - Update the request URL to the new endpoint: `/api/authV2/open/device/:deviceId/text`
-    - Send parameters according to this document (e.g. `refreshNow` / `title` / `message` / `signature` / `icon` / `link` / `taskKey` / `styles`)
+    - Send parameters according to this document (e.g. `refreshNow` / `taskAlias` / `title` / `message` / `signature` / `icon` / `link` / `taskKey` / `styles`)
     - If you rely on legacy response payloads or error codes, adapt your integration to the new API responses
 
 </Callout>
@@ -95,6 +95,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			name: 'Task identifier',
 			description:
 				"Retrieve it via the 'List Device Tasks' API (used to target a specific Text API content when multiple exist).",
+		},
+		taskAlias: {
+			type: 'string',
+			name: 'Task alias',
+			description:
+				'Helps distinguish multiple Text API contents in the device task list. It does not affect the on-screen title.',
 		},
 		title: {
 			type: 'string',
@@ -182,11 +188,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ```json
 {
-	"code": 200,
-	"message": "Device Text API content switched",
-	"result": {
-		"message": "Device ABCD1234ABCD Text API content switched"
-	}
+	"message": "Device ABCD1234ABCD text API content switched."
 }
 ```
 
@@ -325,6 +327,11 @@ Text API preserves line breaks and tabs in `message`.
 				"When multiple Text API contents exist on the device, use this taskKey to specify which content to update and switch. You can retrieve it via the 'List Device Tasks' API. If omitted, the first Text API content is used.",
 			type: 'string',
 		},
+		taskAlias: {
+			description:
+				'Task alias shown in the device task list. Use it to distinguish multiple contents of the same API type. Accepts a string or number, max 100 characters. Omit it to keep the existing alias, or send an empty string/null to clear it.',
+			type: 'string | number',
+		},
 		styles: {
 			description:
 				'Optional typography overrides. styles.title and styles.signature support fontFamily, fontSize, and fontWeight; styles.message additionally supports lineHeight.',
@@ -362,15 +369,12 @@ Use the exact `fontFamily` value in `styles.*.fontFamily`.
 
 ### Response Schema
 
+The endpoint uses the HTTP status code to indicate the request result. The JSON response body only contains `message`.
+
 <TypeTable
 	type={{
-		code: {
-			description: 'Status code',
-			type: 'number',
-			required: true,
-		},
 		message: {
-			description: 'Message',
+			description: 'Human-readable response message. Both success and error responses use this field.',
 			type: 'string',
 			required: true,
 		},
@@ -379,10 +383,10 @@ Use the exact `fontFamily` value in `styles.*.fontFamily`.
 
 ### Status Codes
 
-| code  | Meaning                 | Description                                                       |
-| :---- | :---------------------- | :---------------------------------------------------------------- |
-| `200` | Success                 | Text API content switched / Data updated but content not switched |
-| `400` | Invalid parameters      | Invalid icon format                                               |
-| `403` | Forbidden               | You do not have permission to operate this device                 |
-| `404` | Not found               | Device not found or not registered<br/>Text API content not added to the loop task |
-| `500` | Device response failure | Failed to switch Text API content                                 |
+| HTTP status | Meaning                 | Description                                                       |
+| :---------- | :---------------------- | :---------------------------------------------------------------- |
+| `200`       | Success                 | Text API content switched / Data updated but content not switched |
+| `400`       | Invalid parameters      | Invalid icon format                                               |
+| `403`       | Forbidden               | You do not have permission to operate this device                 |
+| `404`       | Not found               | Device not found or not registered<br/>Text API content not added to the loop task |
+| `500`       | Device response failure | Failed to switch Text API content                                 |

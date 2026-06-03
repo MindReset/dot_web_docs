@@ -16,6 +16,7 @@ Dot Skill is an open-source tool that allows AI assistants to interact with your
 - **Text Push** - Display specified text content on the device
 - **Image Push** - Push images to the device for display
 - **Canvas Push** - Send data and windowData to draw a fully custom screen
+- **Task Alias** - Give text, image, and canvas items an easy-to-recognize task name
 - **Status Query** - Check device battery level, network status, and other information
 - **Content Switching** - Switch to the next content
 - **Helper Scripts** - Python scripts provided for automation
@@ -48,8 +49,13 @@ export DOT_API_KEY="dot_app_your_api_key"
 After installation, you can simply say to your AI assistant:
 
 - "Show 'Meeting starts at 3 PM' on device ABCD1234ABCD"
+- "Show 'Meeting starts at 3 PM' on device ABCD1234ABCD and name it Meeting Reminder"
 - "Check my device status"
 - "Switch to the next content"
+
+## Task Alias
+
+If you create multiple text, image, or canvas items on the same device, you can give each one a task alias so it is easier to identify in the device task list. Dot Skill passes this name when pushing text, image, or canvas content. If you do not provide one, the existing name is preserved; if you explicitly ask to clear the name, the alias is removed.
 
 ## Related Links
 

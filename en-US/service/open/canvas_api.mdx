@@ -52,6 +52,12 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 			description:
 				'Use the task list endpoint to get this value when the device has multiple Canvas API contents.',
 		},
+		taskAlias: {
+			type: 'string',
+			name: 'Task alias',
+			description:
+				'Helps distinguish multiple Canvas API contents in the device task list. It does not affect the windowData screen.',
+		},
 		data: {
 			type: 'object',
 			name: 'User data JSON',
@@ -148,13 +154,14 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 
 ### Request Body
 
-Canvas API requests combine content data with a screen description. Use `data` for values the screen can read, and use `windowData` to describe the element structure. You can also pass `layoutFull` to adjust the FULL layout, `link` to set the tap-to-open URL, and `border` to choose the screen border color.
+Canvas API requests combine content data with a screen description. Use `data` for values the screen can read, and use `windowData` to describe the element structure. You can also pass `taskAlias` to label the item in the device task list, `layoutFull` to adjust the FULL layout, `link` to set the tap-to-open URL, and `border` to choose the screen border color.
 
-To avoid conflicting meanings, do not use `type`, `key`, `windowData`, `layoutFull`, `link`, `border`, `__proto__`, `constructor`, or `prototype` as keys inside `data`.
+To avoid conflicting meanings, do not use `type`, `key`, `windowData`, `layoutFull`, `taskAlias`, `link`, `border`, `__proto__`, `constructor`, or `prototype` as keys inside `data`.
 
 ```json
 {
 	"refreshNow": true,
+	"taskAlias": "Morning canvas",
 	"data": {
 		"title": "Canvas API",
 		"message": "Hello Dot."
@@ -186,11 +193,12 @@ To avoid conflicting meanings, do not use `type`, `key`, `windowData`, `layoutFu
 - `windowData` must contain a `default` layer array;
 - Elements are usually written as `{ "type": "div", "props": { ... } }`;
 - `props.tw` writes Tailwind-like styles, while `props.style` writes explicit inline styles;
+- `div` defaults to a `flex` container; when another display mode is needed, set `block`, `grid`, `hidden`, or another display class in `props.tw`, or set `props.style.display`;
 - `props.children` can be a string, one element object, or an array of elements;
 - Dynamic content can read request `data` with `{{get inputData "user.name" default="-"}}`;
 - Common element types are `div`, `span`, and `img`;
 - Images may use data URIs or anonymously accessible `http(s)` image URLs;
-- The outermost container does not need extra padding; use `layoutFull.tw` or `layoutFull.style` when you need to override the FULL layout;
+- The outermost container does not need extra padding; when `layoutFull` is omitted, the device FULL layout keeps its default spacing. Use `layoutFull.tw` or `layoutFull.style` when you need to override the FULL layout;
 - The request is limited by template size and complexity to keep rendering stable.
 
 ### Supported Styles And Custom Tailwind Classes
@@ -269,10 +277,98 @@ For image layout, use `style.objectFit` and `style.objectPosition`, such as `con
 
 ```json
 {
-	"code": 200,
-	"message": "Device Canvas API content switched.",
-	"result": {
-		"message": "Device ABCD1234ABCD Canvas API content switched."
+	"message": "Device ABCD1234ABCD Canvas API content switched."
+}
+```
+
+### Common Error Examples
+
+Unsupported element type:
+
+```json
+{
+	"windowData": {
+		"default": [
+			{
+				"type": "button",
+				"props": {
+					"children": "Bad type"
+				}
+			}
+		]
 	}
+}
+```
+
+Response:
+
+```json
+{
+	"message": "The canvas element button for device ABCD1234ABCD is not supported (path: windowData.default[0].type). Only div, span, and img are currently supported."
+}
+```
+
+Unsupported property:
+
+```json
+{
+	"windowData": {
+		"default": [
+			{
+				"type": "div",
+				"props": {
+					"children": [
+						{
+							"type": "span",
+							"props": {
+								"onClick": "alert(1)",
+								"children": "Unsafe"
+							}
+						}
+					]
+				}
+			}
+		]
+	}
+}
+```
+
+Response:
+
+```json
+{
+	"message": "The canvas property onClick for device ABCD1234ABCD is not supported (path: windowData.default[0].props.children[0].props.onClick)."
+}
+```
+
+Invalid image source:
+
+```json
+{
+	"windowData": {
+		"default": [
+			{
+				"type": "div",
+				"props": {
+					"children": [
+						{
+							"type": "img",
+							"props": {
+								"src": "data:image/png;base64,not-a-png"
+							}
+						}
+					]
+				}
+			}
+		]
+	}
+}
+```
+
+Response:
+
+```json
+{
+	"message": "The canvas image src for device ABCD1234ABCD is invalid (path: windowData.default[0].props.children[0].props.src). Provide data:image/*;base64,... or an anonymously accessible http(s) image URL."
 }
 ```

@@ -46,11 +46,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ```json
 {
-	"code": 200,
-	"message": "设备 ABCD1234ABCD 已成功切换到下一个内容",
-	"result": {
-		"message": "设备 ABCD1234ABCD 已成功切换到下一个内容"
-	}
+	"message": "设备 ABCD1234ABCD 内容已切换。"
 }
 ```
 
@@ -90,15 +86,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### 响应结构
 
+接口使用 HTTP 状态码表示请求结果。JSON 响应体只包含 `message` 字段。
+
 <TypeTable
 	type={{
-		code: {
-			description: '状态码',
-			type: 'number',
-			required: true,
-		},
 		message: {
-			description: '响应描述',
+			description: '响应描述。成功和错误响应都通过此字段返回可读说明。',
 			type: 'string',
 			required: true,
 		},
@@ -107,11 +100,11 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### 响应说明
 
-| code  | 含义         | 描述                       |
-| ----- | ------------ | -------------------------- |
-| `200` | 成功         | 设备已成功切换到下一个内容 |
-| `400` | 参数错误     | 设备 ID 格式错误           |
-| `401` | 未授权       | API 密钥无效或已过期       |
-| `403` | 权限不足     | 您没有权限操作此设备       |
-| `404` | 设备不存在   | 设备不存在或未注册         |
-| `500` | 设备响应失败 | 设备离线或切换内容失败     |
+| HTTP 状态码 | 含义         | 描述                       |
+| ----------- | ------------ | -------------------------- |
+| `200`       | 成功         | 设备已成功切换到下一个内容 |
+| `400`       | 参数错误     | 设备 ID 格式错误           |
+| `401`       | 未授权       | API 密钥无效或已过期       |
+| `403`       | 权限不足     | 您没有权限操作此设备       |
+| `404`       | 设备不存在   | 设备不存在或未注册         |
+| `500`       | 设备响应失败 | 设备离线或切换内容失败     |

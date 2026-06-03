@@ -14,7 +14,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     建议您尽快完成以下调整：
     - 将请求地址更新为新版接口：`/api/authV2/open/device/:deviceId/image`
-    - 按本文档的请求结构发送参数（例如 `refreshNow` / `image` / `link` / `border` / `ditherType` / `ditherKernel` / `taskKey`）
+    - 按本文档的请求结构发送参数（例如 `refreshNow` / `taskAlias` / `image` / `link` / `border` / `ditherType` / `ditherKernel` / `taskKey`）
     - 如您依赖旧版接口的返回内容或错误码，请以新版接口的响应为准进行适配
 
 </Callout>
@@ -94,6 +94,12 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			description:
 				'可通过「列出设备任务」接口获取（当设备存在多个「图像 API」内容时用于指定目标内容）。',
 		},
+		taskAlias: {
+			type: 'string',
+			name: '任务别名',
+			description:
+				'用于在设备任务列表中区分多个图像 API 内容；不影响屏幕图像。',
+		},
 		image: {
 			type: 'textarea',
 			required: true,
@@ -148,11 +154,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ```json
 {
-	"code": 200,
-	"message": "设备图像 API 内容已切换",
-	"result": {
-		"message": "设备 ABCD1234ABCD 图像 API 内容已切换"
-	}
+	"message": "设备 ABCD1234ABCD 图片 API 内容已切换。"
 }
 ```
 
@@ -400,20 +402,22 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 				'当设备存在多个「图像 API」内容时，用于指定要更新并切换的目标内容 taskKey。可通过「列出设备任务」获取。不传递则默认选择第一个图像 API 内容。',
 			type: 'string',
 		},
+		taskAlias: {
+			description:
+				'任务别名，用于在设备任务列表中区分多个同类 API 内容。支持字符串或数字，最大 100 字；省略时不改变已有别名，传空字符串或 null 可清理别名。',
+			type: 'string | number',
+		},
 	}}
 />
 
 ### 响应结构
 
+接口使用 HTTP 状态码表示请求结果。JSON 响应体只包含 `message` 字段。
+
 <TypeTable
 	type={{
-		code: {
-			description: '状态码',
-			type: 'number',
-			required: true,
-		},
 		message: {
-			description: '响应描述',
+			description: '响应描述。成功和错误响应都通过此字段返回可读说明。',
 			type: 'string',
 			required: true,
 		},
@@ -422,10 +426,10 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### 响应说明
 
-| code  | 含义             | 描述                                                                                                                |
-| ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `200` | 成功             | 设备图像 API 内容已切换/数据已更新但未切换内容                                                                      |
-| `400` | 参数错误         | 缺失设备 ID 或格式错误<br/>无效的图像格式<br/>边框参数错误，请提供数字 0 或 1<br/>无效的抖动类型<br/>无效的抖动算法 |
-| `403` | 权限不足         | 您没有权限操作此设备                                                                                                |
-| `404` | 设备或内容不存在 | 设备不存在或未注册<br/>未添加图像 API 内容到循环任务中                                                               |
-| `500` | 设备响应失败     | 设备图像 API 内容切换失败                                                                                           |
+| HTTP 状态码 | 含义             | 描述                                                                                                                |
+| ----------- | ---------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `200`       | 成功             | 设备图片 API 内容已切换/数据已更新但未切换内容                                                                      |
+| `400`       | 参数错误         | 缺失设备 ID 或格式错误<br/>无效的图像格式<br/>边框参数错误，请提供数字 0 或 1<br/>无效的抖动类型<br/>无效的抖动算法 |
+| `403`       | 权限不足         | 您没有权限操作此设备                                                                                                |
+| `404`       | 设备或内容不存在 | 设备不存在或未注册<br/>未添加图像 API 内容到循环任务中                                                               |
+| `500`       | 设备响应失败     | 设备图片 API 内容切换失败                                                                                           |

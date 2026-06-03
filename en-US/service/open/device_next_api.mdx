@@ -46,11 +46,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ```json
 {
-	"code": 200,
-	"message": "Device ABCD1234ABCD successfully switched to next content",
-	"result": {
-		"message": "Device ABCD1234ABCD successfully switched to next content"
-	}
+	"message": "Device ABCD1234ABCD content switched."
 }
 ```
 
@@ -90,15 +86,12 @@ This interface does not require a request body, only an API key in the request h
 
 ### Response Schema
 
+The endpoint uses the HTTP status code to indicate the request result. The JSON response body only contains `message`.
+
 <TypeTable
 	type={{
-		code: {
-			description: 'Status code',
-			type: 'number',
-			required: true,
-		},
 		message: {
-			description: 'Response description',
+			description: 'Human-readable response message. Both success and error responses use this field.',
 			type: 'string',
 			required: true,
 		},
@@ -107,11 +100,11 @@ This interface does not require a request body, only an API key in the request h
 
 ### Status Codes
 
-| code  | Meaning                 | Description                                  |
-| :---- | :---------------------- | :------------------------------------------- |
-| `200` | Success                 | Device successfully switched to next content |
-| `400` | Invalid params          | Invalid device ID format                     |
-| `401` | Unauthorized            | Invalid or expired API key                   |
-| `403` | Forbidden               | No permission to operate this device         |
-| `404` | Not found               | Device not found or not registered           |
-| `500` | Device response failure | Device offline or switch failed              |
+| HTTP status | Meaning                 | Description                                  |
+| :---------- | :---------------------- | :------------------------------------------- |
+| `200`       | Success                 | Device successfully switched to next content |
+| `400`       | Invalid params          | Invalid device ID format                     |
+| `401`       | Unauthorized            | Invalid or expired API key                   |
+| `403`       | Forbidden               | No permission to operate this device         |
+| `404`       | Not found               | Device not found or not registered           |
+| `500`       | Device response failure | Device offline or switch failed              |

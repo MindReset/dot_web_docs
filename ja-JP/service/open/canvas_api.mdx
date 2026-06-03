@@ -52,6 +52,12 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 			description:
 				'同じデバイスに複数の Canvas API コンテンツがある場合、タスク一覧 API で取得した値を指定します。',
 		},
+		taskAlias: {
+			type: 'string',
+			name: 'タスク別名',
+			description:
+				'デバイスタスク一覧で複数の Canvas API コンテンツを区別するために使います。windowData の画面には影響しません。',
+		},
 		data: {
 			type: 'object',
 			name: 'ユーザーデータ JSON',
@@ -148,13 +154,14 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 
 ### リクエスト本文
 
-Canvas API のリクエストは、内容データと画面構造を組み合わせて送信します。`data` には画面から読み取る値を入れ、`windowData` には要素構造を記述します。必要に応じて、`layoutFull` で FULL レイアウトを調整し、`link` でタップリンクを設定し、`border` で画面の枠色を選択できます。
+Canvas API のリクエストは、内容データと画面構造を組み合わせて送信します。`data` には画面から読み取る値を入れ、`windowData` には要素構造を記述します。必要に応じて、`taskAlias` でデバイスタスク一覧の別名を設定し、`layoutFull` で FULL レイアウトを調整し、`link` でタップリンクを設定し、`border` で画面の枠色を選択できます。
 
-フィールドの意味が衝突しないように、`data` の中では `type`、`key`、`windowData`、`layoutFull`、`link`、`border`、`__proto__`、`constructor`、`prototype` をキーとして使用しないでください。
+フィールドの意味が衝突しないように、`data` の中では `type`、`key`、`windowData`、`layoutFull`、`taskAlias`、`link`、`border`、`__proto__`、`constructor`、`prototype` をキーとして使用しないでください。
 
 ```json
 {
 	"refreshNow": true,
+	"taskAlias": "Morning canvas",
 	"data": {
 		"title": "Canvas API",
 		"message": "Hello Dot."
@@ -186,11 +193,12 @@ Canvas API のリクエストは、内容データと画面構造を組み合わ
 - `windowData` には `default` レイヤー配列が必要です；
 - 要素は通常 `{ "type": "div", "props": { ... } }` の形で書きます；
 - `props.tw` には Tailwind-like なスタイル、`props.style` には明示的なインラインスタイルを書きます；
+- `div` は既定で `flex` コンテナとして扱われます。別の表示方法が必要な場合は、`props.tw` に `block`、`grid`、`hidden` などの display class を書くか、`props.style.display` を指定します；
 - `props.children` は文字列、1 つの要素オブジェクト、または要素配列を指定できます；
 - 動的な内容は `{{get inputData "user.name" default="-"}}` のように、リクエスト `data` の値を読み取れます；
 - よく使う要素は `div`、`span`、`img` です；
 - 画像には data URI または匿名アクセス可能な `http(s)` 画像 URL を使用できます；
-- 最外層コンテナに追加の padding は不要です。FULL レイアウトを上書きしたい場合は `layoutFull.tw` または `layoutFull.style` を使用します；
+- 最外層コンテナに追加の padding は不要です。`layoutFull` を省略した場合はデバイス FULL レイアウトの既定余白が使われます。FULL レイアウトを上書きしたい場合は `layoutFull.tw` または `layoutFull.style` を使用します；
 - 安定したレンダリングのため、リクエストのサイズと複雑さには制限があります。
 
 ### 対応しているスタイルとカスタム Tailwind クラス
@@ -269,10 +277,98 @@ img-levels-16
 
 ```json
 {
-	"code": 200,
-	"message": "デバイス ABCD1234ABCD Canvas API コンテンツが切り替わりました。",
-	"result": {
-		"message": "デバイス ABCD1234ABCD Canvas API コンテンツが切り替わりました。"
+	"message": "デバイス ABCD1234ABCD Canvas API コンテンツが切り替わりました。"
+}
+```
+
+### よくあるエラー例
+
+未対応の要素タイプ：
+
+```json
+{
+	"windowData": {
+		"default": [
+			{
+				"type": "button",
+				"props": {
+					"children": "Bad type"
+				}
+			}
+		]
 	}
+}
+```
+
+レスポンス：
+
+```json
+{
+	"message": "デバイス ABCD1234ABCD の canvas 要素 button はサポートされていません（位置：windowData.default[0].type）。現在は div、span、img のみ使用できます。"
+}
+```
+
+未対応の属性：
+
+```json
+{
+	"windowData": {
+		"default": [
+			{
+				"type": "div",
+				"props": {
+					"children": [
+						{
+							"type": "span",
+							"props": {
+								"onClick": "alert(1)",
+								"children": "Unsafe"
+							}
+						}
+					]
+				}
+			}
+		]
+	}
+}
+```
+
+レスポンス：
+
+```json
+{
+	"message": "デバイス ABCD1234ABCD の canvas 属性 onClick はサポートされていません（位置：windowData.default[0].props.children[0].props.onClick）。"
+}
+```
+
+無効な画像 src：
+
+```json
+{
+	"windowData": {
+		"default": [
+			{
+				"type": "div",
+				"props": {
+					"children": [
+						{
+							"type": "img",
+							"props": {
+								"src": "data:image/png;base64,not-a-png"
+							}
+						}
+					]
+				}
+			}
+		]
+	}
+}
+```
+
+レスポンス：
+
+```json
+{
+	"message": "デバイス ABCD1234ABCD の canvas 画像 src が無効です（位置：windowData.default[0].props.children[0].props.src）。data:image/*;base64,... または匿名アクセス可能な http(s) 画像 URL を指定してください。"
 }
 ```
