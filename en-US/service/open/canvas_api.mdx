@@ -196,10 +196,73 @@ To avoid conflicting meanings, do not use `type`, `key`, `windowData`, `layoutFu
 - `div` defaults to a `flex` container; when another display mode is needed, set `block`, `grid`, `hidden`, or another display class in `props.tw`, or set `props.style.display`;
 - `props.children` can be a string, one element object, or an array of elements;
 - Dynamic content can read request `data` with `{{get inputData "user.name" default="-"}}`;
+- List structures can use `$for` inside the repeated node's `props`; `$empty` sits next to `$for` and replaces that node when the array is empty;
 - Common element types are `div`, `span`, and `img`;
 - Images may use data URIs or anonymously accessible `http(s)` image URLs;
 - The outermost container does not need extra padding; when `layoutFull` is omitted, the device FULL layout keeps its default spacing. Use `layoutFull.tw` or `layoutFull.style` when you need to override the FULL layout;
 - The request is limited by template size and complexity to keep rendering stable.
+
+#### List Structures: `$for` / `$empty`
+
+`$for` expands elements during JSON compilation. It is not a browser JavaScript loop. Put it inside the `props` of the node to repeat; the repeated unit is that node itself. `items` is a JSON path read from the current template context; `as` and `index` inject local values for the loop body. `limit` is optional. When omitted, all rows are rendered, and the device layout decides how many fit on screen.
+
+```json
+{
+	"type": "div",
+	"props": {
+		"$for": {
+			"items": "inputData.tasks",
+			"as": "task",
+			"index": "index"
+		},
+		"$empty": {
+			"type": "div",
+			"props": {
+				"children": "No tasks"
+			}
+		},
+		"children": "{{index}}. {{get task \"title\" default=\"\"}}"
+	}
+}
+```
+
+#### Conditions And Formatting
+
+Use `$ifAny` / `$then` / `$else` for structural conditions that add, replace, or remove whole elements. `$ifAny` may be a single JSON path or an array of paths. If any value exists and has content, `$then` is used; otherwise `$else` is used.
+
+```json
+{
+	"$ifAny": ["inputData.icon", "inputData.signature"],
+	"$then": {
+		"type": "div",
+		"props": {
+			"children": "{{get inputData \"signature\" default=\"\"}}"
+		}
+	},
+	"$else": {
+		"type": "div",
+		"props": {
+			"children": "No signature"
+		}
+	}
+}
+```
+
+For short text conditions inside a string, use template `if` / `else` syntax or `compare`. Use `if` to check whether a value has content, and use `compare` when two values must be compared explicitly:
+
+```hbs
+{{#if (get inputData "title" default="")}}{{get inputData "title"}}{{else}}Untitled{{/if}}
+{{#compare inputData.status "===" "done"}}Done{{else}}In progress{{/compare}}
+```
+
+Use `formatDate` for dates and `formatCompactNumber` for numbers. For standard number formatting instead of compact K/M output, set the third argument to `standard`.
+
+```hbs
+{{formatDate inputData.date "yyyy/MM/dd" "Asia/Shanghai"}}
+{{formatDate inputData.date "EEE" "Asia/Shanghai"}}
+{{formatCompactNumber inputData.count}}
+{{formatCompactNumber inputData.count "en-US" "standard" 0}}
+```
 
 ### Supported Styles And Custom Tailwind Classes
 

@@ -196,10 +196,73 @@ Canvas API のリクエストは、内容データと画面構造を組み合わ
 - `div` は既定で `flex` コンテナとして扱われます。別の表示方法が必要な場合は、`props.tw` に `block`、`grid`、`hidden` などの display class を書くか、`props.style.display` を指定します；
 - `props.children` は文字列、1 つの要素オブジェクト、または要素配列を指定できます；
 - 動的な内容は `{{get inputData "user.name" default="-"}}` のように、リクエスト `data` の値を読み取れます；
+- リスト構造では、繰り返すノードの `props` 内に `$for` を書けます。`$empty` は `$for` と同じ階層に置き、配列が空のときにそのノードを置き換えます；
 - よく使う要素は `div`、`span`、`img` です；
 - 画像には data URI または匿名アクセス可能な `http(s)` 画像 URL を使用できます；
 - 最外層コンテナに追加の padding は不要です。`layoutFull` を省略した場合はデバイス FULL レイアウトの既定余白が使われます。FULL レイアウトを上書きしたい場合は `layoutFull.tw` または `layoutFull.style` を使用します；
 - 安定したレンダリングのため、リクエストのサイズと複雑さには制限があります。
+
+#### リスト構造：`$for` / `$empty`
+
+`$for` は JSON コンパイル時に要素を展開します。ブラウザ上の JavaScript ループではありません。繰り返したいノードの `props` に書き、繰り返される単位はそのノード自身です。`items` は現在のテンプレートコンテキストから配列を読む JSON path です。`as` と `index` はループ本文にローカル値を注入します。`limit` は任意で、省略するとすべての行を生成し、画面上に何行見えるかはデバイスのレイアウトに従います。
+
+```json
+{
+	"type": "div",
+	"props": {
+		"$for": {
+			"items": "inputData.tasks",
+			"as": "task",
+			"index": "index"
+		},
+		"$empty": {
+			"type": "div",
+			"props": {
+				"children": "タスクはありません"
+			}
+		},
+		"children": "{{index}}. {{get task \"title\" default=\"\"}}"
+	}
+}
+```
+
+#### 条件とフォーマット
+
+要素全体を追加、置換、削除する構造レベルの条件には `$ifAny` / `$then` / `$else` を使います。`$ifAny` には 1 つの JSON path、または path 配列を指定できます。いずれかの値が存在し内容を持つ場合は `$then`、それ以外は `$else` が使われます。
+
+```json
+{
+	"$ifAny": ["inputData.icon", "inputData.signature"],
+	"$then": {
+		"type": "div",
+		"props": {
+			"children": "{{get inputData \"signature\" default=\"\"}}"
+		}
+	},
+	"$else": {
+		"type": "div",
+		"props": {
+			"children": "署名はありません"
+		}
+	}
+}
+```
+
+文字列内の短い条件分岐にはテンプレート構文の `if` / `else` または `compare` を使います。値が存在し内容を持つかを見る場合は `if`、2 つの値を明示的に比較する場合は `compare` を使います：
+
+```hbs
+{{#if (get inputData "title" default="")}}{{get inputData "title"}}{{else}}無題{{/if}}
+{{#compare inputData.status "===" "done"}}完了{{else}}進行中{{/compare}}
+```
+
+日付表示には `formatDate`、数字表示には `formatCompactNumber` を使います。K/M のような compact 表示ではなく通常の数値表示が必要な場合は、3 番目の引数に `standard` を指定します。
+
+```hbs
+{{formatDate inputData.date "yyyy/MM/dd" "Asia/Shanghai"}}
+{{formatDate inputData.date "EEE" "Asia/Shanghai"}}
+{{formatCompactNumber inputData.count}}
+{{formatCompactNumber inputData.count "ja-JP" "standard" 0}}
+```
 
 ### 対応しているスタイルとカスタム Tailwind クラス
 

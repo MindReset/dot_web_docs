@@ -196,10 +196,73 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 - `div` 默认按 `flex` 容器处理；如需其他显示方式，请在 `props.tw` 写 `block`、`grid`、`hidden` 等 display 类，或在 `props.style.display` 中声明；
 - `props.children` 可以是字符串、一个元素对象，或元素数组；
 - 动态内容可以通过 `{{get inputData "user.name" default="-"}}` 读取请求 `data` 中的值；
+- 列表结构可以在被重复节点的 `props` 内使用 `$for`；`$empty` 与 `$for` 同级，数组为空时替换该节点；
 - 常用元素为 `div`、`span`、`img`；
 - 图片可使用 data URI 或可匿名访问的 `http(s)` 图片链接；
 - 最外层容器无需额外添加 padding；未传 `layoutFull` 时使用设备 FULL 布局的默认留白，需要覆盖 FULL 布局时使用 `layoutFull.tw` 或 `layoutFull.style`；
 - 请求体会限制结构复杂度和体积，避免过大的画面影响设备渲染。
+
+#### 列表结构：`$for` / `$empty`
+
+`$for` 会在 JSON 编译阶段展开元素，不是浏览器里的 JavaScript 循环。它放在被重复节点的 `props` 中，重复的是该节点自身。`items` 是从当前模板上下文读取数组的 JSON path；`as` 和 `index` 会注入循环体上下文；`limit` 可选，不写时渲染全部数据，最终能显示几条由设备画面空间决定。
+
+```json
+{
+	"type": "div",
+	"props": {
+		"$for": {
+			"items": "inputData.tasks",
+			"as": "task",
+			"index": "index"
+		},
+		"$empty": {
+			"type": "div",
+			"props": {
+				"children": "暂无任务"
+			}
+		},
+		"children": "{{index}}. {{get task \"title\" default=\"\"}}"
+	}
+}
+```
+
+#### 条件与格式化
+
+结构级条件使用 `$ifAny` / `$then` / `$else`，用于控制整块元素是否生成。`$ifAny` 可以是一个 JSON path，也可以是 path 数组；只要有任意值存在且有内容，就使用 `$then`，否则使用 `$else`。
+
+```json
+{
+	"$ifAny": ["inputData.icon", "inputData.signature"],
+	"$then": {
+		"type": "div",
+		"props": {
+			"children": "{{get inputData \"signature\" default=\"\"}}"
+		}
+	},
+	"$else": {
+		"type": "div",
+		"props": {
+			"children": "暂无签名"
+		}
+	}
+}
+```
+
+字符串里的短条件可以使用模板语法 `if` / `else` 或 `compare`。`if` 用于判断某个值是否有内容，`compare` 用于明确比较两个值：
+
+```hbs
+{{#if (get inputData "title" default="")}}{{get inputData "title"}}{{else}}未命名{{/if}}
+{{#compare inputData.status "===" "done"}}已完成{{else}}进行中{{/compare}}
+```
+
+日期展示使用 `formatDate`，数字展示优先使用 `formatCompactNumber`。如果需要普通数字格式而不是 K/M 这类紧凑格式，把第三个参数设为 `standard`。
+
+```hbs
+{{formatDate inputData.date "yyyy/MM/dd" "Asia/Shanghai"}}
+{{formatDate inputData.date "EEE" "Asia/Shanghai"}}
+{{formatCompactNumber inputData.count}}
+{{formatCompactNumber inputData.count "zh-Hans-CN" "standard" 0}}
+```
 
 ### 支持的样式与自定义 Tailwind 类
 
