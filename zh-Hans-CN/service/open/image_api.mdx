@@ -38,7 +38,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 </Callout>
 
 <Callout type="info" title="关于图像输入">
-	`image` 字段支持传递 PNG Base64 数据，也支持传递完整的在线 `http(s)` 图片 URL。远程图片链接必须可匿名访问、无需鉴权或特殊 Referer，并直接返回 `image/*` 内容。
+	`image` 字段是必填字段，必须传递 PNG Base64 数据或完整的在线 `http(s)` 图片 URL。PNG Base64 可传裸 Base64，也可带 `data:image/png;base64,` 前缀，解码后最大 3MB。远程图片链接必须可匿名访问、无需鉴权或特殊 Referer，URL 长度不超过 2048 个字符，响应体最大 3MB，并直接返回 `image/*` 内容。
 </Callout>
 
 <Callout type="info" title="可用于调试的测试图片链接">
@@ -103,7 +103,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		image: {
 			type: 'textarea',
 			required: true,
-			name: 'PNG Base64 图像数据或 http(s) 图片 URL',
+			name: 'PNG Base64 图像数据（最大 3MB）或 http(s) 图片 URL',
 		},
 		link: {
 			type: 'string',
@@ -173,7 +173,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Content-Type: application/json' \
       -d '{
         "refreshNow": false,
-        "image": "{{PNG Base64 图像数据或 http(s) 图片 URL}}",
+        "image": "{{PNG Base64 图像数据（最大 3MB）或 http(s) 图片 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0
       }'
@@ -193,7 +193,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{PNG Base64 图像数据或 http(s) 图片 URL}}",
+        "image": "{{PNG Base64 图像数据（最大 3MB）或 http(s) 图片 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 1
       }'
@@ -215,7 +215,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{PNG Base64 图像数据或 http(s) 图片 URL}}",
+        "image": "{{PNG Base64 图像数据（最大 3MB）或 http(s) 图片 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "NONE"
@@ -246,7 +246,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{PNG Base64 图像数据或 http(s) 图片 URL}}",
+        "image": "{{PNG Base64 图像数据（最大 3MB）或 http(s) 图片 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "DIFFUSION"
@@ -320,7 +320,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{PNG Base64 图像数据或 http(s) 图片 URL}}",
+        "image": "{{PNG Base64 图像数据（最大 3MB）或 http(s) 图片 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "ORDERED"
@@ -343,7 +343,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{PNG Base64 图像数据或 http(s) 图片 URL}}",
+        "image": "{{PNG Base64 图像数据（最大 3MB）或 http(s) 图片 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "NONE"
@@ -373,7 +373,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		},
 		image: {
 			description:
-				'PNG Base64 图像数据或完整 http(s) 图片 URL（296px×152px，且远程链接需可匿名访问并直接返回 image/*）（屏幕呈现的图像）',
+				'必填。PNG Base64 图像数据（裸 Base64 或 data:image/png;base64, 前缀，解码后最大 3MB）或完整 http(s) 图片 URL（296px×152px，且远程链接需可匿名访问、URL 不超过 2048 个字符、响应体最大 3MB，并直接返回 image/*）（屏幕呈现的图像）',
 			type: 'string',
 			required: true,
 		},

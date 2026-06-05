@@ -40,7 +40,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 </Callout>
 
 <Callout type="info" title="About icon input">
-	The `icon` field supports either PNG Base64 data or a full online `http(s)` image URL. Remote icon URLs must be anonymously accessible, require no authentication or special Referer, and return `image/*` content directly.
+	The `icon` field is optional. If you send an icon, it must be PNG Base64 data or a full online `http(s)` image URL. PNG Base64 may be bare Base64 or include the `data:image/png;base64,` prefix; the decoded payload must be no larger than 1MB. A 40px×40px icon is recommended. Remote icon URLs must be anonymously accessible, require no authentication or special Referer, be no longer than 2048 characters, return a response body no larger than 3MB, and return `image/*` content directly.
 </Callout>
 
 <Callout type="info" title="Test icon URLs for debugging">
@@ -116,7 +116,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		},
 		icon: {
 			type: 'textarea',
-			name: 'PNG Base64 icon data or http(s) image URL',
+			name: 'PNG Base64 icon data (max 1MB) or http(s) image URL',
 		},
 		link: {
 			type: 'string',
@@ -254,7 +254,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
         "title": "每日健康",
         "message": "消耗卡路里：702千卡\n今日步数：4183步\n站立时间：62分钟",
         "signature": "2025年8月4日 20:16",
-        "icon": "{{base64-encoded PNG icon data or http(s) image URL}}",
+        "icon": "{{PNG Base64 icon data (max 1MB) or http(s) image URL}}",
         "link": "x-apple-health://"
       }'
     ```
@@ -315,7 +315,7 @@ Text API preserves line breaks and tabs in `message`.
 		},
 		icon: {
 			description:
-				'Base64-encoded PNG icon data or full http(s) image URL (40px×40px, and remote URLs must be anonymously accessible and return image/* directly) (Icon shown at bottom-left)',
+				'Optional. PNG Base64 icon data (bare Base64 or data:image/png;base64, prefix, decoded payload max 1MB) or full http(s) image URL (40px×40px, and remote URLs must be anonymously accessible, no longer than 2048 characters, response body max 3MB, and return image/* directly) (Icon shown at bottom-left)',
 			type: 'string',
 		},
 		link: {

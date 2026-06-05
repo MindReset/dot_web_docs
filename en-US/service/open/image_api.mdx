@@ -39,7 +39,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 </Callout>
 
 <Callout type="info" title="About image input">
-	The `image` field supports either PNG Base64 data or a full online `http(s)` image URL. Remote image URLs must be anonymously accessible, require no authentication or special Referer, and return `image/*` content directly.
+	The `image` field is required. It must be PNG Base64 data or a full online `http(s)` image URL. PNG Base64 may be bare Base64 or include the `data:image/png;base64,` prefix; the decoded payload must be no larger than 3MB. Remote image URLs must be anonymously accessible, require no authentication or special Referer, be no longer than 2048 characters, return a response body no larger than 3MB, and return `image/*` content directly.
 </Callout>
 
 <Callout type="info" title="Test image URLs for debugging">
@@ -104,7 +104,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		image: {
 			type: 'textarea',
 			required: true,
-			name: 'PNG Base64 image data or http(s) image URL',
+			name: 'PNG Base64 image data (max 3MB) or http(s) image URL',
 		},
 		link: {
 			type: 'string',
@@ -174,7 +174,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Content-Type: application/json' \
       -d '{
         "refreshNow": false,
-        "image": "{{base64-encoded PNG image data or http(s) image URL}}",
+        "image": "{{PNG Base64 image data (max 3MB) or http(s) image URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0
       }'
@@ -194,7 +194,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64-encoded PNG image data or http(s) image URL}}",
+        "image": "{{PNG Base64 image data (max 3MB) or http(s) image URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 1
       }'
@@ -216,7 +216,7 @@ Use common image tools (e.g., Figma, Sketch, Adobe Photoshop) to convert text to
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64-encoded PNG image data or http(s) image URL}}",
+        "image": "{{PNG Base64 image data (max 3MB) or http(s) image URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "NONE"
@@ -247,7 +247,7 @@ Error diffusion distributes each pixel’s quantization error to neighboring pix
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64-encoded PNG image data or http(s) image URL}}",
+        "image": "{{PNG Base64 image data (max 3MB) or http(s) image URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "DIFFUSION"
@@ -321,7 +321,7 @@ Ordered dithering applies a fixed, periodic threshold matrix to image pixels, un
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64-encoded PNG image data or http(s) image URL}}",
+        "image": "{{PNG Base64 image data (max 3MB) or http(s) image URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "ORDERED"
@@ -344,7 +344,7 @@ If you primarily display text images via the Image API, we recommend disabling d
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{base64-encoded PNG image data or http(s) image URL}}",
+        "image": "{{PNG Base64 image data (max 3MB) or http(s) image URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "NONE"
@@ -374,7 +374,7 @@ If you primarily display text images via the Image API, we recommend disabling d
 		},
 		image: {
 			description:
-				'Base64-encoded PNG image data or full http(s) image URL (296px×152px, and remote URLs must be anonymously accessible and return image/* directly) (Image to render on screen)',
+				'Required. PNG Base64 image data (bare Base64 or data:image/png;base64, prefix, decoded payload max 3MB) or full http(s) image URL (296px×152px, and remote URLs must be anonymously accessible, no longer than 2048 characters, response body max 3MB, and return image/* directly) (Image to render on screen)',
 			type: 'string',
 			required: true,
 		},

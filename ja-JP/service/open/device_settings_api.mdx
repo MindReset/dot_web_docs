@@ -1,0 +1,117 @@
+---
+title: デバイス設定
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## クイックガイド
+
+デバイス設定 API では、認証済み API key のユーザーが所有するデバイスの設定を取得または更新できます。書き込みは `POST` のみ対応し、省略したフィールドは変更されません。
+
+### 設定を取得
+
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/device/:deviceId/settings"
+	method="GET"
+	pathParams={{
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: 'デバイスシリアル番号',
+		},
+	}}
+	auth={true}
+	defaultOpen={false}
+/>
+
+### 設定を更新
+
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/device/:deviceId/settings"
+	method="POST"
+	pathParams={{
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: 'デバイスシリアル番号',
+		},
+	}}
+	body={{
+		alias: 'Office Dot',
+		location: 'Desk',
+		timezone: 'Asia/Shanghai',
+		interval: {
+			powerMs: 300000,
+			batteryMs: 10800000,
+		},
+		sleep: {
+			enabled: true,
+			start: '23:00',
+			end: '07:00',
+		},
+	}}
+	auth={true}
+	defaultOpen={false}
+/>
+
+### リクエスト項目
+
+<TypeTable
+	type={{
+		alias: {
+			description: 'デバイス別名。null または空文字列を送るとクリアします。最大 100 文字。',
+			type: 'string | null',
+		},
+		location: {
+			description: 'デバイス位置。null または空文字列を送るとクリアします。最大 100 文字。',
+			type: 'string | null',
+		},
+		timezone: {
+			description: 'デバイスタイムゾーン。タイムゾーン一覧 API が返す key のみ指定できます。',
+			type: 'string',
+		},
+		interval: {
+			description: '更新間隔の設定。',
+			type: 'object',
+			parameters: {
+				powerMs: {
+					description: '電源接続時の更新間隔（ミリ秒）。60,000 から 86,400,000 の範囲で、60,000 の倍数にしてください。',
+					type: 'number',
+				},
+				batteryMs: {
+					description: 'バッテリー使用時の更新間隔（ミリ秒）。900,000 から 43,200,000 の範囲で、60,000 の倍数にしてください。',
+					type: 'number',
+				},
+			},
+		},
+		sleep: {
+			description: 'スリープ設定。start/end はデバイスのタイムゾーンにおけるローカル HH:mm 時刻です。end が start より早い場合は翌日を意味します。',
+			type: 'object',
+			parameters: {
+				enabled: {
+					description: 'スリープを有効にするかどうか。',
+					type: 'boolean',
+					required: true,
+				},
+				start: {
+					description: 'スリープ開始時刻。24 時間制 HH:mm。',
+					type: 'string',
+					required: true,
+				},
+				end: {
+					description: 'スリープ終了時刻。24 時間制 HH:mm。start と同じ時刻にはできません。',
+					type: 'string',
+					required: true,
+				},
+			},
+		},
+	}}
+/>
+
+### タイムゾーン
+
+`timezone` フィールドには、タイムゾーン取得 API が返す key のみ指定できます。現在サーバーが対応しているタイムゾーン一覧は「タイムゾーン取得」ページを確認してください。

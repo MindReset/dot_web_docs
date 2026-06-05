@@ -1,0 +1,59 @@
+---
+title: 获取时区
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## 快速指引
+
+获取时区 API 用于查询当前服务端支持的时区列表。设备设置 API 中的 `timezone` 只能使用此接口返回的 `key`。
+
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/timezones"
+	method="GET"
+	auth={true}
+	defaultOpen={false}
+/>
+
+### 响应示例
+
+```json
+[
+	{
+		"key": "Asia/Shanghai",
+		"name": "上海",
+		"utcOffsetMinutes": 480,
+		"utcOffsetLabel": "UTC+8"
+	}
+]
+```
+
+### 响应结构
+
+<TypeTable
+	type={{
+		key: {
+			description: '时区 key。设备设置 API 的 timezone 字段必须使用这个值。',
+			type: 'string',
+			required: true,
+		},
+		name: {
+			description: '按当前用户偏好语言返回的时区名称。',
+			type: 'string',
+			required: true,
+		},
+		utcOffsetMinutes: {
+			description: '当前实际 UTC 偏移，单位分钟，东区为正。',
+			type: 'number',
+			required: true,
+		},
+		utcOffsetLabel: {
+			description: '当前实际 UTC 偏移展示文本。',
+			type: 'string',
+			required: true,
+		},
+	}}
+/>

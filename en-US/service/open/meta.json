@@ -6,6 +6,8 @@
         "get_device_id",
         "list_devices_api",
         "device_status_api",
+        "timezones_api",
+        "device_settings_api",
         "device_next_api",
         "list_device_tasks_api",
         "text_api",

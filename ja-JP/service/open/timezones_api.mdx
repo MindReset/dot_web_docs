@@ -1,0 +1,59 @@
+---
+title: タイムゾーン取得
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## クイックガイド
+
+タイムゾーン API では、現在サーバーが対応しているタイムゾーン一覧を取得できます。デバイス設定 API の `timezone` は、この API が返す `key` のみ指定できます。
+
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/timezones"
+	method="GET"
+	auth={true}
+	defaultOpen={false}
+/>
+
+### レスポンス例
+
+```json
+[
+	{
+		"key": "Asia/Shanghai",
+		"name": "上海",
+		"utcOffsetMinutes": 480,
+		"utcOffsetLabel": "UTC+8"
+	}
+]
+```
+
+### レスポンス構造
+
+<TypeTable
+	type={{
+		key: {
+			description: 'タイムゾーン key。デバイス設定 API の timezone フィールドにはこの値を指定します。',
+			type: 'string',
+			required: true,
+		},
+		name: {
+			description: '現在のユーザー設定言語に基づくタイムゾーン名。',
+			type: 'string',
+			required: true,
+		},
+		utcOffsetMinutes: {
+			description: '現在の UTC オフセット（分）。UTC より東は正の値です。',
+			type: 'number',
+			required: true,
+		},
+		utcOffsetLabel: {
+			description: '現在の UTC オフセット表示ラベル。',
+			type: 'string',
+			required: true,
+		},
+	}}
+/>

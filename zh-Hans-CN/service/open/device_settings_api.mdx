@@ -1,0 +1,117 @@
+---
+title: 设备设置
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## 快速指引
+
+设备设置 API 用于读取或更新一台归属于当前 API key 用户的设备设置。写入只支持 `POST`，未传入的字段会保持不变。
+
+### 读取设置
+
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/device/:deviceId/settings"
+	method="GET"
+	pathParams={{
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: '设备序列号',
+		},
+	}}
+	auth={true}
+	defaultOpen={false}
+/>
+
+### 更新设置
+
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/device/:deviceId/settings"
+	method="POST"
+	pathParams={{
+		deviceId: {
+			type: 'string',
+			required: true,
+			name: '设备序列号',
+		},
+	}}
+	body={{
+		alias: 'Office Dot',
+		location: 'Desk',
+		timezone: 'Asia/Shanghai',
+		interval: {
+			powerMs: 300000,
+			batteryMs: 10800000,
+		},
+		sleep: {
+			enabled: true,
+			start: '23:00',
+			end: '07:00',
+		},
+	}}
+	auth={true}
+	defaultOpen={false}
+/>
+
+### 请求字段
+
+<TypeTable
+	type={{
+		alias: {
+			description: '设备别名。传 null 或空字符串会清除别名，最长 100 字。',
+			type: 'string | null',
+		},
+		location: {
+			description: '设备位置。传 null 或空字符串会清除位置，最长 100 字。',
+			type: 'string | null',
+		},
+		timezone: {
+			description: '设备时区。必须是「列出时区」接口返回的 key。',
+			type: 'string',
+		},
+		interval: {
+			description: '刷新间隔设置。',
+			type: 'object',
+			parameters: {
+				powerMs: {
+					description: '接入电源时的刷新间隔，单位毫秒。范围 60000 到 86400000，且必须是 60000 的倍数。',
+					type: 'number',
+				},
+				batteryMs: {
+					description: '使用电池时的刷新间隔，单位毫秒。范围 900000 到 43200000，且必须是 60000 的倍数。',
+					type: 'number',
+				},
+			},
+		},
+		sleep: {
+			description: '睡眠设置。start/end 使用设备时区下的本地 HH:mm 时间；如果 end 早于 start，表示跨天。',
+			type: 'object',
+			parameters: {
+				enabled: {
+					description: '是否启用睡眠。',
+					type: 'boolean',
+					required: true,
+				},
+				start: {
+					description: '睡眠开始时间，24 小时制 HH:mm。',
+					type: 'string',
+					required: true,
+				},
+				end: {
+					description: '睡眠结束时间，24 小时制 HH:mm，不能与 start 相同。',
+					type: 'string',
+					required: true,
+				},
+			},
+		},
+	}}
+/>
+
+### 时区
+
+设备设置 API 的 `timezone` 字段只接受「获取时区」接口返回的 key。请先查看「获取时区」页面了解当前服务支持的时区列表。

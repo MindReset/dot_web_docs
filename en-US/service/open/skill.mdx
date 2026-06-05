@@ -1,6 +1,6 @@
 ---
 title: AI Skill
-description: Use AI Skill to let AI assistants (like GitHub Copilot, Claude, ChatGPT, etc.) directly control your Dot. devices.
+description: Use AI Skill to let AI assistants directly control your Dot. devices.
 new: true
 ---
 
@@ -21,30 +21,76 @@ Dot Skill is an open-source tool that allows AI assistants to interact with your
 - **Content Switching** - Switch to the next content
 - **Helper Scripts** - Python scripts provided for automation
 
-## Quick Start
+## Supported Platforms
 
-### 1. Install the Skill
+| Platform | Status | Integration path |
+| --- | --- | --- |
+| Codex | Supported | Install as a Codex plugin with this repository's `.agents/plugins/marketplace.json` and `plugins/dot-skill` bundle |
+| OpenAI GPT Actions | Supported via schema | Import `openapi/dot-openapi.yaml` and configure Bearer authentication |
+| Claude / MCP clients | Planned | Use the OpenAPI schema today; a remote MCP server can be added later |
+| Cursor and skill-compatible agents | Supported as skill docs | Install `skills/dot-device-openapi` and/or `skills/dot-canvas-designer`, or use this repository as context |
+| MCP Registry | Planned | Publish server metadata after a Dot MCP server exists |
 
-#### Option 1: Install via npx (Recommended)
+## Installation
+
+### Option 1: Install as a Codex plugin
+
+Add the dot_skill repository as a Codex marketplace:
 
 ```bash
-npx skills add MindReset/dot_skill
+codex plugin marketplace add git@github.com:MindReset/dot_skill.git
 ```
 
-#### Option 2: Manual Install
+Then install the plugin:
+
+```bash
+codex plugin add dot-skill@mindreset-dot-skill
+```
+
+Start a new Codex thread after installation so Codex can load the plugin's skills.
+
+<CustomCloudImage
+	osSrc="dot/docs/%E6%88%AA%E5%B1%8F2026-06-05%2018.07.56_1780654093968.png"
+	alt="Dot Skill plugin installation screen in Codex"
+/>
+
+### Option 2: Install with `npx skills add`
+
+```bash
+npx skills add https://github.com/MindReset/dot_skill.git
+```
+
+Install only the device interaction skill:
+
+```bash
+npx skills add https://github.com/MindReset/dot_skill.git --skill dot-device-openapi
+```
+
+Install only the Canvas designer skill:
+
+```bash
+npx skills add https://github.com/MindReset/dot_skill.git --skill dot-canvas-designer
+```
+
+### Option 3: Manual Install
 
 ```bash
 mkdir -p ~/.agents/skills
-ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
+ln -sfn /path/to/dot_skill/skills/dot-device-openapi ~/.agents/skills/dot-device-openapi
+ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canvas-designer
 ```
 
-### 3. Configure Environment Variables
+Restart your agent after manual installation. `dot-openapi` remains as a compatibility router for older installs; new installs should use `dot-device-openapi` and `dot-canvas-designer`.
+
+## Quick Start
+
+### Configure Environment Variables
 
 ```bash
 export DOT_API_KEY="dot_app_your_api_key"
 ```
 
-### 4. Start Using
+### Start Using
 
 After installation, you can simply say to your AI assistant:
 

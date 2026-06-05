@@ -1,6 +1,6 @@
 ---
 title: AI Skill
-description: 通过 AI Skill 让 AI 助手（如 GitHub Copilot、Claude、ChatGPT 等）直接控制您的 Dot. 设备。
+description: 通过 AI Skill 让 AI 助手直接控制您的 Dot. 设备。
 new: true
 ---
 
@@ -21,30 +21,76 @@ Dot Skill 是一个开源工具，让 AI 助手能够通过自然语言指令直
 - **内容切换** - 切换到下一个内容
 - **辅助脚本** - 提供 Python 脚本用于自动化
 
-## 快速开始
+## 支持平台
 
-### 1. 安装 Skill
+| 平台 | 状态 | 集成方式 |
+| --- | --- | --- |
+| Codex | 已支持 | 作为 Codex plugin 安装，使用仓库内 `.agents/plugins/marketplace.json` 与 `plugins/dot-skill` |
+| OpenAI GPT Actions | 通过 schema 支持 | 导入 `openapi/dot-openapi.yaml` 并配置 Bearer 认证 |
+| Claude / MCP clients | 计划中 | 目前可先使用 OpenAPI schema，后续可补 remote MCP server |
+| Cursor 和兼容 skill 的 agent | 已支持为 skill 文档 | 安装 `skills/dot-device-openapi` 和/或 `skills/dot-canvas-designer`，或将本仓库作为上下文 |
+| MCP Registry | 计划中 | 等 Dot MCP server 存在后发布 server metadata |
 
-#### 方式一：通过 npx 安装（推荐）
+## 安装方式
+
+### 方式一：作为 Codex 插件安装
+
+将 dot_skill 仓库添加为 Codex marketplace：
 
 ```bash
-npx skills add MindReset/dot_skill
+codex plugin marketplace add git@github.com:MindReset/dot_skill.git
 ```
 
-#### 方式二：手动安装
+然后安装插件：
+
+```bash
+codex plugin add dot-skill@mindreset-dot-skill
+```
+
+安装完成后，请新建一个 Codex 线程，以便 Codex 加载插件中的 skills。
+
+<CustomCloudImage
+	osSrc="dot/docs/%E6%88%AA%E5%B1%8F2026-06-05%2018.07.56_1780654093968.png"
+	alt="Codex 中的 Dot Skill 插件安装界面"
+/>
+
+### 方式二：通过 `npx skills add` 安装
+
+```bash
+npx skills add https://github.com/MindReset/dot_skill.git
+```
+
+如果只需要设备交互能力：
+
+```bash
+npx skills add https://github.com/MindReset/dot_skill.git --skill dot-device-openapi
+```
+
+如果只需要 Canvas 设计能力：
+
+```bash
+npx skills add https://github.com/MindReset/dot_skill.git --skill dot-canvas-designer
+```
+
+### 方式三：手动安装
 
 ```bash
 mkdir -p ~/.agents/skills
-ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
+ln -sfn /path/to/dot_skill/skills/dot-device-openapi ~/.agents/skills/dot-device-openapi
+ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canvas-designer
 ```
 
-### 3. 配置环境变量
+手动安装后请重启您的 agent。`dot-openapi` 仍作为旧安装的兼容入口保留，新安装建议使用 `dot-device-openapi` 与 `dot-canvas-designer`。
+
+## 快速开始
+
+### 配置环境变量
 
 ```bash
 export DOT_API_KEY="dot_app_您的API密钥"
 ```
 
-### 4. 开始使用
+### 开始使用
 
 安装完成后，您可以直接对 AI 助手说：
 

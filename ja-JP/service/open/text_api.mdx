@@ -40,7 +40,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 </Callout>
 
 <Callout type="info" title="アイコン入力について">
-	`icon` フィールドには、PNG Base64 データまたは完全なオンライン `http(s)` 画像 URL を指定できます。リモートアイコン URL は匿名で直接アクセスでき、認証や特別な Referer を必要とせず、`image/*` を返す必要があります。
+	`icon` フィールドは任意です。アイコンを送る場合は、PNG Base64 データまたは完全なオンライン `http(s)` 画像 URL を指定する必要があります。PNG Base64 は裸の Base64、または `data:image/png;base64,` プレフィックス付きの形式を使用でき、デコード後のサイズは最大 1MB です。40px×40px の小さなアイコンを推奨します。リモートアイコン URL は匿名で直接アクセスでき、認証や特別な Referer を必要とせず、URL 長は 2048 文字以内、レスポンス本文は最大 3MB で、`image/*` を直接返す必要があります。
 </Callout>
 
 <Callout type="info" title="デバッグ用のテストアイコン URL">
@@ -116,7 +116,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		},
 		icon: {
 			type: 'textarea',
-			name: 'PNG Base64 アイコンデータまたは http(s) 画像 URL',
+			name: 'PNG Base64 アイコンデータ（最大 1MB）または http(s) 画像 URL',
 		},
 		link: {
 			type: 'string',
@@ -254,7 +254,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
         "title": "每日健康",
         "message": "消耗カロリー：702kcal\n本日の歩数：4183 歩\nスタンド時間：62 分",
 		"signature": "2025 年 8 月 4 日 20:16",
-        "icon": "{{PNG Base64 アイコンデータまたは http(s) 画像 URL}}",
+        "icon": "{{PNG Base64 アイコンデータ（最大 1MB）または http(s) 画像 URL}}",
         "link": "x-apple-health://"
       }'
     ```
@@ -315,7 +315,7 @@ Text API は `message` 内の改行とタブを保持します。
 		},
 		icon: {
 			description:
-				'PNG Base64 アイコンデータまたは完全な http(s) 画像 URL（40px×40px、かつリモート URL は匿名アクセスで image/* を直接返す必要があります）（左下に表示するアイコン）',
+				'任意。PNG Base64 アイコンデータ（裸の Base64 または data:image/png;base64, プレフィックス付き、デコード後最大 1MB）または完全な http(s) 画像 URL（40px×40px、かつリモート URL は匿名アクセス可能、2048 文字以内、レスポンス本文最大 3MB、image/* を直接返す必要があります）（左下に表示するアイコン）',
 			type: 'string',
 		},
 		link: {

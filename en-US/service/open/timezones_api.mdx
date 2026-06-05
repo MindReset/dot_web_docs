@@ -1,0 +1,59 @@
+---
+title: Get Timezones
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+## Quick Guide
+
+Use the Timezones API to query the timezone list currently supported by the server. The Device Settings API only accepts `timezone` values from the returned `key` field.
+
+<ApiPlayground
+	baseUrl="https://dot.mindreset.tech"
+	endpoint="/api/authV2/open/timezones"
+	method="GET"
+	auth={true}
+	defaultOpen={false}
+/>
+
+### Response Example
+
+```json
+[
+	{
+		"key": "Asia/Shanghai",
+		"name": "Shanghai",
+		"utcOffsetMinutes": 480,
+		"utcOffsetLabel": "UTC+8"
+	}
+]
+```
+
+### Response Schema
+
+<TypeTable
+	type={{
+		key: {
+			description: 'Timezone key. Use this value for the timezone field in the Device Settings API.',
+			type: 'string',
+			required: true,
+		},
+		name: {
+			description: 'Localized timezone name based on the current user preference.',
+			type: 'string',
+			required: true,
+		},
+		utcOffsetMinutes: {
+			description: 'Current UTC offset in minutes. Positive values are east of UTC.',
+			type: 'number',
+			required: true,
+		},
+		utcOffsetLabel: {
+			description: 'Current UTC offset display label.',
+			type: 'string',
+			required: true,
+		},
+	}}
+/>

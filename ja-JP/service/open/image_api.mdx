@@ -39,7 +39,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 </Callout>
 
 <Callout type="info" title="画像入力について">
-	`image` フィールドには、PNG Base64 データまたは完全なオンライン `http(s)` 画像 URL を指定できます。リモート画像 URL は匿名で直接アクセスでき、認証や特別な Referer を必要とせず、`image/*` を返す必要があります。
+	`image` フィールドは必須です。PNG Base64 データまたは完全なオンライン `http(s)` 画像 URL を指定する必要があります。PNG Base64 は裸の Base64、または `data:image/png;base64,` プレフィックス付きの形式を使用でき、デコード後のサイズは最大 3MB です。リモート画像 URL は匿名で直接アクセスでき、認証や特別な Referer を必要とせず、URL 長は 2048 文字以内、レスポンス本文は最大 3MB で、`image/*` を直接返す必要があります。
 </Callout>
 
 <Callout type="info" title="デバッグ用のテスト画像 URL">
@@ -104,7 +104,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		image: {
 			type: 'textarea',
 			required: true,
-			name: 'PNG Base64 画像データまたは http(s) 画像 URL',
+			name: 'PNG Base64 画像データ（最大 3MB）または http(s) 画像 URL',
 		},
 		link: {
 			type: 'string',
@@ -174,7 +174,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Content-Type: application/json' \
       -d '{
         "refreshNow": false,
-        "image": "{{PNG Base64 画像データまたは http(s) 画像 URL}}",
+        "image": "{{PNG Base64 画像データ（最大 3MB）または http(s) 画像 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0
       }'
@@ -194,7 +194,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{PNG Base64 画像データまたは http(s) 画像 URL}}",
+        "image": "{{PNG Base64 画像データ（最大 3MB）または http(s) 画像 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 1
       }'
@@ -216,7 +216,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{PNG Base64 画像データまたは http(s) 画像 URL}}",
+        "image": "{{PNG Base64 画像データ（最大 3MB）または http(s) 画像 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "NONE"
@@ -247,7 +247,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{PNG Base64 画像データまたは http(s) 画像 URL}}",
+        "image": "{{PNG Base64 画像データ（最大 3MB）または http(s) 画像 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "DIFFUSION"
@@ -321,7 +321,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{PNG Base64 画像データまたは http(s) 画像 URL}}",
+        "image": "{{PNG Base64 画像データ（最大 3MB）または http(s) 画像 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "ORDERED"
@@ -344,7 +344,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
       -H 'Authorization: Bearer dot_app_UlSpzXNEXhYZIAFakHLCkMVVBLbsBIWxaRMVaJZGUOYKhDoDRZwLLvLujAIwQxbY' \
       -H 'Content-Type: application/json' \
       -d '{
-        "image": "{{PNG Base64 画像データまたは http(s) 画像 URL}}",
+        "image": "{{PNG Base64 画像データ（最大 3MB）または http(s) 画像 URL}}",
         "link": "https://dot.mindreset.tech",
         "border": 0,
         "ditherType": "NONE"
@@ -374,7 +374,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
 		},
 		image: {
 			description:
-				'PNG Base64 画像データまたは完全な http(s) 画像 URL（296px×152px、かつリモート URL は匿名アクセスで image/* を直接返す必要があります）（表示する画像）',
+				'必須。PNG Base64 画像データ（裸の Base64 または data:image/png;base64, プレフィックス付き、デコード後最大 3MB）または完全な http(s) 画像 URL（296px×152px、かつリモート URL は匿名アクセス可能、2048 文字以内、レスポンス本文最大 3MB、image/* を直接返す必要があります）（表示する画像）',
 			type: 'string',
 			required: true,
 		},

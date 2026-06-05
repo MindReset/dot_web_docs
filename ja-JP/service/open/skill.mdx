@@ -1,6 +1,6 @@
 ---
 title: AI Skill
-description: AI Skill を使用して、AI アシスタント（GitHub Copilot、Claude、ChatGPT など）が Dot. デバイスを直接制御できるようにします。
+description: AI Skill を使用して、AI アシスタントが Dot. デバイスを直接制御できるようにします。
 new: true
 ---
 
@@ -21,30 +21,76 @@ Dot Skill は、AI アシスタントが自然言語コマンドを通じて Dot
 - **コンテンツ切り替え** - 次のコンテンツに切り替え
 - **ヘルパースクリプト** - 自動化用の Python スクリプト
 
-## クイックスタート
+## 対応プラットフォーム
 
-### 1. Skill のインストール
+| プラットフォーム | 状態 | 連携方法 |
+| --- | --- | --- |
+| Codex | 対応済み | Codex plugin としてインストールします。このリポジトリの `.agents/plugins/marketplace.json` と `plugins/dot-skill` bundle を使用します |
+| OpenAI GPT Actions | schema 経由で対応 | `openapi/dot-openapi.yaml` をインポートし、Bearer 認証を設定します |
+| Claude / MCP clients | 計画中 | 現時点では OpenAPI schema を使用できます。今後 remote MCP server を追加できます |
+| Cursor と skill 互換 agent | skill docs として対応済み | `skills/dot-device-openapi` と `skills/dot-canvas-designer` の一方または両方をインストールするか、このリポジトリを context として使用します |
+| MCP Registry | 計画中 | Dot MCP server が用意された後に server metadata を公開します |
 
-#### 方法 1: npx 経由でインストール（推奨）
+## インストール方法
+
+### 方法 1: Codex plugin としてインストール
+
+dot_skill リポジトリを Codex marketplace として追加します：
 
 ```bash
-npx skills add MindReset/dot_skill
+codex plugin marketplace add git@github.com:MindReset/dot_skill.git
 ```
 
-#### 方法 2: 手動インストール
+次に plugin をインストールします：
+
+```bash
+codex plugin add dot-skill@mindreset-dot-skill
+```
+
+インストール後、Codex が plugin 内の skills を読み込めるように、新しい Codex スレッドを作成してください。
+
+<CustomCloudImage
+	osSrc="dot/docs/%E6%88%AA%E5%B1%8F2026-06-05%2018.07.56_1780654093968.png"
+	alt="Codex での Dot Skill plugin インストール画面"
+/>
+
+### 方法 2: `npx skills add` でインストール
+
+```bash
+npx skills add https://github.com/MindReset/dot_skill.git
+```
+
+デバイス操作 skill のみインストール：
+
+```bash
+npx skills add https://github.com/MindReset/dot_skill.git --skill dot-device-openapi
+```
+
+Canvas designer skill のみインストール：
+
+```bash
+npx skills add https://github.com/MindReset/dot_skill.git --skill dot-canvas-designer
+```
+
+### 方法 3: 手動インストール
 
 ```bash
 mkdir -p ~/.agents/skills
-ln -sfn /path/to/dot_skill/skills/dot-openapi ~/.agents/skills/dot-openapi
+ln -sfn /path/to/dot_skill/skills/dot-device-openapi ~/.agents/skills/dot-device-openapi
+ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canvas-designer
 ```
 
-### 3. 環境変数の設定
+手動インストール後、agent を再起動してください。`dot-openapi` は古いインストール向けの互換ルーターとして残っています。新規インストールでは `dot-device-openapi` と `dot-canvas-designer` の利用を推奨します。
+
+## クイックスタート
+
+### 環境変数の設定
 
 ```bash
 export DOT_API_KEY="dot_app_your_api_key"
 ```
 
-### 4. 使用開始
+### 使用開始
 
 インストール後、AI アシスタントに以下のように話しかけるだけ：
 
