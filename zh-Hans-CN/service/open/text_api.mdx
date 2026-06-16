@@ -9,11 +9,11 @@ import { getOpenTextApiFontFamilyOptions } from 'dot_platform_share/constants/op
 import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
 
-<Callout type="warning" title="接口迁移提示">
-	旧版接口 `https://dot.mindreset.tech/api/open/text` 即将停止维护。
-	为了降低迁移成本，我们会将发往旧版接口的请求自动转发到新版接口，但该兼容行为可能在未来移除。
+<Callout type="warning" title="旧版接口状态">
+	状态：Deprecated。旧版接口 `https://dot.mindreset.tech/api/open/text` 目前仍会自动转发到新版接口。
+	该兼容行为可能在未来版本中移除，当前没有确认的移除时间。
 
-    建议您尽快完成以下调整：
+    为保持集成兼容：
     - 将请求地址更新为新版接口：`/api/authV2/open/device/:deviceId/text`
     - 按本文档的请求结构发送参数（例如 `refreshNow` / `taskAlias` / `title` / `message` / `signature` / `icon` / `link` / `taskKey` / `styles`）
     - 如您依赖旧版接口的返回内容或错误码，请以新版接口的响应为准进行适配

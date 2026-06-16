@@ -19,8 +19,8 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 	文本 API 适合快速发送一段文字，图像 API 适合显示一张图片。画板 API 则适合把自己的数据组合成信息卡片、仪表盘或小型视觉实验。
 </Callout>
 
-<Callout type="info" title="windowData 使用对象元素描述画面">
-	`windowData` 的写法接近 React elements-like objects：每个元素都是一个对象，`type` 表示元素类型，`props` 表示样式和内容，`props.children` 可以是一段文字、一个子元素，或一组子元素。
+<Callout type="info" title="画面结构的写法">
+	画板 API 使用 `windowData` 描述画面结构。它的写法接近 React elements-like objects：每个元素都是一个对象，`type` 表示元素类型，`props` 表示样式和内容，`props.children` 可以是一段文字、一个子元素，或一组子元素。
 </Callout>
 
 <Callout type="info" title="最外层容器通常不需要 padding">
@@ -56,7 +56,7 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 			type: 'string',
 			name: '任务别名',
 			description:
-				'用于在设备任务列表中区分多个画板 API 内容；不影响 windowData 画面。',
+				'用于在设备任务列表中区分多个画板 API 内容；不影响设备显示内容。',
 		},
 		data: {
 			type: 'object',
@@ -64,7 +64,7 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 			example: JSON.stringify(
 				{
 					title: 'Canvas API',
-					message: '用 data 和 windowData 绘制完整画面',
+					message: '把数据组合成完整设备画面',
 					badge: 'OPENAPI',
 				},
 				null,
@@ -74,7 +74,7 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 		windowData: {
 			type: 'object',
 			required: true,
-			name: '二代渲染 windowData',
+			name: '画面结构',
 			example: JSON.stringify(
 				{
 					default: [

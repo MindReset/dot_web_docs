@@ -19,8 +19,8 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 	Text API はテキストカードをすばやく送る用途に向いており、Image API は 1 枚の画像表示に向いています。Canvas API では、自分のデータからカード、ダッシュボード、小さなビジュアル実験を作れます。
 </Callout>
 
-<Callout type="info" title="windowData はオブジェクト要素で画面を表します">
-	`windowData` は React-elements-like objects に近い書き方です。各要素はオブジェクトで、`type` が要素種別、`props` がスタイルと内容、`props.children` がテキスト、子要素、または子要素の配列になります。
+<Callout type="info" title="画面構造の書き方">
+	Canvas API は `windowData` で画面構造を表します。書き方は React-elements-like objects に近く、各要素はオブジェクトで、`type` が要素種別、`props` がスタイルと内容、`props.children` がテキスト、子要素、または子要素の配列になります。
 </Callout>
 
 <Callout type="info" title="最外層コンテナには通常 padding は不要です">
@@ -56,7 +56,7 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 			type: 'string',
 			name: 'タスク別名',
 			description:
-				'デバイスタスク一覧で複数の Canvas API コンテンツを区別するために使います。windowData の画面には影響しません。',
+				'デバイスタスク一覧で複数の Canvas API コンテンツを区別するために使います。デバイス表示には影響しません。',
 		},
 		data: {
 			type: 'object',
@@ -64,7 +64,7 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 			example: JSON.stringify(
 				{
 					title: 'Canvas API',
-					message: 'data と windowData で画面全体を描画します。',
+					message: 'データからデバイス画面を作成します。',
 					badge: 'OPENAPI',
 				},
 				null,
@@ -74,7 +74,7 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 		windowData: {
 			type: 'object',
 			required: true,
-			name: 'V2 windowData',
+			name: '画面構造',
 			example: JSON.stringify(
 				{
 					default: [

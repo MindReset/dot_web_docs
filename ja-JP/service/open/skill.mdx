@@ -15,7 +15,7 @@ Dot Skill は、AI アシスタントが自然言語コマンドを通じて Dot
 - **プラグアンドプレイ** - インストール後、自然言語でデバイスを制御
 - **テキスト送信** - デバイスに指定したテキスト内容を表示
 - **画像送信** - 画像をデバイスに送信して表示
-- **Canvas 送信** - data と windowData を送信してカスタム画面を描画
+- **Canvas 送信** - 自分のデータからカード、ダッシュボード、デバイス画面を作成
 - **タスク別名** - テキスト、画像、Canvas の内容に識別しやすいタスク名を設定
 - **状態確認** - デバイスのバッテリー残量、ネットワーク状態などを確認
 - **コンテンツ切り替え** - 次のコンテンツに切り替え
@@ -27,9 +27,9 @@ Dot Skill は、AI アシスタントが自然言語コマンドを通じて Dot
 | --- | --- | --- |
 | Codex | 対応済み | Codex plugin としてインストールします。このリポジトリの `.agents/plugins/marketplace.json` と `plugins/dot-skill` bundle を使用します |
 | OpenAI GPT Actions | schema 経由で対応 | `openapi/dot-openapi.yaml` をインポートし、Bearer 認証を設定します |
-| Claude / MCP clients | 計画中 | 現時点では OpenAPI schema を使用できます。今後 remote MCP server を追加できます |
+| Claude / MCP clients | Planned | Remote MCP は現在利用できません。当面は OpenAPI schema を使用してください。確定した公開時期はありません。 |
 | Cursor と skill 互換 agent | skill docs として対応済み | `skills/dot-device-openapi` と `skills/dot-canvas-designer` の一方または両方をインストールするか、このリポジトリを context として使用します |
-| MCP Registry | 計画中 | Dot MCP server が用意された後に server metadata を公開します |
+| MCP Registry | Planned | Registry metadata はまだ公開されていません。確定した公開時期はありません。 |
 
 ## インストール方法
 

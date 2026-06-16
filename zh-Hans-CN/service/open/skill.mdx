@@ -15,7 +15,7 @@ Dot Skill 是一个开源工具，让 AI 助手能够通过自然语言指令直
 - **即插即用** - 安装后即可通过自然语言控制设备
 - **文本推送** - 在设备上显示指定文本内容
 - **图像推送** - 将图片推送到设备显示
-- **画板推送** - 传入 data 和 windowData 绘制完整自定义画面
+- **画板推送** - 将自己的数据生成信息卡片、仪表盘和自定义设备画面
 - **任务别名** - 为文本、图像、画板内容设置易识别的任务名称
 - **状态查询** - 查看设备电量、网络状态等信息
 - **内容切换** - 切换到下一个内容
@@ -27,9 +27,9 @@ Dot Skill 是一个开源工具，让 AI 助手能够通过自然语言指令直
 | --- | --- | --- |
 | Codex | 已支持 | 作为 Codex plugin 安装，使用仓库内 `.agents/plugins/marketplace.json` 与 `plugins/dot-skill` |
 | OpenAI GPT Actions | 通过 schema 支持 | 导入 `openapi/dot-openapi.yaml` 并配置 Bearer 认证 |
-| Claude / MCP clients | 计划中 | 目前可先使用 OpenAPI schema，后续可补 remote MCP server |
+| Claude / MCP clients | Planned | 当前不支持 Remote MCP。请先使用 OpenAPI schema，暂无确认发布时间。 |
 | Cursor 和兼容 skill 的 agent | 已支持为 skill 文档 | 安装 `skills/dot-device-openapi` 和/或 `skills/dot-canvas-designer`，或将本仓库作为上下文 |
-| MCP Registry | 计划中 | 等 Dot MCP server 存在后发布 server metadata |
+| MCP Registry | Planned | 当前未发布 Registry metadata，暂无确认发布时间。 |
 
 ## 安装方式
 
