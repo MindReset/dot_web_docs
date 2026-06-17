@@ -3,8 +3,8 @@ title: Canvas コンテンツを制御
 new: true
 ---
 
-import Link from 'fumadocs-core/link';
-import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import Link from "fumadocs-core/link";
+import { ApiPlayground } from "src/shadcn/components/api-playground";
 
 ## クイックスタート
 
@@ -16,140 +16,202 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 4. Dot. App のコンテンツ工房で `Canvas API` コンテンツをデバイスの**ループ**タスクに追加します。
 
 <Callout type="info" title="Canvas API の用途">
-	Text API はテキストカードをすばやく送る用途に向いており、Image API は 1 枚の画像表示に向いています。Canvas API では、自分のデータからカード、ダッシュボード、小さなビジュアル実験を作れます。
+  Text API はテキストカードをすばやく送る用途に向いており、Image API は 1
+  枚の画像表示に向いています。Canvas API
+  では、自分のデータからカード、ダッシュボード、小さなビジュアル実験を作れます。
 </Callout>
 
 <Callout type="info" title="画面構造の書き方">
-	Canvas API は `windowData` で画面構造を表します。書き方は React-elements-like objects に近く、各要素はオブジェクトで、`type` が要素種別、`props` がスタイルと内容、`props.children` がテキスト、子要素、または子要素の配列になります。
+  Canvas API は `windowData` で画面構造を表します。書き方は React-elements-like
+  objects に近く、各要素はオブジェクトで、`type` が要素種別、`props`
+  がスタイルと内容、`props.children`
+  がテキスト、子要素、または子要素の配列になります。
 </Callout>
 
 <Callout type="info" title="最外層コンテナには通常 padding は不要です">
-	デバイスのレイアウトは `windowData.default` の外側で基本的な余白を処理します。最外層要素は構造、背景、整列を優先してください。全面表示、背景色変更、FULL レイアウトの上書きが必要な場合は `layoutFull` を渡します。
+  デバイスのレイアウトは `windowData.default`
+  の外側で基本的な余白を処理します。最外層要素は構造、背景、整列を優先してください。全面表示、背景色変更、FULL
+  レイアウトの上書きが必要な場合は `layoutFull` を渡します。
 </Callout>
 
 ### Playground
 
 <ApiPlayground
-	baseUrl="https://dot.mindreset.tech"
-	endpoint="/api/authV2/open/device/:deviceId/canvas"
-	method="POST"
-	pathParams={{
-		deviceId: {
-			type: 'string',
-			required: true,
-			name: 'デバイスシリアル番号',
-		},
-	}}
-	bodyParams={{
-		refreshNow: {
-			type: 'boolean',
-			name: 'すぐに表示',
-			default: true,
-		},
-		taskKey: {
-			type: 'string',
-			name: 'タスクキー',
-			description:
-				'同じデバイスに複数の Canvas API コンテンツがある場合、タスク一覧 API で取得した値を指定します。',
-		},
-		taskAlias: {
-			type: 'string',
-			name: 'タスク別名',
-			description:
-				'デバイスタスク一覧で複数の Canvas API コンテンツを区別するために使います。デバイス表示には影響しません。',
-		},
-		data: {
-			type: 'object',
-			name: 'ユーザーデータ JSON',
-			example: JSON.stringify(
-				{
-					title: 'Canvas API',
-					message: 'データからデバイス画面を作成します。',
-					badge: 'OPENAPI',
-				},
-				null,
-				2
-			),
-		},
-		windowData: {
-			type: 'object',
-			required: true,
-			name: '画面構造',
-			example: JSON.stringify(
-				{
-					default: [
-						{
-							type: 'div',
-							props: {
-								tw: 'flex flex-col flex-1 w-full h-full bg-[#0B1020] text-white gap-[8px]',
-								children: [
-									{
-										type: 'div',
-										props: {
-											tw: 'text-14-chillduansans text-cyan-200',
-											children: '{{get inputData "badge" default="OPENAPI"}}',
-										},
-									},
-									{
-										type: 'div',
-										props: {
-											tw: 'text-28-chillduansans font-bold leading-none',
-											lineClamp: 1,
-											textOverflow: 'ellipsis',
-											overflow: 'hidden',
-											children: '{{get inputData "title" default="Canvas API"}}',
-										},
-									},
-									{
-										type: 'div',
-										props: {
-											tw: 'text-18-chillduansans leading-[1.18]',
-											lineClamp: 4,
-											textOverflow: 'ellipsis',
-											overflow: 'hidden',
-											children: '{{get inputData "message" default=""}}',
-										},
-									},
-								],
-							},
-						},
-					],
-				},
-				null,
-				2
-			),
-		},
-		layoutFull: {
-			type: 'object',
-			name: 'FULL レイアウト上書き',
-			example: JSON.stringify(
-				{
-					tw: 'p-0 bg-[#0B1020]',
-					style: {
-						padding: 0,
-						backgroundColor: '#0B1020',
-					},
-				},
-				null,
-				2
-			),
-		},
-		link: {
-			type: 'string',
-			name: 'タップリンク',
-		},
-		border: {
-			type: 'select',
-			name: '画面の枠色',
-			default: 0,
-			options: [
-				{ value: 0, label: '白' },
-				{ value: 1, label: '黒' },
-			],
-		},
-	}}
-	auth={true}
-	defaultOpen={false}
+  baseUrl="https://dot.mindreset.tech"
+  endpoint="/api/authV2/open/device/:deviceId/canvas"
+  method="POST"
+  pathParams={{
+    deviceId: {
+      type: "string",
+      required: true,
+      name: "デバイスシリアル番号",
+    },
+  }}
+  bodyParams={{
+    refreshNow: {
+      type: "boolean",
+      name: "すぐに表示",
+      default: true,
+    },
+    taskKey: {
+      type: "string",
+      name: "タスクキー",
+      description:
+        "同じデバイスに複数の Canvas API コンテンツがある場合、タスク一覧 API で取得した値を指定します。",
+    },
+    taskAlias: {
+      type: "string",
+      name: "タスク別名",
+      description:
+        "デバイスタスク一覧で複数の Canvas API コンテンツを区別するために使います。デバイス表示には影響しません。",
+    },
+    data: {
+      type: "object",
+      name: "ユーザーデータ JSON",
+      example: JSON.stringify(
+        {
+          badge: "DOT OPENAPI",
+          title: "Canvas API",
+          message: "JSON で画面内容、状態、レイアウトを組み合わせます。",
+          status: "LIVE",
+          footer: "WRITE / SEND / DONE",
+        },
+        null,
+        2,
+      ),
+    },
+    windowData: {
+      type: "object",
+      required: true,
+      name: "画面構造",
+      example: JSON.stringify(
+        {
+          default: [
+            {
+              type: "div",
+              props: {
+                tw: "flex flex-col w-full h-full min-w-0 min-h-0 bg-white text-black gap-[8px]",
+                children: [
+                  {
+                    type: "div",
+                    props: {
+                      tw: "flex flex-row items-center justify-between shrink-0 text-10-chillduansans",
+                      children: [
+                        {
+                          type: "span",
+                          props: {
+                            tw: "font-bold",
+                            children:
+                              '{{get inputData "badge" default="DOT OPENAPI"}}',
+                          },
+                        },
+                        {
+                          type: "span",
+                          props: {
+                            children:
+                              '{{get inputData "status" default="LIVE"}}',
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    type: "div",
+                    props: {
+                      tw: "flex flex-col flex-1 min-h-0 justify-center gap-[6px]",
+                      children: [
+                        {
+                          type: "div",
+                          props: {
+                            tw: "text-28-chillduansans font-bold leading-none min-w-0",
+                            style: {
+                              lineClamp: 2,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            },
+                            children:
+                              '{{get inputData "title" default="Canvas API"}}',
+                          },
+                        },
+                        {
+                          type: "div",
+                          props: {
+                            tw: "text-16-chillduansans leading-[1.16] min-w-0",
+                            style: {
+                              lineClamp: 3,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            },
+                            children: '{{get inputData "message" default=""}}',
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    type: "div",
+                    props: {
+                      tw: "flex flex-row items-center gap-[6px] shrink-0 text-10-chillduansans",
+                      children: [
+                        {
+                          type: "span",
+                          props: {
+                            tw: "w-[6px] h-[6px] rounded-full bg-black shrink-0",
+                            children: "",
+                          },
+                        },
+                        {
+                          type: "span",
+                          props: {
+                            tw: "min-w-0",
+                            style: {
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            },
+                            children:
+                              '{{get inputData "footer" default="WRITE / SEND / DONE"}}',
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        null,
+        2,
+      ),
+    },
+    layoutFull: {
+      type: "object",
+      name: "FULL レイアウト上書き",
+      example: JSON.stringify(
+        {
+          tw: "p-[12px]",
+        },
+        null,
+        2,
+      ),
+    },
+    link: {
+      type: "string",
+      name: "タップリンク",
+    },
+    border: {
+      type: "select",
+      name: "画面の枠色",
+      default: 0,
+      options: [
+        { value: 0, label: "白" },
+        { value: 1, label: "黒" },
+      ],
+    },
+  }}
+  auth={true}
+  defaultOpen={false}
 />
 
 ### リクエスト本文
@@ -160,31 +222,112 @@ Canvas API のリクエストは、内容データと画面構造を組み合わ
 
 ```json
 {
-	"refreshNow": true,
-	"taskAlias": "Morning canvas",
-	"data": {
-		"title": "Canvas API",
-		"message": "Hello Dot."
-	},
-	"windowData": {
-		"default": [
-			{
-				"type": "div",
-				"props": {
-					"tw": "flex flex-1 bg-white text-black",
-					"children": "{{get inputData \"title\"}}"
-				}
-			}
-		]
-	},
-	"layoutFull": {
-		"tw": "p-0 bg-white",
-		"style": {
-			"padding": 0
-		}
-	},
-	"link": "https://dot.mindreset.tech",
-	"border": 0
+  "refreshNow": true,
+  "taskAlias": "Morning canvas",
+  "data": {
+    "badge": "DOT OPENAPI",
+    "title": "Canvas API",
+    "message": "JSON で画面内容、状態、レイアウトを組み合わせます。",
+    "status": "LIVE",
+    "footer": "WRITE / SEND / DONE"
+  },
+  "windowData": {
+    "default": [
+      {
+        "type": "div",
+        "props": {
+          "tw": "flex flex-col w-full h-full min-w-0 min-h-0 bg-white text-black gap-[8px]",
+          "children": [
+            {
+              "type": "div",
+              "props": {
+                "tw": "flex flex-row items-center justify-between shrink-0 text-10-chillduansans",
+                "children": [
+                  {
+                    "type": "span",
+                    "props": {
+                      "tw": "font-bold",
+                      "children": "{{get inputData \"badge\" default=\"DOT OPENAPI\"}}"
+                    }
+                  },
+                  {
+                    "type": "span",
+                    "props": {
+                      "children": "{{get inputData \"status\" default=\"LIVE\"}}"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "div",
+              "props": {
+                "tw": "flex flex-col flex-1 min-h-0 justify-center gap-[6px]",
+                "children": [
+                  {
+                    "type": "div",
+                    "props": {
+                      "tw": "text-28-chillduansans font-bold leading-none min-w-0",
+                      "style": {
+                        "lineClamp": 2,
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      },
+                      "children": "{{get inputData \"title\" default=\"Canvas API\"}}"
+                    }
+                  },
+                  {
+                    "type": "div",
+                    "props": {
+                      "tw": "text-16-chillduansans leading-[1.16] min-w-0",
+                      "style": {
+                        "lineClamp": 3,
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      },
+                      "children": "{{get inputData \"message\" default=\"\"}}"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "div",
+              "props": {
+                "tw": "flex flex-row items-center gap-[6px] shrink-0 text-10-chillduansans",
+                "children": [
+                  {
+                    "type": "span",
+                    "props": {
+                      "tw": "w-[6px] h-[6px] rounded-full bg-black shrink-0",
+                      "children": ""
+                    }
+                  },
+                  {
+                    "type": "span",
+                    "props": {
+                      "tw": "min-w-0",
+                      "style": {
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "children": "{{get inputData \"footer\" default=\"WRITE / SEND / DONE\"}}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "layoutFull": {
+    "tw": "p-[12px]"
+  },
+  "link": "https://dot.mindreset.tech",
+  "border": 0
 }
 ```
 
@@ -208,21 +351,21 @@ Canvas API のリクエストは、内容データと画面構造を組み合わ
 
 ```json
 {
-	"type": "div",
-	"props": {
-		"$for": {
-			"items": "inputData.tasks",
-			"as": "task",
-			"index": "index"
-		},
-		"$empty": {
-			"type": "div",
-			"props": {
-				"children": "タスクはありません"
-			}
-		},
-		"children": "{{index}}. {{get task \"title\" default=\"\"}}"
-	}
+  "type": "div",
+  "props": {
+    "$for": {
+      "items": "inputData.tasks",
+      "as": "task",
+      "index": "index"
+    },
+    "$empty": {
+      "type": "div",
+      "props": {
+        "children": "タスクはありません"
+      }
+    },
+    "children": "{{index}}. {{get task \"title\" default=\"\"}}"
+  }
 }
 ```
 
@@ -232,26 +375,29 @@ Canvas API のリクエストは、内容データと画面構造を組み合わ
 
 ```json
 {
-	"$ifAny": ["inputData.icon", "inputData.signature"],
-	"$then": {
-		"type": "div",
-		"props": {
-			"children": "{{get inputData \"signature\" default=\"\"}}"
-		}
-	},
-	"$else": {
-		"type": "div",
-		"props": {
-			"children": "署名はありません"
-		}
-	}
+  "$ifAny": ["inputData.icon", "inputData.signature"],
+  "$then": {
+    "type": "div",
+    "props": {
+      "children": "{{get inputData \"signature\" default=\"\"}}"
+    }
+  },
+  "$else": {
+    "type": "div",
+    "props": {
+      "children": "署名はありません"
+    }
+  }
 }
 ```
 
 文字列内の短い条件分岐にはテンプレート構文の `if` / `else` または `compare` を使います。値が存在し内容を持つかを見る場合は `if`、2 つの値を明示的に比較する場合は `compare` を使います：
 
 ```hbs
-{{#if (get inputData "title" default="")}}{{get inputData "title"}}{{else}}無題{{/if}}
+{{#if (get inputData "title" default="")}}{{get
+    inputData
+    "title"
+  }}{{else}}無題{{/if}}
 {{#compare inputData.status "===" "done"}}完了{{else}}進行中{{/compare}}
 ```
 
@@ -268,11 +414,11 @@ Canvas API のリクエストは、内容データと画面構造を組み合わ
 
 Canvas API は、デバイス向けの静的レンダリングに適したスタイル能力を提供します。スタイルの境界は **React object-like 要素構造 + 静的 CSS サブセット**に、Dot. 独自の Tailwind フォント utility、ブレークポイント処理、画像処理クラスを足したものです。
 
-| 書き方 | 対応元 | 説明 |
-| --- | --- | --- |
-| `props.style` | Dot Canvas 静的スタイルサブセット | ピクセル値や明示的なスタイルに向いています。 |
-| `props.tw` | Tailwind-like 構文 + Dot. 拡張 | レイアウト、色、余白、フォントクラス、画像処理クラスを素早く書く用途に向いています。 |
-| `layoutFull.tw` / `layoutFull.style` | Dot. layout 外枠の上書き | 全画面表示、背景、padding の上書きに使います。 |
+| 書き方                               | 対応元                            | 説明                                                                                 |
+| ------------------------------------ | --------------------------------- | ------------------------------------------------------------------------------------ |
+| `props.style`                        | Dot Canvas 静的スタイルサブセット | ピクセル値や明示的なスタイルに向いています。                                         |
+| `props.tw`                           | Tailwind-like 構文 + Dot. 拡張    | レイアウト、色、余白、フォントクラス、画像処理クラスを素早く書く用途に向いています。 |
+| `layoutFull.tw` / `layoutFull.style` | Dot. layout 外枠の上書き          | 全画面表示、背景、padding の上書きに使います。                                       |
 
 Dot Canvas の `props.style` サポート一覧は、静的 CSS の対応表に合わせています。主なカテゴリには、CSS 変数、`display`、`position`、`color`、`margin`、`padding`、`top/right/bottom/left`、`width/height`、`minWidth/minHeight/maxWidth/maxHeight`、`border*`、`borderRadius*`、Flexbox、`gap`、`fontFamily`、`fontSize`、`fontWeight`、`fontStyle`、`tabSize`、`textAlign`、`textIndent`、`textTransform`、`textOverflow`、`textDecoration`、`textShadow`、`letterSpacing`、`lineHeight`、`whiteSpace`、`lineClamp`、`wordBreak`、`textWrap`、`backgroundColor`、`backgroundImage`、`backgroundPosition`、`backgroundSize`、`backgroundClip`、`backgroundRepeat`、`transform`、`transformOrigin`、`objectFit`、`objectPosition`、`opacity`、`boxSizing`、`boxShadow`、`overflow`、`filter`、`clipPath`、`mask*`、`WebkitTextStroke*` があります。
 
@@ -284,12 +430,12 @@ Dot Canvas の `props.style` サポート一覧は、静的 CSS の対応表に�
 
 文字には次のフォントクラスを使えます：
 
-| 種類 | 構文 | 例 |
-| --- | --- | --- |
-| 通常フォント | `text-{size}-{font}` | `text-18-chillduansans` |
-| 任意 px サイズ | `text-[Npx]-{font}` | `text-[20px]-playfairdisplay` |
-| Tailwind サイズキー | `text-{xs/sm/base/lg/xl/2xl...}-{font}` | `text-lg-chillduansans` |
-| ピクセルフォント | `text-pixel-{size}[-variant]` | `text-pixel-12-zpix` |
+| 種類                | 構文                                    | 例                            |
+| ------------------- | --------------------------------------- | ----------------------------- |
+| 通常フォント        | `text-{size}-{font}`                    | `text-18-chillduansans`       |
+| 任意 px サイズ      | `text-[Npx]-{font}`                     | `text-[20px]-playfairdisplay` |
+| Tailwind サイズキー | `text-{xs/sm/base/lg/xl/2xl...}-{font}` | `text-lg-chillduansans`       |
+| ピクセルフォント    | `text-pixel-{size}[-variant]`           | `text-pixel-12-zpix`          |
 
 よく使う通常フォント key：`chillduansans`、`chillksans`、`chillorganic`、`chillroundf`、`chillroundgothic`、`logoscunboundedsans`、`maokenyingbikaishuj0.09`、`playfairdisplay`、`zihunzhoukesong`。
 
@@ -299,13 +445,13 @@ Dot Canvas の `props.style` サポート一覧は、静的 CSS の対応表に�
 
 ```json
 {
-	"tw": "text-18-chillduansans",
-	"style": {
-		"lineHeight": "20px",
-		"whiteSpace": "pre-wrap",
-		"wordBreak": "break-word",
-		"overflow": "hidden"
-	}
+  "tw": "text-18-chillduansans",
+  "style": {
+    "lineHeight": "20px",
+    "whiteSpace": "pre-wrap",
+    "wordBreak": "break-word",
+    "overflow": "hidden"
+  }
 }
 ```
 
@@ -340,7 +486,7 @@ img-levels-16
 
 ```json
 {
-	"message": "デバイス ABCD1234ABCD Canvas API コンテンツが切り替わりました。"
+  "message": "デバイス ABCD1234ABCD Canvas API コンテンツが切り替わりました。"
 }
 ```
 
@@ -350,16 +496,16 @@ img-levels-16
 
 ```json
 {
-	"windowData": {
-		"default": [
-			{
-				"type": "button",
-				"props": {
-					"children": "Bad type"
-				}
-			}
-		]
-	}
+  "windowData": {
+    "default": [
+      {
+        "type": "button",
+        "props": {
+          "children": "Bad type"
+        }
+      }
+    ]
+  }
 }
 ```
 
@@ -367,7 +513,7 @@ img-levels-16
 
 ```json
 {
-	"message": "デバイス ABCD1234ABCD の canvas 要素 button はサポートされていません（位置：windowData.default[0].type）。現在は div、span、img のみ使用できます。"
+  "message": "デバイス ABCD1234ABCD の canvas 要素 button はサポートされていません（位置：windowData.default[0].type）。現在は div、span、img のみ使用できます。"
 }
 ```
 
@@ -375,24 +521,24 @@ img-levels-16
 
 ```json
 {
-	"windowData": {
-		"default": [
-			{
-				"type": "div",
-				"props": {
-					"children": [
-						{
-							"type": "span",
-							"props": {
-								"onClick": "alert(1)",
-								"children": "Unsafe"
-							}
-						}
-					]
-				}
-			}
-		]
-	}
+  "windowData": {
+    "default": [
+      {
+        "type": "div",
+        "props": {
+          "children": [
+            {
+              "type": "span",
+              "props": {
+                "onClick": "alert(1)",
+                "children": "Unsafe"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
 }
 ```
 
@@ -400,7 +546,7 @@ img-levels-16
 
 ```json
 {
-	"message": "デバイス ABCD1234ABCD の canvas 属性 onClick はサポートされていません（位置：windowData.default[0].props.children[0].props.onClick）。"
+  "message": "デバイス ABCD1234ABCD の canvas 属性 onClick はサポートされていません（位置：windowData.default[0].props.children[0].props.onClick）。"
 }
 ```
 
@@ -408,23 +554,23 @@ img-levels-16
 
 ```json
 {
-	"windowData": {
-		"default": [
-			{
-				"type": "div",
-				"props": {
-					"children": [
-						{
-							"type": "img",
-							"props": {
-								"src": "data:image/png;base64,not-a-png"
-							}
-						}
-					]
-				}
-			}
-		]
-	}
+  "windowData": {
+    "default": [
+      {
+        "type": "div",
+        "props": {
+          "children": [
+            {
+              "type": "img",
+              "props": {
+                "src": "data:image/png;base64,not-a-png"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
 }
 ```
 
@@ -432,6 +578,6 @@ img-levels-16
 
 ```json
 {
-	"message": "デバイス ABCD1234ABCD の canvas 画像 src が無効です（位置：windowData.default[0].props.children[0].props.src）。data:image/*;base64,... または匿名アクセス可能な http(s) 画像 URL を指定してください。"
+  "message": "デバイス ABCD1234ABCD の canvas 画像 src が無効です（位置：windowData.default[0].props.children[0].props.src）。data:image/*;base64,... または匿名アクセス可能な http(s) 画像 URL を指定してください。"
 }
 ```

@@ -3,8 +3,8 @@ title: 控制画板内容
 new: true
 ---
 
-import Link from 'fumadocs-core/link';
-import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import Link from "fumadocs-core/link";
+import { ApiPlayground } from "src/shadcn/components/api-playground";
 
 ## 快速指引
 
@@ -16,140 +16,200 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 4. 确保已从 Dot. App 内容工坊中添加 `画板 API` 内容到设备**循环**任务中。
 
 <Callout type="info" title="Canvas API 的定位">
-	文本 API 适合快速发送一段文字，图像 API 适合显示一张图片。画板 API 则适合把自己的数据组合成信息卡片、仪表盘或小型视觉实验。
+  文本 API 适合快速发送一段文字，图像 API 适合显示一张图片。画板 API
+  则适合把自己的数据组合成信息卡片、仪表盘或小型视觉实验。
 </Callout>
 
 <Callout type="info" title="画面结构的写法">
-	画板 API 使用 `windowData` 描述画面结构。它的写法接近 React elements-like objects：每个元素都是一个对象，`type` 表示元素类型，`props` 表示样式和内容，`props.children` 可以是一段文字、一个子元素，或一组子元素。
+  画板 API 使用 `windowData` 描述画面结构。它的写法接近 React elements-like
+  objects：每个元素都是一个对象，`type` 表示元素类型，`props`
+  表示样式和内容，`props.children` 可以是一段文字、一个子元素，或一组子元素。
 </Callout>
 
 <Callout type="info" title="最外层容器通常不需要 padding">
-	设备布局会在 `windowData.default` 外层处理基础留白。最外层元素请优先负责结构、背景和对齐；如果您需要全屏无留白、修改背景色或覆盖 FULL 布局样式，可以传递 `layoutFull`。
+  设备布局会在 `windowData.default`
+  外层处理基础留白。最外层元素请优先负责结构、背景和对齐；如果您需要全屏无留白、修改背景色或覆盖
+  FULL 布局样式，可以传递 `layoutFull`。
 </Callout>
 
 ### 请求示例
 
 <ApiPlayground
-	baseUrl="https://dot.mindreset.tech"
-	endpoint="/api/authV2/open/device/:deviceId/canvas"
-	method="POST"
-	pathParams={{
-		deviceId: {
-			type: 'string',
-			required: true,
-			name: '设备序列号',
-		},
-	}}
-	bodyParams={{
-		refreshNow: {
-			type: 'boolean',
-			name: '是否立刻显示内容',
-			default: true,
-		},
-		taskKey: {
-			type: 'string',
-			name: '任务唯一标识',
-			description:
-				'可通过「列出设备任务」接口获取（当设备存在多个「画板 API」内容时用于指定目标内容）。',
-		},
-		taskAlias: {
-			type: 'string',
-			name: '任务别名',
-			description:
-				'用于在设备任务列表中区分多个画板 API 内容；不影响设备显示内容。',
-		},
-		data: {
-			type: 'object',
-			name: '用户数据 JSON',
-			example: JSON.stringify(
-				{
-					title: 'Canvas API',
-					message: '把数据组合成完整设备画面',
-					badge: 'OPENAPI',
-				},
-				null,
-				2
-			),
-		},
-		windowData: {
-			type: 'object',
-			required: true,
-			name: '画面结构',
-			example: JSON.stringify(
-				{
-					default: [
-						{
-							type: 'div',
-							props: {
-								tw: 'flex flex-col flex-1 w-full h-full bg-[#0B1020] text-white gap-[8px]',
-								children: [
-									{
-										type: 'div',
-										props: {
-											tw: 'text-14-chillduansans text-cyan-200',
-											children: '{{get inputData "badge" default="OPENAPI"}}',
-										},
-									},
-									{
-										type: 'div',
-										props: {
-											tw: 'text-28-chillduansans font-bold leading-none',
-											lineClamp: 1,
-											textOverflow: 'ellipsis',
-											overflow: 'hidden',
-											children: '{{get inputData "title" default="Canvas API"}}',
-										},
-									},
-									{
-										type: 'div',
-										props: {
-											tw: 'text-18-chillduansans leading-[1.18]',
-											lineClamp: 4,
-											textOverflow: 'ellipsis',
-											overflow: 'hidden',
-											children: '{{get inputData "message" default=""}}',
-										},
-									},
-								],
-							},
-						},
-					],
-				},
-				null,
-				2
-			),
-		},
-		layoutFull: {
-			type: 'object',
-			name: 'FULL 布局覆盖',
-			example: JSON.stringify(
-				{
-					tw: 'p-0 bg-[#0B1020]',
-					style: {
-						padding: 0,
-						backgroundColor: '#0B1020',
-					},
-				},
-				null,
-				2
-			),
-		},
-		link: {
-			type: 'string',
-			name: '碰一碰跳转链接',
-		},
-		border: {
-			type: 'select',
-			name: '屏幕边框颜色',
-			default: 0,
-			options: [
-				{ value: 0, label: '白色' },
-				{ value: 1, label: '黑色' },
-			],
-		},
-	}}
-	auth={true}
-	defaultOpen={false}
+  baseUrl="https://dot.mindreset.tech"
+  endpoint="/api/authV2/open/device/:deviceId/canvas"
+  method="POST"
+  pathParams={{
+    deviceId: {
+      type: "string",
+      required: true,
+      name: "设备序列号",
+    },
+  }}
+  bodyParams={{
+    refreshNow: {
+      type: "boolean",
+      name: "是否立刻显示内容",
+      default: true,
+    },
+    taskKey: {
+      type: "string",
+      name: "任务唯一标识",
+      description:
+        "可通过「列出设备任务」接口获取（当设备存在多个「画板 API」内容时用于指定目标内容）。",
+    },
+    taskAlias: {
+      type: "string",
+      name: "任务别名",
+      description:
+        "用于在设备任务列表中区分多个画板 API 内容；不影响设备显示内容。",
+    },
+    data: {
+      type: "object",
+      name: "用户数据 JSON",
+      example: JSON.stringify(
+        {
+          badge: "DOT OPENAPI",
+          title: "Canvas API",
+          message: "用 JSON 组合屏幕内容、状态和布局",
+          status: "LIVE",
+          footer: "WRITE / SEND / DONE",
+        },
+        null,
+        2,
+      ),
+    },
+    windowData: {
+      type: "object",
+      required: true,
+      name: "画面结构",
+      example: JSON.stringify(
+        {
+          default: [
+            {
+              type: "div",
+              props: {
+                tw: "flex flex-col w-full h-full min-w-0 min-h-0 bg-white text-black gap-[8px]",
+                children: [
+                  {
+                    type: "div",
+                    props: {
+                      tw: "flex flex-row items-center justify-between shrink-0 text-10-chillduansans",
+                      children: [
+                        {
+                          type: "span",
+                          props: {
+                            tw: "font-bold",
+                            children:
+                              '{{get inputData "badge" default="DOT OPENAPI"}}',
+                          },
+                        },
+                        {
+                          type: "span",
+                          props: {
+                            children:
+                              '{{get inputData "status" default="LIVE"}}',
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    type: "div",
+                    props: {
+                      tw: "flex flex-col flex-1 min-h-0 justify-center gap-[6px]",
+                      children: [
+                        {
+                          type: "div",
+                          props: {
+                            tw: "text-28-chillduansans font-bold leading-none min-w-0",
+                            style: {
+                              lineClamp: 2,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            },
+                            children:
+                              '{{get inputData "title" default="Canvas API"}}',
+                          },
+                        },
+                        {
+                          type: "div",
+                          props: {
+                            tw: "text-16-chillduansans leading-[1.16] min-w-0",
+                            style: {
+                              lineClamp: 3,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            },
+                            children: '{{get inputData "message" default=""}}',
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    type: "div",
+                    props: {
+                      tw: "flex flex-row items-center gap-[6px] shrink-0 text-10-chillduansans",
+                      children: [
+                        {
+                          type: "span",
+                          props: {
+                            tw: "w-[6px] h-[6px] rounded-full bg-black shrink-0",
+                            children: "",
+                          },
+                        },
+                        {
+                          type: "span",
+                          props: {
+                            tw: "min-w-0",
+                            style: {
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            },
+                            children:
+                              '{{get inputData "footer" default="WRITE / SEND / DONE"}}',
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        null,
+        2,
+      ),
+    },
+    layoutFull: {
+      type: "object",
+      name: "FULL 布局覆盖",
+      example: JSON.stringify(
+        {
+          tw: "p-[12px]",
+        },
+        null,
+        2,
+      ),
+    },
+    link: {
+      type: "string",
+      name: "碰一碰跳转链接",
+    },
+    border: {
+      type: "select",
+      name: "屏幕边框颜色",
+      default: 0,
+      options: [
+        { value: 0, label: "白色" },
+        { value: 1, label: "黑色" },
+      ],
+    },
+  }}
+  auth={true}
+  defaultOpen={false}
 />
 
 ### 请求参数说明
@@ -160,31 +220,112 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 
 ```json
 {
-	"refreshNow": true,
-	"taskAlias": "晨间画板",
-	"data": {
-		"title": "Canvas API",
-		"message": "Hello Dot."
-	},
-	"windowData": {
-		"default": [
-			{
-				"type": "div",
-				"props": {
-					"tw": "flex flex-1 bg-white text-black",
-					"children": "{{get inputData \"title\"}}"
-				}
-			}
-		]
-	},
-	"layoutFull": {
-		"tw": "p-0 bg-white",
-		"style": {
-			"padding": 0
-		}
-	},
-	"link": "https://dot.mindreset.tech",
-	"border": 0
+  "refreshNow": true,
+  "taskAlias": "晨间画板",
+  "data": {
+    "badge": "DOT OPENAPI",
+    "title": "Canvas API",
+    "message": "用 JSON 组合屏幕内容、状态和布局",
+    "status": "LIVE",
+    "footer": "WRITE / SEND / DONE"
+  },
+  "windowData": {
+    "default": [
+      {
+        "type": "div",
+        "props": {
+          "tw": "flex flex-col w-full h-full min-w-0 min-h-0 bg-white text-black gap-[8px]",
+          "children": [
+            {
+              "type": "div",
+              "props": {
+                "tw": "flex flex-row items-center justify-between shrink-0 text-10-chillduansans",
+                "children": [
+                  {
+                    "type": "span",
+                    "props": {
+                      "tw": "font-bold",
+                      "children": "{{get inputData \"badge\" default=\"DOT OPENAPI\"}}"
+                    }
+                  },
+                  {
+                    "type": "span",
+                    "props": {
+                      "children": "{{get inputData \"status\" default=\"LIVE\"}}"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "div",
+              "props": {
+                "tw": "flex flex-col flex-1 min-h-0 justify-center gap-[6px]",
+                "children": [
+                  {
+                    "type": "div",
+                    "props": {
+                      "tw": "text-28-chillduansans font-bold leading-none min-w-0",
+                      "style": {
+                        "lineClamp": 2,
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      },
+                      "children": "{{get inputData \"title\" default=\"Canvas API\"}}"
+                    }
+                  },
+                  {
+                    "type": "div",
+                    "props": {
+                      "tw": "text-16-chillduansans leading-[1.16] min-w-0",
+                      "style": {
+                        "lineClamp": 3,
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      },
+                      "children": "{{get inputData \"message\" default=\"\"}}"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "div",
+              "props": {
+                "tw": "flex flex-row items-center gap-[6px] shrink-0 text-10-chillduansans",
+                "children": [
+                  {
+                    "type": "span",
+                    "props": {
+                      "tw": "w-[6px] h-[6px] rounded-full bg-black shrink-0",
+                      "children": ""
+                    }
+                  },
+                  {
+                    "type": "span",
+                    "props": {
+                      "tw": "min-w-0",
+                      "style": {
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "children": "{{get inputData \"footer\" default=\"WRITE / SEND / DONE\"}}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "layoutFull": {
+    "tw": "p-[12px]"
+  },
+  "link": "https://dot.mindreset.tech",
+  "border": 0
 }
 ```
 
@@ -208,21 +349,21 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 
 ```json
 {
-	"type": "div",
-	"props": {
-		"$for": {
-			"items": "inputData.tasks",
-			"as": "task",
-			"index": "index"
-		},
-		"$empty": {
-			"type": "div",
-			"props": {
-				"children": "暂无任务"
-			}
-		},
-		"children": "{{index}}. {{get task \"title\" default=\"\"}}"
-	}
+  "type": "div",
+  "props": {
+    "$for": {
+      "items": "inputData.tasks",
+      "as": "task",
+      "index": "index"
+    },
+    "$empty": {
+      "type": "div",
+      "props": {
+        "children": "暂无任务"
+      }
+    },
+    "children": "{{index}}. {{get task \"title\" default=\"\"}}"
+  }
 }
 ```
 
@@ -232,26 +373,29 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 
 ```json
 {
-	"$ifAny": ["inputData.icon", "inputData.signature"],
-	"$then": {
-		"type": "div",
-		"props": {
-			"children": "{{get inputData \"signature\" default=\"\"}}"
-		}
-	},
-	"$else": {
-		"type": "div",
-		"props": {
-			"children": "暂无签名"
-		}
-	}
+  "$ifAny": ["inputData.icon", "inputData.signature"],
+  "$then": {
+    "type": "div",
+    "props": {
+      "children": "{{get inputData \"signature\" default=\"\"}}"
+    }
+  },
+  "$else": {
+    "type": "div",
+    "props": {
+      "children": "暂无签名"
+    }
+  }
 }
 ```
 
 字符串里的短条件可以使用模板语法 `if` / `else` 或 `compare`。`if` 用于判断某个值是否有内容，`compare` 用于明确比较两个值：
 
 ```hbs
-{{#if (get inputData "title" default="")}}{{get inputData "title"}}{{else}}未命名{{/if}}
+{{#if (get inputData "title" default="")}}{{get
+    inputData
+    "title"
+  }}{{else}}未命名{{/if}}
 {{#compare inputData.status "===" "done"}}已完成{{else}}进行中{{/compare}}
 ```
 
@@ -268,11 +412,11 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 
 画板 API 支持一组面向设备静态渲染的样式能力。你可以把它理解为：**React object-like 元素结构 + 静态 CSS 子集**，再加上 Dot. 为设备渲染补充的自定义 Tailwind 字体类、断点处理和图片处理类。
 
-| 写法 | 支持来源 | 说明 |
-| --- | --- | --- |
-| `props.style` | Dot Canvas 静态样式子集 | 适合写确定性的像素值和复杂样式 |
-| `props.tw` | Tailwind-like 写法 + Dot. 扩展 | 适合快速写布局、颜色、间距、字体类和图片处理类 |
-| `layoutFull.tw` / `layoutFull.style` | Dot. layout 外壳覆盖 | 用于全屏无留白、背景和 padding 覆盖 |
+| 写法                                 | 支持来源                       | 说明                                           |
+| ------------------------------------ | ------------------------------ | ---------------------------------------------- |
+| `props.style`                        | Dot Canvas 静态样式子集        | 适合写确定性的像素值和复杂样式                 |
+| `props.tw`                           | Tailwind-like 写法 + Dot. 扩展 | 适合快速写布局、颜色、间距、字体类和图片处理类 |
+| `layoutFull.tw` / `layoutFull.style` | Dot. layout 外壳覆盖           | 用于全屏无留白、背景和 padding 覆盖            |
 
 Dot Canvas 的 `props.style` 支持清单按静态 CSS 支持表整理，常用类别包括：CSS 变量、`display`、`position`、`color`、`margin`、`padding`、`top/right/bottom/left`、`width/height`、`minWidth/minHeight/maxWidth/maxHeight`、`border*`、`borderRadius*`、Flexbox、`gap`、`fontFamily`、`fontSize`、`fontWeight`、`fontStyle`、`tabSize`、`textAlign`、`textIndent`、`textTransform`、`textOverflow`、`textDecoration`、`textShadow`、`letterSpacing`、`lineHeight`、`whiteSpace`、`lineClamp`、`wordBreak`、`textWrap`、`backgroundColor`、`backgroundImage`、`backgroundPosition`、`backgroundSize`、`backgroundClip`、`backgroundRepeat`、`transform`、`transformOrigin`、`objectFit`、`objectPosition`、`opacity`、`boxSizing`、`boxShadow`、`overflow`、`filter`、`clipPath`、`mask*`、`WebkitTextStroke*`。
 
@@ -284,12 +428,12 @@ Dot Canvas 的 `props.style` 支持清单按静态 CSS 支持表整理，常用�
 
 文字支持两类字体写法：
 
-| 类型 | 写法 | 示例 |
-| --- | --- | --- |
-| 普通字体 | `text-{size}-{font}` | `text-18-chillduansans` |
-| 普通字体任意字号 | `text-[Npx]-{font}` | `text-[20px]-playfairdisplay` |
-| Tailwind 字号 | `text-{xs/sm/base/lg/xl/2xl...}-{font}` | `text-lg-chillduansans` |
-| 点阵字体 | `text-pixel-{size}[-variant]` | `text-pixel-12-zpix` |
+| 类型             | 写法                                    | 示例                          |
+| ---------------- | --------------------------------------- | ----------------------------- |
+| 普通字体         | `text-{size}-{font}`                    | `text-18-chillduansans`       |
+| 普通字体任意字号 | `text-[Npx]-{font}`                     | `text-[20px]-playfairdisplay` |
+| Tailwind 字号    | `text-{xs/sm/base/lg/xl/2xl...}-{font}` | `text-lg-chillduansans`       |
+| 点阵字体         | `text-pixel-{size}[-variant]`           | `text-pixel-12-zpix`          |
 
 常用普通字体 key：`chillduansans`、`chillksans`、`chillorganic`、`chillroundf`、`chillroundgothic`、`logoscunboundedsans`、`maokenyingbikaishuj0.09`、`playfairdisplay`、`zihunzhoukesong`。
 
@@ -299,13 +443,13 @@ Dot Canvas 的 `props.style` 支持清单按静态 CSS 支持表整理，常用�
 
 ```json
 {
-	"tw": "text-18-chillduansans",
-	"style": {
-		"lineHeight": "20px",
-		"whiteSpace": "pre-wrap",
-		"wordBreak": "break-word",
-		"overflow": "hidden"
-	}
+  "tw": "text-18-chillduansans",
+  "style": {
+    "lineHeight": "20px",
+    "whiteSpace": "pre-wrap",
+    "wordBreak": "break-word",
+    "overflow": "hidden"
+  }
 }
 ```
 
@@ -340,7 +484,7 @@ img-levels-16
 
 ```json
 {
-	"message": "设备 ABCD1234ABCD 画板 API 内容已切换。"
+  "message": "设备 ABCD1234ABCD 画板 API 内容已切换。"
 }
 ```
 
@@ -350,16 +494,16 @@ img-levels-16
 
 ```json
 {
-	"windowData": {
-		"default": [
-			{
-				"type": "button",
-				"props": {
-					"children": "Bad type"
-				}
-			}
-		]
-	}
+  "windowData": {
+    "default": [
+      {
+        "type": "button",
+        "props": {
+          "children": "Bad type"
+        }
+      }
+    ]
+  }
 }
 ```
 
@@ -367,7 +511,7 @@ img-levels-16
 
 ```json
 {
-	"message": "发送给设备 ABCD1234ABCD 的画板元素 button 暂不支持（位置：windowData.default[0].type），目前仅支持 div、span 和 img。"
+  "message": "发送给设备 ABCD1234ABCD 的画板元素 button 暂不支持（位置：windowData.default[0].type），目前仅支持 div、span 和 img。"
 }
 ```
 
@@ -375,24 +519,24 @@ img-levels-16
 
 ```json
 {
-	"windowData": {
-		"default": [
-			{
-				"type": "div",
-				"props": {
-					"children": [
-						{
-							"type": "span",
-							"props": {
-								"onClick": "alert(1)",
-								"children": "Unsafe"
-							}
-						}
-					]
-				}
-			}
-		]
-	}
+  "windowData": {
+    "default": [
+      {
+        "type": "div",
+        "props": {
+          "children": [
+            {
+              "type": "span",
+              "props": {
+                "onClick": "alert(1)",
+                "children": "Unsafe"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
 }
 ```
 
@@ -400,7 +544,7 @@ img-levels-16
 
 ```json
 {
-	"message": "发送给设备 ABCD1234ABCD 的画板属性 onClick 暂不支持（位置：windowData.default[0].props.children[0].props.onClick）。"
+  "message": "发送给设备 ABCD1234ABCD 的画板属性 onClick 暂不支持（位置：windowData.default[0].props.children[0].props.onClick）。"
 }
 ```
 
@@ -408,23 +552,23 @@ img-levels-16
 
 ```json
 {
-	"windowData": {
-		"default": [
-			{
-				"type": "div",
-				"props": {
-					"children": [
-						{
-							"type": "img",
-							"props": {
-								"src": "data:image/png;base64,not-a-png"
-							}
-						}
-					]
-				}
-			}
-		]
-	}
+  "windowData": {
+    "default": [
+      {
+        "type": "div",
+        "props": {
+          "children": [
+            {
+              "type": "img",
+              "props": {
+                "src": "data:image/png;base64,not-a-png"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
 }
 ```
 
@@ -432,6 +576,6 @@ img-levels-16
 
 ```json
 {
-	"message": "发送给设备 ABCD1234ABCD 的画板图片 src 无效（位置：windowData.default[0].props.children[0].props.src）。请提供 data:image/*;base64,... 或可匿名访问的 http(s) 图片链接。"
+  "message": "发送给设备 ABCD1234ABCD 的画板图片 src 无效（位置：windowData.default[0].props.children[0].props.src）。请提供 data:image/*;base64,... 或可匿名访问的 http(s) 图片链接。"
 }
 ```

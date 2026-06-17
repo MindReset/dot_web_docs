@@ -3,8 +3,8 @@ title: Control Canvas Content
 new: true
 ---
 
-import Link from 'fumadocs-core/link';
-import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import Link from "fumadocs-core/link";
+import { ApiPlayground } from "src/shadcn/components/api-playground";
 
 ## Quick Start
 
@@ -16,140 +16,203 @@ import { ApiPlayground } from 'src/shadcn/components/api-playground';
 4. Add the `Canvas API` content to the device **loop** task in Dot. App Content Studio.
 
 <Callout type="info" title="What Canvas API is for">
-	Text API is best for quickly sending a text card, and Image API is best for showing one image. Canvas API lets you turn your own data into custom cards, dashboards, or small visual experiments.
+  Text API is best for quickly sending a text card, and Image API is best for
+  showing one image. Canvas API lets you turn your own data into custom cards,
+  dashboards, or small visual experiments.
 </Callout>
 
 <Callout type="info" title="How screen structure works">
-	Canvas API uses `windowData` to describe the screen with object elements: each element is an object, `type` selects the element type, `props` contains style and content, and `props.children` can be text, one child element, or an array of child elements.
+  Canvas API uses `windowData` to describe the screen with object elements: each
+  element is an object, `type` selects the element type, `props` contains style
+  and content, and `props.children` can be text, one child element, or an array
+  of child elements.
 </Callout>
 
 <Callout type="info" title="The outer container usually needs no padding">
-	The device layout handles the basic spacing outside `windowData.default`. Let the outer element focus on structure, background, and alignment. When you need edge-to-edge rendering, a custom background, or FULL layout overrides, pass `layoutFull`.
+  The device layout handles the basic spacing outside `windowData.default`. Let
+  the outer element focus on structure, background, and alignment. When you need
+  edge-to-edge rendering, a custom background, or FULL layout overrides, pass
+  `layoutFull`.
 </Callout>
 
 ### Playground
 
 <ApiPlayground
-	baseUrl="https://dot.mindreset.tech"
-	endpoint="/api/authV2/open/device/:deviceId/canvas"
-	method="POST"
-	pathParams={{
-		deviceId: {
-			type: 'string',
-			required: true,
-			name: 'Device serial number',
-		},
-	}}
-	bodyParams={{
-		refreshNow: {
-			type: 'boolean',
-			name: 'Display immediately',
-			default: true,
-		},
-		taskKey: {
-			type: 'string',
-			name: 'Task key',
-			description:
-				'Use the task list endpoint to get this value when the device has multiple Canvas API contents.',
-		},
-		taskAlias: {
-			type: 'string',
-			name: 'Task alias',
-			description:
-				'Helps distinguish multiple Canvas API contents in the device task list. It does not affect the device screen.',
-		},
-		data: {
-			type: 'object',
-			name: 'User data JSON',
-			example: JSON.stringify(
-				{
-					title: 'Canvas API',
-					message: 'Build a custom device screen from live data.',
-					badge: 'OPENAPI',
-				},
-				null,
-				2
-			),
-		},
-		windowData: {
-			type: 'object',
-			required: true,
-			name: 'Screen structure',
-			example: JSON.stringify(
-				{
-					default: [
-						{
-							type: 'div',
-							props: {
-								tw: 'flex flex-col flex-1 w-full h-full bg-[#0B1020] text-white gap-[8px]',
-								children: [
-									{
-										type: 'div',
-										props: {
-											tw: 'text-14-chillduansans text-cyan-200',
-											children: '{{get inputData "badge" default="OPENAPI"}}',
-										},
-									},
-									{
-										type: 'div',
-										props: {
-											tw: 'text-28-chillduansans font-bold leading-none',
-											lineClamp: 1,
-											textOverflow: 'ellipsis',
-											overflow: 'hidden',
-											children: '{{get inputData "title" default="Canvas API"}}',
-										},
-									},
-									{
-										type: 'div',
-										props: {
-											tw: 'text-18-chillduansans leading-[1.18]',
-											lineClamp: 4,
-											textOverflow: 'ellipsis',
-											overflow: 'hidden',
-											children: '{{get inputData "message" default=""}}',
-										},
-									},
-								],
-							},
-						},
-					],
-				},
-				null,
-				2
-			),
-		},
-		layoutFull: {
-			type: 'object',
-			name: 'FULL layout override',
-			example: JSON.stringify(
-				{
-					tw: 'p-0 bg-[#0B1020]',
-					style: {
-						padding: 0,
-						backgroundColor: '#0B1020',
-					},
-				},
-				null,
-				2
-			),
-		},
-		link: {
-			type: 'string',
-			name: 'Tap link',
-		},
-		border: {
-			type: 'select',
-			name: 'Screen border color',
-			default: 0,
-			options: [
-				{ value: 0, label: 'White' },
-				{ value: 1, label: 'Black' },
-			],
-		},
-	}}
-	auth={true}
-	defaultOpen={false}
+  baseUrl="https://dot.mindreset.tech"
+  endpoint="/api/authV2/open/device/:deviceId/canvas"
+  method="POST"
+  pathParams={{
+    deviceId: {
+      type: "string",
+      required: true,
+      name: "Device serial number",
+    },
+  }}
+  bodyParams={{
+    refreshNow: {
+      type: "boolean",
+      name: "Display immediately",
+      default: true,
+    },
+    taskKey: {
+      type: "string",
+      name: "Task key",
+      description:
+        "Use the task list endpoint to get this value when the device has multiple Canvas API contents.",
+    },
+    taskAlias: {
+      type: "string",
+      name: "Task alias",
+      description:
+        "Helps distinguish multiple Canvas API contents in the device task list. It does not affect the device screen.",
+    },
+    data: {
+      type: "object",
+      name: "User data JSON",
+      example: JSON.stringify(
+        {
+          badge: "DOT OPENAPI",
+          title: "Canvas API",
+          message: "Compose screen content, state, and layout with JSON.",
+          status: "LIVE",
+          footer: "WRITE / SEND / DONE",
+        },
+        null,
+        2,
+      ),
+    },
+    windowData: {
+      type: "object",
+      required: true,
+      name: "Screen structure",
+      example: JSON.stringify(
+        {
+          default: [
+            {
+              type: "div",
+              props: {
+                tw: "flex flex-col w-full h-full min-w-0 min-h-0 bg-white text-black gap-[8px]",
+                children: [
+                  {
+                    type: "div",
+                    props: {
+                      tw: "flex flex-row items-center justify-between shrink-0 text-10-chillduansans",
+                      children: [
+                        {
+                          type: "span",
+                          props: {
+                            tw: "font-bold",
+                            children:
+                              '{{get inputData "badge" default="DOT OPENAPI"}}',
+                          },
+                        },
+                        {
+                          type: "span",
+                          props: {
+                            children:
+                              '{{get inputData "status" default="LIVE"}}',
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    type: "div",
+                    props: {
+                      tw: "flex flex-col flex-1 min-h-0 justify-center gap-[6px]",
+                      children: [
+                        {
+                          type: "div",
+                          props: {
+                            tw: "text-28-chillduansans font-bold leading-none min-w-0",
+                            style: {
+                              lineClamp: 2,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            },
+                            children:
+                              '{{get inputData "title" default="Canvas API"}}',
+                          },
+                        },
+                        {
+                          type: "div",
+                          props: {
+                            tw: "text-16-chillduansans leading-[1.16] min-w-0",
+                            style: {
+                              lineClamp: 3,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            },
+                            children: '{{get inputData "message" default=""}}',
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    type: "div",
+                    props: {
+                      tw: "flex flex-row items-center gap-[6px] shrink-0 text-10-chillduansans",
+                      children: [
+                        {
+                          type: "span",
+                          props: {
+                            tw: "w-[6px] h-[6px] rounded-full bg-black shrink-0",
+                            children: "",
+                          },
+                        },
+                        {
+                          type: "span",
+                          props: {
+                            tw: "min-w-0",
+                            style: {
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            },
+                            children:
+                              '{{get inputData "footer" default="WRITE / SEND / DONE"}}',
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        null,
+        2,
+      ),
+    },
+    layoutFull: {
+      type: "object",
+      name: "FULL layout override",
+      example: JSON.stringify(
+        {
+          tw: "p-[12px]",
+        },
+        null,
+        2,
+      ),
+    },
+    link: {
+      type: "string",
+      name: "Tap link",
+    },
+    border: {
+      type: "select",
+      name: "Screen border color",
+      default: 0,
+      options: [
+        { value: 0, label: "White" },
+        { value: 1, label: "Black" },
+      ],
+    },
+  }}
+  auth={true}
+  defaultOpen={false}
 />
 
 ### Request Body
@@ -160,31 +223,112 @@ To avoid conflicting meanings, do not use `type`, `key`, `windowData`, `layoutFu
 
 ```json
 {
-	"refreshNow": true,
-	"taskAlias": "Morning canvas",
-	"data": {
-		"title": "Canvas API",
-		"message": "Hello Dot."
-	},
-	"windowData": {
-		"default": [
-			{
-				"type": "div",
-				"props": {
-					"tw": "flex flex-1 bg-white text-black",
-					"children": "{{get inputData \"title\"}}"
-				}
-			}
-		]
-	},
-	"layoutFull": {
-		"tw": "p-0 bg-white",
-		"style": {
-			"padding": 0
-		}
-	},
-	"link": "https://dot.mindreset.tech",
-	"border": 0
+  "refreshNow": true,
+  "taskAlias": "Morning canvas",
+  "data": {
+    "badge": "DOT OPENAPI",
+    "title": "Canvas API",
+    "message": "Compose screen content, state, and layout with JSON.",
+    "status": "LIVE",
+    "footer": "WRITE / SEND / DONE"
+  },
+  "windowData": {
+    "default": [
+      {
+        "type": "div",
+        "props": {
+          "tw": "flex flex-col w-full h-full min-w-0 min-h-0 bg-white text-black gap-[8px]",
+          "children": [
+            {
+              "type": "div",
+              "props": {
+                "tw": "flex flex-row items-center justify-between shrink-0 text-10-chillduansans",
+                "children": [
+                  {
+                    "type": "span",
+                    "props": {
+                      "tw": "font-bold",
+                      "children": "{{get inputData \"badge\" default=\"DOT OPENAPI\"}}"
+                    }
+                  },
+                  {
+                    "type": "span",
+                    "props": {
+                      "children": "{{get inputData \"status\" default=\"LIVE\"}}"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "div",
+              "props": {
+                "tw": "flex flex-col flex-1 min-h-0 justify-center gap-[6px]",
+                "children": [
+                  {
+                    "type": "div",
+                    "props": {
+                      "tw": "text-28-chillduansans font-bold leading-none min-w-0",
+                      "style": {
+                        "lineClamp": 2,
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      },
+                      "children": "{{get inputData \"title\" default=\"Canvas API\"}}"
+                    }
+                  },
+                  {
+                    "type": "div",
+                    "props": {
+                      "tw": "text-16-chillduansans leading-[1.16] min-w-0",
+                      "style": {
+                        "lineClamp": 3,
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis"
+                      },
+                      "children": "{{get inputData \"message\" default=\"\"}}"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "div",
+              "props": {
+                "tw": "flex flex-row items-center gap-[6px] shrink-0 text-10-chillduansans",
+                "children": [
+                  {
+                    "type": "span",
+                    "props": {
+                      "tw": "w-[6px] h-[6px] rounded-full bg-black shrink-0",
+                      "children": ""
+                    }
+                  },
+                  {
+                    "type": "span",
+                    "props": {
+                      "tw": "min-w-0",
+                      "style": {
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                        "whiteSpace": "nowrap"
+                      },
+                      "children": "{{get inputData \"footer\" default=\"WRITE / SEND / DONE\"}}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "layoutFull": {
+    "tw": "p-[12px]"
+  },
+  "link": "https://dot.mindreset.tech",
+  "border": 0
 }
 ```
 
@@ -208,21 +352,21 @@ To avoid conflicting meanings, do not use `type`, `key`, `windowData`, `layoutFu
 
 ```json
 {
-	"type": "div",
-	"props": {
-		"$for": {
-			"items": "inputData.tasks",
-			"as": "task",
-			"index": "index"
-		},
-		"$empty": {
-			"type": "div",
-			"props": {
-				"children": "No tasks"
-			}
-		},
-		"children": "{{index}}. {{get task \"title\" default=\"\"}}"
-	}
+  "type": "div",
+  "props": {
+    "$for": {
+      "items": "inputData.tasks",
+      "as": "task",
+      "index": "index"
+    },
+    "$empty": {
+      "type": "div",
+      "props": {
+        "children": "No tasks"
+      }
+    },
+    "children": "{{index}}. {{get task \"title\" default=\"\"}}"
+  }
 }
 ```
 
@@ -232,26 +376,29 @@ Use `$ifAny` / `$then` / `$else` for structural conditions that add, replace, or
 
 ```json
 {
-	"$ifAny": ["inputData.icon", "inputData.signature"],
-	"$then": {
-		"type": "div",
-		"props": {
-			"children": "{{get inputData \"signature\" default=\"\"}}"
-		}
-	},
-	"$else": {
-		"type": "div",
-		"props": {
-			"children": "No signature"
-		}
-	}
+  "$ifAny": ["inputData.icon", "inputData.signature"],
+  "$then": {
+    "type": "div",
+    "props": {
+      "children": "{{get inputData \"signature\" default=\"\"}}"
+    }
+  },
+  "$else": {
+    "type": "div",
+    "props": {
+      "children": "No signature"
+    }
+  }
 }
 ```
 
 For short text conditions inside a string, use template `if` / `else` syntax or `compare`. Use `if` to check whether a value has content, and use `compare` when two values must be compared explicitly:
 
 ```hbs
-{{#if (get inputData "title" default="")}}{{get inputData "title"}}{{else}}Untitled{{/if}}
+{{#if (get inputData "title" default="")}}{{get
+    inputData
+    "title"
+  }}{{else}}Untitled{{/if}}
 {{#compare inputData.status "===" "done"}}Done{{else}}In progress{{/compare}}
 ```
 
@@ -268,11 +415,11 @@ Use `formatDate` for dates and `formatCompactNumber` for numbers. For standard n
 
 Canvas API supports a device-oriented static rendering style surface. In practice, the styling boundary is: **React object-like elements + a static CSS subset**, plus Dot.'s custom Tailwind font utilities, breakpoint handling, and image-processing classes.
 
-| Syntax | Source | Notes |
-| --- | --- | --- |
-| `props.style` | Dot Canvas static style subset | Best for deterministic pixel values and explicit styles. |
-| `props.tw` | Tailwind-like syntax + Dot. extensions | Best for quick layout, color, spacing, font classes, and image-processing classes. |
-| `layoutFull.tw` / `layoutFull.style` | Dot. layout wrapper override | Use for full-bleed screens, background, and padding overrides. |
+| Syntax                               | Source                                 | Notes                                                                              |
+| ------------------------------------ | -------------------------------------- | ---------------------------------------------------------------------------------- |
+| `props.style`                        | Dot Canvas static style subset         | Best for deterministic pixel values and explicit styles.                           |
+| `props.tw`                           | Tailwind-like syntax + Dot. extensions | Best for quick layout, color, spacing, font classes, and image-processing classes. |
+| `layoutFull.tw` / `layoutFull.style` | Dot. layout wrapper override           | Use for full-bleed screens, background, and padding overrides.                     |
 
 The `props.style` support list is aligned with the static CSS support table. Common categories include CSS variables, `display`, `position`, `color`, `margin`, `padding`, `top/right/bottom/left`, `width/height`, `minWidth/minHeight/maxWidth/maxHeight`, `border*`, `borderRadius*`, Flexbox, `gap`, `fontFamily`, `fontSize`, `fontWeight`, `fontStyle`, `tabSize`, `textAlign`, `textIndent`, `textTransform`, `textOverflow`, `textDecoration`, `textShadow`, `letterSpacing`, `lineHeight`, `whiteSpace`, `lineClamp`, `wordBreak`, `textWrap`, `backgroundColor`, `backgroundImage`, `backgroundPosition`, `backgroundSize`, `backgroundClip`, `backgroundRepeat`, `transform`, `transformOrigin`, `objectFit`, `objectPosition`, `opacity`, `boxSizing`, `boxShadow`, `overflow`, `filter`, `clipPath`, `mask*`, and `WebkitTextStroke*`.
 
@@ -284,12 +431,12 @@ Common `props.tw` classes include `flex`, `flex-row`, `flex-col`, `flex-1`, `shr
 
 Text supports two font families of class patterns:
 
-| Type | Syntax | Example |
-| --- | --- | --- |
-| Regular font | `text-{size}-{font}` | `text-18-chillduansans` |
-| Regular font with arbitrary px size | `text-[Npx]-{font}` | `text-[20px]-playfairdisplay` |
-| Tailwind font size key | `text-{xs/sm/base/lg/xl/2xl...}-{font}` | `text-lg-chillduansans` |
-| Pixel font | `text-pixel-{size}[-variant]` | `text-pixel-12-zpix` |
+| Type                                | Syntax                                  | Example                       |
+| ----------------------------------- | --------------------------------------- | ----------------------------- |
+| Regular font                        | `text-{size}-{font}`                    | `text-18-chillduansans`       |
+| Regular font with arbitrary px size | `text-[Npx]-{font}`                     | `text-[20px]-playfairdisplay` |
+| Tailwind font size key              | `text-{xs/sm/base/lg/xl/2xl...}-{font}` | `text-lg-chillduansans`       |
+| Pixel font                          | `text-pixel-{size}[-variant]`           | `text-pixel-12-zpix`          |
 
 Common regular font keys: `chillduansans`, `chillksans`, `chillorganic`, `chillroundf`, `chillroundgothic`, `logoscunboundedsans`, `maokenyingbikaishuj0.09`, `playfairdisplay`, `zihunzhoukesong`.
 
@@ -299,13 +446,13 @@ For text layout, prefer these `props.style` fields: `fontSize`, `fontWeight`, `l
 
 ```json
 {
-	"tw": "text-18-chillduansans",
-	"style": {
-		"lineHeight": "20px",
-		"whiteSpace": "pre-wrap",
-		"wordBreak": "break-word",
-		"overflow": "hidden"
-	}
+  "tw": "text-18-chillduansans",
+  "style": {
+    "lineHeight": "20px",
+    "whiteSpace": "pre-wrap",
+    "wordBreak": "break-word",
+    "overflow": "hidden"
+  }
 }
 ```
 
@@ -340,7 +487,7 @@ For image layout, use `style.objectFit` and `style.objectPosition`, such as `con
 
 ```json
 {
-	"message": "Device ABCD1234ABCD Canvas API content switched."
+  "message": "Device ABCD1234ABCD Canvas API content switched."
 }
 ```
 
@@ -350,16 +497,16 @@ Unsupported element type:
 
 ```json
 {
-	"windowData": {
-		"default": [
-			{
-				"type": "button",
-				"props": {
-					"children": "Bad type"
-				}
-			}
-		]
-	}
+  "windowData": {
+    "default": [
+      {
+        "type": "button",
+        "props": {
+          "children": "Bad type"
+        }
+      }
+    ]
+  }
 }
 ```
 
@@ -367,7 +514,7 @@ Response:
 
 ```json
 {
-	"message": "The canvas element button for device ABCD1234ABCD is not supported (path: windowData.default[0].type). Only div, span, and img are currently supported."
+  "message": "The canvas element button for device ABCD1234ABCD is not supported (path: windowData.default[0].type). Only div, span, and img are currently supported."
 }
 ```
 
@@ -375,24 +522,24 @@ Unsupported property:
 
 ```json
 {
-	"windowData": {
-		"default": [
-			{
-				"type": "div",
-				"props": {
-					"children": [
-						{
-							"type": "span",
-							"props": {
-								"onClick": "alert(1)",
-								"children": "Unsafe"
-							}
-						}
-					]
-				}
-			}
-		]
-	}
+  "windowData": {
+    "default": [
+      {
+        "type": "div",
+        "props": {
+          "children": [
+            {
+              "type": "span",
+              "props": {
+                "onClick": "alert(1)",
+                "children": "Unsafe"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
 }
 ```
 
@@ -400,7 +547,7 @@ Response:
 
 ```json
 {
-	"message": "The canvas property onClick for device ABCD1234ABCD is not supported (path: windowData.default[0].props.children[0].props.onClick)."
+  "message": "The canvas property onClick for device ABCD1234ABCD is not supported (path: windowData.default[0].props.children[0].props.onClick)."
 }
 ```
 
@@ -408,23 +555,23 @@ Invalid image source:
 
 ```json
 {
-	"windowData": {
-		"default": [
-			{
-				"type": "div",
-				"props": {
-					"children": [
-						{
-							"type": "img",
-							"props": {
-								"src": "data:image/png;base64,not-a-png"
-							}
-						}
-					]
-				}
-			}
-		]
-	}
+  "windowData": {
+    "default": [
+      {
+        "type": "div",
+        "props": {
+          "children": [
+            {
+              "type": "img",
+              "props": {
+                "src": "data:image/png;base64,not-a-png"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
 }
 ```
 
@@ -432,6 +579,6 @@ Response:
 
 ```json
 {
-	"message": "The canvas image src for device ABCD1234ABCD is invalid (path: windowData.default[0].props.children[0].props.src). Provide data:image/*;base64,... or an anonymously accessible http(s) image URL."
+  "message": "The canvas image src for device ABCD1234ABCD is invalid (path: windowData.default[0].props.children[0].props.src). Provide data:image/*;base64,... or an anonymously accessible http(s) image URL."
 }
 ```
