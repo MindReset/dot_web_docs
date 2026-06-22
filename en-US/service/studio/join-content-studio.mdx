@@ -1,0 +1,75 @@
+---
+title: Join Content Studio
+description: Bring a content source into Dot Content Studio so users can browse and use it on Dot devices.
+---
+
+import { JoinContentStudioForm } from '@/src/components/ContentStudio/JoinContentStudioForm';
+
+Dot Content Studio is open to content platforms, tools, and data sources that want to make their content available on Dot devices. After submission, Dot reviews the content type, data source, authorization model, and device fit before deciding the integration path.
+
+The form at the bottom already asks for content category, delivery method, platform user base, and contact email. The checklist below only covers details that are useful to include in the description field.
+
+## Suitable Content
+
+- Content that updates on a predictable cadence and works well on small displays or e-ink devices.
+- Content with clear ownership, source attribution, and display authorization.
+- Content that can be synced through RSS, REST API, OAuth-protected API, or data files provided by the platform.
+- Content that gives users summaries, reminders, status, rankings, schedules, saved items, subscriptions, or personalized information.
+
+## Recommended Materials
+
+| Material | Requirement |
+| --- | --- |
+| Content name | Provide Chinese, Japanese, or English names based on the supported countries or regions. Keep each language within 8 characters or short words. Recommended format: `{Platform Name} {Content}`. |
+| Content description | Provide Chinese, Japanese, or English copy based on the supported countries or regions. Keep Chinese and Japanese within 50 characters when possible, and English within 25 words. |
+| Source display name | Used as the visible content source in Dot Content Studio. |
+| Content source link | Required. Use the official website, product page, or source homepage when possible. |
+| Content Studio card icon | PNG with transparent background, 100 x 100 px, used as the top-left card icon. |
+| Content Studio card colors | Provide 1 to 3 Hex colors for the card background gradient from top to bottom. One color means a solid card background. |
+| OAuth display icon | Required when the content uses OAuth. PNG with transparent background, 200 x 200 px, clear on both black and white backgrounds. |
+| Supported countries, regions, and languages | State where the content is available and which languages should be shown. |
+| Layout preference | Provide text notes, sketches, a Canvas API layout structure, or a Dot Skill result if you already have a layout direction. Dot can also design the layout from the provided content materials. |
+| Tap action | Choose text display, web page, Scheme URL, or Universal Link. |
+| Device or screen limits | State any device, orientation, or aspect-ratio requirements. If none are provided, Dot determines the suitable device range. |
+| Display and usage limits | State attribution, caching, redistribution, commercial-use, or regional restrictions. |
+
+## Content Delivery
+
+Dot Content Studio can integrate content through the methods below. Choose the closest delivery method in the form, then add the relevant details in the description.
+
+| Method | Recommended details |
+| --- | --- |
+| RSS | RSS URL, update cadence, field notes, and any required request headers. |
+| REST API | API base URL, authentication method, request method, parameters, response structure, error format, and rate limits. |
+| OAuth-protected API | Dot uses an Access Token after user authorization to read user-related content. OAuth parameters and content API details are required. |
+| Provided data content | If no online API is available yet, describe the data format, update method, and update cadence. |
+
+For RSS or REST API sources, include the recommended cache TTL and minimum fetch interval if available. This helps Dot balance freshness with request load.
+
+Including a raw response sample is recommended. For REST API, provide an unmodified full JSON response from one request. For RSS, provide an unmodified full feed response.
+
+## OAuth Requirements
+
+If the content requires user login or authorization, OAuth 2.0 Authorization Code Flow is recommended. Prepare the following information. Client Secret should be delivered through a secure channel after the integration is confirmed. In the initial form submission, state that the Client Secret is ready instead of pasting it into the description field.
+
+| Material | Requirement |
+| --- | --- |
+| Client ID | Public client identifier for the OAuth application. |
+| Client Secret | Client secret for the OAuth application. State whether it must be stored server-side and whether rotation is supported. |
+| Authorization URL | User authorization URL and required query parameters. |
+| Token URL | Endpoint used to exchange Access Token and Refresh Token. |
+| Redirect URI rules | State whether Redirect URI registration is required, including quantity, domain, and HTTPS requirements. |
+| Scope | Explain each Scope and the minimum Scope required to read content. |
+| Token lifetime | Access Token lifetime, Refresh Token lifetime, and refresh support. |
+| User info endpoint | If account identity is displayed, provide the user info endpoint and response fields. |
+| Content API | Endpoint, request method, parameters, response structure, and error format for reading authorized content. |
+| Rate limits | Limits for authorization, token refresh, and content reads. |
+| OAuth display icon | PNG with transparent background, 200 x 200 px, clear on both black and white backgrounds. |
+
+If the OAuth flow requires PKCE, custom signatures, fixed headers, IP allowlists, or additional security checks, include those requirements.
+
+## Submit
+
+Complete the form below. It collects content category, delivery method, platform user base, and contact email. Add the materials listed above in the description field. If the materials are not ready yet, submit a summary first and provide the full details later.
+
+<JoinContentStudioForm className="not-prose mt-6 rounded-lg border bg-card p-5 md:p-6" />
