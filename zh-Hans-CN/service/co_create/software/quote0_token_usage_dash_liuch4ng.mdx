@@ -1,0 +1,31 @@
+---
+title: Quote/0 Kimi / GLM 用量仪表盘
+new: true
+---
+
+<GithubInfo owner="LiuCH4NG" repo="quote0-token-usage-dash" />
+
+一个将 Kimi 和 GLM 订阅套餐用量推送到 Quote/0 的自托管仪表盘。项目会把用量数据渲染成 296 × 152 黑白 PNG，并通过 Image API 显示在墨水屏上。
+
+<CustomCloudImage osSrc="dot/docs/preview_1782208091308.jpg" alt="Quote/0 Kimi / GLM 用量仪表盘预览" />
+
+### 功能特性
+
+- **Kimi 用量展示**：展示会员等级、5 小时额度、每周额度、已用比例、剩余额度和重置时间
+- **GLM 用量展示**：展示 5 小时额度、每周额度和 MCP 月度额度，并显示已用/总次数
+- **墨水屏图片渲染**：生成适配 Quote/0 分辨率的黑白图片
+- **Image API 推送**：更新设备上的 Image API 内容槽，多个内容槽时可通过 `QUOTE_TASK_KEY` 指定目标
+- **循环更新**：支持单次推送、按间隔循环推送，以及仅生成本地预览图
+- **可选显示设置**：支持 NFC 轻触跳转链接、边框颜色、抖动模式和任务别名配置
+
+### 适合场景
+
+- 想在桌面上持续观察 Kimi 和 GLM 套餐用量
+- 想把多个 AI 工具的额度状态合并到一张 Quote/0 画面
+- 想参考基于 Python、uv 和 Image API 的轻量自动化推送脚本
+
+<Callout type="warn" title="配置提醒">
+  该项目需要配置 `QUOTE_API_KEY`、`QUOTE_DEVICE_ID`、`KIMI_API_KEY`，以及可选的
+  `GLM_API_KEY`。部署前请阅读源码，妥善保管 API Key，并确认设备中已有可更新的
+  Image API 内容槽。
+</Callout>

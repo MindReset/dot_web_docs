@@ -1,0 +1,49 @@
+---
+title: Quote/0 DeepSeek Balance Dashboard
+new: true
+---
+
+<GithubInfo owner="SamLinBIT" repo="quote0-deepseek-balance" />
+
+A DeepSeek API balance and spending dashboard for Quote/0. It reads DeepSeek account balance and usage data, renders layouts for the 296 × 152 black-and-white e-ink screen, and pushes them to the device through the Quote/0 API.
+
+### Preview
+
+#### Balance Dashboard
+
+<CustomCloudImage osSrc="dot/docs/demo_1782205743868.jpeg" alt="Quote/0 DeepSeek balance dashboard preview" />
+
+The default view uses a two-column layout. The left side shows the DeepSeek icon, account status, and update time; the right side shows balance, today's spend, and month-to-date spend. If the DeepSeek API is unavailable, it falls back to the last known balance and an error state.
+
+#### 30-Day Spending Heatmap
+
+<CustomCloudImage osSrc="dot/docs/heatmap_1782205743869.jpeg" alt="Quote/0 DeepSeek 30-day spending heatmap preview" />
+
+The heatmap groups the last 30 days of DeepSeek API spending by week. Dots, stripes, checker patterns, and black blocks represent spending levels on the monochrome screen, while today's cell is highlighted with a ring marker.
+
+#### Combined Dashboard
+
+<CustomCloudImage osSrc="dot/docs/dashboard_1782205743870.jpeg" alt="Quote/0 DeepSeek combined dashboard preview" />
+
+The combined view puts balance and spending history on one screen. The left side shows icon, status, time, and balance; the right side uses a 4 × 7 grid for the latest 28-day spending trend.
+
+### Features
+
+- **Balance dashboard**: Shows DeepSeek balance, today's spend, month-to-date spend, account status, and update time
+- **30-day spending heatmap**: Uses dots, stripes, checker patterns, and black blocks to represent spending levels on a monochrome screen
+- **Combined dashboard**: Displays balance information and a 28-day spending heatmap on the same screen
+- **Usage import and monthly totals**: Imports DeepSeek Usage ZIP files, then continues month-to-date calculations from balance snapshots
+- **Scheduled pushes**: Includes `run_balance_check.sh` and crontab examples for rotating the three views at different times
+- **Local history and fallback states**: Saves balance snapshots and can show the last known balance when the DeepSeek API is unavailable
+
+### Good For
+
+- Keeping DeepSeek API balance visible on a desk display
+- Tracking daily and month-to-date DeepSeek spending trends on Quote/0
+- Referencing monochrome heatmap rendering and scheduled Quote/0 push logic
+
+<Callout type="warn" title="Configuration note">
+  This project requires `DEEPSEEK_API_KEY`, `DOT_API_KEY`, and `DOT_DEVICE_ID`.
+  If you store credentials in a `.env` file, restrict file permissions, review the
+  source code before deployment, and keep credentials secure.
+</Callout>

@@ -1,0 +1,48 @@
+---
+title: Quote/0 DeepSeek 余额面板
+new: true
+---
+
+<GithubInfo owner="SamLinBIT" repo="quote0-deepseek-balance" />
+
+一个面向 Quote/0 的 DeepSeek API 余额与消费看板。它会读取 DeepSeek 账户余额和用量数据，生成适合 296 × 152 黑白墨水屏的画面，并通过 Quote/0 API 推送到设备。
+
+### 预览
+
+#### 余额仪表盘
+
+<CustomCloudImage osSrc="dot/docs/demo_1782205743868.jpeg" alt="Quote/0 DeepSeek 余额面板实拍" />
+
+默认视图采用双栏布局。左侧显示 DeepSeek 图标、账户状态和更新时间，右侧显示余额、今日消费和本月消费。DeepSeek API 异常时，会显示上次已知余额和错误状态。
+
+#### 30 日消费热力图
+
+<CustomCloudImage osSrc="dot/docs/heatmap_1782205743869.jpeg" alt="Quote/0 DeepSeek 30 日消费热力图实拍" />
+
+热力图按周排列近 30 天 DeepSeek API 消费强度。点阵、横纹、棋盘格和黑块用于区分消费等级，今日所在格子会用环形标记突出显示。
+
+#### 综合仪表盘
+
+<CustomCloudImage osSrc="dot/docs/dashboard_1782205743870.jpeg" alt="Quote/0 DeepSeek 综合仪表盘实拍" />
+
+综合视图把余额与热力图放在同一屏。左侧显示图标、状态、时间和余额，右侧用 4 列 × 7 行展示最近 28 天的消费趋势。
+
+### 功能特性
+
+- **余额仪表盘**：显示 DeepSeek 余额、今日消费、本月消费、账户状态和更新时间
+- **30 日消费热力图**：用点阵、横纹、棋盘格和黑块在单色屏上区分消费强度
+- **综合仪表盘**：在同一屏幕里展示余额信息和最近 28 天消费热力图
+- **用量导入与月度统计**：支持导入 DeepSeek Usage ZIP，并在后续运行中根据余额快照累积本月消费
+- **定时推送**：提供 `run_balance_check.sh` 和 crontab 示例，适合按不同时间轮换三种视图
+- **本地历史与异常降级**：保存余额快照，DeepSeek API 不可用时可显示上次已知余额和错误状态
+
+### 适合场景
+
+- 想把 DeepSeek API 余额放到桌面常驻查看
+- 想用 Quote/0 观察 DeepSeek 每日和本月消费趋势
+- 想参考单色墨水屏上的热力图渲染与定时推送实现
+
+<Callout type="warn" title="配置提醒">
+  该项目需要配置 `DEEPSEEK_API_KEY`、`DOT_API_KEY` 和 `DOT_DEVICE_ID`。如使用
+  `.env` 文件保存密钥，请收紧文件权限，并在部署前阅读源码，妥善保管凭证。
+</Callout>

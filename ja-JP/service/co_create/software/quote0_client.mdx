@@ -1,14 +1,14 @@
 ---
-title: Quote0 Client Python SDK
+title: Quote/0 Client Python SDK
 ---
 
 <GithubInfo owner="YetYeti" repo="quote0-client" />
 
-Dot. App API を通じて Quote0 電子ペーパーデバイスを制御するための Python SDK です。PyPI からインストールして利用できます。
+Dot. App API を通じて Quote/0 電子ペーパーデバイスを制御するための Python SDK です。PyPI からインストールして利用できます。
 
 ### 機能
 
-- Quote0 の全 6 つの API エンドポイントをカバー
+- Quote/0 の全 6 つの API エンドポイントをカバー
 - Pydantic v2 モデルによる型安全性
 - 型付き例外による包括的なエラーハンドリング
 - テキストおよび画像コンテンツのプッシュに対応
@@ -37,7 +37,7 @@ devices = client.get_devices()
 # テキストコンテンツの送信
 response = client.send_text(devices[0].id, TextContentRequest(
     title="こんにちは",
-    message="Quote0 デバイス！"
+    message="Quote/0 デバイス！"
 ))
 ```
 

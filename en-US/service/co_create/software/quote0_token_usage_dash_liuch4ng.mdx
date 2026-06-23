@@ -1,0 +1,32 @@
+---
+title: Quote/0 Kimi / GLM Usage Dashboard
+new: true
+---
+
+<GithubInfo owner="LiuCH4NG" repo="quote0-token-usage-dash" />
+
+A self-hosted dashboard that pushes Kimi and GLM subscription usage to Quote/0. It renders usage data as a 296 × 152 black-and-white PNG and displays it on the e-ink screen through the Image API.
+
+<CustomCloudImage osSrc="dot/docs/preview_1782208091308.jpg" alt="Quote/0 Kimi / GLM Usage Dashboard preview" />
+
+### Features
+
+- **Kimi usage display**: Shows membership level, 5-hour usage, weekly usage, used percentage, remaining quota, and reset time
+- **GLM usage display**: Shows 5-hour, weekly, and MCP monthly usage, including used and total counts
+- **E-ink image rendering**: Generates a black-and-white image tailored to the Quote/0 resolution
+- **Image API push**: Updates an Image API content slot on the device, with `QUOTE_TASK_KEY` support when multiple slots exist
+- **Looped updates**: Supports one-shot pushes, interval-based loop mode, and local preview-only rendering
+- **Optional display settings**: Supports NFC tap redirect links, border color, dithering mode, and task alias configuration
+
+### Good For
+
+- Keeping Kimi and GLM plan usage visible on a desk display
+- Combining quota status from multiple AI tools into one Quote/0 screen
+- Referencing a lightweight Python, uv, and Image API automation script
+
+<Callout type="warn" title="Configuration note">
+  This project requires `QUOTE_API_KEY`, `QUOTE_DEVICE_ID`, `KIMI_API_KEY`, and
+  optionally `GLM_API_KEY`. Review the source code before deployment, keep API
+  keys secure, and make sure the device has an Image API content slot that can
+  be updated.
+</Callout>

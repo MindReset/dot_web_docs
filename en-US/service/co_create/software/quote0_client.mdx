@@ -1,14 +1,14 @@
 ---
-title: Quote0 Client Python SDK
+title: Quote/0 Client Python SDK
 ---
 
 <GithubInfo owner="YetYeti" repo="quote0-client" />
 
-A Python SDK for controlling Quote0 e-ink devices via the Dot. App API, available on PyPI.
+A Python SDK for controlling Quote/0 e-ink devices via the Dot. App API, available on PyPI.
 
 ### Features
 
-- Full coverage of all 6 Quote0 API endpoints
+- Full coverage of all 6 Quote/0 API endpoints
 - Type-safe with Pydantic v2 models
 - Comprehensive error handling with typed exceptions
 - Text and image content support
@@ -37,7 +37,7 @@ devices = client.get_devices()
 # Send text content
 response = client.send_text(devices[0].id, TextContentRequest(
     title="Hello",
-    message="Quote0 device!"
+    message="Quote/0 device!"
 ))
 ```
 

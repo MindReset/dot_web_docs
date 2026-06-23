@@ -1,0 +1,31 @@
+---
+title: Quote/0 Kimi / GLM 使用量ダッシュボード
+new: true
+---
+
+<GithubInfo owner="LiuCH4NG" repo="quote0-token-usage-dash" />
+
+Kimi と GLM のサブスクリプション使用量を Quote/0 に表示するセルフホスト型ダッシュボードです。使用量データを 296 × 152 の白黒 PNG としてレンダリングし、Image API 経由で電子ペーパー画面に表示します。
+
+<CustomCloudImage osSrc="dot/docs/preview_1782208091308.jpg" alt="Quote/0 Kimi / GLM 使用量ダッシュボードのプレビュー" />
+
+### 機能
+
+- **Kimi 使用量表示**：会員レベル、5 時間枠、週間枠、使用率、残り容量、リセット時間を表示
+- **GLM 使用量表示**：5 時間枠、週間枠、MCP 月間枠の使用状況を、使用済み回数と総回数つきで表示
+- **電子ペーパー画像レンダリング**：Quote/0 の解像度に合わせた白黒画像を生成
+- **Image API プッシュ**：デバイス上の Image API コンテンツ枠を更新し、複数枠がある場合は `QUOTE_TASK_KEY` で対象を指定可能
+- **ループ更新**：単発プッシュ、間隔指定のループ実行、ローカルプレビューのみの生成に対応
+- **任意の表示設定**：NFC タップ時の遷移リンク、枠線色、ディザリング方式、タスク別名を設定可能
+
+### 向いている用途
+
+- Kimi と GLM のプラン使用量をデスク上で常時確認したい
+- 複数の AI ツールの残り容量を 1 枚の Quote/0 画面にまとめたい
+- Python、uv、Image API を使った軽量な自動化プッシュ例を参考にしたい
+
+<Callout type="warn" title="設定時の注意">
+  このプロジェクトでは `QUOTE_API_KEY`、`QUOTE_DEVICE_ID`、`KIMI_API_KEY`、
+  そして任意で `GLM_API_KEY` の設定が必要です。導入前にソースコードを確認し、
+  API Key を安全に管理し、デバイスに更新可能な Image API コンテンツ枠があることを確認してください。
+</Callout>
