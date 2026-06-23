@@ -3,11 +3,9 @@ title: Join Content Studio
 description: Bring a content source into Dot Content Studio so users can browse and use it on Dot devices.
 ---
 
-import { JoinContentStudioForm } from '@/src/components/ContentStudio/JoinContentStudioForm';
-
 Dot Content Studio is open to content platforms, tools, and data sources that want to make their content available on Dot devices. After submission, Dot reviews the content type, data source, authorization model, and device fit before deciding the integration path.
 
-The form at the bottom already asks for content category, delivery method, platform user base, and contact email. The checklist below only covers details that are useful to include in the description field.
+The submission form asks for content category, delivery method, platform user base, and contact email. The checklist below only covers details that are useful to include in the description field.
 
 ## Suitable Content
 
@@ -68,8 +66,54 @@ If the content requires user login or authorization, OAuth 2.0 Authorization Cod
 
 If the OAuth flow requires PKCE, custom signatures, fixed headers, IP allowlists, or additional security checks, include those requirements.
 
+## Template
+
+Copy the Markdown template below, fill it in, and paste it into the description field in the submission form. The form also includes an Insert Template button with the same structure.
+
+```md
+# Content Studio integration materials
+
+## Basic information
+- Content name (Chinese / Japanese / English):
+- Content description (Chinese / Japanese / English):
+- Source display name:
+- Content source link:
+- Supported countries, regions, and languages:
+
+## Visual assets
+- Card icon:
+- Card colors (1-3 Hex colors):
+- OAuth display icon (if needed):
+
+## Content delivery
+- Delivery method details:
+- RSS URL / API base URL:
+- Authentication method:
+- Recommended cache TTL:
+- Minimum fetch interval:
+- Raw response sample:
+
+## OAuth (if needed)
+- Client ID:
+- Client Secret: Ready / Not required (do not paste the secret into this description)
+- Authorization URL:
+- Token URL:
+- Redirect URI rules:
+- Scope:
+- Token lifetime and refresh behavior:
+- User info endpoint:
+- Content API:
+- Rate limits:
+
+## Display and actions
+- Layout preference:
+- Tap action:
+- Device or screen limits:
+- Display and usage limits:
+```
+
 ## Submit
 
-Complete the form below. It collects content category, delivery method, platform user base, and contact email. Add the materials listed above in the description field. If the materials are not ready yet, submit a summary first and provide the full details later.
+Open the submission form, choose the content category, delivery method, and platform user base, then paste the completed template into the description field. If the materials are not ready yet, submit a summary first and provide the full details later.
 
-<JoinContentStudioForm className="not-prose mt-6 rounded-lg border bg-card p-5 md:p-6" />
+[Open Submission Form](/submit#platform)
