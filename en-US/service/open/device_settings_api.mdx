@@ -75,15 +75,15 @@ Use the Device Settings API to read or update settings for a device owned by the
 			type: 'string',
 		},
 		interval: {
-			description: 'Refresh interval settings.',
+			description: 'Content refresh and device wake interval settings.',
 			type: 'object',
 			parameters: {
 				powerMs: {
-					description: 'Refresh interval while connected to power, in milliseconds. Must be 60,000-86,400,000 and a multiple of 60,000.',
+					description: 'Refresh interval while connected to power, in milliseconds. Must be 60,000-43,200,000 and a multiple of 60,000.',
 					type: 'number',
 				},
 				batteryMs: {
-					description: 'Refresh interval while using battery power, in milliseconds. Must be 900,000-43,200,000 and a multiple of 60,000.',
+					description: 'Automatic wake and refresh interval while using battery power, in milliseconds. Must be 60,000-43,200,000 and a multiple of 60,000.',
 					type: 'number',
 				},
 			},

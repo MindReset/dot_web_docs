@@ -75,15 +75,15 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'string',
 		},
 		interval: {
-			description: '刷新间隔设置。',
+			description: '内容刷新与设备唤醒间隔设置。',
 			type: 'object',
 			parameters: {
 				powerMs: {
-					description: '接入电源时的刷新间隔，单位毫秒。范围 60000 到 86400000，且必须是 60000 的倍数。',
+					description: '接入电源时的刷新间隔，单位毫秒。范围 60000 到 43200000，且必须是 60000 的倍数。',
 					type: 'number',
 				},
 				batteryMs: {
-					description: '使用电池时的刷新间隔，单位毫秒。范围 900000 到 43200000，且必须是 60000 的倍数。',
+					description: '使用电池时的自动唤醒与刷新间隔，单位毫秒。范围 60000 到 43200000，且必须是 60000 的倍数。',
 					type: 'number',
 				},
 			},

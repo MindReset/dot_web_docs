@@ -75,15 +75,15 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'string',
 		},
 		interval: {
-			description: '更新間隔の設定。',
+			description: 'コンテンツ更新とデバイス自動ウェイクの間隔設定。',
 			type: 'object',
 			parameters: {
 				powerMs: {
-					description: '電源接続時の更新間隔（ミリ秒）。60,000 から 86,400,000 の範囲で、60,000 の倍数にしてください。',
+					description: '電源接続時の更新間隔（ミリ秒）。60,000 から 43,200,000 の範囲で、60,000 の倍数にしてください。',
 					type: 'number',
 				},
 				batteryMs: {
-					description: 'バッテリー使用時の更新間隔（ミリ秒）。900,000 から 43,200,000 の範囲で、60,000 の倍数にしてください。',
+					description: 'バッテリー使用時の自動ウェイクと更新間隔（ミリ秒）。60,000 から 43,200,000 の範囲で、60,000 の倍数にしてください。',
 					type: 'number',
 				},
 			},
