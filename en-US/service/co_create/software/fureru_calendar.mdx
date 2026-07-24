@@ -1,0 +1,32 @@
+---
+title: "Fureru Calendar: iCal Schedule Display for Quote/0"
+description: "Turn public iCal feeds into a Quote/0 view of today's events and the next day with scheduled events."
+new: true
+---
+
+<GithubInfo owner="ryofujimotox" repo="quote0" />
+
+Fureru Calendar reads one or more public iCal feeds, lays out events from today and the next day that contains events, and updates Quote/0 through the Dot Image API. It is designed for places where you want to check upcoming plans at a glance, such as an entryway or desk.
+
+### Features
+
+- **Focused schedule**: Shows only today and the next date with events
+- **Multiple calendars**: Accepts a comma-separated list of public iCal URLs
+- **Image generation**: Converts calendar events into a PNG sized for Quote/0
+- **Scheduled updates**: Can regenerate and push the schedule through cron
+- **Local diagnostics**: Includes commands for listing devices and sending an update manually
+
+### Requirements
+
+- Python 3.12
+- One or more public iCal URLs
+- A Dot API Token and Quote/0 device ID
+- A host that can run the Python script on a schedule; the repository includes a Linux and cron deployment example
+
+Configure `ICAL_URLS`, `DOT_API_TOKEN`, and `DOT_DEVICE_ID` in `.env`. The reference deployment runs daily at 00:00 JST. Adjust the host timezone and cron schedule for your location.
+
+<Callout type="warn" title="Calendar privacy">
+  The project reads public iCal URLs. Anyone who obtains one of these URLs may
+  be able to read its events. Use a separate calendar containing only
+  information suitable for display, and keep the URL private.
+</Callout>

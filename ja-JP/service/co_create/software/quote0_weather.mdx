@@ -1,0 +1,33 @@
+---
+title: "Quote/0 天気"
+description: "現在の天気と6日間の予報を白黒画像に変換し、Quote/0 へ定期的に送信します。"
+new: true
+---
+
+<GithubInfo owner="edwin-wang" repo="quote0_weather" />
+
+Quote/0 天気は、Open-Meteo から現在の天気と今後 6 日間の予報を取得し、296 × 152 の白黒画像を生成して Dot Image API で Quote/0 を更新します。画面には都市名、気温、体感温度、湿度、風速、天気アイコンが表示されます。
+
+### 主な機能
+
+- **現在の天気**：気温、体感温度、湿度、風速、天気の状態を表示
+- **6 日間の予報**：天気アイコンと最高気温をコンパクトに配置
+- **地域設定**：都市名、緯度、経度、タイムゾーンを変更可能
+- **ローカルプレビュー**：更新のたびに `preview.png` を生成
+- **常時実行**：更新間隔を設定でき、`systemd --user` のサービス例も用意
+- **リクエスト再試行**：天気、アイコン、デバイス API のリクエストを自動で再試行
+
+### 事前準備
+
+- Python 3.9 以降
+- Dot API Token と Quote/0 のデバイス ID
+- 対象デバイスに追加した Image API コンテンツ
+- Open-Meteo、Meteocons CDN、Dot API へ接続できるネットワーク
+
+`.env` で `DOT_API_KEY`、`DOT_DEVICE_ID`、`CITY`、`LATITUDE`、`LONGITUDE`、`TIMEZONE`、`UPDATE_EVERY_MINUTES` を設定します。初期値は上海で、30 分ごとに更新します。
+
+<Callout type="info" title="地域とアイコン">
+  `CITY` は画面の都市名だけを変更し、天気データは緯度と経度で決まります。地域を変更するときは
+  `CITY`、`LATITUDE`、`LONGITUDE`、`TIMEZONE` をまとめて更新してください。Meteocons
+  の SVG 変換には Cairo が必要で、Linux では追加のシステムパッケージが必要な場合があります。
+</Callout>

@@ -1,0 +1,30 @@
+---
+title: AdventureX QR Service
+description: Manage AdventureX entrance QR sessions and automatically render and push refreshed codes to Dot/Quote devices.
+new: true
+---
+
+<GithubInfo owner="James081105" repo="adventurex-qr-service" />
+
+AdventureX QR Service is a Python 3.12 multi-account QR session service. It retrieves and refreshes AdventureX entrance codes, outputs PNG, Base64, and session status data, and can automatically render and push the current code to a MindReset Dot/Quote device.
+
+### Features
+
+- **Automatic QR refresh**: Uses two-hour entrance codes by default and refreshes them before expiration
+- **Session recovery**: Reuses protocol sessions first and starts local Playwright only after the session expires
+- **Account isolation**: Stores cookies, browser profiles, state, and concurrency locks separately for each account
+- **Encrypted storage**: Uses DPAPI on Windows and Fernet on Linux or in containers
+- **Device push**: Renders an entrance QR image and supports one-time pushes or continuous synchronization
+- **Multiple interfaces**: Includes a CLI, FastAPI HTTP API, and Docker Compose deployment
+
+### Requirements
+
+The project requires Python 3.12 and either Windows 10/11 or a Linux host with Docker Compose. Captcha-service and MindReset API keys are optional and are only required for their corresponding flows.
+
+<Callout type="warn" title="Account and credential security">
+  This is an unofficial community project with no affiliation to AdventureX,
+  MindReset, or captcha-service providers. Use it only with accounts and devices
+  you own. Protect passwords, cookies, API keys, QR payloads, and transfer
+  packages; review the source and network requests before deployment; and add
+  independent authentication to the HTTP API.
+</Callout>

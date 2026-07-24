@@ -1,0 +1,28 @@
+---
+title: Quote/0 USB EPD Buddy
+description: 通过自定义固件和 USB 协议，将 Quote/0 变成由桌面电脑或 Raspberry Pi 驱动的墨水屏。
+new: true
+---
+
+<GithubInfo owner="stvlynn" repo="quote-buddy" />
+
+Quote/0 USB EPD Buddy 为 Quote/0 增加精简的 USB 帧缓冲接收能力。你可以从 macOS、Linux 或 Raspberry Pi 通过 USB 发送测试图案、文字、图片与混合排版，也可以运行本地 HTTP 中间件，让其他脚本和 Agent 通过局域网更新屏幕。
+
+### 功能特性
+
+- **USB 图片协议**：向设备发送固定为 152 × 296、1-bit 的完整帧缓冲
+- **多种内容输入**：支持测试图案、文字、图片，以及文字、图片和线条组成的 JSON 画面
+- **方向与反相处理**：提供横屏、竖屏、180° 旋转和帧缓冲反相选项
+- **本地 HTTP 服务**：可在 Raspberry Pi 或桌面电脑上提供文字、图片和组合画面的推送接口
+- **诊断工具**：支持串口自动发现、测试画面和白屏问题排查
+
+### 适合场景
+
+- 想让本地 Agent、脚本或 Raspberry Pi 直接驱动 Quote/0
+- 想研究轻量 USB 图片协议和 UC8251D 墨水屏刷新流程
+- 想在不依赖云端服务的局域网中更新设备画面
+
+<Callout type="warn" title="刷写提醒">
+  该项目使用第三方固件替换 Quote/0 原有应用，目前面向采用 UC8251D
+  屏幕控制器的设备。刷写前请完整备份设备 Flash、核对硬件版本，并阅读仓库中的恢复和白屏排查说明。刷写第三方固件可能影响设备保修。
+</Callout>

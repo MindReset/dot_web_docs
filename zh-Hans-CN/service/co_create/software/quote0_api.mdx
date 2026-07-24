@@ -1,47 +1,42 @@
 ---
 title: Quote/0 API 无服务器微服务
+description: "在 AWS 上管理日程与垃圾回收信息，并通过官方 Text API 主动更新 Quote/0。"
+new: true
 ---
 
 <GithubInfo owner="matchy-in" repo="quote0_api" />
 
-一个无服务器微服务，基于 AWS Lambda 和 DynamoDB，可将即将到来的日程事件显示在 Quote/0 提醒设备上，并集成了垃圾回收时间表的自动推送。
+Quote/0 API 是一个基于 AWS Lambda 和 DynamoDB 的无服务器微服务。你可以通过受 Bearer Token 保护的 HTTP API 创建日程，服务会整合 Reading Council 的垃圾回收时间表，并通过官方 Quote/0 Text API 主动更新设备。
 
 ### 功能特性
 
-- **定时推送**：每天 01:10、07:10、12:10、17:10 自动推送更新
-- **垃圾回收集成**：对接 Reading Council API 并智能缓存数据
-- **事件管理**：基于 DynamoDB 的自定义事件存储
-- **Quote/0 适配**：遵循 25/29 字符限制的专属显示格式
-- **无服务器架构**：AWS Lambda + DynamoDB，按需付费
-- **自动弹性扩展**：自动应对流量峰值
-- **低成本运营**：典型用量约 $1.18/月
+- **主动推送**：Lambda 通过官方 Text API 更新 Quote/0，设备不需要回调该服务
+- **日程管理**：支持创建单条日程或一次提交最多 100 条日程
+- **垃圾回收集成**：获取 Reading Council 的垃圾回收信息并存入 DynamoDB
+- **定时更新**：EventBridge 默认每天 01:10（UTC）触发同步与设备刷新
+- **接口鉴权**：所有 HTTP 接口都需要 `Authorization: Bearer <API_AUTH_TOKEN>`
+- **无服务器部署**：使用 API Gateway、Lambda、DynamoDB 与 EventBridge
 
-### 架构
+### API
 
-通过 EventBridge Cron 触发 Lambda，经由 API Gateway 提供以下接口：
+| 方法   | 路径                | 用途                                 |
+| ------ | ------------------- | ------------------------------------ |
+| `POST` | `/api/events`       | 创建一条日程并立即更新 Quote/0       |
+| `POST` | `/api/events/batch` | 批量创建最多 100 条日程并更新 Quote/0 |
 
-- `GET /api/display` — 返回 Quote/0 设备所需的格式化展示数据
-- `PUT /api/events` — 在 DynamoDB 中创建新事件
+开发环境还提供 `POST /test/scheduled-update`，用于手动触发定时任务。
 
-Quote/0 设备每小时主动拉取一次展示数据，同时支持来自 iPhone App 的事件写入。
+### 使用前准备
 
-### 技术栈
+- 可部署 Lambda、API Gateway、DynamoDB 与 EventBridge 的 AWS 账号
+- Node.js 18 或更高版本与 Serverless Framework
+- Quote/0 Text API 地址与 Token
+- 用于保护项目 HTTP API 的独立 Bearer Token
+- Reading Council 地址对应的 UPRN
 
-| 组件     | 技术                         |
-| -------- | ---------------------------- |
-| 运行时   | AWS Lambda (Node.js 18)      |
-| 数据库   | Amazon DynamoDB              |
-| 调度     | AWS EventBridge              |
-| API      | API Gateway HTTP API         |
-| 外部 API | Reading Council 垃圾回收 API |
+主要环境变量包括 `QUOTE0_TEXT_API`、`QUOTE0_AUTH_TOKEN`、`API_AUTH_TOKEN`、`UPRN` 和 `READING_API_URL`。
 
-### 定时推送时间
-
-| 时间 (UTC) | 说明           |
-| ---------- | -------------- |
-| 01:10      | 凌晨刷新       |
-| 07:10      | 工作日晨间更新 |
-| 12:10      | 午间刷新       |
-| 17:10      | 下班后晚间更新 |
-
-可在 `serverless.yml` 中按所在时区调整。
+<Callout type="warn" title="适用范围与密钥">
+  垃圾回收功能面向 Reading Council 服务区域，并依赖房产 UPRN。请将 UPRN、AWS
+  凭证、Quote/0 Token 与 API Bearer Token 作为敏感信息管理，不要提交到仓库。
+</Callout>

@@ -1,0 +1,30 @@
+---
+title: Quote/0 Desktop Status
+description: 第三者製ファームウェアとローカルサービスで、デスクトップ状態、Cursor Agent、Minecraft プレイヤー、任意画像を Quote/0 に巡回表示します。
+new: true
+---
+
+<GithubInfo owner="ShipIt-AdvX" repo="quote0-desktop-status" />
+
+Quote/0 Desktop Status は、第三者製ファームウェアとローカル状態サービスを組み合わせ、デスクトップ指標、Cursor Agent の稼働状況、Minecraft サーバー情報、任意のカバー画像を Quote/0 で巡回表示します。
+
+### 主な機能
+
+- **デスクトップ状態**：CPU、メモリ、ローカル IP、Cursor Agent の状態を表示
+- **Minecraft 情報**：サーバー MOTD、オンライン人数、プレイヤー一覧を表示
+- **任意のカバー画像**：アップロードした画像を巡回表示に追加
+- **LAN 自動検出**：デバイスが Wi-Fi 経由で PC を見つけ、次の画面を取得
+- **設定とファームウェア管理**：Windows 用ランチャーと Linux 向け単独状態サービスを用意
+- **省電力ポーリング**：画面取得後に Wi-Fi を切り、設定した間隔で再接続
+
+### 動作要件
+
+Windows では Python 3.11+ が必要です。Linux では Python 状態サービスだけを実行できます。ホストのファイアウォールでプロジェクトが使う TCP / UDP ポートを許可し、デバイスには PC の LAN アドレスを設定してください。
+
+<Callout type="warn" title="第三者製ファームウェア">
+  このプロジェクトは Quote/0
+  の標準ファームウェアを置き換えます。自分のデバイスをバックアップし、復元手順を先に確認してください。デバイスのサーバーアドレスに
+  localhost
+  を指定せず、認証情報や標準ファームウェアを含むファイルを公開しないでください。このプロジェクトはコミュニティ製で、MindReset
+  公式とは関係ありません。
+</Callout>

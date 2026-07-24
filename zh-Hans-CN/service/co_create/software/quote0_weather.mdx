@@ -1,0 +1,33 @@
+---
+title: "Quote/0 天气"
+description: "获取当前天气与未来六天预报，生成黑白天气画面并定时推送到 Quote/0。"
+new: true
+---
+
+<GithubInfo owner="edwin-wang" repo="quote0_weather" />
+
+Quote/0 天气会从 Open-Meteo 获取当前天气与未来六天预报，生成 296 × 152 的黑白图片，并通过 Dot Image API 定时更新 Quote/0。画面包含城市、温度、体感温度、湿度、风速和天气图标。
+
+### 功能特性
+
+- **当前天气**：显示温度、体感温度、湿度、风速与天气状况
+- **六天预报**：以紧凑布局展示未来六天的天气图标与最高温
+- **可配置地点**：可设置城市名称、经纬度与时区
+- **本地预览**：每次更新都会生成 `preview.png`
+- **持续运行**：可设置更新间隔，并提供 `systemd --user` 常驻运行示例
+- **失败重试**：天气、图标和设备 API 请求包含自动重试
+
+### 使用前准备
+
+- Python 3.9 或更高版本
+- Dot API Token 与 Quote/0 设备 ID
+- 在目标设备中添加 Image API 内容
+- 可访问 Open-Meteo、Meteocons CDN 与 Dot API 的网络环境
+
+通过 `.env` 配置 `DOT_API_KEY`、`DOT_DEVICE_ID`、`CITY`、`LATITUDE`、`LONGITUDE`、`TIMEZONE` 和 `UPDATE_EVERY_MINUTES`。默认地点为上海，默认每 30 分钟更新一次。
+
+<Callout type="info" title="地点与图标">
+  `CITY` 只改变画面中的城市名称，天气数据由经纬度决定。更换地点时请同时更新
+  `CITY`、`LATITUDE`、`LONGITUDE` 和 `TIMEZONE`。Meteocons 的 SVG
+  转换依赖 Cairo，部分 Linux 环境需要额外安装相关系统库。
+</Callout>

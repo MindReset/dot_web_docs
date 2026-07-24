@@ -1,0 +1,29 @@
+---
+title: Quote/0 Desktop Status
+description: Rotate desktop status, Cursor Agent activity, Minecraft players, and a custom cover image on Quote/0 with third-party firmware and a local service.
+new: true
+---
+
+<GithubInfo owner="ShipIt-AdvX" repo="quote0-desktop-status" />
+
+Quote/0 Desktop Status combines third-party firmware with a local status service. It rotates between desktop metrics, Cursor Agent activity, Minecraft server information, and a custom cover image on Quote/0.
+
+### Features
+
+- **Desktop status**: Shows CPU, memory, local IP address, and Cursor Agent state
+- **Minecraft information**: Shows the server MOTD, online count, and player list
+- **Custom cover**: Adds any uploaded image to the rotation
+- **Local discovery**: Lets the device find and retrieve the next frame from a computer over Wi-Fi
+- **Configuration and firmware tools**: Includes a Windows launcher and a standalone Linux status service
+- **Power-aware polling**: Turns Wi-Fi off after receiving a frame and reconnects after the configured interval
+
+### Requirements
+
+The Windows path requires Python 3.11+. Linux can run the Python status service separately. Allow the project's TCP and UDP ports through the host firewall, and configure the device with the computer's LAN address.
+
+<Callout type="warn" title="Third-party firmware">
+  This project replaces the stock Quote/0 firmware. Back up your own device and
+  read the restore instructions first. Do not use localhost as the device's
+  server address, and do not publish files containing credentials or stock
+  firmware. This is a community project and is not affiliated with MindReset.
+</Callout>

@@ -1,47 +1,43 @@
 ---
 title: Quote/0 API サーバーレスマイクロサービス
+description: "AWS 上で予定とゴミ収集情報を管理し、公式 Text API から Quote/0 を更新します。"
+new: true
 ---
 
 <GithubInfo owner="matchy-in" repo="quote0_api" />
 
-AWS Lambda と DynamoDB をベースにしたサーバーレスマイクロサービスです。Quote/0 リマインダーデバイスに予定イベントを表示し、ゴミ収集スケジュールの自動プッシュを統合しています。
+Quote/0 API は、AWS Lambda と DynamoDB を使ったサーバーレスマイクロサービスです。Bearer Token で保護された HTTP API から予定を登録し、Reading Council のゴミ収集予定と組み合わせて、公式 Quote/0 Text API からデバイスを更新します。
 
-### 機能
+### 主な機能
 
-- **定時プッシュ** — 毎日 01:10、07:10、12:10、17:10 に自動更新
-- **ゴミ収集統合** — Reading Council API 連携と 12 時間スマートキャッシュ
-- **イベント管理** — DynamoDB によるカスタムイベント管理
-- **Quote/0 対応** — 25/29 文字制限に準拠した表示フォーマット
-- **サーバーレス** — AWS Lambda + DynamoDB、従量課金制
-- **自動スケーリング** — トラフィックの急増に自動対応
-- **低コスト** — 一般的な利用で月額約 $1.18
+- **プッシュ専用構成**：Lambda が公式 Text API で Quote/0 を更新し、デバイスからこのサービスへのアクセスは不要
+- **予定管理**：1 件の予定、または最大 100 件の予定を一括登録
+- **ゴミ収集連携**：Reading Council の収集情報を取得して DynamoDB に保存
+- **定期更新**：初期設定では EventBridge が毎日 01:10（UTC）に同期とデバイス更新を実行
+- **API 認証**：すべての HTTP エンドポイントで `Authorization: Bearer <API_AUTH_TOKEN>` が必要
+- **サーバーレス配置**：API Gateway、Lambda、DynamoDB、EventBridge を使用
 
-### アーキテクチャ
+### API
 
-EventBridge Cron が Lambda をトリガーし、API Gateway を通じて以下のエンドポイントを提供：
+| メソッド | パス                | 用途                                      |
+| -------- | ------------------- | ----------------------------------------- |
+| `POST`   | `/api/events`       | 予定を 1 件登録し、Quote/0 をすぐに更新   |
+| `POST`   | `/api/events/batch` | 最大 100 件の予定を登録して Quote/0 を更新 |
 
-- `GET /api/display` — Quote/0 デバイス向けフォーマット済み表示データを返す
-- `PUT /api/events` — DynamoDB に新しいイベントを作成
+開発環境では、定期処理を手動実行する `POST /test/scheduled-update` も利用できます。
 
-Quote/0 デバイスは 1 時間ごとにデータをプル、iPhone App からイベントを書き込むことも可能です。
+### 事前準備
 
-### 技術スタック
+- Lambda、API Gateway、DynamoDB、EventBridge を配置できる AWS アカウント
+- Node.js 18 以降と Serverless Framework
+- Quote/0 Text API のエンドポイントと Token
+- プロジェクトの HTTP API を保護する別の Bearer Token
+- Reading Council 対象住所の UPRN
 
-| コンポーネント   | 技術                         |
-| ---------------- | ---------------------------- |
-| ランタイム       | AWS Lambda (Node.js 18)      |
-| データベース     | Amazon DynamoDB              |
-| スケジューリング | AWS EventBridge              |
-| API              | API Gateway HTTP API         |
-| 外部 API         | Reading Council ゴミ収集 API |
+主な環境変数は `QUOTE0_TEXT_API`、`QUOTE0_AUTH_TOKEN`、`API_AUTH_TOKEN`、`UPRN`、`READING_API_URL` です。
 
-### 定時プッシュ時刻
-
-| 時刻 (UTC) | 説明               |
-| ---------- | ------------------ |
-| 01:10      | 深夜リフレッシュ   |
-| 07:10      | 出勤前の朝の更新   |
-| 12:10      | 昼間のリフレッシュ |
-| 17:10      | 退勤後の夕方の更新 |
-
-タイムゾーンに合わせて `serverless.yml` で調整できます。
+<Callout type="warn" title="対象地域と秘密情報">
+  ゴミ収集機能は Reading Council の対象地域専用で、住所の UPRN が必要です。UPRN、AWS
+  認証情報、Quote/0 Token、API Bearer Token
+  は秘密情報として管理し、リポジトリへコミットしないでください。
+</Callout>

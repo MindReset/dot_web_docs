@@ -1,0 +1,27 @@
+---
+title: AdventureX QR Service：选手二维码自动同步
+description: 管理 AdventureX 选手二维码会话，并将自动刷新的入场二维码排版后推送到 Dot/Quote 设备。
+new: true
+---
+
+<GithubInfo owner="James081105" repo="adventurex-qr-service" />
+
+AdventureX QR Service 是一个使用 Python 3.12 构建的多账号二维码会话服务。它可以获取并定时刷新 AdventureX 选手入场二维码，输出 PNG、Base64 与状态信息，并将排版后的二维码自动推送到 MindReset Dot/Quote 设备。
+
+### 功能特性
+
+- **二维码自动刷新**：默认使用两小时二维码，并在到期前自动更新
+- **会话恢复**：优先复用协议会话，仅在会话失效时启动本地 Playwright 登录
+- **多账号隔离**：每个账号独立保存 Cookie、浏览器 Profile、状态和并发锁
+- **加密存储**：Windows 使用 DPAPI，Linux 和容器使用 Fernet 保存敏感数据
+- **设备推送**：将入场二维码排版为设备图片，并支持一次推送或持续同步
+- **多种运行方式**：提供 CLI、FastAPI HTTP API 和 Docker Compose
+
+### 使用要求
+
+项目需要 Python 3.12，以及 Windows 10/11 或支持 Docker Compose 的 Linux 环境。验证码服务与 MindReset API Key 均为可选配置，只有在对应流程中才需要。
+
+<Callout type="warn" title="账号与凭证安全">
+  这是社区维护的非官方工具，与 AdventureX、MindReset 或验证码服务商没有隶属关系。请仅管理你自己的账号和设备，并妥善保护密码、Cookie、API Key、二维码
+  Payload 与迁移文件。部署前请审阅源码和网络请求，并为 HTTP API 配置独立鉴权。
+</Callout>

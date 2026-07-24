@@ -1,0 +1,26 @@
+---
+title: InkLink Studio：Quote/0 本地 Web 控制台
+description: 通过桌面浏览器和 USB Web Serial 编辑 Quote/0 画面、读取设备状态、配置连接并管理第三方固件。
+new: true
+---
+
+<GithubInfo owner="SeimoDev" repo="inklink-studio" />
+
+InkLink Studio 是面向 Quote/0 的本地 Web 控制工程。浏览器是唯一的操作入口，无需云服务或独立后端，即可通过 USB 编辑画面、读取传感器和设备配置、管理 Wi-Fi 与 BLE、备份 Flash，并刷写内置或本地固件。
+
+### 功能特性
+
+- **浏览器画面编辑器**：支持文字、图片与传感器图层的自由定位、样式调整和层级管理
+- **黑白图像处理**：提供裁剪、缩放、灰阶转 1-bit 和多种抖动算法
+- **设备状态与设置**：读取电池、芯片温度、USB 状态与可用内存，并配置连接和刷新策略
+- **项目导入与导出**：通过 JSON 保存和迁移画面项目
+- **浏览器刷写与备份**：可下载整颗 4 MB Flash 备份，并刷写网页内置或本地固件
+- **设备自主刷新**：保存画面和策略后，即使断开浏览器，设备仍可由电池供电并继续刷新
+
+你可以直接访问项目提供的在线版本，也可以自行启动 Web 项目或通过 Docker 部署。
+
+<Callout type="warn" title="兼容性与刷写提醒">
+  Web Serial 需要桌面版 Chrome 或 Edge，并且页面必须运行在 HTTPS 或 localhost
+  安全上下文中。浏览器刷写会覆盖设备固件；仅应在已确认采用相同板级引脚、UC8251D
+  屏幕和 4 MB Flash 的 Quote/0 上操作，并应先下载完整备份。
+</Callout>

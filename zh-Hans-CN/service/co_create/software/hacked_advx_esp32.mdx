@@ -1,0 +1,24 @@
+---
+title: InkCanvas 墨页工作室
+description: 通过浏览器直连 ESP32-C3 墨水屏，完成固件备份、刷写、可视化排版与多页画面推送。
+new: true
+---
+
+<GithubInfo owner="Afly-dream" repo="Hacked-AdvXESP32" />
+
+InkCanvas 墨页工作室是一套面向 ESP32-C3 电子纸设备的浏览器端内容编辑与推送系统。通过 USB Web Serial 连接设备后，可以在 Chrome 或 Edge 中备份和刷写固件、编辑画面，并将单帧或多页轮播直接同步到墨水屏，无需安装桌面应用。
+
+### 功能特性
+
+- **首次备份引导**：在安装第三方固件前读取并下载设备的 4 MB Flash
+- **可视化排版**：添加文字、图片、矩形和分隔线，并进行像素级移动与缩放
+- **多页轮播**：为每一页设置独立停留时间
+- **黑白屏适配**：支持阈值与 Bayer 抖动、反相和 180° 旋转
+- **USB 与 Wi-Fi 推送**：可通过 Web Serial 直接传输，也提供 Wi-Fi / AP 模式下的 HTTP API
+- **项目迁移**：通过 JSON 导入和导出完整画面项目
+
+<Callout type="warn" title="浏览器与固件限制">
+  完整功能需要桌面版 Chrome 90+ 或 Edge 90+，Firefox 与 Safari 不支持 Web
+  Serial。项目会刷写第三方固件，请先完成 Flash 备份并核对 ESP32-C3、UC8251D
+  和 4 MB Flash 等硬件条件。墨水屏采用全刷，单帧需要数秒，不适合连续视频。
+</Callout>

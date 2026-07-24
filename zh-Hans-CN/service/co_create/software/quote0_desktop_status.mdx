@@ -1,0 +1,28 @@
+---
+title: Quote/0 Desktop Status
+description: 使用第三方固件与本地服务，在 Quote/0 上轮播桌面状态、Cursor Agent、Minecraft 玩家和自定义图片。
+new: true
+---
+
+<GithubInfo owner="ShipIt-AdvX" repo="quote0-desktop-status" />
+
+Quote/0 Desktop Status 由第三方固件与本地状态服务组成，可让 Quote/0 在桌面状态、Cursor Agent 工作状态、Minecraft 服务器信息和自定义首页图之间轮播。
+
+### 功能特性
+
+- **桌面状态**：显示 CPU、内存、本机 IP 和 Cursor Agent 工作状态
+- **Minecraft 信息**：显示服务器 MOTD、在线人数和玩家名单
+- **自定义首页**：上传任意图片并加入轮播
+- **局域网自动发现**：设备通过 Wi-Fi 从本地状态服务获取下一帧画面
+- **配置与固件管理**：提供 Windows 一键入口，以及适用于 Linux 的独立状态服务
+- **省电轮询**：获取画面后关闭 Wi-Fi，并在设定间隔后重新连接
+
+### 运行要求
+
+Windows 方案需要 Python 3.11+；Linux 可以单独运行 Python 状态服务。使用时需要在本机防火墙中放行项目使用的 TCP 与 UDP 端口，并将设备指向电脑的局域网地址。
+
+<Callout type="warn" title="第三方固件提醒">
+  该项目会覆盖 Quote/0 原有固件，应先备份自己的设备并阅读仓库中的恢复说明。请勿将
+  localhost 填作设备服务地址，也不要将包含凭证或原厂固件的文件公开提交。该项目为社区项目，与
+  MindReset 官方无关。
+</Callout>

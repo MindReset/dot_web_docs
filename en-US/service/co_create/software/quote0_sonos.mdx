@@ -1,0 +1,33 @@
+---
+title: "Quote/0 Sonos: Now Playing Bridge"
+description: "Watch a Sonos speaker on your local network and automatically send its Now Playing summary to Quote/0."
+new: true
+---
+
+<GithubInfo owner="j10ccc" repo="quote0-sonos" />
+
+Quote/0 Sonos polls a Sonos speaker on the local network and sends a Now Playing summary to Quote/0 through the Dot Text API. It pushes immediately when playback content changes and periodically sends a heartbeat so the device does not remain on stale content.
+
+### Features
+
+- **Now Playing sync**: Updates Quote/0 when the Sonos playback content changes
+- **Room discovery**: Finds a speaker by Sonos room name through SSDP
+- **Direct IP connection**: Can connect to a speaker by IP and skip discovery
+- **Configurable polling**: Checks playback every 10 seconds by default
+- **Heartbeat updates**: Re-sends current content every 15 minutes by default
+- **Container support**: Includes a Docker Compose configuration
+
+### Requirements
+
+- Python 3.12 or later
+- `uv`
+- A host on the same local network as the Sonos speaker
+- A Dot API Key and Quote/0 device ID
+
+Configure `DOT_API_KEY` and `DOT_DEVICE_ID` in `.env`, then choose either `SONOS_ROOM` or `SONOS_IP`. You can also set `POLL_INTERVAL`, `HEARTBEAT_INTERVAL`, and `LOG_LEVEL`.
+
+<Callout type="info" title="Network discovery">
+  When using `SONOS_ROOM`, Docker requires host networking on Linux for SSDP
+  discovery. In bridge-mode environments such as macOS, use `SONOS_IP` to
+  connect directly.
+</Callout>

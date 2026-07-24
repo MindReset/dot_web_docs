@@ -1,0 +1,31 @@
+---
+title: "ふれるカレンダー：Quote/0 iCal 日程屏"
+description: "读取公开 iCal 日历，将今天与下一个有安排日期的日程生成图片并显示在 Quote/0 上。"
+new: true
+---
+
+<GithubInfo owner="ryofujimotox" repo="quote0" />
+
+ふれるカレンダー会从一个或多个公开 iCal 日历读取日程，将今天以及下一个有安排日期的内容排版成适合 Quote/0 的图片，再通过 Dot Image API 更新设备。它适合放在玄关、书桌等需要快速确认近期安排的位置。
+
+### 功能特性
+
+- **聚焦近期安排**：只展示今天与下一个有日程的日期，避免信息拥挤
+- **多个日历源**：支持以逗号分隔配置多个公开 iCal URL
+- **自动生成画面**：将日程解析并转换为适合 Quote/0 的 PNG
+- **定时更新**：可通过 cron 按固定时间生成并推送最新日程
+- **本地调试**：提供设备列表与手动推送命令，便于确认 API 配置
+
+### 使用前准备
+
+- Python 3.12
+- 一个或多个公开 iCal URL
+- Dot API Token 与 Quote/0 设备 ID
+- 能够定时运行 Python 脚本的主机；仓库提供 Linux 与 cron 部署示例
+
+通过 `.env` 配置 `ICAL_URLS`、`DOT_API_TOKEN` 和 `DOT_DEVICE_ID`。参考部署方案会在每天 00:00（JST）运行，你可以根据设备所在时区调整主机时区与 cron。
+
+<Callout type="warn" title="日历隐私">
+  该项目读取公开 iCal URL。任何获得该 URL
+  的人都可能读取其中的日程。建议使用只包含适合展示信息的独立日历，并妥善保管 URL。
+</Callout>

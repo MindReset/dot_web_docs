@@ -1,0 +1,31 @@
+---
+title: Quote/0 USB EPD Buddy
+description: Use custom firmware and a small USB protocol to drive Quote/0 from a desktop computer or Raspberry Pi.
+new: true
+---
+
+<GithubInfo owner="stvlynn" repo="quote-buddy" />
+
+Quote/0 USB EPD Buddy adds a minimal USB framebuffer receiver to Quote/0. A macOS, Linux, or Raspberry Pi host can send test patterns, text, images, and composed layouts over USB. An optional local HTTP middleware also lets scripts and agents update the screen over a local network.
+
+### Features
+
+- **USB image protocol**: Sends a fixed 152 × 296, 1-bit framebuffer to the device
+- **Multiple input types**: Supports test patterns, text, images, and JSON layouts containing text, images, and lines
+- **Orientation controls**: Includes landscape, portrait, 180° rotation, and framebuffer inversion
+- **Local HTTP service**: Exposes text, image, and composed-layout endpoints from a Raspberry Pi or desktop computer
+- **Diagnostics**: Includes serial-port discovery, test screens, and white-screen troubleshooting
+
+### Good For
+
+- Driving Quote/0 directly from a local agent, script, or Raspberry Pi
+- Learning from a small USB image protocol and UC8251D refresh implementation
+- Updating the display on a local network without a cloud service
+
+<Callout type="warn" title="Firmware warning">
+  This project replaces the stock Quote/0 application with third-party firmware
+  and currently targets devices using the UC8251D display controller. Back up
+  the complete device Flash, confirm the hardware edition, and read the restore
+  and white-screen troubleshooting guides before flashing. Third-party firmware
+  may affect the device warranty.
+</Callout>

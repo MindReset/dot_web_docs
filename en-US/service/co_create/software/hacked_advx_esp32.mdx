@@ -1,0 +1,26 @@
+---
+title: InkCanvas
+description: Connect to an ESP32-C3 e-paper device from the browser to back up and flash firmware, compose screens, and send multi-page playlists.
+new: true
+---
+
+<GithubInfo owner="Afly-dream" repo="Hacked-AdvXESP32" />
+
+InkCanvas is a browser-based content editor and delivery system for ESP32-C3 e-paper devices. After connecting over USB Web Serial, you can back up and flash firmware, compose screens, and send a single frame or multi-page playlist from Chrome or Edge without installing a desktop application.
+
+### Features
+
+- **First-use backup flow**: Reads and downloads the device's 4 MB Flash before installing third-party firmware
+- **Visual composition**: Adds text, images, rectangles, and dividers with pixel-level movement and resizing
+- **Multi-page playlists**: Assigns an independent dwell time to each page
+- **Monochrome controls**: Supports threshold and Bayer dithering, inversion, and 180° rotation
+- **USB and Wi-Fi delivery**: Sends frames over Web Serial and also exposes HTTP APIs in Wi-Fi or AP mode
+- **Project portability**: Imports and exports complete projects as JSON
+
+<Callout type="warn" title="Browser and firmware limits">
+  Full functionality requires desktop Chrome 90+ or Edge 90+; Firefox and Safari
+  do not support Web Serial. The project installs third-party firmware, so back
+  up Flash and confirm the ESP32-C3, UC8251D, and 4 MB Flash requirements first.
+  E-paper uses multi-second full refreshes and is not suitable for continuous
+  video.
+</Callout>

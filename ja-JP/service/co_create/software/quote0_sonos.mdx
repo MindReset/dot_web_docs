@@ -1,0 +1,33 @@
+---
+title: "Quote/0 Sonos：再生中ブリッジ"
+description: "ローカルネットワーク上の Sonos を監視し、再生中の概要を Quote/0 へ自動送信します。"
+new: true
+---
+
+<GithubInfo owner="j10ccc" repo="quote0-sonos" />
+
+Quote/0 Sonos は、ローカルネットワーク上の Sonos スピーカーを定期的に確認し、再生中の概要を Dot Text API で Quote/0 へ送信します。再生内容が変わるとすぐに更新し、定期的なハートビートでも同じ内容を再送するため、古い表示が残り続けるのを防げます。
+
+### 主な機能
+
+- **再生中の同期**：Sonos の再生内容が変わると Quote/0 を更新
+- **ルーム検出**：Sonos のルーム名から SSDP でスピーカーを検索
+- **IP 直接接続**：スピーカーの IP を指定して検出処理を省略可能
+- **確認間隔の設定**：初期値では 10 秒ごとに再生状態を確認
+- **ハートビート更新**：初期値では 15 分ごとに現在の内容を再送
+- **コンテナ実行**：Docker Compose の設定を同梱
+
+### 事前準備
+
+- Python 3.12 以降
+- `uv`
+- Sonos スピーカーと同じローカルネットワーク上のホスト
+- Dot API Key と Quote/0 のデバイス ID
+
+`.env` で `DOT_API_KEY` と `DOT_DEVICE_ID` を設定し、`SONOS_ROOM` または `SONOS_IP` のどちらかを選びます。`POLL_INTERVAL`、`HEARTBEAT_INTERVAL`、`LOG_LEVEL` も変更できます。
+
+<Callout type="info" title="ネットワーク検出">
+  `SONOS_ROOM` で自動検出する場合、Linux 上の Docker では SSDP
+  のために host ネットワークが必要です。macOS
+  などのブリッジネットワーク環境では、`SONOS_IP` を使って直接接続してください。
+</Callout>

@@ -1,0 +1,29 @@
+---
+title: AdventureX QR Service：参加者用 QR コード自動同期
+description: AdventureX の入場 QR セッションを管理し、更新されたコードを整形して Dot/Quote デバイスへ自動送信します。
+new: true
+---
+
+<GithubInfo owner="James081105" repo="adventurex-qr-service" />
+
+AdventureX QR Service は Python 3.12 で構築された複数アカウント対応の QR セッションサービスです。AdventureX の入場 QR コードを取得・更新し、PNG、Base64、セッション状態を出力できます。現在のコードを画像として整形し、MindReset Dot/Quote デバイスへ自動送信することもできます。
+
+### 主な機能
+
+- **QR の自動更新**：標準では 2 時間有効の入場コードを使い、期限前に更新
+- **セッション復旧**：まずプロトコルセッションを再利用し、失効した場合のみローカル Playwright を起動
+- **アカウント分離**：Cookie、ブラウザ Profile、状態、同時実行ロックをアカウントごとに保存
+- **暗号化保存**：Windows では DPAPI、Linux とコンテナでは Fernet を使用
+- **デバイス送信**：入場 QR 画像を生成し、単発送信と継続同期に対応
+- **複数の実行方法**：CLI、FastAPI HTTP API、Docker Compose を提供
+
+### 動作要件
+
+Python 3.12 と、Windows 10/11 または Docker Compose を利用できる Linux 環境が必要です。Captcha サービスと MindReset API Key は任意で、対応する処理を使う場合のみ必要です。
+
+<Callout type="warn" title="アカウントと認証情報の安全">
+  これはコミュニティが保守する非公式ツールで、AdventureX、MindReset、Captcha
+  サービス提供者との提携関係はありません。自分が所有するアカウントとデバイスだけを管理し、パスワード、Cookie、API
+  Key、QR Payload、移行ファイルを安全に保管してください。配備前にソースコードとネットワーク通信を確認し、HTTP API
+  には独立した認証を設定してください。
+</Callout>

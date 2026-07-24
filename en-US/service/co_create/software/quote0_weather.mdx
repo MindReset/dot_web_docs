@@ -1,0 +1,34 @@
+---
+title: "Quote/0 Weather"
+description: "Render current conditions and a six-day forecast as a monochrome image, then update Quote/0 on a schedule."
+new: true
+---
+
+<GithubInfo owner="edwin-wang" repo="quote0_weather" />
+
+Quote/0 Weather retrieves current conditions and a six-day forecast from Open-Meteo, renders a 296 × 152 monochrome image, and updates Quote/0 through the Dot Image API. The screen includes the city, temperature, apparent temperature, humidity, wind speed, and weather icons.
+
+### Features
+
+- **Current conditions**: Shows temperature, apparent temperature, humidity, wind speed, and condition
+- **Six-day forecast**: Uses a compact layout for daily icons and high temperatures
+- **Configurable location**: Supports custom city labels, coordinates, and timezones
+- **Local preview**: Writes `preview.png` after every update
+- **Continuous operation**: Provides a configurable interval and a `systemd --user` service example
+- **Request retries**: Retries weather, icon, and device API requests
+
+### Requirements
+
+- Python 3.9 or later
+- A Dot API Token and Quote/0 device ID
+- Image API content added to the target device
+- Network access to Open-Meteo, the Meteocons CDN, and the Dot API
+
+Configure `DOT_API_KEY`, `DOT_DEVICE_ID`, `CITY`, `LATITUDE`, `LONGITUDE`, `TIMEZONE`, and `UPDATE_EVERY_MINUTES` in `.env`. The defaults use Shanghai and refresh every 30 minutes.
+
+<Callout type="info" title="Location and icons">
+  `CITY` changes only the label shown on the screen; coordinates determine the
+  weather data. Update `CITY`, `LATITUDE`, `LONGITUDE`, and `TIMEZONE` together
+  when changing locations. Meteocons SVG conversion depends on Cairo, which
+  may require an additional system package on Linux.
+</Callout>

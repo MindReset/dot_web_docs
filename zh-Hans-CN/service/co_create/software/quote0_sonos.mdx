@@ -1,0 +1,32 @@
+---
+title: "Quote/0 Sonos：正在播放桥接"
+description: "监听局域网中的 Sonos 播放状态，并将正在播放摘要自动推送到 Quote/0。"
+new: true
+---
+
+<GithubInfo owner="j10ccc" repo="quote0-sonos" />
+
+Quote/0 Sonos 会轮询局域网中的 Sonos 音箱，并通过 Dot Text API 将正在播放摘要推送到 Quote/0。曲目发生变化时会立即更新，同时使用定时心跳重新推送当前内容，避免设备长时间停留在旧状态。
+
+### 功能特性
+
+- **正在播放同步**：检测 Sonos 播放内容变化并更新 Quote/0
+- **房间自动发现**：可通过 Sonos 房间名称使用 SSDP 查找音箱
+- **指定 IP 连接**：也可以直接配置音箱 IP，跳过自动发现
+- **可调轮询频率**：默认每 10 秒检查一次播放状态
+- **心跳更新**：默认每 15 分钟重新推送一次当前内容
+- **容器运行**：仓库提供 Docker Compose 配置
+
+### 使用前准备
+
+- Python 3.12 或更高版本
+- `uv`
+- 与 Sonos 音箱处于同一局域网
+- Dot API Key 与 Quote/0 设备 ID
+
+通过 `.env` 配置 `DOT_API_KEY`、`DOT_DEVICE_ID`，并在 `SONOS_ROOM` 与 `SONOS_IP` 中选择一种连接方式。还可以设置 `POLL_INTERVAL`、`HEARTBEAT_INTERVAL` 和 `LOG_LEVEL`。
+
+<Callout type="info" title="网络发现">
+  使用 `SONOS_ROOM` 自动发现时，Docker 在 Linux 上需要 host
+  网络。macOS 等使用桥接网络的环境可通过 `SONOS_IP` 直接连接音箱。
+</Callout>

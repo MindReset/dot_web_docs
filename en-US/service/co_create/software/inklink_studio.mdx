@@ -1,0 +1,27 @@
+---
+title: "InkLink Studio: Local Web Console for Quote/0"
+description: Edit Quote/0 screens, inspect device state, configure connections, and manage third-party firmware through desktop Web Serial.
+new: true
+---
+
+<GithubInfo owner="SeimoDev" repo="inklink-studio" />
+
+InkLink Studio is a local web control environment for Quote/0. The browser is the only user interface: over USB, it can edit screens, inspect sensors and device settings, manage Wi-Fi and BLE, back up Flash, and install bundled or local firmware without a cloud service or separate backend.
+
+### Features
+
+- **Browser-based screen editor**: Positions and styles text, image, and sensor layers
+- **Monochrome image processing**: Includes cropping, scaling, grayscale-to-1-bit conversion, and multiple dithering algorithms
+- **Device state and settings**: Reads battery, chip temperature, USB state, uptime, and available memory, then configures connections and refresh behavior
+- **Project import and export**: Saves and moves complete screen projects as JSON
+- **Browser flashing and backup**: Downloads a complete 4 MB Flash backup and installs bundled or local firmware
+- **Autonomous refresh**: After saving a screen and policy, the device can continue refreshing from battery power without the browser
+
+You can use the hosted web app, run the web project locally, or deploy it with Docker.
+
+<Callout type="warn" title="Compatibility and flashing">
+  Web Serial requires desktop Chrome or Edge, and the page must run in an HTTPS
+  or localhost secure context. Browser flashing replaces the device firmware.
+  Use it only after confirming the same board pinout, UC8251D display, and 4 MB
+  Flash, and download a complete backup first.
+</Callout>
