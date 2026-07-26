@@ -1,0 +1,34 @@
+---
+title: "Quote/0 Bad Apple：墨水屏视频播放实验"
+description: "通过自定义固件与局域网帧传输，在 Quote/0 墨水屏上播放视频。"
+new: true
+---
+
+<GithubInfo owner="typed-sigterm" repo="quote0-bad-apple" />
+
+Quote/0 Bad Apple 是一个面向墨水屏动态播放的软硬件实验。电脑端使用 FFmpeg 读取视频并按设定间隔发送画面；刷入配套固件的 Quote/0 会在局域网中发现电脑、接收视频帧并刷新屏幕。
+
+### 功能特性
+
+- **视频逐帧播放**：将本地视频转换为连续的 Quote/0 画面
+- **局域网自动发现**：电脑通过 UDP 广播地址，设备发现后使用 TCP 接收帧
+- **播放参数**：支持循环播放，并可调整画面方向、反相与刷新间隔
+- **无硬件测试**：提供 Mock Device，可在电脑上验证发现、传输与确认流程
+- **开放硬件支持**：除 Quote/0 外，也面向 ESP32-C3 与 UC8251D 152 × 296 墨水屏组合
+
+### 使用前准备
+
+- Quote/0，或 ESP32-C3 + UC8251D 152 × 296 墨水屏
+- USB-C 数据线
+- Rust 工具链与 `espflash` v4
+- 已加入 `PATH` 的 FFmpeg v8
+- 电脑与设备可共同连接的 2.4 GHz Wi-Fi
+
+先为固件提供 Wi-Fi SSID 与密码，并通过 USB-C 刷写 `firmware`。设备联网后会输出由 DHCP 分配的 IP。随后在 `host` 目录运行播放器并传入视频路径；默认使用 UDP `18888` 进行发现，使用 TCP `8899` 传输画面。
+
+<Callout type="warn" title="刷写与凭据提醒">
+  刷写会替换 Quote/0
+  原厂固件，并停止使用原有 Dot API 与云端功能。操作前请准备完整备份与恢复方式。仓库示例中的
+  `firmware/.cargo/config.toml` 会被 Git
+  跟踪，不要直接提交真实 Wi-Fi 密码；请改用 Shell 环境变量，或将本地配置排除在版本控制之外。
+</Callout>

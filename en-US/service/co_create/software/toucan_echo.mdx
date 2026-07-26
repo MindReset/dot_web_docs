@@ -1,0 +1,43 @@
+---
+title: "ToucanEcho / ECHO: macOS Agent with a Quote/0 Companion Display"
+description: "Run a local desktop agent on macOS and transfer task-status screens to Quote/0 over BLE."
+new: true
+---
+
+<GithubInfo owner="BrightWeb-Dev-Team" repo="ToucanEcho" />
+
+ECHO, developed in the ToucanEcho repository, is a desktop agent for macOS. Its SwiftUI application automatically starts a local Python engine for goals, activities, reminders, rules, memory, and connections. The Mac can also render a Quote/0 status screen locally and send current state, progress, and next-step guidance to the e-paper display over BLE.
+
+### Features
+
+- **Local desktop agent**: Manages workspace state in a macOS app and uses a configurable DeepSeek service for replies
+- **Managed sidecar**: Starts the Python engine automatically and communicates over a random localhost port with a one-time Bearer Token
+- **Host-side rendering**: Uses system fonts and project assets to generate a 296 × 152, 1-bit landscape screen
+- **Chunked BLE transfer**: Sends the 5,624-byte framebuffer through a Manifest and bitmap chunks
+- **Integrity and resume**: Validates per-chunk and full-image CRC32 values and supports resuming an interrupted transfer
+- **Privacy mode**: Can hide project names, questions, and activity details
+
+### Requirements
+
+- macOS and Xcode
+- Python 3 available through `/usr/bin/env python3`
+- A DeepSeek API Key for agent replies; the service URL and model are configurable
+- Quote/0 or ESP32-C3 firmware implementing ECHO Q/0 Display BLE Protocol v1
+
+Open `echo.xcodeproj` in Xcode, run the `ECHO` scheme, and configure the model service in Settings. The device acts as the BLE Central and GATT Client: it reads the Manifest and 32 bitmap chunks, validates the image, refreshes the e-paper panel, and returns a transfer result.
+
+<Callout type="warn" title="Companion device firmware required">
+  The repository currently provides the macOS app, BLE protocol, and firmware
+  integration contract. It does not claim plug-and-play compatibility with the
+  stock Quote/0 firmware. Device firmware must implement the required GATT
+  service, long reads, chunk validation, and panel refresh flow. The e-paper
+  device is a read-only companion; confirmations, rejections, and approvals
+  remain on the Mac.
+</Callout>
+
+<Callout type="info" title="E-paper privacy">
+  An e-paper display may retain its last screen after losing power or going
+  offline. Delivery of a neutral privacy screen is best effort. Consider device
+  placement, BLE pairing, and retained images before displaying sensitive
+  workspace information.
+</Callout>

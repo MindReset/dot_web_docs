@@ -1,0 +1,35 @@
+---
+title: "Quote/0 Bad Apple: E-Paper Video Playback Experiment"
+description: "Use custom firmware and local-network frame streaming to play video on a Quote/0 e-paper display."
+new: true
+---
+
+<GithubInfo owner="typed-sigterm" repo="quote0-bad-apple" />
+
+Quote/0 Bad Apple is a hardware and software experiment for animated e-paper playback. A computer uses FFmpeg to read a video and send frames at a configured interval. A Quote/0 running the companion firmware discovers the computer on the local network, receives the frames, and refreshes the panel.
+
+### Features
+
+- **Frame-by-frame playback**: Turns a local video into a sequence of Quote/0 screens
+- **Local discovery**: The computer advertises its address over UDP, then the device receives frames over TCP
+- **Playback controls**: Supports looping, orientation, inversion, and configurable refresh intervals
+- **Hardware-free testing**: Includes a Mock Device for testing discovery, transfer, and acknowledgements on one computer
+- **Open hardware target**: Also supports an ESP32-C3 with a UC8251D 152 × 296 e-paper panel
+
+### Requirements
+
+- Quote/0, or an ESP32-C3 with a UC8251D 152 × 296 e-paper panel
+- A USB-C data cable
+- Rust and `espflash` v4
+- FFmpeg v8 available in `PATH`
+- A 2.4 GHz Wi-Fi network shared by the computer and device
+
+Provide the Wi-Fi SSID and password at firmware build time, then flash the `firmware` package over USB-C. After the device joins the network and reports its DHCP address, run the player from `host` with a video path. The defaults use UDP port `18888` for discovery and TCP port `8899` for frame delivery.
+
+<Callout type="warn" title="Firmware and credential warning">
+  Flashing replaces the stock Quote/0 firmware, including its Dot API and cloud
+  features. Create a complete backup and keep a tested recovery path before
+  proceeding. The example `firmware/.cargo/config.toml` is tracked by Git; do
+  not commit real Wi-Fi credentials. Supply them through shell environment
+  variables or exclude the local configuration from version control.
+</Callout>

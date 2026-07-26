@@ -1,0 +1,38 @@
+---
+title: "ToucanEcho / ECHO：macOS Agent 与 Quote/0 伴随屏"
+description: "在 macOS 上运行本地桌面 Agent，并通过 BLE 将任务状态画面传输到 Quote/0。"
+new: true
+---
+
+<GithubInfo owner="BrightWeb-Dev-Team" repo="ToucanEcho" />
+
+ToucanEcho 仓库中的 ECHO 是一套 macOS 桌面 Agent。SwiftUI 主程序会自动启动本地 Python 引擎，用于管理目标、活动、提醒、规则、记忆与连接；同时可在 Mac 本机生成 Quote/0 画面，通过 BLE 将当前状态、进度和下一步提示发送到墨水屏。
+
+### 功能特性
+
+- **本地桌面 Agent**：在 macOS 应用中管理工作区状态，并通过可配置的 DeepSeek 服务进行对话
+- **自动 Sidecar**：主程序自动启动 Python 引擎，使用随机本地端口与一次性 Bearer Token 通信
+- **本机画面生成**：使用系统字体与项目素材渲染 296 × 152、1-bit 横屏画面
+- **BLE 分块传输**：将 5624 字节 framebuffer 通过 Manifest 与位图块发送到设备
+- **完整性检查**：同时校验分块 CRC32 与整张图片 CRC32，并支持断线续传
+- **隐私模式**：可隐藏项目名称、问题和活动详情，只保留必要状态
+
+### 使用前准备
+
+- macOS 与 Xcode
+- 系统可通过 `/usr/bin/env python3` 启动的 Python 3
+- 用于 Agent 回复的 DeepSeek API Key；服务地址与模型可以修改
+- 实现 ECHO Q/0 Display BLE Protocol v1 的 Quote/0 或 ESP32-C3 固件
+
+用 Xcode 打开 `echo.xcodeproj`，选择 `ECHO` Scheme 运行，并在设置中填写模型服务配置。设备端作为 BLE Central / GATT Client 连接 Mac，读取 Manifest 与 32 个位图块，完成校验和墨水屏刷新后返回传输结果。
+
+<Callout type="warn" title="需要配套设备固件">
+  仓库当前提供 macOS 应用、BLE 协议与固件接入契约，不代表 Quote/0
+  原厂固件可直接连接。设备端需要实现对应的 GATT Service、长读、分块校验和面板刷新流程。该墨水屏仅作为只读伴随屏，确认、拒绝和审批操作仍需回到 Mac
+  完成。
+</Callout>
+
+<Callout type="info" title="墨水屏隐私">
+  墨水屏断电或离线后仍可能保留最后一张画面。隐私页的发送属于尽力而为；展示敏感工作区信息前，请同时考虑设备位置、BLE
+  配对方式与旧画面残留。
+</Callout>

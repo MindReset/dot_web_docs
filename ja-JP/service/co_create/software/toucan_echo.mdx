@@ -1,0 +1,41 @@
+---
+title: "ToucanEcho / ECHO：macOS Agent と Quote/0 伴走ディスプレイ"
+description: "macOS 上でローカルデスクトップ Agent を動かし、タスク状態の画面を BLE で Quote/0 へ転送します。"
+new: true
+---
+
+<GithubInfo owner="BrightWeb-Dev-Team" repo="ToucanEcho" />
+
+ToucanEcho リポジトリで開発されている ECHO は、macOS 向けのデスクトップ Agent です。SwiftUI アプリがローカルの Python エンジンを自動起動し、目標、活動、リマインダー、ルール、記憶、接続を管理します。Mac 上で Quote/0 向けの画面も生成し、現在の状態、進捗、次の行動を BLE で電子ペーパーディスプレイへ送信できます。
+
+### 主な機能
+
+- **ローカルデスクトップ Agent**：macOS アプリでワークスペース状態を管理し、設定可能な DeepSeek サービスから応答
+- **自動 Sidecar**：Python エンジンを自動起動し、ランダムなローカルポートと一時的な Bearer Token で通信
+- **Mac 側レンダリング**：システムフォントとプロジェクト素材から 296 × 152、1-bit 横画面を生成
+- **BLE 分割転送**：5624 バイトの framebuffer を Manifest とビットマップ Chunk に分けて送信
+- **整合性確認と再開**：Chunk ごとと画像全体の CRC32 を検証し、中断した転送を再開
+- **プライバシーモード**：プロジェクト名、質問、活動の詳細を非表示に設定可能
+
+### 事前準備
+
+- macOS と Xcode
+- `/usr/bin/env python3` から起動できる Python 3
+- Agent の応答に使う DeepSeek API Key。サービス URL とモデルは変更可能
+- ECHO Q/0 Display BLE Protocol v1 を実装した Quote/0 または ESP32-C3 のファームウェア
+
+Xcode で `echo.xcodeproj` を開き、`ECHO` Scheme を実行して、設定画面からモデルサービスを構成します。デバイス側は BLE Central / GATT Client として Mac に接続し、Manifest と 32 個のビットマップ Chunk を読み取り、検証と電子ペーパーの更新を完了してから転送結果を返します。
+
+<Callout type="warn" title="デバイス側ファームウェアが必要">
+  現在のリポジトリが提供するのは macOS アプリ、BLE
+  プロトコル、ファームウェア接続仕様です。Quote/0
+  の標準ファームウェアとそのまま接続できることは示されていません。デバイス側で必要な GATT
+  Service、Long Read、Chunk
+  検証、パネル更新処理を実装する必要があります。電子ペーパーは読み取り専用の伴走画面で、確認、拒否、承認は Mac
+  で行います。
+</Callout>
+
+<Callout type="info" title="電子ペーパーのプライバシー">
+  電源が切れたりオフラインになったりしても、電子ペーパーには最後の画面が残る場合があります。中立的なプライバシー画面の送信はベストエフォートです。機密性のある情報を表示する前に、設置場所、BLE
+  ペアリング、残像を考慮してください。
+</Callout>
