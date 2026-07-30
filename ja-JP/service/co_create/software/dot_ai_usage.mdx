@@ -1,0 +1,34 @@
+---
+title: "Dot Token ダッシュボード：Claude Code Hub 使用量ランキング"
+description: "セルフホストした Claude Code Hub の Token 使用量とモデル別ランキングを集計し、Canvas API で Quote/0 に表示します。"
+new: true
+---
+
+<GithubInfo owner="LynnGuo666" repo="Dot_AI_Usage" />
+
+Dot Token ダッシュボードは、セルフホストした Claude Code Hub のリクエストログから Token 統計を取得し、Quote/0 向けの 296 × 152 Canvas 画面を生成します。指定期間の合計、当日の使用量、モデル別ランキングを表示し、定期的にデバイスへ送信できます。
+
+### 主な機能
+
+- **2 つの表示モード**：`usage` は当日と期間累計、`completed` は期間合計と全期間のモデルランキングを表示
+- **モデル別集計**：モデル一覧から各モデルの Token 使用量を計算し、不要なモデルを除外可能
+- **Canvas ネイティブ出力**：中間 PNG を生成せず、Dot Canvas のノードツリーを構築
+- **柔軟な設定**：集計期間、タイムゾーン、表示文言、行数、レイアウト寸法を変更可能
+- **ローカルプレビュー**：`--dry-run` で `payload.json` を生成し、`demo.html` から確認
+- **定期送信**：cron を使って一定間隔で Quote/0 を更新
+
+### 事前準備
+
+- Python 3 とプロジェクトの依存パッケージ
+- 接続可能なセルフホスト Claude Code Hub と API Key
+- Dot API Key、Quote/0 のデバイス ID、対象 Canvas コンテンツの Task Key
+- `config.yaml.example` と `.env.example` から作成したローカル設定
+
+秘密情報、Claude Code Hub のアドレス、デバイス ID、Task Key は `.env` または環境変数で指定します。集計期間、API パス、表示文言、レイアウトは `config.yaml` で設定します。
+
+<Callout type="warn" title="API と認証情報">
+  このプロジェクトは Claude Code Hub の統計、モデル一覧、ランキング API
+  に依存します。パスやレスポンス形式が変わった場合は、設定またはクライアントを更新してください。Claude Code Hub と Dot
+  の API Key は安全に管理し、`.env`、`config.yaml`、実際のリンクや Task Key を含む
+  `payload.json` をコミットしないでください。
+</Callout>

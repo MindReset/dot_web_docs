@@ -1,0 +1,35 @@
+---
+title: "Dot Token Dashboard: Claude Code Hub Usage Rankings"
+description: "Summarize Token usage and model rankings from a self-hosted Claude Code Hub, then display them on Quote/0 through the Canvas API."
+new: true
+---
+
+<GithubInfo owner="LynnGuo666" repo="Dot_AI_Usage" />
+
+Dot Token Dashboard reads Token statistics from the request logs of a self-hosted Claude Code Hub and builds a 296 × 152 Canvas dashboard for Quote/0. It can show total usage for a selected period, today's usage, and a per-model ranking, then push the result to the device on a schedule.
+
+### Features
+
+- **Two display modes**: `usage` shows today's and period totals; `completed` shows the period total and full model ranking
+- **Per-model statistics**: Retrieves available models, calculates Token usage for each, and supports excluding unwanted models
+- **Native Canvas output**: Builds a Dot Canvas node tree without rendering an intermediate PNG
+- **Flexible configuration**: Controls the time range, timezone, labels, row count, and layout dimensions
+- **Local preview**: Uses `--dry-run` to generate `payload.json` for preview through `demo.html`
+- **Scheduled delivery**: Can refresh Quote/0 at a fixed interval through cron
+
+### Requirements
+
+- Python 3 and the project dependencies
+- An accessible self-hosted Claude Code Hub instance and API Key
+- A Dot API Key, Quote/0 device ID, and Task Key for the target Canvas content
+- Local configuration created from `config.yaml.example` and `.env.example`
+
+Provide secrets, the Claude Code Hub address, device ID, and Task Key through `.env` or environment variables. Use `config.yaml` for the reporting period, API paths, labels, and layout.
+
+<Callout type="warn" title="APIs and credentials">
+  This project depends on the Claude Code Hub statistics, model-list, and
+  leaderboard endpoints. Update the configuration or client if their paths or
+  response formats change. Keep the Claude Code Hub and Dot API Keys private,
+  and do not commit `.env`, `config.yaml`, or a generated `payload.json`
+  containing real links and Task Keys.
+</Callout>

@@ -1,0 +1,33 @@
+---
+title: "Dot Token 看板：Claude Code Hub 用量排行"
+description: "统计自建 Claude Code Hub 的 Token 用量与模型排行，并通过 Canvas API 显示在 Quote/0 上。"
+new: true
+---
+
+<GithubInfo owner="LynnGuo666" repo="Dot_AI_Usage" />
+
+Dot Token 看板会从自建 Claude Code Hub 的请求日志中读取 Token 统计，生成适配 Quote/0 的 296 × 152 Canvas 看板。你可以查看指定区间内的总用量、当日用量与按模型排列的用量排行，并将结果定时推送到设备。
+
+### 功能特性
+
+- **两种展示模式**：`usage` 展示今日与区间累计用量，`completed` 展示区间总量与完整模型排行
+- **按模型统计**：读取模型列表并统计各模型 Token 消耗，支持排除无需展示的模型
+- **Canvas 原生画面**：生成 Dot Canvas 节点树，无需先渲染 PNG
+- **灵活配置**：可调整统计区间、时区、标题、排行数量与布局尺寸
+- **本地预览**：支持 `--dry-run` 生成 `payload.json`，并通过 `demo.html` 预览
+- **定时推送**：可配合 cron 按固定间隔更新 Quote/0
+
+### 使用前准备
+
+- Python 3 与项目依赖
+- 可访问的自建 Claude Code Hub 实例及其 API Key
+- Dot API Key、Quote/0 设备 ID 与目标 Canvas 内容的 Task Key
+- 从 `config.yaml.example` 和 `.env.example` 创建的本地配置
+
+密钥、Claude Code Hub 地址、设备 ID 与 Task Key 通过 `.env` 或环境变量提供。`config.yaml` 用于设置统计区间、接口路径、显示文案与布局。
+
+<Callout type="warn" title="接口与凭据">
+  该项目依赖 Claude Code Hub 的统计、模型列表与排行榜接口。上游接口路径或返回结构变化时，需要同步调整配置或客户端。请妥善保管
+  Claude Code Hub API Key 与 Dot API Key，不要提交 `.env`、`config.yaml` 或包含真实链接和
+  Task Key 的 `payload.json`。
+</Callout>
