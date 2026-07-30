@@ -1,0 +1,43 @@
+---
+title: "Pocket Prophet Dashboard: Local Content Hub for Pocket Prophet"
+description: "Add divination, Qimen Dunjia, weather, markets, news, and Claude Code usage screens to the Pocket Prophet e-paper device."
+new: true
+---
+
+<GithubInfo owner="BruceLanLan" repo="pocket-prophet-dashboard" />
+
+Pocket Prophet Dashboard is a local web service for the 200 × 200 Pocket Prophet e-paper device. It uses the device's official wallpaper endpoint and cloud image-conversion service to generate and push divination, Qimen Dunjia, weather, market, news, and Claude Code Token-usage screens without flashing or modifying the firmware.
+
+### Features
+
+- **I Ching divination**: Uses the three-coin method to generate a primary hexagram, changing hexagram, and short reading
+- **Qimen Dunjia**: Builds a chart for the current time and presents it as a 3 × 3 palace grid
+- **Weather**: Uses wttr.in for icons, temperature, apparent temperature, and precipitation probability
+- **Market data**: Uses Yahoo Finance for a multi-symbol overview or single-symbol detail view
+- **Daily news**: Combines RSS, Atom, and Toutiao trending feeds, with configurable sources
+- **Token usage**: Reads local Claude Code transcripts and shows usage against a user-defined daily budget, a rolling five-hour window, and an approximate cost
+- **Automatic rotation**: Cycles through selected screens while the device remains on its wallpaper-transfer page
+
+### Requirements
+
+- A Pocket Prophet device and a computer or phone on the same Wi-Fi network
+- Python 3 and the project dependencies
+- The device's local IP shown on its wallpaper-transfer page; an optional MAC address can help rediscover a changed IP
+- Local configuration created from `config.example.json`
+
+After running `python3 app.py`, open port `5151` over the local network. Divination and Qimen Dunjia can be pushed directly. Weather, market, news, and usage screens can be previewed before updating the device.
+
+<Callout type="warn" title="Device connectivity">
+  Pocket Prophet normally stays offline and joins the local network only while
+  its wallpaper-transfer page is open. Automatic rotation requires leaving the
+  device on that page, where other wallpaper updates may be overwritten. The
+  battery impact of remaining online for long periods is not confirmed.
+</Callout>
+
+<Callout type="info" title="Current runtime limits">
+  The project has only been validated on macOS and uses a hard-coded macOS
+  Chinese font path. Its built-in Flask development server is designed for
+  personal LAN use and is not hardened for public exposure. Weather, market,
+  and news screens depend on free public data sources that may time out or
+  throttle requests.
+</Callout>
