@@ -1,0 +1,44 @@
+---
+title: "Vibe Usage Quote/0：AI コーディング使用量ダッシュボード"
+description: "Vibe Usage クラウドの AI コーディング使用量を Quote/0 の Canvas ダッシュボードとして定期表示します。"
+new: true
+---
+
+<GithubInfo owner="zzzhizhia" repo="vibe-usage-quote0" />
+
+Vibe Usage Quote/0 は、Vibe Usage に記録された実際の AI コーディング使用量を取得し、Token、料金、セッション数、アクティブ時間、主要ツールとモデルを Dot Canvas API で Quote/0 に表示します。メイン領域とサブ領域には別々の集計期間を指定でき、当日と長期の使用状況をデスク上で確認できます。
+
+<CustomCloudImage osSrc="dot/docs/quote0-device-photo_1785835828643.jpg" alt="Quote/0 実機に表示された Vibe Usage ダッシュボード" />
+
+### 主な機能
+
+- **使用量の概要**：Token、料金、セッション数、アクティブ時間、主要ツールとモデルを表示
+- **2 つの集計期間**：メインとサブを個別に、今日、24 時間、7 日、30 日、90 日、任意の N 日、カスタム日付へ設定
+- **Web と同じ集計基準**：キャッシュ入力 Token を含み、Vibe Usage の Web ダッシュボードと同じ合計 Token を使用
+- **プライバシーに配慮した画面**：プロジェクト名を Quote/0 へ送信しない
+- **Canvas ネイティブ出力**：デバイス上の Canvas API コンテンツを検出し、複数ある場合は対象を選択
+- **クロスプラットフォーム更新**：macOS launchd、Linux systemd ユーザータイマー、Windows タスクスケジューラに対応
+- **レンダリング確認**：HTTP 2xx だけで成功とせず、レンダリング情報または画像内容の変化を確認
+
+### 事前準備
+
+- Node.js 20 以降
+- Vibe Usage アカウントと API Key。ローカルでログイン済みの場合は既存の認証情報を再利用可能
+- Dot API Key と Quote/0 のデバイス ID
+- Dot. App のコンテンツ工房でデバイスループに追加した Canvas API コンテンツ
+- 送信時に起動し、オンラインになっている Quote/0
+
+`vibe-usage-quote0` をグローバルインストールして、`vibe-usage-quote0 enable` を実行します。対話式設定が 2 つの Vibe 集計期間と Dot 認証情報を検証し、対象 Canvas の選択、ローカル設定の保護、実際の初回送信、現在のプラットフォーム向け 30 分更新タスクの登録まで行います。
+
+<Callout type="info" title="Today と 24H">
+  `today` は現在のシステムタイムゾーンにおける午前 0 時から現在まで、`24h` は常に直近
+  24 時間を表します。どちらもメインまたはサブ領域へ設定できます。
+</Callout>
+
+<Callout type="warn" title="認証情報と実行環境">
+  長期利用する認証情報は `enable` で保存し、実際の API Key
+  をコマンド引数、シェル設定、スクリプト、リポジトリへ書き込まないでください。Linux
+  の自動更新には systemd
+  ユーザーセッションが必要です。デバイスがオフライン、スリープ中、または状態を確認できない場合、Canvas
+  リクエストを送る前に処理を停止します。
+</Callout>

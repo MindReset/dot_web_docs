@@ -1,0 +1,42 @@
+---
+title: "Vibe Usage Quote/0：AI 编码用量看板"
+description: "将 Vibe Usage 云端的 AI 编码用量汇总为 Quote/0 Canvas 看板，并在桌面持续刷新。"
+new: true
+---
+
+<GithubInfo owner="zzzhizhia" repo="vibe-usage-quote0" />
+
+Vibe Usage Quote/0 会读取 Vibe Usage 云端记录的真实 AI 编码用量，并通过 Dot Canvas API 在 Quote/0 上展示 Token、费用、会话数、活跃时长及主力工具和模型。主要区域与次要区域可以独立选择统计时间范围，适合在桌面持续观察当天与长期用量。
+
+<CustomCloudImage osSrc="dot/docs/quote0-device-photo_1785835828643.jpg" alt="Vibe Usage 看板在 Quote/0 实体设备上的显示效果" />
+
+### 功能特性
+
+- **完整用量摘要**：展示 Token、费用、会话数、活跃时长，以及主力工具与模型
+- **双时间窗口**：主要与次要区域可分别选择今天、24 小时、7 天、30 天、90 天、任意 N 天或自定义日期
+- **一致的统计口径**：总 Token 与 Vibe Usage 网页面板一致，并包含缓存输入 Token
+- **隐私优先画面**：不会把项目名称发送到 Quote/0
+- **Canvas 原生输出**：自动发现设备中的 Canvas API 内容，并在存在多个画板时要求用户选择
+- **跨平台自动刷新**：支持 macOS launchd、Linux systemd 用户定时器和 Windows 计划任务
+- **渲染结果确认**：推送后等待设备渲染信息或图片内容发生变化，不以 HTTP 2xx 作为唯一成功依据
+
+### 使用前准备
+
+- Node.js 20 或更高版本
+- Vibe Usage 账号及 API Key；本机已登录时可复用现有凭据
+- Dot API Key 与 Quote/0 设备 ID
+- 已在 Dot. App 内容工坊中加入设备循环的 Canvas API 内容
+- 推送时保持 Quote/0 唤醒并在线
+
+全局安装 `vibe-usage-quote0` 后运行 `vibe-usage-quote0 enable`。交互式配置会验证两组 Vibe 时间窗口与 Dot 凭据、选择目标画板、保护本地配置、执行一次真实推送，并按当前平台安装默认每 30 分钟运行的刷新任务。
+
+<Callout type="info" title="Today 与 24H">
+  `today` 从当前系统时区的本地零点统计到现在；`24h` 是持续滚动的最近 24
+  小时。两者含义不同，可以分别用于主要或次要区域。
+</Callout>
+
+<Callout type="warn" title="凭据与运行环境">
+  请通过 `enable`
+  保存长期凭据，不要把真实 API Key 写入命令参数、Shell 配置、脚本或仓库。Linux
+  自动刷新需要可用的 systemd 用户会话；设备离线、休眠或状态不明确时，程序会在发送 Canvas 请求前停止。
+</Callout>

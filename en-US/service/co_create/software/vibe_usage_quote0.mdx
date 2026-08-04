@@ -1,0 +1,45 @@
+---
+title: "Vibe Usage Quote/0: AI Coding Usage Dashboard"
+description: "Turn cloud-based Vibe Usage data into a Quote/0 Canvas dashboard that refreshes on your desktop."
+new: true
+---
+
+<GithubInfo owner="zzzhizhia" repo="vibe-usage-quote0" />
+
+Vibe Usage Quote/0 reads real AI coding usage recorded by Vibe Usage and displays Tokens, cost, sessions, active time, and the leading tool and model on Quote/0 through the Dot Canvas API. Its primary and secondary areas can use independent reporting periods, making it useful for tracking both today's activity and longer-term usage from your desk.
+
+<CustomCloudImage osSrc="dot/docs/quote0-device-photo_1785835828643.jpg" alt="Vibe Usage dashboard displayed on a physical Quote/0 device" />
+
+### Features
+
+- **Complete usage summary**: Shows Tokens, cost, sessions, active time, and the leading tool and model
+- **Two time windows**: Configures the primary and secondary areas independently for today, 24 hours, 7, 30, or 90 days, any N-day range, or custom dates
+- **Matching totals**: Uses the same total-Token definition as the Vibe Usage web dashboard, including cached input Tokens
+- **Privacy-conscious screen**: Does not send project names to Quote/0
+- **Native Canvas output**: Discovers Canvas API content on the device and asks you to choose when multiple canvases exist
+- **Cross-platform refresh**: Supports macOS launchd, Linux systemd user timers, and Windows Task Scheduler
+- **Render verification**: Waits for render metadata or image content to change instead of treating an HTTP 2xx response alone as success
+
+### Requirements
+
+- Node.js 20 or later
+- A Vibe Usage account and API Key; an existing local login can usually be reused
+- A Dot API Key and Quote/0 device ID
+- Canvas API content added to the device loop in Dot. App Content Studio
+- An awake and online Quote/0 during delivery
+
+Install `vibe-usage-quote0` globally and run `vibe-usage-quote0 enable`. The interactive setup validates both Vibe time windows and Dot credentials, selects the target canvas, protects the local configuration, performs one real push, and installs a 30-minute refresh task for the current platform.
+
+<Callout type="info" title="Today and 24H">
+  `today` covers local midnight in the current system timezone through now;
+  `24h` is a continuously rolling 24-hour window. Either can be assigned to the
+  primary or secondary area.
+</Callout>
+
+<Callout type="warn" title="Credentials and runtime">
+  Use `enable` for persistent credentials. Do not place real API Keys in command
+  arguments, shell profiles, scripts, or the repository. Automatic refresh on
+  Linux requires a working systemd user session. If the device is offline,
+  asleep, or its state cannot be confirmed, the client stops before sending the
+  Canvas request.
+</Callout>
