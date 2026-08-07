@@ -1,0 +1,37 @@
+---
+title: "quote0-desk: NFC-Interactive Desk Console for Quote/0"
+description: "Use a local Python service and the official APIs to run actions from an NFC tap and immediately display the result on Quote/0."
+new: true
+---
+
+<GithubInfo owner="BruceLanLan" repo="quote0-desk" />
+
+quote0-desk turns Quote/0 from a one-way display into an NFC-interactive desk device. When you tap the phone against the current content card, the local service runs its action and immediately pushes the new result back to the screen. Everything uses the official Text API and Image API, with no firmware replacement or modification.
+
+<CustomCloudImage osSrc="dot/docs/dashboard_1786093380914.png" alt="quote0-desk local console showing Quote/0 device state and grouped content cards" className="mx-auto w-full max-w-xl rounded-xl object-contain" />
+
+### Features
+
+- **Closed-loop NFC actions**: Tap to pat the desktop pet, advance a proverb, complete today's task, start a Pomodoro, or generate a new divination result
+- **16 content cards**: Includes a desktop pet, I-Ching casting, Qimen Dunjia, daily ganzhi, proverbs, tasks, focus sessions, a status board, Claude Code usage, Hermes messages, and custom wallpaper
+- **Local web console**: Inspect device state and the current screen, preview or push individual cards, and configure the NFC address and automatic rotation
+- **Persistent background service**: On macOS, the service and Cloudflare tunnel can run as LaunchAgents that restart after failures and update the tunnel address
+- **Claude and agent tools**: Call card-specific actions through a separate MCP Server, with optional buddy-bridge and Hermes Agent integrations
+- **Official API workflow**: Uses only Dot's public device-state, Loop, Text API, and Image API endpoints without reading or modifying firmware
+
+### Requirements
+
+- Python 3.9 or newer and the dependencies in `requirements.txt`
+- A Dot API Key and connected Quote/0; the device ID can be discovered automatically when the account has one device
+- Text API and Image API content added to the device Loop in Dot App Content Studio
+- A callback address reachable from the phone, either on the same LAN or through a Cloudflare Tunnel
+
+After installing the dependencies and setting `DOT_API_KEY`, run `python3 cli.py hello` to verify delivery, then start the service with `python3 server.py`. The web console is available at `http://localhost:5252` by default. Once `NFC_BASE_URL` is set, interactive cards place their matching callback address in the NFC link.
+
+<Callout type="info" title="Local data and optional integrations">
+  The time capsule, pet activity, and trading beacon read data from other local
+  projects. Their default paths come from the author's environment and should
+  be replaced with your own sources; missing data is shown as unavailable.
+  buddy-bridge, Hermes Agent, and the MCP Server are optional and do not affect
+  the core cards or NFC console.
+</Callout>

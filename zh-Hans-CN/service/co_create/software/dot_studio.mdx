@@ -1,0 +1,37 @@
+---
+title: "Dot Studio：Quote/0 本地内容控制台"
+description: "在本地浏览器中创建文字卡片、处理图片、设计 Canvas 仪表盘，并查看和控制 Quote/0。"
+new: true
+---
+
+<GithubInfo owner="jzjzzzzzzz" repo="dot-studio" />
+
+Dot Studio 是面向 Quote/0 的本地优先内容控制台。你可以在同一个浏览器工作区中创建文字卡片、处理墨水屏图片、设计 Canvas 仪表盘、查看设备状态，并控制设备切换到下一画面。Dot API Key 保留在本地服务端，不会暴露给浏览器。
+
+### 功能特性
+
+- **文字卡片**：编辑标题、正文、署名和可选的 NFC 链接，并实时预览墨水屏效果
+- **图片处理**：拖入 PNG、JPG、WebP 或 HEIC，自动转换为 296 × 152 黑白画面，并可调整填充方式、抖动和边框
+- **Canvas 仪表盘**：编辑指标、专注和系统状态模板，也可以直接修改 Canvas JSON
+- **设备状态与控制**：查看在线状态、电量、Wi-Fi 和渲染时间，并切换到下一画面
+- **可靠刷新**：避免旧图片覆盖新内容，并在任务保存和设备完成渲染后再确认推送成功
+- **Codex 完成通知**：通过项目内置 Skill 闪烁 Quote/0，并在 Codex 完成任务后显示简短通知卡片
+
+### 使用前准备
+
+- Node.js 22.13 或更高版本
+- Dot 开放平台 API Key
+- 已连接到 Dot 的 Quote/0
+- 已在 Dot App 内容工坊的设备 Loop 中加入 Text API、Image API，以及可选的 Canvas API 内容
+
+克隆仓库后，从 `.env.example` 创建 `.env.local`，填写 `DOT_API_KEY` 和 `DOT_DEVICE_ID`。安装依赖并启动开发服务，即可通过 `http://localhost:3210` 打开控制台。修改设备 Loop 后，需要刷新 Dot Studio 以重新发现对应内容。
+
+<Callout type="warn" title="凭据与内容配置">
+  请勿提交 `.env.local`，也不要把真实 API Key 写入客户端代码。文字、图片和 Canvas
+  功能依赖设备 Loop 中对应的 API 内容；缺少相关内容时，该类型的编辑和推送功能无法使用。
+</Callout>
+
+<Callout type="info" title="Codex 通知范围">
+  仓库中的 Codex 完成通知 Skill 和 `AGENTS.md` 仅对该项目生效，不会修改全局 Codex
+  配置。你也可以使用 `--no-flash` 关闭闪烁，或通过 `--dry-run` 检查本地配置而不连接 Dot。
+</Callout>

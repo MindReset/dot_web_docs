@@ -1,0 +1,34 @@
+---
+title: "quote0-desk：NFC 交互式 Quote/0 桌面控制台"
+description: "通过本地 Python 服务与官方 API，让 NFC 触碰触发内容动作并将结果立即显示在 Quote/0 上。"
+new: true
+---
+
+<GithubInfo owner="BruceLanLan" repo="quote0-desk" />
+
+quote0-desk 将 Quote/0 从单向显示面板变成支持 NFC 交互的桌面装置。手机轻碰当前内容卡后，本地服务会执行对应动作，并把新结果立即推回屏幕。所有功能均通过官方 Text API 与 Image API 实现，不需要刷写或修改设备固件。
+
+<CustomCloudImage osSrc="dot/docs/dashboard_1786093380914.png" alt="quote0-desk 本地控制台展示 Quote/0 设备状态与分组内容卡" className="mx-auto w-full max-w-xl rounded-xl object-contain" />
+
+### 功能特性
+
+- **NFC 交互闭环**：触碰即可摸摸屏上宠物、切换箴言、完成今日任务、开始番茄钟或生成新的占卜结果
+- **16 张内容卡**：覆盖屏上宠物、六爻、奇门遁甲、日课、箴言、任务、专注、状态板、Claude Code 用量、Hermes 消息和自定义壁纸等场景
+- **本地网页控制台**：查看设备在线状态与当前画面，预览或推送单张卡片，并配置 NFC 地址和自动轮换
+- **后台常驻**：可在 macOS 中将主服务与 Cloudflare 隧道注册为 LaunchAgent，异常退出后自动重启并更新隧道地址
+- **Claude 与 Agent 工具**：通过独立 MCP Server 直接调用具体卡片动作，并可选连接 buddy-bridge 与 Hermes Agent
+- **官方接口驱动**：只使用 Dot 公开的设备状态、循环任务、Text API 与 Image API，不访问或改写固件
+
+### 使用前准备
+
+- Python 3.9 或更高版本，以及 `requirements.txt` 中的依赖
+- Dot API Key 与已连接的 Quote/0；账号下只有一台设备时可以自动发现设备 ID
+- 已在 Dot App 内容工坊中加入设备 Loop 的 Text API 与 Image API 内容
+- 手机能够访问本地服务；可以使用同一局域网地址，或通过 Cloudflare Tunnel 提供公网回调地址
+
+安装依赖并设置 `DOT_API_KEY` 后，可以先运行 `python3 cli.py hello` 验证推送，再通过 `python3 server.py` 启动服务。网页控制台默认位于 `http://localhost:5252`。设置 `NFC_BASE_URL` 后，支持交互的内容卡会把对应回调地址写入 NFC 链接。
+
+<Callout type="info" title="本地数据与可选集成">
+  时间胶囊、宠物活跃度和实盘信标会读取本机其他项目的数据。仓库中的默认路径来自作者环境，需要替换为自己的数据源；读取不到时会显示暂无数据。buddy-bridge、Hermes
+  Agent 与 MCP Server 均为可选功能，不影响基础卡片和 NFC 控制台运行。
+</Callout>

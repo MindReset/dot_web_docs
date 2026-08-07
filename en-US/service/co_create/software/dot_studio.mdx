@@ -1,0 +1,40 @@
+---
+title: "Dot Studio: Local Content Console for Quote/0"
+description: "Create text cards, prepare images, design Canvas dashboards, and inspect or control Quote/0 from a local browser."
+new: true
+---
+
+<GithubInfo owner="jzjzzzzzzz" repo="dot-studio" />
+
+Dot Studio is a local-first content console for Quote/0. From one browser workspace, you can compose text cards, prepare e-paper images, design Canvas dashboards, inspect device state, and advance to the next screen. The Dot API Key remains on the local server instead of being exposed to the browser.
+
+### Features
+
+- **Text cards**: Edit a title, message, signature, and optional NFC link with a live e-paper preview
+- **Image preparation**: Drop PNG, JPG, WebP, or HEIC files, convert them automatically to a 296 × 152 monochrome screen, and adjust fit, dithering, and borders
+- **Canvas dashboards**: Edit metric, focus, and system-status templates or work directly with Canvas JSON
+- **Device state and control**: Inspect online status, battery, Wi-Fi, and render timing, then advance to the next screen
+- **Reliable refreshes**: Prevent stale images from replacing newer content and confirm both task storage and the completed device render
+- **Codex completion notifications**: Use the project-local Skill to flash Quote/0 and show a short card when Codex finishes a task
+
+### Requirements
+
+- Node.js 22.13 or newer
+- A Dot Open Platform API Key
+- A Quote/0 connected to Dot
+- Matching Text API, Image API, and optional Canvas API content added to the device Loop in Dot App Content Studio
+
+After cloning the repository, create `.env.local` from `.env.example` and provide `DOT_API_KEY` and `DOT_DEVICE_ID`. Install the dependencies and start the development server, then open `http://localhost:3210`. Refresh Dot Studio after changing the device Loop so it can discover the updated content.
+
+<Callout type="warn" title="Credentials and content setup">
+  Do not commit `.env.local` or place a real API Key in client-side code. Text,
+  image, and Canvas actions require the corresponding API content in the device
+  Loop; a content type remains unavailable until its matching item is present.
+</Callout>
+
+<Callout type="info" title="Codex notification scope">
+  The completion Skill and `AGENTS.md` in this repository apply only inside this
+  project and do not change global Codex configuration. Use `--no-flash` for a
+  single refresh or `--dry-run` to validate local configuration without
+  contacting Dot.
+</Callout>

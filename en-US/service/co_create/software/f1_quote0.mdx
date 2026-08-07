@@ -1,0 +1,41 @@
+---
+title: "F1 Quote/0: Race Calendar and Live Standings Dashboard"
+description: "Collect F1 schedules, results, live positions, and standings on a Mac, then send them automatically to Quote/0 through the Canvas API."
+new: true
+---
+
+<GithubInfo owner="belcheckyoung" repo="f1-quote0" />
+
+F1 Quote/0 is a local Mac application for sending Formula 1 dashboards to Quote/0. It uses public ESPN data as its primary source, supplemented by Jolpica F1 and OpenF1, to collect the calendar, session results, live positions, driver standings, and constructor standings for display through the Dot Canvas API.
+
+<CustomCloudImage osSrc="dot/docs/632470386-703f295d-04de-4dcb-a57f-69db68cac2c1_1786094292395.png" alt="F1 Quote/0 macOS console showing the next-race countdown, device preview, and automatic rotation settings" />
+
+### Features
+
+- **Results and live positions**: Shows every race, sprint, and Grand Prix result; an active session takes priority with the live top three and current lap
+- **Calendar and next-race countdown**: Lists the next two sessions with circuit and start time, plus a countdown card with an offline circuit outline
+- **Followed driver**: Tracks season points, recent sessions, and recent race or sprint finishes
+- **Followed constructor**: Shows constructor points, both drivers' season positions, and their recent results
+- **Automatic dashboard rotation**: Selects the panels to rotate and their delivery interval; live standings are checked every 15 seconds during a session
+- **E-paper-specific layouts**: Enlarges driver results, standings, and two-driver constructor panels for Quote/0 and bundles circuit artwork with the app
+
+### On-device result
+
+<CustomCloudImage osSrc="dot/docs/632504251-9e02b421-fd2d-4977-9794-25988dabcca2_1786094292398.jpeg" alt="Quote/0 displaying the countdown and circuit outline for the Dutch Grand Prix" />
+
+### Setup
+
+Open the included `Build/F1 Quote 0.app` on macOS, enter the Dot API Key and Quote/0 device ID in Settings, then choose a driver, constructor, delivery interval, and the dashboards to rotate. Before using the app, add Canvas API content to the device Loop in Dot App Content Studio.
+
+The API Key, device ID, and preferences are written only to the current Mac's application preferences and are not stored in the repository. The shortest automatic delivery interval is 60 seconds. Updates stop when the app exits or the Mac shuts down or enters deep sleep, while Quote/0 keeps the last successfully delivered screen.
+
+Building from source requires macOS 14 or newer and Xcode. Run `./scripts/package_app.sh` to package the application.
+
+<Callout type="warn" title="Data sources and compatibility">
+  ESPN's F1 endpoints are publicly reachable but undocumented and do not
+  guarantee long-term field compatibility. Jolpica F1 supplements driver and
+  constructor relationships, while OpenF1 adds exceptional finish states such
+  as DNF, DNS, and DSQ. Changes to these sources may require parser updates.
+</Callout>
+
+This is an unofficial personal project and is not affiliated with or endorsed by Formula 1, ESPN, Dot/Mindreset, any team, or their partners. See the repository's third-party notices for circuit artwork sources and licenses.
