@@ -4,9 +4,11 @@
         "how_to_pair",
         "set_template",
         "action",
-        "content_mode",
         "share_device",
-        "how_to_charge"
+        "how_to_charge",
+        "content_mode",
+        "../faq/refresh_timing",
+        "../faq/action_issues"
     ],
     "defaultOpen": true
 }
