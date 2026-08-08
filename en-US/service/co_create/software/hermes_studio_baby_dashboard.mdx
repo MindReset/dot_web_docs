@@ -1,0 +1,52 @@
+---
+title: "Quote/0 Baby Dashboard: Local Baby Care Tracker"
+description: "Record feeding, sleep, and diapers on the local network while Quote/0 displays current state, trends, and reminders."
+new: true
+---
+
+<GithubInfo owner="thursdaycapital" repo="hermes-studio-baby-dashboard" />
+
+Quote/0 Baby Dashboard is an open-source, local-first baby care tracker. Its community firmware turns Quote/0 into an always-visible e-paper dashboard: a phone or computer on the same LAN can record feeding, sleep, and diapers, while the device shows the baby's day number, latest state, next feeding, and vaccination reminders without relying on the official MindReset cloud.
+
+<CustomCloudImage osSrc="dot/docs/web-dashboard_1786181217726.jpeg" alt="Quote/0 Baby Dashboard local web interface showing baby status, quick entry, trends, history, backup, and firmware updates" />
+
+### Features
+
+- **Quick LAN entry**: Record feeding volume, sleep start and end, and wet, dirty, or combined diapers from a phone or computer
+- **State and trends**: Review current care state, recent history, and feeding or care trends for today, 2, 4, 6, or 30 days
+- **Reminders and day count**: Calculate the next feeding after each entry, advance the baby's day number by local date, and schedule vaccination reminders
+- **Caregiver synchronization and undo**: Check for records added by other caregivers every four seconds while the page is open and undo the most recent mistaken entry
+- **Local backup**: Export or restore a fully validated JSON backup; the device retains 32 recent records, while Hermes Bridge can also write successful actions to a local SQLite database
+- **Hermes Studio tools**: Use the MCP Bridge to record care events in natural language, read today's summary, change the feeding interval, and create reminders
+- **Provisioning and wireless updates**: Configure 2.4 GHz Wi-Fi, recover through an automatic setup hotspot, and upload or retrieve later OTA firmware from the browser
+
+### Quote/0 display
+
+<CustomCloudImage osSrc="dot/docs/quote0-baby-dashboard_1786181217728.jpg" alt="Quote/0 displaying the baby's day number, latest feeding, sleep, diaper, and next reminder" />
+
+### Installation requirements
+
+The project is intended for testers with ESP32 flashing experience. It targets an ESP32-C3 with 4 MB flash, a 152 × 296 monochrome e-paper display, and a UC8251D controller. First installation requires a data-capable USB cable and a macOS or Linux computer configured with ESP-IDF 6.x, Python 3, and Git.
+
+Clone the repository with its Git submodules, build it with `idf.py build`, and use `idf.py flash` for the first complete installation on a factory device. After installation, the device provides a `Quote0-Baby-XXXX` recovery hotspot for home 2.4 GHz Wi-Fi setup. Once it joins the LAN, open the dashboard through the device IP or `http://quote0-baby.local/`.
+
+<Callout type="warn" title="Public Beta and first installation">
+  This is independent community-developed public-beta firmware, not an official
+  MindReset product. The `quote0_baby.bin` asset in GitHub Releases is only for
+  OTA upgrades after this project has been installed; a factory device requires
+  a complete USB flash for its first installation. Back up the factory firmware
+  first. The repository does not distribute a factory image or guarantee that
+  official cloud service can be restored. Testing currently covers primarily
+  one Quote/0 device, not every hardware revision, router, or long-running setup.
+</Callout>
+
+<Callout type="warn" title="Privacy, network, and care boundaries">
+  The recovery hotspot uses a public default password and the LAN token is
+  derived from the device MAC, so use only a trusted private home network. Do
+  not expose the device through the public internet, a guest network, or port
+  forwarding, and never publish its token or baby records. One device per LAN
+  is recommended to avoid hostname conflicts. The device retains only 32 recent
+  records, so export backups regularly. This dashboard supports everyday
+  recordkeeping and does not replace pediatric care, professional feeding
+  advice, or emergency medical services.
+</Callout>

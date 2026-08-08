@@ -1,0 +1,43 @@
+---
+title: "Quote/0 Baby Dashboard：本地宝宝照护看板"
+description: "在局域网内记录喂奶、睡眠和尿布，让 Quote/0 同步显示状态、趋势与提醒。"
+new: true
+---
+
+<GithubInfo owner="thursdaycapital" repo="hermes-studio-baby-dashboard" />
+
+Quote/0 Baby Dashboard 是一套开源、本地优先的宝宝照护记录工具。它通过社区固件把 Quote/0 变成常驻墨水屏看板：手机或电脑可以在同一局域网内记录喂奶、睡眠和尿布，设备同步显示宝宝天数、最近状态、下次喂奶和疫苗提醒，不依赖 MindReset 官方云服务。
+
+<CustomCloudImage osSrc="dot/docs/web-dashboard_1786181217726.jpeg" alt="Quote/0 Baby Dashboard 局域网页面展示宝宝状态、快速记录、趋势、历史、备份与固件更新" />
+
+### 功能特性
+
+- **局域网快速记录**：通过手机或电脑记录喂奶量、睡眠开始与结束，以及尿、便或两者都有的尿布状态
+- **状态与趋势**：查看当前照护状态、近期记录，以及今天、2 天、4 天、6 天和一个月的喂养与照护趋势
+- **提醒与天数**：喂奶后自动计算下次提醒，按本地日期更新宝宝天数，并支持指定日期和时间的疫苗提醒
+- **多人同步与撤销**：网页打开时每 4 秒检查其他照护者的新记录，并允许撤销最近一次误操作
+- **本地备份**：导出或恢复经过完整校验的 JSON 备份；设备保存最近 32 条记录，Hermes Bridge 还可以把成功记录写入本机 SQLite
+- **Hermes Studio 工具**：通过 MCP Bridge 使用自然语言记录照护事件、读取今日汇总、调整喂奶间隔和设置提醒
+- **配网与无线升级**：支持 2.4 GHz Wi-Fi 配置、连接失败后的恢复热点，以及从浏览器上传或在线获取后续 OTA 固件
+
+### Quote/0 实机画面
+
+<CustomCloudImage osSrc="dot/docs/quote0-baby-dashboard_1786181217728.jpg" alt="Quote/0 实机显示宝宝天数、最近喂奶、睡眠、尿布和下一项提醒" />
+
+### 安装要求
+
+项目面向有 ESP32 刷机经验的测试者。硬件为 ESP32-C3、4 MB Flash、152 × 296 单色墨水屏和 UC8251D 显示控制器；首次安装需要数据 USB 线，以及配置了 ESP-IDF 6.x、Python 3 和 Git 的 macOS 或 Linux 电脑。
+
+克隆仓库时需要下载 Git 子模块，然后通过 `idf.py build` 编译，并使用 `idf.py flash` 完成原厂设备的第一次完整烧录。安装后，设备会提供 `Quote0-Baby-XXXX` 恢复热点用于配置家庭 2.4 GHz Wi-Fi；加入局域网后，可以通过设备 IP 或 `http://quote0-baby.local/` 打开网页看板。
+
+<Callout type="warn" title="公开 Beta 与首次刷机">
+  这是社区开发的公开 Beta 固件，不是 MindReset 官方产品。GitHub Release 中的
+  `quote0_baby.bin` 只用于安装本项目后的 OTA 升级，原厂设备第一次安装必须执行完整 USB
+  烧录。改刷前请自行备份原厂固件；仓库不提供原厂镜像，也不保证能够恢复原厂云服务。当前主要在一台 Quote/0
+  真机上验证，尚未覆盖所有硬件批次、路由器和长期运行场景。
+</Callout>
+
+<Callout type="warn" title="隐私、网络与照护边界">
+  恢复热点使用公开默认密码，局域网令牌由设备 MAC 推导，因此只能连接可信的家庭网络。不要将设备暴露到公网、访客网络或端口转发环境，也不要公开令牌和宝宝记录。同一局域网建议只运行一台设备，以免固定主机名冲突。设备仅保存最近 32
+  条记录，请定期导出备份。该看板只用于日常记录，不能代替儿科医生、专业喂养建议或紧急医疗服务。
+</Callout>
