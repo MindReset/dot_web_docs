@@ -1,8 +1,8 @@
 {
     "title": "内容模式",
     "pages": [
-        "fixed",
-        "loop"
+        "loop",
+        "fixed"
     ],
     "defaultOpen": true
 }

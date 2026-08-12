@@ -1,8 +1,8 @@
 {
     "title": "Content Mode",
     "pages": [
-        "fixed",
-        "loop"
+        "loop",
+        "fixed"
     ],
     "defaultOpen": true
 }
