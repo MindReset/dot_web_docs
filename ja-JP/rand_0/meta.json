@@ -9,7 +9,8 @@
                 "bluetooth_pager",
                 "app",
                 "firmware",
-                "repair_pricing"
+                "repair_pricing",
+                "customization"
         ],
         "defaultOpen": true
 }

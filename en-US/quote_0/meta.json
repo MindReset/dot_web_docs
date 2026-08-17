@@ -5,7 +5,8 @@
         "start",
         "firmware",
         "faq",
-        "repair_pricing"
+        "repair_pricing",
+        "customization"
     ],
     "defaultOpen": true
 }
