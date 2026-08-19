@@ -1,0 +1,78 @@
+---
+title: NFC カード
+description: 小さな NFC カードを、Rand/0 へのきっかけに。
+---
+
+## NFC カード
+
+小さな物理カードを、Rand/0 の日常に取り入れられます。まず Android 端末で NFC カードを準備し、使いたいときに Rand/0 と一緒に使います。
+
+## 用意するもの
+
+- Rand/0
+- 自分で所有している、対応した書き込み可能な NFC カード
+- カードを書き込むための Android スマートフォンまたはタブレット
+
+## NFC カードを書き込む
+
+1. [口袋 NFC Android インストールパッケージ](https://os-cdn.mindreset.tech/dot/device/rand_0/pocket-nfc-n1.2-c3_1777091076104.apk) をダウンロードしてインストールします。
+2. 口袋 NFC を開き、App の案内に従って NFC カードを Android 端末に近づけます。
+3. カードへの書き込みが終わったら、カードを Rand/0 に近づけ、端末の案内に従います。
+4. カードを見つけやすい場所に保管します。内容を変更するときは、口袋 NFC でもう一度書き込みます。
+
+<Callout type="warn" title="インストール前の注意">
+
+- 口袋 NFC は現在 Android インストールパッケージのみを提供しています；
+- WeChat 内蔵ブラウザでダウンロードできない場合は、システムブラウザでこのページを開き直してください；
+- APK をインストールする前に、現在のブラウザまたはファイルマネージャーからのアプリインストールを許可するよう、システムの案内に従ってください。
+
+</Callout>
+
+## NFC カードを使う
+
+書き込みが終わった後は、口袋 NFC を開いたままにしなくても Rand/0 で NFC 機能を使えます。App が必要になるのは、カードの内容を変更するときだけです。
+
+## iOS に対応していない理由
+
+iOS では NFC 機能が完全には開放されていないため、Pocket NFC は iPhone 上で物理 NFC カードの読み取りと書き込みができません。
+
+他の方の Android 端末を借りて NFC 操作を完了できます。内容を書き込んだ後は、Rand/0 が NFC 機能を単独で利用できます。NFC の内容を変更するときだけ、再び Pocket NFC App が必要です。
+
+## 対応カード
+
+Rand/0 はパッシブ NFC 機能を内蔵しており、自分で所有する物理 NFC カードを端末に書き込めます。端末は金融 IC としての属性や機能を備えていません。この機能は本人が所有するカードだけに使用してください。端末を安全に保管し、他人の情報を書き込んだり、安全カードを他人と共有したりしないでください。
+
+現在対応しているカードパラメータ：
+
+| 項目     | 仕様                         |
+| :------- | :--------------------------- |
+| NFC Type | CUID                         |
+| ATQA     | 0x0004                       |
+| SAK      | 0x08                         |
+| RAM      | 1kBytes (16 bytes Per Block) |
+
+<Callout type="warn" title="NFC の互換性について">
+
+NFC は補助機能であり、Rand/0 の主な機能ではありません。NFC カードにはさまざまな種類や暗号化方式があるため、互換性はカードや利用環境によって異なります。NFC 機能がご利用の環境で使えないことを理由とする返品には対応できません。あらかじめご了承ください。
+
+</Callout>
+
+## App プレビュー
+
+<div className="grid gap-4 md:grid-cols-3">
+  <CustomCloudImage
+    osSrc="dot/device/rand_0/Mockup_1776825518901.png"
+    alt="口袋 NFC App メイン画面"
+    className="h-auto w-full"
+  />
+  <CustomCloudImage
+    osSrc="dot/device/rand_0/Mockup-1_1776825539441.png"
+    alt="口袋 NFC App スクリーンショット 1"
+    className="h-auto w-full"
+  />
+  <CustomCloudImage
+    osSrc="dot/device/rand_0/Mockup-2_1776825553060.png"
+    alt="口袋 NFC App スクリーンショット 2"
+    className="h-auto w-full"
+  />
+</div>

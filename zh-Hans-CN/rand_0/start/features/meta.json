@@ -1,0 +1,19 @@
+{
+    "title": "功能",
+    "pages": [
+        "answers",
+        "fortune",
+        "mbti_guide",
+        "merit",
+        "coin",
+        "bluetooth_pager",
+        "pomodoro",
+        "clock",
+        "timer",
+        "dice",
+        "num",
+        "display_mode",
+        "nfc_cards"
+    ],
+    "defaultOpen": true
+}

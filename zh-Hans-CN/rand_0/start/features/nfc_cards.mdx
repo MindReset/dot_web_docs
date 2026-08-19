@@ -1,0 +1,78 @@
+---
+title: NFC 卡片
+description: 让一张小小的 NFC 卡片，成为 Rand/0 记住的入口。
+---
+
+## NFC 卡片
+
+把一张小小的实体卡片加入 Rand/0 的日常。先用 Android 设备准备好 NFC 卡片，之后就可以在需要时把它带回 Rand/0 使用。
+
+## 准备材料
+
+- Rand/0
+- 一张你本人拥有的、兼容且可写入的 NFC 卡片
+- 一部用于写入卡片的 Android 手机或平板
+
+## 写入 NFC 卡片
+
+1. 下载并安装 [口袋 NFC Android 安装包](https://os-cdn.mindreset.tech/dot/device/rand_0/pocket-nfc-n1.2-c3_1777091076104.apk)。
+2. 打开口袋 NFC，按照 App 提示将 NFC 卡片靠近 Android 设备。
+3. 完成卡片写入后，将卡片靠近 Rand/0，并按照设备屏幕上的提示继续操作。
+4. 将卡片放在方便找到的地方。需要更换内容时，再用口袋 NFC 重新写入即可。
+
+<Callout type="warn" title="安装前提示">
+
+- 口袋 NFC 目前仅提供 Android 安装包；
+- 如果微信内置浏览器无法下载，请使用系统浏览器重新打开本页；
+- 安装 APK 前，请根据系统提示允许来自当前浏览器或文件管理器的应用安装权限。
+
+</Callout>
+
+## 使用 NFC 卡片
+
+卡片写入完成后，Rand/0 可以独立使用 NFC 功能，不需要一直打开口袋 NFC。只有在需要更换卡片内容时，才需要再次使用 App。
+
+## 为什么不支持 iOS
+
+iOS 没有完全开放 NFC 能力，因此口袋 NFC 无法在 iPhone 上读取和写入实体 NFC 卡片。
+
+你可以借用他人的 Android 设备完成 NFC 操作。内容写入后，Rand/0 可以独立使用 NFC 功能。只有需要更换 NFC 内容时，才需要再次使用口袋 NFC App。
+
+## 支持的卡片
+
+Rand/0 内置无源 NFC 功能，可以将你本人拥有的实体 NFC 卡片写入设备。设备不具备金融 IC 的属性或能力。此功能仅适用于你本人拥有的卡片。请妥善保管设备，不要写入他人信息，也不要与他人共享安全卡片。
+
+当前支持的卡片参数：
+
+| 项目     | 参数说明                     |
+| :------- | :--------------------------- |
+| NFC Type | CUID                         |
+| ATQA     | 0x0004                       |
+| SAK      | 0x08                         |
+| RAM      | 1kBytes (16 bytes Per Block) |
+
+<Callout type="warn" title="NFC 兼容性说明">
+
+NFC 是附属功能，并非 Rand/0 的主体功能。由于 NFC 卡片种类众多、加密方式各不相同，兼容性会受到卡片和使用环境影响。因此，如果仅因 NFC 功能在您的环境中不可用而申请退货，我们无法支持，还请谅解。
+
+</Callout>
+
+## 应用预览
+
+<div className="grid gap-4 md:grid-cols-3">
+  <CustomCloudImage
+    osSrc="dot/device/rand_0/Mockup_1776825518901.png"
+    alt="口袋 NFC App 主界面"
+    className="h-auto w-full"
+  />
+  <CustomCloudImage
+    osSrc="dot/device/rand_0/Mockup-1_1776825539441.png"
+    alt="口袋 NFC App 截图一"
+    className="h-auto w-full"
+  />
+  <CustomCloudImage
+    osSrc="dot/device/rand_0/Mockup-2_1776825553060.png"
+    alt="口袋 NFC App 截图二"
+    className="h-auto w-full"
+  />
+</div>

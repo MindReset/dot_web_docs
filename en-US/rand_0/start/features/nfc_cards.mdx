@@ -1,0 +1,78 @@
+---
+title: NFC Cards
+description: Turn a small NFC card into a shortcut Rand/0 can remember.
+---
+
+## NFC Cards
+
+Give a small physical card a place in your Rand/0 routine. Use an Android device to prepare the card, then bring it back whenever you want to use it with Rand/0.
+
+## What You Need
+
+- Rand/0
+- A compatible writable NFC card that you own
+- An Android phone or tablet for writing the card
+
+## Write an NFC Card
+
+1. Download and install [Pocket NFC for Android](https://os-cdn.mindreset.tech/dot/device/rand_0/pocket-nfc-n1.2-c3_1777091076104.apk).
+2. Open Pocket NFC and follow its instructions to place the NFC card near your Android device.
+3. Finish writing the card, then bring it near Rand/0 and follow the on-device instructions.
+4. Keep the card somewhere easy to find. When you want to change its content, use Pocket NFC to write it again.
+
+<Callout type="warn" title="Before You Install">
+
+- Pocket NFC currently provides an Android installation package only;
+- If WeChat's in-app browser blocks the download, reopen this page in your system browser;
+- Before installing the APK, follow the system prompt to allow app installation from the current browser or file manager.
+
+</Callout>
+
+## Use the Card with Rand/0
+
+After the card is written, Rand/0 can use it without keeping Pocket NFC open. You only need the app again when you want to change the card.
+
+## Why iOS Is Not Supported
+
+iOS does not fully open its NFC capabilities, so Pocket NFC cannot read and write physical NFC cards on iPhone.
+
+You can borrow someone else's Android device to complete the NFC operation. After the content is written, Rand/0 can use the NFC feature independently. You only need Pocket NFC App again when you want to change the NFC content.
+
+## Supported Cards
+
+Rand/0 includes passive NFC capability and can write a personal physical NFC card that you own into the device. The device does not provide financial IC properties or capabilities. This feature is only intended for cards you personally own. Please keep your device secure, do not write other people's information, and do not share security cards with others.
+
+Currently supported card parameters:
+
+| Item     | Specification                |
+| :------- | :--------------------------- |
+| NFC Type | CUID                         |
+| ATQA     | 0x0004                       |
+| SAK      | 0x08                         |
+| RAM      | 1kBytes (16 bytes Per Block) |
+
+<Callout type="warn" title="NFC Compatibility Notice">
+
+NFC is a supplementary feature, not Rand/0's primary function. NFC cards come in many types and use many encryption methods, so compatibility depends on the card and your usage environment. We cannot accept returns when NFC is unavailable in your environment. Thank you for your understanding.
+
+</Callout>
+
+## App Preview
+
+<div className="grid gap-4 md:grid-cols-3">
+  <CustomCloudImage
+    osSrc="dot/device/rand_0/Mockup_1776825518901.png"
+    alt="Pocket NFC app main screen"
+    className="h-auto w-full"
+  />
+  <CustomCloudImage
+    osSrc="dot/device/rand_0/Mockup-1_1776825539441.png"
+    alt="Pocket NFC app screenshot 1"
+    className="h-auto w-full"
+  />
+  <CustomCloudImage
+    osSrc="dot/device/rand_0/Mockup-2_1776825553060.png"
+    alt="Pocket NFC app screenshot 2"
+    className="h-auto w-full"
+  />
+</div>

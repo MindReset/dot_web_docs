@@ -1,63 +1,8 @@
 ---
 title: Display Mode
-new: true
-description: Send custom images to Rand/0 over your local network.
+description: The Rand/0 Display Mode guide has moved under Getting Started.
 ---
 
 ## Display Mode
 
-Display Mode lets a compatible tool send custom images to Rand/0's e-ink display over the same local network. The display is `200 × 200` pixels and supports black-and-white and four-level grayscale images.
-
-<Callout type="warn" title="Before you begin">
-Display Mode is available only on your local network and does not provide additional login authentication. Use it only on a trusted Wi-Fi network and avoid sending sensitive content.
-</Callout>
-
-## Before You Begin
-
-Make sure that:
-
-1. You have completed [Wi-Fi Time Sync](/docs/rand_0/wifi) so Rand/0 remembers an available Wi-Fi network.
-2. The battery is sufficiently charged, or the device is connected to power. Display Mode will not start when the battery is too low.
-3. The phone or computer sending the image is connected to the same local network as Rand/0.
-4. You have a tool that supports Rand/0 Display Mode.
-
-## Enter Display Mode
-
-You can enter from either of these locations:
-
-- Main menu → **Display** → Confirm;
-- **Settings** → **Display Mode** → Confirm.
-
-Rand/0 restarts and automatically connects to a remembered Wi-Fi network. When the connection succeeds, the device IP address appears in the center of the display.
-
-## Connect and Send an Image
-
-1. Open a tool that supports Rand/0 Display Mode.
-2. Enter the IP address shown on the device and start the connection.
-3. Follow the tool's instructions to select an image and send it to Rand/0.
-
-Only one tool can be connected at a time. When a new connection is established, the previous connection is disconnected automatically.
-
-<Callout type="info" title="About Connection Tools">
-Display Mode allows Rand/0 to receive images over your local network. You still need a compatible tool to connect and send images, and the exact steps may vary between tools.
-</Callout>
-
-## Button Controls
-
-| Action | Result |
-| --- | --- |
-| Short press the top or bottom button | Sends the corresponding button event to the currently connected tool |
-| Long press the top button | Exits Display Mode and restarts Rand/0 in normal mode |
-
-E-ink displays refresh slowly and are better suited to static images. When images are sent continuously, Rand/0 keeps only the latest image; intermediate images may not appear.
-
-After you exit Display Mode, Rand/0 returns to normal mode. If the device resets unexpectedly, it will not enter Display Mode again automatically.
-
-## Common Prompts
-
-| Prompt | What to do |
-| --- | --- |
-| Please connect the power | Connect the device to power and try again, or wait until the battery is sufficiently charged. |
-| No remembered Wi-Fi | Complete [Wi-Fi Time Sync](/docs/rand_0/wifi) so the device can remember an available network. |
-| Wi-Fi connection failed / Unable to get an IP address | Check that the remembered Wi-Fi network is available and that the device is within range. |
-| WebSocket failed to start | Exit, restart the device, and enter Display Mode again. |
+This guide now lives under **Getting Started → Features**. Open the [Display Mode guide](/docs/rand_0/start/features/display_mode) for the complete setup steps, connection limits, and WebSocket protocol.

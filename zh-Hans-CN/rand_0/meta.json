@@ -1,15 +1,9 @@
 {
     "title": "Rand/0",
-    "pages": [
-        "start",
-        "wifi",
-        "wallpaper",
-        "features",
-        "display_mode",
-        "bluetooth_pager",
-        "app",
-        "firmware",
-        "repair_pricing",
+        "pages": [
+                "start",
+                "firmware",
+                "repair_pricing",
         "customization"
     ],
     "defaultOpen": true

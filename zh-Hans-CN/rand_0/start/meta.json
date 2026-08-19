@@ -1,6 +1,10 @@
 {
     "title": "开始使用",
     "pages": [
+        "features",
+        "wifi",
+        "wallpaper",
+        "settings",
         "how_to_charge"
     ],
     "defaultOpen": true
