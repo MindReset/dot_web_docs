@@ -1,7 +1,8 @@
 {
-    "title": "开发者平台",
+    "title": "开放平台",
     "pages": [
         "what_is_api",
+        "skill",
         "get_api",
         "get_device_id",
         "list_devices_api",
@@ -12,8 +13,7 @@
         "list_device_tasks_api",
         "text_api",
         "image_api",
-        "canvas_api",
-        "skill"
+        "canvas_api"
     ],
     "defaultOpen": true
 }

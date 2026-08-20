@@ -1,6 +1,6 @@
 ---
-title: AI Skill
-description: Use AI Skill to let AI assistants directly control your Dot. devices.
+title: Dot Skill
+description: Connect AI assistants to Dot. devices with portable skills, local MCP, or OpenAPI.
 new: true
 ---
 
@@ -8,34 +8,100 @@ new: true
 
 ## What is Dot Skill?
 
-Dot Skill is an open-source tool that allows AI assistants to interact with your Dot. devices through natural language commands. No need to manually write API requests—just tell the AI what you want to do.
+Dot Skill gives AI assistants a consistent way to work with Dot. devices. You can list devices, check status, display text or images, switch content, design Canvas screens, and update device settings without writing every request by hand.
 
-## Features
+It provides three integration paths:
 
-- **Plug and Play** - Control devices through natural language after installation
-- **Text Push** - Display specified text content on the device
-- **Image Push** - Push images to the device for display
-- **Canvas Push** - Turn your own data into custom cards, dashboards, and device screens
-- **Task Alias** - Give text, image, and canvas items an easy-to-recognize task name
-- **Status Query** - Check device battery level, network status, and other information
-- **Content Switching** - Switch to the next content
-- **Helper Scripts** - Python scripts provided for automation
+- Portable Agent Skills for agents that discover `SKILL.md` files
+- A local stdio MCP server with fixed device tools
+- An OpenAPI schema for GPT Actions and other OpenAPI-compatible clients
 
-## Supported Platforms
+## What you can do
+
+- Display text, images, and Canvas layouts
+- Give API content a task alias so it is easy to identify in the device task list
+- Read battery, Wi-Fi, display, and render status
+- Read or update device settings and timezones
+- List loop or fixed content tasks
+- Switch to the next content item
+- Validate a Canvas payload locally before sending it
+
+## Integration status
 
 | Platform | Status | Integration path |
 | --- | --- | --- |
-| Codex | Supported | Install as a Codex plugin with this repository's `.agents/plugins/marketplace.json` and `plugins/dot-skill` bundle |
-| OpenAI GPT Actions | Supported via schema | Import `openapi/dot-openapi.yaml` and configure Bearer authentication |
-| Claude / MCP clients | Planned | Remote MCP is not available yet. Use the OpenAPI schema for now. No release window is confirmed. |
-| Cursor and skill-compatible agents | Supported as skill docs | Install `skills/dot-device-openapi` and/or `skills/dot-canvas-designer`, or use this repository as context |
-| MCP Registry | Planned | Registry metadata is not published yet. No release window is confirmed. |
+| Codex | Supported | Install the Codex plugin from this repository marketplace |
+| OpenAI GPT Actions | Supported via OpenAPI | Import `openapi/dot-openapi.yaml` and configure Bearer authentication |
+| Claude Code, CodeBuddy, Cursor, VS Code Copilot, Kimi Code | Experimental | Use the canonical skills and local stdio MCP configuration |
+| Hermes, OpenCode, Gemini CLI, Goose | Experimental | Register `dot-mcp` as a local stdio server |
+| Trae, MiniMax Code, DeepSeek Harness | Experimental | Use the MCP-first configuration notes in the repository |
+| Remote MCP and MCP Registry | Planned | No release window is confirmed |
 
-## Installation
+Experimental means the repository includes the portable Skill or MCP configuration, but a platform-specific smoke test has not been completed here.
 
-### Option 1: Install as a Codex plugin
+## Requirements
 
-Add the dot_skill repository as a Codex marketplace:
+- A Dot. account with at least one device
+- A Dot. API key
+- Python 3.10 or later for helper scripts or the local MCP server
+- `pipx` or `uvx` for installing or running the MCP server
+
+Get your [API key](/docs/service/open/get_api) and [device serial number](/docs/service/open/get_device_id) before starting.
+
+## Local MCP server
+
+The local server runs on the same machine as your agent over stdio. It reads `DOT_API_KEY` from the process environment, never accepts the key as a tool argument, and does not provide arbitrary HTTP access.
+
+Install it once:
+
+```bash
+pipx install git+https://github.com/MindReset/dot_skill.git
+```
+
+Or run it on demand:
+
+```bash
+uvx --from git+https://github.com/MindReset/dot_skill.git dot-mcp
+```
+
+Set the key in the environment of the process that starts your agent:
+
+```bash
+export DOT_API_KEY="dot_app_<your_api_key>"
+```
+
+The repository includes ready-to-adapt [configuration examples](https://github.com/MindReset/dot_skill/blob/main/docs/mcp-configs.md) for Claude Code, CodeBuddy, Cursor, VS Code, Kimi Code, Hermes, OpenCode, Gemini CLI, Goose, Trae, MiniMax Code, and DeepSeek Harness.
+
+### MCP tools
+
+Read-only tools:
+
+- `dot_list_devices`
+- `dot_get_device_status`
+- `dot_get_device_settings`
+- `dot_list_timezones`
+- `dot_list_tasks`
+- `dot_validate_canvas`
+
+Device-changing tools:
+
+- `dot_update_device_settings`
+- `dot_switch_next_content`
+- `dot_send_text`
+- `dot_send_image`
+- `dot_send_canvas`
+
+MCP write requests are sent once without automatic retries. If a network error occurs after a write, check the device status or task list before sending the same content again.
+
+<Callout type="warning">
+Never put your API key in a prompt, tool argument, plugin manifest, or checked-in MCP configuration file.
+</Callout>
+
+## Agent Skill installation
+
+### Codex plugin
+
+Add the repository as a Codex marketplace:
 
 ```bash
 codex plugin marketplace add git@github.com:MindReset/dot_skill.git
@@ -47,64 +113,72 @@ Then install the plugin:
 codex plugin add dot-skill@mindreset-dot-skill
 ```
 
-Start a new Codex thread after installation so Codex can load the plugin's skills.
+Start a new Codex thread after installation so Codex can load the skills.
 
-<CustomCloudImage
-	osSrc="dot/docs/%E6%88%AA%E5%B1%8F2026-06-05%2018.07.56_1780654093968.png"
-	alt="Dot Skill plugin installation screen in Codex"
-/>
+### `npx skills add`
 
-### Option 2: Install with `npx skills add`
+Install both skills:
 
 ```bash
 npx skills add https://github.com/MindReset/dot_skill.git
 ```
 
-Install only the device interaction skill:
+Install only device operations:
 
 ```bash
 npx skills add https://github.com/MindReset/dot_skill.git --skill dot-device-openapi
 ```
 
-Install only the Canvas designer skill:
+Install only Canvas design guidance:
 
 ```bash
 npx skills add https://github.com/MindReset/dot_skill.git --skill dot-canvas-designer
 ```
 
-### Option 3: Manual Install
+The older `dot-openapi` entry remains as a compatibility router. New installations should use `dot-device-openapi` and `dot-canvas-designer`.
 
-```bash
-mkdir -p ~/.agents/skills
-ln -sfn /path/to/dot_skill/skills/dot-device-openapi ~/.agents/skills/dot-device-openapi
-ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canvas-designer
+## OpenAPI integration
+
+Import the schema:
+
+```text
+https://raw.githubusercontent.com/MindReset/dot_skill/main/openapi/dot-openapi.yaml
 ```
 
-Restart your agent after manual installation. `dot-openapi` remains as a compatibility router for older installs; new installs should use `dot-device-openapi` and `dot-canvas-designer`.
+Configure Bearer authentication:
 
-## Quick Start
-
-### Configure Environment Variables
-
-```bash
-export DOT_API_KEY="dot_app_your_api_key"
+```http
+Authorization: Bearer dot_app_<your_api_key>
 ```
 
-### Start Using
+The schema covers device discovery, status, settings, timezones, task lists, content switching, and Text, Image, and Canvas API content.
 
-After installation, you can simply say to your AI assistant:
+## API and payload limits
 
-- "Show 'Meeting starts at 3 PM' on device ABCD1234ABCD"
-- "Show 'Meeting starts at 3 PM' on device ABCD1234ABCD and name it Meeting Reminder"
-- "Check my device status"
-- "Switch to the next content"
+- The service rate limit is 10 requests per second.
+- Text, Image, and Canvas writes require the matching API content item to already exist in the device loop task in Dot. App Content Studio.
+- Settings intervals must be between 60,000 and 43,200,000 milliseconds and use whole-minute multiples.
+- Canvas `data` is limited to 64 KB; `windowData` to 128 KB; and `layoutFull` to 8 KB.
+- Canvas layouts allow at most 80 elements and a maximum nesting depth of 16.
+- Canvas strings are limited to 4,000 characters.
+- `taskAlias` belongs at the top level of Text, Image, and Canvas requests. Do not put it inside Canvas `data`.
 
-## Task Alias
+## Errors and troubleshooting
 
-If you create multiple text, image, or canvas items on the same device, you can give each one a task alias so it is easier to identify in the device task list. Dot Skill passes this name when pushing text, image, or canvas content. If you do not provide one, the existing name is preserved; if you explicitly ask to clear the name, the alias is removed.
+- `401`: check that `DOT_API_KEY` is set in the process environment and that the key is valid.
+- `404`: check the device serial number and confirm the requested content task exists.
+- `429`: respect the 10 requests-per-second limit and retry deliberately after the rate window passes.
+- Canvas validation errors: run `dot_validate_canvas` or use `send_canvas.py --dry-run` before sending.
+- Text, Image, or Canvas task errors: confirm that the corresponding API content item exists in the device loop task.
 
-## Related Links
+## Helper scripts
+
+The repository includes Python scripts for listing devices, checking status, reading or updating settings, listing tasks, switching content, and sending Text, Image, or Canvas payloads. They read `DOT_API_KEY` from the environment and use the same client and Canvas validation rules as the MCP server.
+
+## Related links
 
 - [Get API Key](/docs/service/open/get_api)
 - [Get Device ID](/docs/service/open/get_device_id)
-- [API Documentation Index](/docs/service/open)
+- [OpenAPI documentation](/docs/service/open)
+- [Dot Skill repository](https://github.com/MindReset/dot_skill)
+- [MCP configuration examples](https://github.com/MindReset/dot_skill/blob/main/docs/mcp-configs.md)

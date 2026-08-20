@@ -1,6 +1,6 @@
 ---
-title: AI Skill
-description: AI Skill を使用して、AI アシスタントが Dot. デバイスを直接制御できるようにします。
+title: Dot Skill
+description: Agent Skill、ローカル MCP、または OpenAPI で AI アシスタントと Dot. デバイスを連携します。
 new: true
 ---
 
@@ -8,34 +8,100 @@ new: true
 
 ## Dot Skill とは？
 
-Dot Skill は、AI アシスタントが自然言語コマンドを通じて Dot. デバイスと連携できるようにするオープンソースツールです。API リクエストを手動で書く必要はありません。AI にやりたいことを伝えるだけです。
+Dot Skill は、AI アシスタントが Dot. デバイスを一貫した方法で操作できるようにします。デバイス一覧、状態確認、テキストや画像の表示、コンテンツ切り替え、Canvas 画面の設計、デバイス設定の更新を、すべてのリクエストを手書きせずに行えます。
 
-## 機能
+連携方法は 3 つあります：
 
-- **プラグアンドプレイ** - インストール後、自然言語でデバイスを制御
-- **テキスト送信** - デバイスに指定したテキスト内容を表示
-- **画像送信** - 画像をデバイスに送信して表示
-- **Canvas 送信** - 自分のデータからカード、ダッシュボード、デバイス画面を作成
-- **タスク別名** - テキスト、画像、Canvas の内容に識別しやすいタスク名を設定
-- **状態確認** - デバイスのバッテリー残量、ネットワーク状態などを確認
-- **コンテンツ切り替え** - 次のコンテンツに切り替え
-- **ヘルパースクリプト** - 自動化用の Python スクリプト
+- `SKILL.md` を検出できるエージェント向けのポータブル Agent Skill
+- 固定されたデバイス操作ツールを提供するローカル stdio MCP Server
+- GPT Actions など OpenAPI 対応クライアント向けの OpenAPI schema
 
-## 対応プラットフォーム
+## できること
+
+- テキスト、画像、Canvas レイアウトをデバイスに表示
+- API コンテンツにタスク別名を付け、デバイスのタスク一覧で識別
+- バッテリー、Wi-Fi、表示、レンダリング状態を確認
+- デバイス設定とタイムゾーンを読み取り・更新
+- ループまたは固定タスクのコンテンツを一覧表示
+- 次のコンテンツへ切り替え
+- Canvas payload を送信前にローカル検証
+
+## 連携ステータス
 
 | プラットフォーム | 状態 | 連携方法 |
 | --- | --- | --- |
-| Codex | 対応済み | Codex plugin としてインストールします。このリポジトリの `.agents/plugins/marketplace.json` と `plugins/dot-skill` bundle を使用します |
-| OpenAI GPT Actions | schema 経由で対応 | `openapi/dot-openapi.yaml` をインポートし、Bearer 認証を設定します |
-| Claude / MCP clients | Planned | Remote MCP は現在利用できません。当面は OpenAPI schema を使用してください。確定した公開時期はありません。 |
-| Cursor と skill 互換 agent | skill docs として対応済み | `skills/dot-device-openapi` と `skills/dot-canvas-designer` の一方または両方をインストールするか、このリポジトリを context として使用します |
-| MCP Registry | Planned | Registry metadata はまだ公開されていません。確定した公開時期はありません。 |
+| Codex | Supported | このリポジトリの marketplace から Codex plugin をインストール |
+| OpenAI GPT Actions | Supported via OpenAPI | `openapi/dot-openapi.yaml` をインポートして Bearer 認証を設定 |
+| Claude Code、CodeBuddy、Cursor、VS Code Copilot、Kimi Code | Experimental | canonical skills とローカル stdio MCP 設定を使用 |
+| Hermes、OpenCode、Gemini CLI、Goose | Experimental | `dot-mcp` をローカル stdio Server として登録 |
+| Trae、MiniMax Code、DeepSeek Harness | Experimental | リポジトリの MCP-first 設定を使用 |
+| Remote MCP と MCP Registry | Planned | 公開時期は未定 |
 
-## インストール方法
+`Experimental` は、ポータブル Skill または MCP 設定が用意されているものの、このリポジトリでは各プラットフォームの実機 smoke test が完了していないことを示します。
 
-### 方法 1: Codex plugin としてインストール
+## 前提条件
 
-dot_skill リポジトリを Codex marketplace として追加します：
+- Dot. アカウントと少なくとも 1 台のデバイス
+- Dot. API key
+- ヘルパースクリプトまたはローカル MCP Server 用の Python 3.10 以降
+- MCP Server のインストールまたは実行に使う `pipx` または `uvx`
+
+開始前に [API key](/docs/service/open/get_api) と [デバイスのシリアル番号](/docs/service/open/get_device_id) を取得してください。
+
+## ローカル MCP Server
+
+ローカル Server はエージェントと同じマシン上で stdio を使って動作します。プロセス環境の `DOT_API_KEY` を読み取り、key をツール引数として受け取らず、任意の HTTP アクセスも提供しません。
+
+一度インストールする場合：
+
+```bash
+pipx install git+https://github.com/MindReset/dot_skill.git
+```
+
+必要なときだけ実行する場合：
+
+```bash
+uvx --from git+https://github.com/MindReset/dot_skill.git dot-mcp
+```
+
+エージェントを起動するプロセスと同じ環境に key を設定します：
+
+```bash
+export DOT_API_KEY="dot_app_<your_api_key>"
+```
+
+Claude Code、CodeBuddy、Cursor、VS Code、Kimi Code、Hermes、OpenCode、Gemini CLI、Goose、Trae、MiniMax Code、DeepSeek Harness の[設定例](https://github.com/MindReset/dot_skill/blob/main/docs/mcp-configs.md)も利用できます。
+
+### MCP ツール
+
+読み取り専用：
+
+- `dot_list_devices`
+- `dot_get_device_status`
+- `dot_get_device_settings`
+- `dot_list_timezones`
+- `dot_list_tasks`
+- `dot_validate_canvas`
+
+デバイスを変更するツール：
+
+- `dot_update_device_settings`
+- `dot_switch_next_content`
+- `dot_send_text`
+- `dot_send_image`
+- `dot_send_canvas`
+
+MCP の書き込みリクエストは自動再試行されません。書き込み後にネットワークエラーが発生した場合は、同じ内容を再送する前にデバイス状態またはタスク一覧を確認してください。
+
+<Callout type="warning">
+API key を prompt、ツール引数、plugin manifest、またはリポジトリにコミットする MCP 設定ファイルへ書かないでください。
+</Callout>
+
+## Agent Skill のインストール
+
+### Codex plugin
+
+リポジトリを Codex marketplace として追加します：
 
 ```bash
 codex plugin marketplace add git@github.com:MindReset/dot_skill.git
@@ -47,64 +113,72 @@ codex plugin marketplace add git@github.com:MindReset/dot_skill.git
 codex plugin add dot-skill@mindreset-dot-skill
 ```
 
-インストール後、Codex が plugin 内の skills を読み込めるように、新しい Codex スレッドを作成してください。
+インストール後、Codex が skills を読み込めるように新しいスレッドを作成してください。
 
-<CustomCloudImage
-	osSrc="dot/docs/%E6%88%AA%E5%B1%8F2026-06-05%2018.07.56_1780654093968.png"
-	alt="Codex での Dot Skill plugin インストール画面"
-/>
+### `npx skills add`
 
-### 方法 2: `npx skills add` でインストール
+両方の skill をインストール：
 
 ```bash
 npx skills add https://github.com/MindReset/dot_skill.git
 ```
 
-デバイス操作 skill のみインストール：
+デバイス操作のみ：
 
 ```bash
 npx skills add https://github.com/MindReset/dot_skill.git --skill dot-device-openapi
 ```
 
-Canvas designer skill のみインストール：
+Canvas 設計のみ：
 
 ```bash
 npx skills add https://github.com/MindReset/dot_skill.git --skill dot-canvas-designer
 ```
 
-### 方法 3: 手動インストール
+古い `dot-openapi` 入口は互換ルーターとして残っています。新しいインストールでは `dot-device-openapi` と `dot-canvas-designer` を使用してください。
 
-```bash
-mkdir -p ~/.agents/skills
-ln -sfn /path/to/dot_skill/skills/dot-device-openapi ~/.agents/skills/dot-device-openapi
-ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canvas-designer
+## OpenAPI 連携
+
+schema をインポートします：
+
+```text
+https://raw.githubusercontent.com/MindReset/dot_skill/main/openapi/dot-openapi.yaml
 ```
 
-手動インストール後、agent を再起動してください。`dot-openapi` は古いインストール向けの互換ルーターとして残っています。新規インストールでは `dot-device-openapi` と `dot-canvas-designer` の利用を推奨します。
+Bearer 認証を設定します：
 
-## クイックスタート
-
-### 環境変数の設定
-
-```bash
-export DOT_API_KEY="dot_app_your_api_key"
+```http
+Authorization: Bearer dot_app_<your_api_key>
 ```
 
-### 使用開始
+schema には、デバイス検出、状態、設定、タイムゾーン、タスク一覧、コンテンツ切り替え、Text、Image、Canvas API が含まれます。
 
-インストール後、AI アシスタントに以下のように話しかけるだけ：
+## API と payload の制限
 
-- "デバイス ABCD1234ABCD に '会議は午後 3 時から' と表示して"
-- "デバイス ABCD1234ABCD に '会議は午後 3 時から' と表示して、会議リマインダーという名前にして"
-- "デバイスの状態を確認して"
-- "次のコンテンツに切り替えて"
+- サービスのレート制限は 1 秒あたり 10 リクエストです。
+- Text、Image、Canvas の書き込みには、Dot. App Content Studio のデバイスループタスクに対応する API content item が必要です。
+- デバイス設定の interval は 60,000～43,200,000 ミリ秒、かつ整数分の倍数で指定します。
+- Canvas の `data` は 64 KB、`windowData` は 128 KB、`layoutFull` は 8 KB までです。
+- Canvas レイアウトは最大 80 要素、最大ネスト深度 16 です。
+- Canvas の文字列は 4,000 文字までです。
+- `taskAlias` は Text、Image、Canvas リクエストのトップレベルに置き、Canvas `data` の中には入れません。
 
-## タスク別名
+## エラーとトラブルシューティング
 
-同じデバイスに複数のテキスト、画像、Canvas 内容を作成する場合、それぞれにタスク別名を付けると、デバイスのタスク一覧で用途を見分けやすくなります。Dot Skill はテキスト、画像、Canvas の送信時にこの名前を渡します。指定しない場合は既存の名前を保持し、明示的に名前の削除を依頼した場合は別名を削除します。
+- `401`：エージェントを起動するプロセスに `DOT_API_KEY` が設定され、key が有効か確認します。
+- `404`：デバイスのシリアル番号と、対応するコンテンツタスクを確認します。
+- `429`：1 秒あたり 10 リクエストの制限を守り、レートウィンドウ後に意図的に再試行します。
+- Canvas 検証エラー：`dot_validate_canvas` または `send_canvas.py --dry-run` を使います。
+- Text、Image、Canvas のタスクエラー：対応する API content item がデバイスのループタスクに存在するか確認します。
+
+## ヘルパースクリプト
+
+リポジトリには、デバイス一覧、状態確認、設定の読み取り・更新、タスク一覧、コンテンツ切り替え、Text・Image・Canvas payload 送信の Python スクリプトが含まれています。スクリプトは環境変数から `DOT_API_KEY` を読み取り、MCP Server と同じクライアントおよび Canvas 検証ルールを使います。
 
 ## 関連リンク
 
-- [API キーの取得](/docs/service/open/get_api)
-- [デバイス ID の取得](/docs/service/open/get_device_id)
-- [API ドキュメント索引](/docs/service/open)
+- [API key の取得](/docs/service/open/get_api)
+- [デバイスシリアル番号の取得](/docs/service/open/get_device_id)
+- [OpenAPI ドキュメント](/docs/service/open)
+- [Dot Skill リポジトリ](https://github.com/MindReset/dot_skill)
+- [MCP 設定例](https://github.com/MindReset/dot_skill/blob/main/docs/mcp-configs.md)

@@ -1,6 +1,6 @@
 ---
-title: AI Skill
-description: 通过 AI Skill 让 AI 助手直接控制您的 Dot. 设备。
+title: Dot Skill
+description: 通过 Agent Skill、本地 MCP 或 OpenAPI 连接 AI 助手与 Dot. 设备。
 new: true
 ---
 
@@ -8,103 +8,177 @@ new: true
 
 ## 什么是 Dot Skill？
 
-Dot Skill 是一个开源工具，让 AI 助手能够通过自然语言指令直接与您的 Dot. 设备交互。无需手动编写 API 请求，只需告诉 AI 您想做什么。
+Dot Skill 为 AI 助手提供统一方式来使用 Dot. 设备。你可以列出设备、查看状态、显示文本或图像、切换内容、设计 Canvas 画面以及更新设备设置，而不必手写每一个请求。
 
-## 功能特性
+它提供三种集成方式：
 
-- **即插即用** - 安装后即可通过自然语言控制设备
-- **文本推送** - 在设备上显示指定文本内容
-- **图像推送** - 将图片推送到设备显示
-- **画板推送** - 将自己的数据生成信息卡片、仪表盘和自定义设备画面
-- **任务别名** - 为文本、图像、画板内容设置易识别的任务名称
-- **状态查询** - 查看设备电量、网络状态等信息
-- **内容切换** - 切换到下一个内容
-- **辅助脚本** - 提供 Python 脚本用于自动化
+- 供能够发现 `SKILL.md` 的 agent 使用的可移植 Agent Skill
+- 通过本地 stdio 运行、包含固定设备工具的 MCP Server
+- 供 GPT Actions 和其他 OpenAPI 兼容客户端使用的 OpenAPI schema
 
-## 支持平台
+## 你可以做什么
+
+- 在设备上显示文本、图像和 Canvas 布局
+- 为 API 内容设置任务别名，方便在设备任务列表中识别
+- 查看电量、Wi-Fi、显示和渲染状态
+- 读取或更新设备设置及时区
+- 列出循环任务或固定任务中的内容
+- 切换到下一个内容
+- 在发送 Canvas 前先在本地校验 payload
+
+## 集成状态
 
 | 平台 | 状态 | 集成方式 |
 | --- | --- | --- |
-| Codex | 已支持 | 作为 Codex plugin 安装，使用仓库内 `.agents/plugins/marketplace.json` 与 `plugins/dot-skill` |
-| OpenAI GPT Actions | 通过 schema 支持 | 导入 `openapi/dot-openapi.yaml` 并配置 Bearer 认证 |
-| Claude / MCP clients | Planned | 当前不支持 Remote MCP。请先使用 OpenAPI schema，暂无确认发布时间。 |
-| Cursor 和兼容 skill 的 agent | 已支持为 skill 文档 | 安装 `skills/dot-device-openapi` 和/或 `skills/dot-canvas-designer`，或将本仓库作为上下文 |
-| MCP Registry | Planned | 当前未发布 Registry metadata，暂无确认发布时间。 |
+| Codex | Supported | 从本仓库 marketplace 安装 Codex plugin |
+| OpenAI GPT Actions | Supported via OpenAPI | 导入 `openapi/dot-openapi.yaml` 并配置 Bearer 认证 |
+| Claude Code、CodeBuddy、Cursor、VS Code Copilot、Kimi Code | Experimental | 使用 canonical skills 和本地 stdio MCP 配置 |
+| Hermes、OpenCode、Gemini CLI、Goose | Experimental | 将 `dot-mcp` 注册为本地 stdio Server |
+| Trae、MiniMax Code、DeepSeek Harness | Experimental | 按仓库中的 MCP-first 配置说明接入 |
+| Remote MCP 和 MCP Registry | Planned | 尚未确定发布时间 |
 
-## 安装方式
+`Experimental` 表示仓库已提供可移植 Skill 或 MCP 配置，但这里尚未完成对应平台的真实 smoke test。
 
-### 方式一：作为 Codex 插件安装
+## 前提条件
 
-将 dot_skill 仓库添加为 Codex marketplace：
+- 一个 Dot. 账号和至少一台设备
+- 一个 Dot. API key
+- Python 3.10+，用于辅助脚本或本地 MCP Server
+- `pipx` 或 `uvx`，用于安装或运行 MCP Server
+
+开始前，请先获取[API key](/docs/service/open/get_api)和[设备序列号](/docs/service/open/get_device_id)。
+
+## 本地 MCP Server
+
+本地 Server 与 agent 在同一台设备上通过 stdio 通信。它从进程环境中的 `DOT_API_KEY` 读取密钥，不会把密钥作为工具参数接收，也不提供任意 HTTP 访问。
+
+安装一次：
+
+```bash
+pipx install git+https://github.com/MindReset/dot_skill.git
+```
+
+或按需运行：
+
+```bash
+uvx --from git+https://github.com/MindReset/dot_skill.git dot-mcp
+```
+
+在启动 agent 的同一环境中设置 API key：
+
+```bash
+export DOT_API_KEY="dot_app_<your_api_key>"
+```
+
+仓库提供 Claude Code、CodeBuddy、Cursor、VS Code、Kimi Code、Hermes、OpenCode、Gemini CLI、Goose、Trae、MiniMax Code 和 DeepSeek Harness 的[配置示例](https://github.com/MindReset/dot_skill/blob/main/docs/mcp-configs.md)。
+
+### MCP 工具
+
+只读工具：
+
+- `dot_list_devices`
+- `dot_get_device_status`
+- `dot_get_device_settings`
+- `dot_list_timezones`
+- `dot_list_tasks`
+- `dot_validate_canvas`
+
+会改变设备状态的工具：
+
+- `dot_update_device_settings`
+- `dot_switch_next_content`
+- `dot_send_text`
+- `dot_send_image`
+- `dot_send_canvas`
+
+MCP 写入请求只发送一次，不会自动重试。如果写入后发生网络错误，请先查看设备状态或任务列表，再决定是否重新发送。
+
+<Callout type="warning">
+不要把 API key 放进 prompt、工具参数、plugin manifest 或提交到仓库的 MCP 配置文件。
+</Callout>
+
+## Agent Skill 安装
+
+### Codex plugin
+
+将仓库添加为 Codex marketplace：
 
 ```bash
 codex plugin marketplace add git@github.com:MindReset/dot_skill.git
 ```
 
-然后安装插件：
+然后安装 plugin：
 
 ```bash
 codex plugin add dot-skill@mindreset-dot-skill
 ```
 
-安装完成后，请新建一个 Codex 线程，以便 Codex 加载插件中的 skills。
+安装后请新建一个 Codex 线程，以便 Codex 加载 skills。
 
-<CustomCloudImage
-	osSrc="dot/docs/%E6%88%AA%E5%B1%8F2026-06-05%2018.07.56_1780654093968.png"
-	alt="Codex 中的 Dot Skill 插件安装界面"
-/>
+### 使用 `npx skills add`
 
-### 方式二：通过 `npx skills add` 安装
+安装两个 skill：
 
 ```bash
 npx skills add https://github.com/MindReset/dot_skill.git
 ```
 
-如果只需要设备交互能力：
+仅安装设备交互能力：
 
 ```bash
 npx skills add https://github.com/MindReset/dot_skill.git --skill dot-device-openapi
 ```
 
-如果只需要 Canvas 设计能力：
+仅安装 Canvas 设计能力：
 
 ```bash
 npx skills add https://github.com/MindReset/dot_skill.git --skill dot-canvas-designer
 ```
 
-### 方式三：手动安装
+旧的 `dot-openapi` 入口仍作为兼容路由保留。新安装建议使用 `dot-device-openapi` 和 `dot-canvas-designer`。
 
-```bash
-mkdir -p ~/.agents/skills
-ln -sfn /path/to/dot_skill/skills/dot-device-openapi ~/.agents/skills/dot-device-openapi
-ln -sfn /path/to/dot_skill/skills/dot-canvas-designer ~/.agents/skills/dot-canvas-designer
+## OpenAPI 集成
+
+导入 schema：
+
+```text
+https://raw.githubusercontent.com/MindReset/dot_skill/main/openapi/dot-openapi.yaml
 ```
 
-手动安装后请重启您的 agent。`dot-openapi` 仍作为旧安装的兼容入口保留，新安装建议使用 `dot-device-openapi` 与 `dot-canvas-designer`。
+配置 Bearer 认证：
 
-## 快速开始
-
-### 配置环境变量
-
-```bash
-export DOT_API_KEY="dot_app_您的API密钥"
+```http
+Authorization: Bearer dot_app_<your_api_key>
 ```
 
-### 开始使用
+该 schema 覆盖设备发现、状态、设置、时区、任务列表、内容切换，以及 Text、Image 和 Canvas API 内容。
 
-安装完成后，您可以直接对 AI 助手说：
+## API 与 payload 限制
 
-- "帮我在设备 ABCD1234ABCD 上显示 '会议在 3 点开始'"
-- "帮我在设备 ABCD1234ABCD 上显示 '会议在 3 点开始'，并命名为会议提醒"
-- "查看我的设备状态"
-- "切换到下一个内容"
+- 服务速率限制为每秒 10 个请求。
+- Text、Image 和 Canvas 写入要求对应的 API content item 已经存在于 Dot. App 内容工坊的设备循环任务中。
+- 设备设置 interval 必须在 60,000 到 43,200,000 毫秒之间，并使用整分钟倍数。
+- Canvas `data` 最大 64 KB，`windowData` 最大 128 KB，`layoutFull` 最大 8 KB。
+- Canvas 布局最多包含 80 个元素，最大嵌套深度为 16。
+- Canvas 字符串最大长度为 4,000 个字符。
+- `taskAlias` 应放在 Text、Image 和 Canvas 请求的顶层，不要放进 Canvas `data`。
 
-## 任务别名
+## 错误与排查
 
-如果您在同一台设备上创建了多个文本、图像或画板内容，可以为每个内容指定一个任务别名，方便在设备任务列表里区分用途。Dot Skill 会在推送文本、图像或画板时传递该名称；不指定时保留原有名称，明确要求清空名称时会移除别名。
+- `401`：确认启动 agent 的进程环境设置了 `DOT_API_KEY`，且 key 有效。
+- `404`：检查设备序列号，并确认对应的内容任务存在。
+- `429`：遵守每秒 10 个请求的限制，在速率窗口结束后再有意重试。
+- Canvas 校验错误：先调用 `dot_validate_canvas`，或使用 `send_canvas.py --dry-run`。
+- Text、Image 或 Canvas 任务错误：确认对应的 API content item 已存在于设备循环任务中。
+
+## 辅助脚本
+
+仓库提供列出设备、查看状态、读取或更新设置、列出任务、切换内容以及发送 Text、Image、Canvas payload 的 Python 脚本。脚本从环境变量读取 `DOT_API_KEY`，并与 MCP Server 使用相同的客户端和 Canvas 校验规则。
 
 ## 相关链接
 
-- [获取 API 密钥](/docs/service/open/get_api)
+- [获取 API key](/docs/service/open/get_api)
 - [获取设备序列号](/docs/service/open/get_device_id)
-- [API 文档索引](/docs/service/open)
+- [OpenAPI 文档](/docs/service/open)
+- [Dot Skill 仓库](https://github.com/MindReset/dot_skill)
+- [MCP 配置示例](https://github.com/MindReset/dot_skill/blob/main/docs/mcp-configs.md)
