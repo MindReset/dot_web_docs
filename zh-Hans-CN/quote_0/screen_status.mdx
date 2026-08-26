@@ -1,0 +1,124 @@
+---
+title: 屏幕状态与处理方法
+description: 了解 Quote/0 显示的特殊页面分别代表什么，以及遇到这些状态时应该如何处理。
+---
+
+Quote/0 在配对、更新、休眠或等待内容时，可能会显示状态页面。请找到与设备画面相符的状态，并按照建议操作。有些状态会自动结束，有些状态需要在 Dot. App 中处理或重新接入电源。
+
+## 配对与网络
+
+### 尚未进入配对模式
+
+<CustomCloudImage osSrc="dot/docs/USER_CONF_INIT_1787718189678.png" alt="Quote/0 等待接入电源" />
+
+**这表示：** 设备正在等待接入电源，尚未进入配对模式。
+
+**如何处理：** 请先安装并打开 Dot. App，再使用 Type-C 数据线将 Quote/0 接入电源。配对完成前，请保持设备接电。
+
+### 正在等待配对
+
+<CustomCloudImage osSrc="dot/docs/USER_CONF_PROV_1787718189678.png" alt="Quote/0 等待配对" />
+
+**这表示：** 设备已经进入配对模式，正在等待 Dot. App 发起配对请求。
+
+**如何处理：** 请在 Dot. App 中选择“添加设备”，并完成配对流程。
+
+### 配对超时
+
+<CustomCloudImage osSrc="dot/docs/USER_CONF_TIME_1787718189678.png" alt="Quote/0 配对超时" />
+
+**这表示：** 设备进入配对模式后，未能在等待时间内收到 App 的配对请求。
+
+**如何处理：** 请拔出电源后重新接入，让设备再次进入配对模式，然后重新配对。完整流程请参阅[配对教程](https://dot.mindreset.tech/docs/quote_0/start/how_to_pair)。
+
+### Wi-Fi 配置失败
+
+<CustomCloudImage osSrc="dot/docs/WIFI_AUTH_ERROR_1787718189678.png" alt="Quote/0 Wi-Fi 配置失败" />
+
+**这表示：** 设备无法使用刚刚收到的 Wi-Fi 配置。常见原因包括密码错误，或找不到对应的 Wi-Fi。
+
+**如何处理：** 请在 Dot. App 中检查 Wi-Fi 名称、密码和网络状态，然后重新尝试。如需重新开始配对，请参阅[配对教程](https://dot.mindreset.tech/docs/quote_0/start/how_to_pair)。更多信息请参阅[切换 Wi-Fi 网络](/docs/quote_0/faq/change_network)。
+
+## 系统与电量
+
+### 设备正在重启
+
+<CustomCloudImage osSrc="dot/docs/SYS_REBOOT_1787718189678.png" alt="Quote/0 正在重启" />
+
+**这表示：** 设备正在重启。在配对或联网配置过程中，这个页面表示设备已经收到网络配置，正在应用设置。如果随后出现正常内容，说明联网配置已经完成。
+
+**如何处理：** 如果画面持续约一分钟，建议拔出电源后重新接入。如果设备重新显示配对页面，请再次完成配对。
+
+### 检测到设备更新
+
+<CustomCloudImage osSrc="dot/docs/SYS_NEED_UPDATE_1787718189677.png" alt="Quote/0 检测到设备更新" />
+
+**这表示：** 设备检测到新的软件版本。
+
+**如何处理：** 请等待自动开始更新，通常无需额外操作。
+
+### 正在更新设备
+
+<CustomCloudImage osSrc="dot/docs/SYS_UPDATE_1787718189677.png" alt="Quote/0 正在更新设备" />
+
+**这表示：** 设备正在更新软件。
+
+**如何处理：** 请等待更新完成，设备会自动重启。
+
+### 准备进入休眠
+
+<CustomCloudImage osSrc="dot/docs/SYS_SLEEP_READY_1787718189678.png" alt="Quote/0 准备进入休眠" />
+
+**这表示：** 设备已准备进入手动深度休眠。
+
+**如何处理：** 拔掉电源后，设备会进入休眠。在这种状态下，设备不会自动唤醒或切换其他内容；需要唤醒时，请重新接入电源。
+
+### 已进入手动深度休眠
+
+<CustomCloudImage osSrc="dot/docs/SYS_SLEEP_1787718189678.png" alt="Quote/0 已进入手动深度休眠" />
+
+**这表示：** 设备已经进入手动深度休眠，不会主动唤醒或切换内容。
+
+**如何处理：** 请接入电源唤醒设备。
+
+### 电量过低
+
+<CustomCloudImage osSrc="dot/docs/HEALTH_BATT_LOW_1787718189676.png" alt="Quote/0 电量过低" />
+
+**这表示：** 电量过低，设备暂时无法自动唤醒或切换内容。
+
+**如何处理：** 请接入电源充电；恢复供电后，请等待设备重新连接 Wi-Fi 并恢复显示。长时间处于低电量状态可能缩短电池寿命。
+
+## 内容状态
+
+### 欢迎使用
+
+<CustomCloudImage osSrc="dot/docs/WELCOM_ZH_Hans_CN_1787719282151.png" alt="Quote/0 配置完成" />
+
+**这表示：** 设备已经完成配对、账户绑定和联网配置。
+
+**如何处理：** 稍等片刻，设备会显示第一个内容。
+
+### 暂无内容
+
+<CustomCloudImage osSrc="dot/docs/EMPTY_ZH_HANS_CN_1787719282152.png" alt="Quote/0 暂无内容" />
+
+**这表示：** 当前设备没有可显示的内容任务。
+
+**如何处理：** 请在 Dot. App 中添加固定内容或循环内容。
+
+### 睡眠模式
+
+<CustomCloudImage osSrc="dot/docs/SLEEP_ZH_HANS_CN_1787719282152.png" alt="Quote/0 睡眠模式" />
+
+**这表示：** 这是设备按照 Dot. App 中睡眠设置显示的睡眠模式页面。
+
+**如何处理：** 若要提前结束睡眠模式，请先在 Dot. App 中关闭睡眠设置，再手动刷新当前内容或切换到其他内容；也可以等待下一次睡眠结束后自动恢复显示。这里的“睡眠模式”是内容状态，不同于上面的“已进入手动深度休眠”——后者是设备的电源状态。
+
+### 内容出现错误
+
+<CustomCloudImage osSrc="dot/docs/ERROR_ZH_HANS_CN_1787719282152.png" alt="Quote/0 内容出现错误" />
+
+**这表示：** 当前内容的配置或数据出现错误。
+
+**如何处理：** 请在 Dot. App 中检查对应内容，修正问题后重新刷新或切换内容。

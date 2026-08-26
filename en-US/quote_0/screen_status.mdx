@@ -1,0 +1,124 @@
+---
+title: Screen States and Troubleshooting
+description: Understand the special screens shown by Quote/0 and learn what to do next.
+---
+
+Quote/0 may show a status screen while it is pairing, updating, in sleep mode, or waiting for content. Find the screen that matches your device and follow the suggested action. Some screens are temporary; others require an action in the Dot. App or a power connection.
+
+## Pairing and network
+
+### Waiting to connect to power
+
+<CustomCloudImage osSrc="dot/docs/USER_CONF_INIT_1787718189678.png" alt="Quote/0 waiting to connect to power" />
+
+**What it means:** Quote/0 has not entered pairing mode yet and is waiting for power.
+
+**What to do:** Install and open Dot. App, then connect Quote/0 to power with a Type-C cable. Keep it connected until pairing is complete.
+
+### Waiting for pairing
+
+<CustomCloudImage osSrc="dot/docs/USER_CONF_PROV_1787718189678.png" alt="Quote/0 waiting for pairing" />
+
+**What it means:** Quote/0 is in pairing mode and is waiting for a pairing request from Dot. App.
+
+**What to do:** In Dot. App, choose Add Device and complete the pairing flow.
+
+### Pairing timed out
+
+<CustomCloudImage osSrc="dot/docs/USER_CONF_TIME_1787718189678.png" alt="Quote/0 pairing timed out" />
+
+**What it means:** Pairing mode ended because no pairing request was received in time.
+
+**What to do:** Disconnect power, then connect it again to enter pairing mode and try pairing again. For the complete process, see [How to pair Quote/0](https://dot.mindreset.tech/docs/quote_0/start/how_to_pair).
+
+### Wi-Fi configuration failed
+
+<CustomCloudImage osSrc="dot/docs/WIFI_AUTH_ERROR_1787718189678.png" alt="Quote/0 Wi-Fi configuration failed" />
+
+**What it means:** Quote/0 could not use the Wi-Fi settings it received. The password may be incorrect, or the network may be unavailable.
+
+**What to do:** In Dot. App, check the Wi-Fi name, password, and network availability, then try again. For the complete pairing process, see [How to pair Quote/0](https://dot.mindreset.tech/docs/quote_0/start/how_to_pair). See [Change the connected Wi-Fi network](/docs/quote_0/faq/change_network) for more help.
+
+## System and power
+
+### Device is restarting
+
+<CustomCloudImage osSrc="dot/docs/SYS_REBOOT_1787718189678.png" alt="Quote/0 restarting" />
+
+**What it means:** Quote/0 is restarting. During pairing or network setup, this means the device has received the network configuration and is applying it. If normal content appears afterward, network configuration is complete.
+
+**What to do:** If the screen remains for about a minute, disconnect power and connect it again. If the pairing screen appears again, pair the device again.
+
+### Device update detected
+
+<CustomCloudImage osSrc="dot/docs/SYS_NEED_UPDATE_1787718189677.png" alt="Quote/0 update detected" />
+
+**What it means:** Quote/0 has detected new device software.
+
+**What to do:** Wait for the automatic update to start. No action is normally required.
+
+### Device is updating
+
+<CustomCloudImage osSrc="dot/docs/SYS_UPDATE_1787718189677.png" alt="Quote/0 update in progress" />
+
+**What it means:** Quote/0 is updating its software.
+
+**What to do:** Wait for the update to finish. The device will restart automatically.
+
+### Preparing to sleep
+
+<CustomCloudImage osSrc="dot/docs/SYS_SLEEP_READY_1787718189678.png" alt="Quote/0 preparing to enter sleep" />
+
+**What it means:** Quote/0 is preparing to enter manual deep sleep.
+
+**What to do:** Disconnect power to enter sleep. In this mode, Quote/0 will not wake automatically or switch to other content. Connect power when you need to wake it.
+
+### In manual deep sleep
+
+<CustomCloudImage osSrc="dot/docs/SYS_SLEEP_1787718189678.png" alt="Quote/0 in manual deep sleep" />
+
+**What it means:** Quote/0 has entered manual deep sleep. It will not wake automatically or switch content.
+
+**What to do:** Connect power to wake the device.
+
+### Battery too low
+
+<CustomCloudImage osSrc="dot/docs/HEALTH_BATT_LOW_1787718189676.png" alt="Quote/0 battery too low" />
+
+**What it means:** The battery is too low for automatic wake-ups or content switching.
+
+**What to do:** Connect power and allow Quote/0 to recharge. After power is restored, wait for it to reconnect to Wi-Fi and resume displaying content. Long periods at very low charge may shorten battery life.
+
+## Content states
+
+### Welcome
+
+<CustomCloudImage osSrc="dot/docs/WELCOM_EN_US_1787719282152.png" alt="Quote/0 setup complete" />
+
+**What it means:** Pairing, account binding, and network configuration are complete.
+
+**What to do:** Wait a moment for Quote/0 to display its first content.
+
+### No content
+
+<CustomCloudImage osSrc="dot/docs/EMPTY_EN_US_1787719282152.png" alt="Quote/0 has no content" />
+
+**What it means:** No content tasks are currently assigned to Quote/0.
+
+**What to do:** In Dot. App, add fixed content or loop content.
+
+### Sleep mode
+
+<CustomCloudImage osSrc="dot/docs/SLEEP_EN_US_1787719282152.png" alt="Quote/0 sleep mode" />
+
+**What it means:** This is the sleep mode screen shown during the sleep period defined in Dot. App.
+
+**What to do:** To end sleep mode early, turn off the sleep setting in Dot. App, then manually refresh the current content or switch to another content. You can also wait for the next sleep period to end. Sleep mode is a content state, different from manual deep sleep: the device remains available to resume its normal content according to the account settings.
+
+### Content error
+
+<CustomCloudImage osSrc="dot/docs/ERROR_EN_US_1787719282152.png" alt="Quote/0 content error" />
+
+**What it means:** The current content could not be configured or loaded correctly.
+
+**What to do:** Check the corresponding content in Dot. App, correct the issue, and then refresh or switch content.
