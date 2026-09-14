@@ -1,0 +1,36 @@
+---
+title: "Dot AI Quota: Local Claude and Codex Quota Dashboard"
+description: "Read Claude and Codex subscription limits locally, view them in a bilingual dashboard, and send a compact Canvas card to Quote/0 without Vibe Usage."
+---
+
+<GithubInfo owner="YuHoYe" repo="dot-ai-quota" />
+
+Dot AI Quota is a self-hosted subscription-quota dashboard for Claude and Codex. It reuses existing official-client sign-ins, shows usage percentages and reset times in a local browser, and updates explicitly configured Quote/0 Canvas content slots. It does not require Vibe Usage, a separate hosted account, or npm runtime dependencies.
+
+The repository includes [English and Chinese setup instructions](https://github.com/YuHoYe/dot-ai-quota) and [a screenshot of the running dashboard](https://github.com/YuHoYe/dot-ai-quota/blob/main/docs/images/dashboard-en.png). The screenshot uses labeled demo data; its device preview is a browser approximation rather than a physical-device photograph.
+
+### Features
+
+- **Subscription limits**: Five-hour and weekly windows when returned by the provider, Claude scoped windows, Codex plan labels and reset-credit counts
+- **Bilingual local dashboard**: English and Chinese interfaces with remaining percentages, reset times, data timestamps and an e-ink preview
+- **Visible data freshness**: Account-scoped local caches, explicit cached/stale states, and unknown values instead of inferred unlimited quotas
+- **Canvas delivery**: A compact black-and-white card sent to one or more explicitly configured device/content-slot pairs
+- **Optional scheduling**: A foreground push loop or a macOS launchd job; normal pushes keep the device's content rotation
+- **No-account demo**: Run `npm run demo` to explore the interface without reading credentials, querying providers or sending to Dot
+
+### Requirements
+
+- Node.js 24.6 or newer
+- A supported subscription sign-in in Claude Code and/or Codex; Codex uses file-based `auth.json`
+- A Dot API Key and Quote/0 device serial number for device delivery
+- Canvas API content already added to the device loop in Dot. App Content Studio, with its exact `taskKey`
+
+Clone the repository, copy the example config and `.env` file, and run `npm run check` to verify account access. `npm start` opens the local dashboard at `http://127.0.0.1:4317`. Add your Dot key and target Canvas slots, inspect `npm run push -- --dry-run`, then run `npm run push` to update the content. The dashboard refreshes quota automatically, while automatic device delivery is enabled separately through the push loop or scheduler.
+
+<Callout type="info" title="Quota and validation scope">
+  These figures are subscription limits, not daily Token totals or API bills.
+  The adapters use client-internal interfaces that may change. Live account
+  queries have been tested on macOS; the repository separately documents
+  transport tests, browser checks and physical-device acceptance status. API
+  acceptance alone does not prove the screen has refreshed.
+</Callout>

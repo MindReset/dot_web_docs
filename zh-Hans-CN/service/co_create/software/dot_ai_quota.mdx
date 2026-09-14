@@ -1,0 +1,35 @@
+---
+title: "Dot AI Quota：本地 Claude 与 Codex 额度看板"
+description: "在本地查询 Claude 与 Codex 订阅额度，通过中英文网页查看，并推送简洁的 Canvas 卡片到 Quote/0，无需 Vibe Usage。"
+---
+
+<GithubInfo owner="YuHoYe" repo="dot-ai-quota" />
+
+Dot AI Quota 是一个自托管的 Claude 与 Codex 订阅额度看板。它复用官方客户端的已有登录态，在本地网页显示额度使用比例和重置时间，并更新明确配置的 Quote/0 Canvas 内容槽位。无需安装 Vibe Usage，无需额外的托管账号，也没有 npm 运行依赖。
+
+仓库提供[中英文安装说明](https://github.com/YuHoYe/dot-ai-quota)和[实际运行的软件截图](https://github.com/YuHoYe/dot-ai-quota/blob/main/docs/images/dashboard-zh-CN.png)。截图使用已标注的演示数据，设备区域为浏览器近似预览，不是实体设备照片。
+
+### 功能特性
+
+- **订阅额度**：显示服务商返回的 5 小时与每周窗口、Claude 专项额度、Codex 套餐和重置额度券
+- **中英文本地看板**：展示剩余比例、重置时间、数据获取时间及墨水屏预览
+- **明确的数据新鲜度**：按账号隔离本地缓存，区分缓存与过期数据；缺失值显示未知，不推断为不限
+- **Canvas 推送**：将简洁黑白卡片发送到一个或多个明确配置的设备／内容槽位
+- **可选定时运行**：前台循环推送或 macOS launchd 后台任务，默认保持设备正常轮播
+- **免账号演示**：运行 `npm run demo` 即可体验，不读取凭据、不查询服务商、不向 Dot 推送
+
+### 使用要求
+
+- Node.js 24.6 或更新版本
+- Claude Code 和／或 Codex 的受支持订阅登录态；Codex 使用文件式 `auth.json`
+- 推送设备时需要 Dot API Key 与 Quote/0 设备序列号
+- 在 Dot App 内容工坊中为设备轮播添加 Canvas API 内容，并取得准确的 `taskKey`
+
+克隆仓库，复制示例配置和 `.env`，运行 `npm run check` 验证账号访问。使用 `npm start` 在 `http://127.0.0.1:4317` 打开本地看板。配置 Dot 密钥和画板槽位后，先通过 `npm run push -- --dry-run` 检查生成内容，再执行 `npm run push`。网页会自动刷新额度；自动推送设备需另行启用前台循环或定时任务。
+
+<Callout type="info" title="额度口径与验证范围">
+  此处显示订阅额度，不是每日 Token 总数或 API
+  账单。适配器使用可能随版本变化的客户端内部接口。 实时账号查询已在 macOS
+  测试；仓库分别记录了传输测试、浏览器检查与真机验收状态。 API
+  接受更新不等于实体屏已完成刷新。
+</Callout>
