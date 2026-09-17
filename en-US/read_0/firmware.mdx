@@ -1,0 +1,60 @@
+---
+title: Build and Flash
+description: Build and flash the official Read/0 demo with ESP-IDF, then use its board support and drivers for your own firmware.
+---
+
+Build Read/0 firmware from the official demo repository, modify its demo pages, or reuse its board support and chip drivers.
+
+<GithubInfo owner="MindReset" repo="read_pico_firmware" />
+
+## Requirements
+
+Install and activate **ESP-IDF v6.1**, and prepare Git and a USB data cable. The target is **ESP32-S3**. The repository's Flash driver depends on an interface introduced in ESP-IDF v6.
+
+## Build and flash
+
+```sh
+git clone https://github.com/MindReset/read_pico_firmware.git
+cd read_pico_firmware
+idf.py set-target esp32s3
+idf.py build
+idf.py -p PORT flash monitor
+```
+
+Replace `PORT` with the actual serial port, such as `/dev/cu.usbmodem…` on macOS, `/dev/ttyACM0` on Linux, or `COM3` on Windows. Flashing replaces the current application firmware. Press `Ctrl+]` to exit the serial monitor.
+
+After flashing, use [Getting Started](/docs/read_0/start) to check hardware and interactions.
+
+<Callout type="warn" title="Board configuration">
+
+The 120 MHz Flash / PSRAM timing in `sdkconfig.defaults` depends on the actual Flash part on the board. The repository's `sdkconfig.ci` uses default timing for compilation checks only; it does not establish on-device validation. Do not apply this board configuration directly to other hardware.
+
+Panel VCOM is paired with the panel at the factory and stored in the PMU. Firmware reads it at boot; it is not stored locally or user-editable.
+
+</Callout>
+
+## Source entry points
+
+| Path | Purpose |
+| :--- | :--- |
+| `main/apps/` | Individual demo pages |
+| `main/app/app_registry.c` | Function menu registration and order |
+| `main/app/app.h` | The `app_desc_t` page interface |
+| `components/read_pico/` | Board support for I2C, display, TF card, buzzer, and more |
+| `components/read_pico_pmu/` | Host side of the CW32L010 power management protocol |
+| `components/` | Touch, accelerometer, IO expander, display power, and other drivers |
+| `tools/` | Font and image conversion scripts |
+
+To add a demo, implement the required `app_desc_t` callbacks in `main/apps/`, then add the page to the menu registry. See the [repository README](https://github.com/MindReset/read_pico_firmware#readme) for pin assignments and component details.
+
+## USB not detected after wake
+
+Follow the repository's troubleshooting sequence:
+
+1. Retry with a USB Type-A data cable.
+2. Run another sleep/wake cycle and retry.
+3. Restart the board and retry.
+
+## Licensing
+
+The firmware itself uses Apache-2.0. Third-party components retain their own licenses, including LGPL-3.0-or-later for epdiy and SIL OFL-1.1 for the built-in font. Check the [repository license notes](https://github.com/MindReset/read_pico_firmware#readme) and component LICENSE files before reuse or distribution.

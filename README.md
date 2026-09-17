@@ -2,6 +2,8 @@
 
 **Languages:** [English](README.md) | [简体中文](README.zh-Hans-CN.md) | [日本語](README.ja-JP.md)
 
+[Contribution guide](CONTRIBUTING.md) | [Support](SUPPORT.md) | [Security](SECURITY.md)
+
 [![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-blue.svg)](LICENSE)
 
 Welcome to the official documentation repository for Dot. products! This repository contains comprehensive user manuals, API documentation, FAQs, and security advisories for the Dot. App and Dot. series devices.
