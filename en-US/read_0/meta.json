@@ -1,0 +1,5 @@
+{
+    "title": "Read Pico",
+    "pages": ["start", "firmware"],
+    "defaultOpen": true
+}

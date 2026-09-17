@@ -1,0 +1,34 @@
+---
+title: Getting Started
+description: Explore the official Read Pico demo firmware to check the display, touch input, sensors, and power management.
+---
+
+The official demo is the factory firmware supplied with Read Pico. Use its function menu to check individual hardware features, or use its refresh, interaction, and power handling as references for your own firmware.
+
+<GithubInfo owner="MindReset" repo="read_pico_firmware" />
+
+## Basic controls
+
+The function menu is paginated. KEY1 and KEY3 turn pages on multi-page screens; KEY2 performs a full GC16 redraw.
+
+## Demo pages
+
+| Page | Features |
+| :--- | :--- |
+| Overview | I2C device detection, IDs, battery and charging status, build time |
+| EPD Refresh | Full GC16, partial DU, 16-level and fast 8-level grayscale, measured refresh times |
+| Reading | Built-in text, DU / GL16 / GC16 page turns, font size adjustment |
+| Touch | Two-point tracking, full refresh on release, deep sleep and automatic wake |
+| Accel and IMU Lab | Axes, tilt, tap count, orientation, sampling settings, self-test |
+| Power | Battery and charging status, display power rails, temperature, faults |
+| PMU and Power Key | Protocol status, events, configuration, commands, key events |
+| Sleep | Light sleep, key or pickup wake, deep sleep, power off |
+| Storage | Card capacity, mounting, remounting, formatting, buzzer |
+| Font | List and switch TTF fonts on the card, preview typesetting and font weights |
+| IOE and Device | IO levels and interrupts, touch reset, device probes and command acknowledgments |
+
+<Callout type="warn" title="Formatting a card">
+
+Formatting erases the card's data. Back up any files you want to keep first.
+
+</Callout>

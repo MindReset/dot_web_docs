@@ -2,6 +2,8 @@
 
 **Languages:** [English](README.md) | [简体中文](README.zh-Hans-CN.md) | [日本語](README.ja.md)
 
+[贡献指南](CONTRIBUTING.md) | [获取帮助](SUPPORT.md) | [安全报告](SECURITY.md)
+
 [![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-blue.svg)](LICENSE)
 
 欢迎来到 Dot. 系列产品的官方文档仓库！本仓库包含 Dot. App 和 Dot. 系列设备的完整使用手册、API 文档、常见问题解答及安全公告等内容。

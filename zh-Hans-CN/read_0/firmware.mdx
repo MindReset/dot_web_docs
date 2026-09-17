@@ -1,0 +1,60 @@
+---
+title: 编译与刷写
+description: 使用 ESP-IDF 编译和刷写 小纸 Pico 官方示例，并以板级支持与驱动组件为起点开发固件。
+---
+
+你可以从官方示例仓库编译 小纸 Pico 固件，修改演示页面，或复用板级支持和芯片驱动。
+
+<GithubInfo owner="MindReset" repo="read_pico_firmware" />
+
+## 准备环境
+
+安装并启用 **ESP-IDF v6.1** 开发环境，准备 Git 和支持数据传输的 USB 线。目标芯片为 **ESP32-S3**；仓库中的 Flash 驱动依赖 ESP-IDF v6 提供的接口。
+
+## 编译与刷写
+
+```sh
+git clone https://github.com/MindReset/read_pico_firmware.git
+cd read_pico_firmware
+idf.py set-target esp32s3
+idf.py build
+idf.py -p PORT flash monitor
+```
+
+将 `PORT` 替换为设备的实际串口，例如 macOS 的 `/dev/cu.usbmodem…`、Linux 的 `/dev/ttyACM0` 或 Windows 的 `COM3`。刷写会替换设备现有应用固件；按 `Ctrl+]` 退出串口监视器。
+
+完成后，可按[开始使用](/docs/read_0/start)中的项目检查硬件与交互。
+
+<Callout type="warn" title="板级配置">
+
+`sdkconfig.defaults` 中的 120 MHz Flash / PSRAM 时序依赖板上的实际 Flash 型号。仓库的 `sdkconfig.ci` 使用默认时序，仅用于编译检查，不代表已在设备上验证。请勿直接将这套板级配置用于其他硬件。
+
+屏幕 VCOM 在出厂时与面板配对并保存在 PMU 中，固件启动时读取，不在本地保存，也不提供用户修改入口。
+
+</Callout>
+
+## 从哪里修改
+
+| 入口 | 用途 |
+| :--- | :--- |
+| `main/apps/` | 各项演示页面 |
+| `main/app/app_registry.c` | 功能菜单注册与排序 |
+| `main/app/app.h` | `app_desc_t` 页面接口 |
+| `components/read_pico/` | 板级支持：I2C、屏幕、TF 卡、蜂鸣器等 |
+| `components/read_pico_pmu/` | CW32L010 电源管理协议主机端 |
+| `components/` | 触摸、加速度计、IO 扩展、屏幕电源等驱动 |
+| `tools/` | 字体与图片转换脚本 |
+
+新增演示页时，在 `main/apps/` 实现所需的 `app_desc_t` 回调，再加入菜单注册表。详细引脚分配与组件说明见[仓库 README](https://github.com/MindReset/read_pico_firmware#readme)。
+
+## 唤醒后无法识别 USB
+
+按照仓库提供的排查顺序：
+
+1. 更换 USB Type-A 数据线后重试。
+2. 再执行一次睡眠与唤醒后重试。
+3. 重启开发板后重试。
+
+## 开源许可
+
+固件主体采用 Apache-2.0；第三方组件分别遵循各自的许可，包括 epdiy 的 LGPL-3.0-or-later 与内置字体的 SIL OFL-1.1。复用或分发前，请查看[仓库许可说明](https://github.com/MindReset/read_pico_firmware#readme)及各组件的 LICENSE。

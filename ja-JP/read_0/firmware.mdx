@@ -1,0 +1,60 @@
+---
+title: ビルドと書き込み
+description: ESP-IDF で Read Pico の公式サンプルをビルドし、ボードサポートとドライバーを使って独自ファームウェアを開発します。
+---
+
+公式サンプルリポジトリから Read Pico のファームウェアをビルドし、サンプルページを変更したり、ボードサポートとチップドライバーを再利用したりできます。
+
+<GithubInfo owner="MindReset" repo="read_pico_firmware" />
+
+## 準備
+
+**ESP-IDF v6.1** をインストールして開発環境を有効にし、Git とデータ通信対応 USB ケーブルを用意してください。対象チップは **ESP32-S3** です。Flash ドライバーは ESP-IDF v6 で導入されたインターフェースに依存します。
+
+## ビルドと書き込み
+
+```sh
+git clone https://github.com/MindReset/read_pico_firmware.git
+cd read_pico_firmware
+idf.py set-target esp32s3
+idf.py build
+idf.py -p PORT flash monitor
+```
+
+`PORT` を実際のシリアルポートに置き換えます。macOS では `/dev/cu.usbmodem…`、Linux では `/dev/ttyACM0`、Windows では `COM3` などです。書き込みによって既存のアプリケーションファームウェアが置き換わります。シリアルモニターは `Ctrl+]` で終了できます。
+
+書き込み後は[はじめに](/docs/read_0/start)の項目でハードウェアと操作を確認できます。
+
+<Callout type="warn" title="ボード設定">
+
+`sdkconfig.defaults` の 120 MHz Flash / PSRAM タイミングは、実装されている Flash の型番に依存します。`sdkconfig.ci` は標準タイミングでのコンパイル確認用で、実機検証を示すものではありません。このボード設定をそのまま別のハードウェアに適用しないでください。
+
+画面の VCOM は出荷時にパネルと対応付けられ、PMU に保存されています。ファームウェアは起動時に読み取りますが、ローカルには保存せず、ユーザー向けの変更機能もありません。
+
+</Callout>
+
+## ソースコードの入口
+
+| パス | 用途 |
+| :--- | :--- |
+| `main/apps/` | 個別のサンプルページ |
+| `main/app/app_registry.c` | 機能メニューの登録と順序 |
+| `main/app/app.h` | `app_desc_t` ページインターフェース |
+| `components/read_pico/` | I2C、画面、TF カード、ブザーなどのボードサポート |
+| `components/read_pico_pmu/` | CW32L010 電源管理プロトコルのホスト側 |
+| `components/` | タッチ、加速度計、IO 拡張、画面電源などのドライバー |
+| `tools/` | フォントと画像の変換スクリプト |
+
+サンプルを追加するには、`main/apps/` に必要な `app_desc_t` コールバックを実装し、メニュー登録表に追加します。ピン配置とコンポーネントの詳細は[リポジトリの README](https://github.com/MindReset/read_pico_firmware#readme)を参照してください。
+
+## 復帰後に USB が認識されない場合
+
+リポジトリの案内に従い、次の順に試してください。
+
+1. USB Type-A データケーブルに交換して再試行します。
+2. スリープと復帰をもう一度実行して再試行します。
+3. ボードを再起動して再試行します。
+
+## ライセンス
+
+ファームウェア本体は Apache-2.0 です。サードパーティ製コンポーネントにはそれぞれのライセンスが適用され、epdiy は LGPL-3.0-or-later、内蔵フォントは SIL OFL-1.1 です。再利用や配布の前に、[リポジトリのライセンス説明](https://github.com/MindReset/read_pico_firmware#readme)と各コンポーネントの LICENSE を確認してください。

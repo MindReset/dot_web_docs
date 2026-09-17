@@ -2,6 +2,8 @@
 
 **言語:** [English](README.md) | [简体中文](README.zh-Hans-CN.md) | [日本語](README.ja.md)
 
+[貢献ガイド](CONTRIBUTING.md) | [サポート](SUPPORT.md) | [セキュリティ](SECURITY.md)
+
 [![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-blue.svg)](LICENSE)
 
 Dot. 製品の公式ドキュメントリポジトリへようこそ！このリポジトリには、Dot. App および Dot. シリーズデバイスの包括的なユーザーマニュアル、API ドキュメント、FAQ、セキュリティアドバイザリが含まれています。
