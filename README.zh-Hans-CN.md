@@ -102,7 +102,7 @@ dot_web_docs/
 
 如有任何问题或建议，欢迎通过以下方式联系我们：
 
-- **邮箱**：contact@mindreset.tech
+- **邮箱**：hi@support.mindreset.tech
 - **网站**：[mindreset.tech](https://www.mindreset.tech)
 - **GitHub Issues**：[反馈问题](../../issues)
 

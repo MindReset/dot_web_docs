@@ -1,4 +1,8 @@
 {
     "title": "软件共创",
-    "defaultOpen": true
+    "defaultOpen": true,
+    "pages": [
+        "quote",
+        "rand"
+    ]
 }

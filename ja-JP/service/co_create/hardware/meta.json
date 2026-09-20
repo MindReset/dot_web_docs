@@ -1,4 +1,8 @@
 {
     "title": "ハードウェア共創",
-    "defaultOpen": true
+    "defaultOpen": true,
+    "pages": [
+        "quote",
+        "rand"
+    ]
 }

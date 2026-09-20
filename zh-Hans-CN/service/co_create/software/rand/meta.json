@@ -1,0 +1,9 @@
+{
+    "title": "口袋先知",
+    "defaultOpen": false,
+    "pages": [
+        "[多屏灵犀：三屏协同控制](/docs/service/co_create/software/lingxi_multiscreen)",
+        "../pocket_prophet_dashboard",
+        "../pocket_prophet_display_features"
+    ]
+}

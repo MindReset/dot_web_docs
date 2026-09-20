@@ -102,7 +102,7 @@ Under the following terms:
 
 For any questions or suggestions, please contact us through:
 
-- **Email**: contact@mindreset.tech
+- **Email**: hi@support.mindreset.tech
 - **Website**: [mindreset.tech](https://www.mindreset.tech)
 - **GitHub Issues**: [Submit feedback](../../issues)
 

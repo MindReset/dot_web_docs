@@ -1,0 +1,9 @@
+{
+    "title": "Rand",
+    "defaultOpen": false,
+    "pages": [
+        "[Lingxi MultiScreen：3 画面コントロール](/docs/service/co_create/software/lingxi_multiscreen)",
+        "../pocket_prophet_dashboard",
+        "../pocket_prophet_display_features"
+    ]
+}

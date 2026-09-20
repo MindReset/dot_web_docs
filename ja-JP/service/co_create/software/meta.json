@@ -1,4 +1,8 @@
 {
     "title": "ソフトウェア共創",
-    "defaultOpen": true
+    "defaultOpen": true,
+    "pages": [
+        "quote",
+        "rand"
+    ]
 }

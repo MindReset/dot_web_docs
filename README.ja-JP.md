@@ -102,7 +102,7 @@ dot_web_docs/
 
 ご質問や提案がある場合は、以下の方法でお問い合わせください：
 
-- **メール**: contact@mindreset.tech
+- **メール**: hi@support.mindreset.tech
 - **ウェブサイト**: [mindreset.tech](https://www.mindreset.tech)
 - **GitHub Issues**: [フィードバックを送信](../../issues)
 
