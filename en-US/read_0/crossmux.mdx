@@ -25,44 +25,44 @@ Open the [CrossMux web flasher](https://crossmux.com/#flash-tools) in Chrome or 
 
 ### Select your device
 
-Choose **Read Pico**, then select a firmware version as directed by the page.
+Select **MindReset Read Pico** in the device list.
 
-If Read Pico is not listed yet, stop and wait until its option is available. Do not select firmware for another model.
-
-<CustomCloudImage osSrc="dot/docs/crossmux_2_1790759301829.png" alt="Select Read Pico" />
+<CustomCloudImage osSrc="dot/docs/corssmux_2_1790790168698.png" alt="Select Read Pico" />
 
 </Step>
 <Step>
 
-### Connect the device
+### Select firmware and connect the device
 
-Connect Read Pico to your computer with the USB data cable. Start the connection on the flashing page, select Read Pico's USB serial port in the browser's device picker, and confirm.
+Select the **Nightly** beta firmware. Check the page for the current version number.
+
+Confirm that the connected device is MindReset Read Pico in the flashing section. The browser identifies it as an ESP32-S3 and cannot distinguish it from other models using the same chip, so check the connected hardware yourself.
+
+You can enable the backup option to save the complete 16 MB Flash. A backup is recommended before the first installation; the page estimates about 25 minutes.
+
+<CustomCloudImage osSrc="dot/docs/crossmux_3_1790790168698.png" alt="Select Nightly firmware, confirm the device, and choose whether to back up" />
+
+Connect Read Pico to your computer with the USB data cable.
 
 If you are unsure which entry is Read Pico, cancel the picker, unplug the device, and reconnect it. Look for the newly added entry.
-
-{/* Screenshot: browser serial port picker. */}
 
 </Step>
 <Step>
 
 ### Start installation
 
-Check that the selected model is correct, then follow the page's instructions to start flashing. If asked to erase data, make sure you have backed up anything you need first.
+Check the device, firmware version, and backup option, then click the online flashing button and select the device serial port in the browser picker.
 
-Wait for the completion message. Keep the cable connected and the page open, and prevent your computer from going to sleep.
+The progress area below shows firmware download and verification, device connection, partition checks, installation, result verification, and device reset. Wait for the completion message. Keep the cable connected and the page open, and prevent your computer from going to sleep.
 
-{/* Screenshot: flashing progress and completion message. */}
+<CustomCloudImage osSrc="dot/docs/crossmux_4_1790790168697.png" alt="Flashing complete and restart instructions" />
 
 </Step>
 <Step>
 
 ### Start using your device
 
-Once flashing is complete, restart the device as directed by the page. Follow the instructions on the new firmware's screen to finish setup.
-
-If it does not restart automatically, confirm that flashing has finished before restarting it manually.
-
-{/* Screenshot: first startup screen on the device. */}
+The device resets automatically when flashing finishes. If it does not start, unplug and reconnect USB, then turn it on with the power key.
 
 </Step>
 </Steps>
@@ -71,6 +71,7 @@ If it does not restart automatically, confirm that flashing has finished before 
 
 | Problem | What to do |
 | --- | --- |
+| No SD card detected | Insert a separately purchased microSD card. Cards up to 256 GB are supported. |
 | Device missing | try another data cable or USB port, and close other flashing tools using the device. |
 | Browser cannot connect | use desktop Chrome or Edge. These steps do not work in mobile or in-app browsers. |
 | Flashing failed | check the connection and follow the flashing page's instructions to reconnect and retry. If download mode is required, follow the instructions for your device model. |
