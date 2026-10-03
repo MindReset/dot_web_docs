@@ -1,5 +1,5 @@
 {
     "title": "Read Pico",
-    "pages": ["crossmux", "start", "firmware"],
+    "pages": ["start", "demo_firmware", "firmware"],
     "defaultOpen": true
 }
