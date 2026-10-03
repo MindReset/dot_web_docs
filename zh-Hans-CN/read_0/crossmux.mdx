@@ -9,7 +9,7 @@ description: 用电脑和 USB 数据线，跟着步骤为小纸 Pico 安装阅�
 
 准备一台电脑、桌面版 Chrome 或 Edge 浏览器，以及一根支持数据传输的 USB-C 数据线。
 
-刷写会替换设备当前的固件，原有设置可能被清除。请先备份需要保留的内容，并保持设备电量充足。
+刷写会替换设备当前的固件，原有设置可能被清除。首次从官方演示固件安装 CrossMux 时无需备份原系统，请保持设备电量充足。
 
 <CustomCloudImage osSrc="dot/docs/crossmux_1_1790759301830.png" alt="CrossMux 官网" />
 
@@ -38,7 +38,7 @@ description: 用电脑和 USB 数据线，跟着步骤为小纸 Pico 安装阅�
 
 在烧录区域勾选「我确认当前连接的是 MindReset Read Pico」。浏览器会将设备识别为 ESP32-S3，无法自动区分其他使用同一芯片的机型，请确认连接的确实是小纸 Pico。
 
-你可以勾选「是否先备份现有固件」，保存完整的 16 MB Flash。首次安装前建议备份；页面提示备份约需 25 分钟。
+**首次从官方演示固件安装 CrossMux 时无需备份**，不必勾选「是否先备份现有固件」，可以直接安装。你随时可以按照[官方示例的刷写步骤](/docs/read_0/firmware)刷回原本的演示固件，因此无需备份原有演示固件。
 
 <CustomCloudImage osSrc="dot/docs/crossmux_3_1790790168698.png" alt="选择 Nightly 固件并确认设备与备份选项" />
 
