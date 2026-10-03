@@ -2,6 +2,8 @@
     "title": "小纸",
     "defaultOpen": false,
     "pages": [
-        "[CrossMux](/docs/read_0/start/crossmux)"
+        "[CrossMux](/docs/read_0/start/crossmux)",
+        "[Pico Reader](/docs/read_0/start/pico_reader)",
+        "../pico_manager"
     ]
 }

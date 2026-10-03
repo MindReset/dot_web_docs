@@ -1,0 +1,90 @@
+---
+title: Pico Reader
+new: true
+description: Pico Reader is community reading firmware designed for Read Pico, with EPUB and TXT support, saved reading progress, and book transfers over Wi-Fi, a device hotspot, or USB.
+---
+
+<CustomCloudImage osSrc="dot/docs/kiiko_1_1791023749070.png" alt="Pico Reader web installation guide" />
+
+## Before you start
+
+Prepare the following:
+
+- A Read Pico with sufficient charge
+- A computer running desktop Chrome or Edge
+- A USB-C cable that supports data transfer. A charge-only cable cannot flash the device.
+
+<CustomCloudImage osSrc="dot/docs/kiiko_2_1791023749071.png" alt="Prepare Read Pico, a browser, and a USB-C data cable" />
+
+<Steps>
+<Step>
+
+### Open the flashing page
+
+Open the [Pico Reader website](https://wegooo-cell.github.io/read-pico-reader/) in Chrome or Edge on your computer and find **连接 Pico，开始刷机** (Connect Pico and start flashing). The website installs the firmware version supplied by the project. Check the page for the exact version number.
+
+</Step>
+<Step>
+
+### Connect the device and select its serial port
+
+Connect Read Pico to your computer with the USB data cable, then click **连接 Pico，开始刷机**.
+
+In the browser's serial port picker, select the port for Read Pico and click **Connect**. If you are unsure which entry to use, cancel the picker, unplug and reconnect the device, and look for the newly added port.
+
+</Step>
+<Step>
+
+### Confirm installation
+
+<Callout type="warn" title="Device data">
+
+On first installation, the confirmation dialog states **All data on the device will be erased.** Installation erases the device's internal data, including the previous system's settings and reading records. Back up any data you want to keep before confirming installation. Book files on the microSD card are not deleted by flashing.
+
+</Callout>
+
+Once connected, click **Install 小纸 Pico 阅读固件** (install the Read Pico reading firmware) in the installer dialog. On the **Confirm Installation** screen, read the data erasure warning, then click **Install** to begin.
+
+<CustomCloudImage osSrc="dot/docs/kiiko_3_1791023749072.png" alt="Connect Pico, select its serial port, and confirm installation" />
+
+</Step>
+<Step>
+
+### Wait for installation to finish
+
+Progress is shown during installation. Keep USB connected and the page open. Do not unplug the cable or let your computer go to sleep.
+
+Wait for **Installation complete!**, then click **Next** to finish. The device restarts. If it does not start, unplug and reconnect USB, then turn it on with the power key.
+
+</Step>
+<Step>
+
+### Start reading
+
+No books are included with the firmware. When the microSD card is first mounted, the firmware creates the `books`, `fonts`, and `pictures` folders as needed.
+
+Put EPUB or TXT books in `books`, then open them from the device's bookshelf. You can also manage files using the firmware's Wi-Fi, device hotspot, or USB book transfer features.
+
+</Step>
+</Steps>
+
+## Troubleshooting
+
+| Problem | What to do |
+| --- | --- |
+| No SD card detected | Insert a separately purchased microSD card, up to 512 GB. The card must be formatted as FAT32. |
+| Serial port missing | Try another data cable or USB port, and close other flashing tools using the port. |
+| Device cannot connect | On a device already running Pico Reader, use **设置 → Pico 设备卡片 → 升级 → 进入 BOOT 模式** (Settings → Pico device card → Upgrade → Enter BOOT mode) to enter download mode. Wait for the computer to detect the serial port again, then retry. For a first installation, connect the device directly using the steps above. |
+| Browser cannot flash | Use desktop Chrome or Edge. These steps do not work in mobile browsers or WeChat's in-app browser. |
+| No books in the bookshelf | No books are included with the firmware. Put EPUB or TXT files in the microSD card's `books` folder. |
+| Installation interrupted or failed | Check the data cable and USB connection, then follow the installer dialog's instructions to reconnect and retry. |
+
+To restore the official demo firmware, see [DIY Your System](/docs/read_0/firmware).
+
+<Callout type="info" title="Other installation options">
+
+You can also follow the repository's instructions to build and flash the firmware, or fork the project for further development.
+
+</Callout>
+
+<GithubInfo owner="wegooo-cell" repo="read-pico-reader" />

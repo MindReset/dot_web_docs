@@ -1,7 +1,8 @@
 {
     "title": "开始使用",
     "pages": [
-        "crossmux"
+        "crossmux",
+        "pico_reader"
     ],
     "defaultOpen": true
 }
