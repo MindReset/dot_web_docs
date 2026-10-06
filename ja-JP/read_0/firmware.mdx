@@ -1,9 +1,9 @@
 ---
 title: 自分だけのシステムを作る
-description: ESP-IDF で Read Pico の公式サンプルをビルドし、ボードサポートとドライバーを使って独自ファームウェアを開発します。
+description: ESP-IDF で Read Pico の公式サンプルをビルドし、ボードサポートとドライバーを使って独自システムを開発します。
 ---
 
-公式サンプルリポジトリから Read Pico のファームウェアをビルドし、サンプルページを変更したり、ボードサポートとチップドライバーを再利用したりできます。
+公式サンプルリポジトリから Read Pico のシステムをビルドし、サンプルページを変更したり、ボードサポートとチップドライバーを再利用したりできます。
 
 <GithubInfo owner="MindReset" repo="read_pico_firmware" />
 
@@ -21,15 +21,15 @@ idf.py build
 idf.py -p PORT flash monitor
 ```
 
-`PORT` を実際のシリアルポートに置き換えます。macOS では `/dev/cu.usbmodem…`、Linux では `/dev/ttyACM0`、Windows では `COM3` などです。書き込みによって既存のアプリケーションファームウェアが置き換わります。シリアルモニターは `Ctrl+]` で終了できます。
+`PORT` を実際のシリアルポートに置き換えます。macOS では `/dev/cu.usbmodem…`、Linux では `/dev/ttyACM0`、Windows では `COM3` などです。書き込みによって既存のシステムが置き換わります。シリアルモニターは `Ctrl+]` で終了できます。
 
-書き込み後は[デモファームウェア](/docs/read_0/demo_firmware)の項目でハードウェアと操作を確認できます。
+書き込み後は[デモシステム](/docs/read_0/demo_firmware)の項目でハードウェアと操作を確認できます。
 
 <Callout type="warn" title="ボード設定">
 
 `sdkconfig.defaults` の 120 MHz Flash / PSRAM タイミングは、実装されている Flash の型番に依存します。`sdkconfig.ci` は標準タイミングでのコンパイル確認用で、実機検証を示すものではありません。このボード設定をそのまま別のハードウェアに適用しないでください。
 
-画面の VCOM は出荷時にパネルと対応付けられ、PMU に保存されています。ファームウェアは起動時に読み取りますが、ローカルには保存せず、ユーザー向けの変更機能もありません。
+画面の VCOM は出荷時にパネルと対応付けられ、PMU に保存されています。システムは起動時に読み取りますが、ローカルには保存せず、ユーザー向けの変更機能もありません。
 
 </Callout>
 
@@ -57,4 +57,8 @@ idf.py -p PORT flash monitor
 
 ## ライセンス
 
-ファームウェア本体は Apache-2.0 です。サードパーティ製コンポーネントにはそれぞれのライセンスが適用され、epdiy は LGPL-3.0-or-later、内蔵フォントは SIL OFL-1.1 です。再利用や配布の前に、[リポジトリのライセンス説明](https://github.com/MindReset/read_pico_firmware#readme)と各コンポーネントの LICENSE を確認してください。
+システム本体は Apache-2.0 です。サードパーティ製コンポーネントにはそれぞれのライセンスが適用され、epdiy は LGPL-3.0-or-later、内蔵フォントは SIL OFL-1.1 です。再利用や配布の前に、[リポジトリのライセンス説明](https://github.com/MindReset/read_pico_firmware#readme)と各コンポーネントの LICENSE を確認してください。
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="インストールと使用に関するよくある質問">SD カード、シリアル接続、インストール後に動作が遅い・画面が固まる場合の対処方法。</Card>
+</Cards>

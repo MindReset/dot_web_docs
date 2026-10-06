@@ -1,5 +1,5 @@
 {
     "title": "Getting Started",
-    "pages": ["crossmux", "pico_reader"],
+    "pages": ["crossmux", "pico_reader", "rickyos"],
     "defaultOpen": true
 }

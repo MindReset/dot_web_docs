@@ -4,13 +4,13 @@ new: true
 description: CrossMux preserves the original CrossPoint reading experience, with first-class Chinese support at its core. It combines the best features of the major branches and adds exclusive playful extensions.
 ---
 
-Thank you to [0x1abin](https://github.com/0x1abin) and the CrossMux community for this open-source reading firmware, and to [Moku Yui](https://github.com/MokuMMk) for adding Read Pico support.
+Thank you to [0x1abin](https://github.com/0x1abin) and the CrossMux community for this open-source reading system, and to [Moku Yui](https://github.com/MokuMMk) for adding Read Pico support.
 
 ## Before you start
 
 Prepare a computer, desktop Chrome or Edge, and a USB-C cable that supports data transfer.
 
-Flashing replaces the current firmware and may clear its settings. No firmware backup is needed when installing CrossMux from the official demo for the first time. Make sure the device has enough charge.
+Flashing replaces the current system and may clear its settings. No system backup is needed when installing CrossMux from the official demo for the first time. Make sure the device has enough charge.
 
 <CustomCloudImage osSrc="dot/docs/crossmux_1_1790759301830.png" alt="CrossMux website" />
 
@@ -33,15 +33,15 @@ Select **MindReset Read Pico** in the device list.
 </Step>
 <Step>
 
-### Select firmware and connect the device
+### Select a system version and connect the device
 
-Select the **Nightly** beta firmware. Check the page for the current version number.
+Select the **Nightly** beta release. Check the page for the current version number.
 
 Confirm that the connected device is MindReset Read Pico in the flashing section. The browser identifies it as an ESP32-S3 and cannot distinguish it from other models using the same chip, so check the connected hardware yourself.
 
-**No backup is needed when installing CrossMux from the official demo for the first time.** Leave the firmware backup option unchecked and proceed with installation. You can restore the original demo at any time by following the [official demo flashing instructions](/docs/read_0/firmware), so a backup of the original demo firmware is not required.
+**No backup is needed when installing CrossMux from the official demo for the first time.** Leave the system backup option unchecked and proceed with installation. You can restore the official demo system at any time using the restoration card below.
 
-<CustomCloudImage osSrc="dot/docs/crossmux_3_1790790168698.png" alt="Select Nightly firmware, confirm the device, and choose whether to back up" />
+<CustomCloudImage osSrc="dot/docs/crossmux_3_1790790168698.png" alt="Select Nightly, confirm the device, and choose whether to back up" />
 
 Connect Read Pico to your computer with the USB data cable.
 
@@ -52,9 +52,9 @@ If you are unsure which entry is Read Pico, cancel the picker, unplug the device
 
 ### Start installation
 
-Check the device, firmware version, and backup option, then click the online flashing button and select the device serial port in the browser picker.
+Check the device, system version, and backup option, then click the online flashing button and select the device serial port in the browser picker.
 
-The progress area below shows firmware download and verification, device connection, partition checks, installation, result verification, and device reset. Wait for the completion message. Keep the cable connected and the page open, and prevent your computer from going to sleep.
+The progress area below shows system download and verification, device connection, partition checks, installation, result verification, and device reset. Wait for the completion message. Keep the cable connected and the page open, and prevent your computer from going to sleep.
 
 <CustomCloudImage osSrc="dot/docs/crossmux_4_1790790168697.png" alt="Flashing complete and restart instructions" />
 
@@ -68,21 +68,14 @@ The device resets automatically when flashing finishes. If it does not start, un
 </Step>
 </Steps>
 
-## Troubleshooting
-
-| Problem | What to do |
-| --- | --- |
-| No SD card detected | Insert a separately purchased microSD card, up to 512 GB. The card must be formatted as FAT32. |
-| Device missing | try another data cable or USB port, and close other flashing tools using the device. |
-| Browser cannot connect | use desktop Chrome or Edge. These steps do not work in mobile or in-app browsers. |
-| Flashing failed | check the connection and follow the flashing page's instructions to reconnect and retry. If download mode is required, follow the instructions for your device model. |
-| Old image remains | an e-ink screen keeps its image without power. Restart the device to check whether the new firmware starts. |
-
-To restore the official demo, see [DIY Your System](/docs/read_0/firmware).
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="Installation and Usage FAQ">Find help with SD cards, serial connections, and slow or frozen screens after installation.</Card>
+  <Card href="/docs/read_0/firmware" title="Restore the Official Demo System">Follow the build and flash instructions in DIY Your System to restore the official demo system.</Card>
+</Cards>
 
 <Callout type="info" title="Other installation options">
 
-Besides the website's web flasher, you can clone or fork the CrossMux repository and follow its instructions to build and flash from source. You can also download firmware from its Releases page and follow that release's installation notes. Choose firmware and installation instructions that explicitly support Read Pico.
+Besides the website's web flasher, you can clone or fork the CrossMux repository and follow its instructions to build and flash from source. You can also download system packages from its Releases page and follow that release's installation notes. Choose releases and installation instructions that explicitly support Read Pico.
 
 </Callout>
 

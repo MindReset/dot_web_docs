@@ -1,0 +1,77 @@
+---
+title: RickyOS
+new: true
+description: 打开一本书。留一点时间给自己。由 Ricky AI Studio 打造的阅读与生活系统。
+---
+
+感谢 [Ricky Young](https://github.com/chinoryunqin) 和 [RickyOS 团队](https://chinoryunqin.github.io/RickyOS-site/) 为小纸 Pico 贡献 RickyOS 阅读与生活系统。
+
+## 开始之前
+
+<CustomCloudImage osSrc="dot/docs/rickyos_1_1791255643903.png" alt="RickyOS 阅读与生活系统" />
+
+准备一台电量充足的小纸 Pico、一台使用桌面版 Chrome 或 Edge 的电脑，以及一根支持数据传输的 USB-C 数据线。关闭其他占用设备串口的网页、刷写工具或终端。
+
+无需先安装其他系统，官网会检查设备当前的系统并选择安装方式。
+
+<Steps>
+<Step>
+
+### 打开安装页面
+
+在电脑的 Chrome 或 Edge 中打开 [RickyOS 官网](https://chinoryunqin.github.io/RickyOS-site/)，点击「安装 RickyOS」进入安装工作台。系统版本以页面显示为准。
+
+</Step>
+<Step>
+
+### 连接设备
+
+用 USB 数据线将小纸 Pico 连接到电脑，勾选设备确认选项，再点击「连接并检查设备」。在浏览器弹出的窗口中选择小纸 Pico 对应的串口，点击「连接」。
+
+如果无法确定对应条目，可先取消窗口，拔下设备后重新连接，查看新增的串口。连接成功后，页面会显示「芯片检查通过」；此时还没有写入系统。
+
+<CustomCloudImage osSrc="dot/docs/rickyos_2_1791255643905.png" alt="RickyOS 安装工作台与连接设备选项" />
+
+</Step>
+<Step>
+
+### 检查设备与选择备份
+
+如需保留当前系统，可勾选「先备份完整 16 MB Flash」，点击「备份并检查设备」。备份完成后会自动下载文件，请保存好该文件。备份不包含 microSD 存储卡中的内容。
+
+不需要备份时，直接点击「检查设备」。网页会读取分区和启动信息，自动选择安装方式：
+
+- 识别到兼容的 CrossMux 或 RickyOS 时，只更新应用。
+- 从官方演示系统或其他系统安装时，进行完整安装。
+
+阅读页面显示的安装说明，确认检查已完成后再继续。
+
+<CustomCloudImage osSrc="dot/docs/rickyos_3_1791255643905.png" alt="检查当前系统、选择备份并确认安装 RickyOS" />
+
+</Step>
+<Step>
+
+### 确认安装
+
+<Callout type="warn" title="设备数据">
+
+完整安装会替换当前系统，并清理设备内部文件与设置。需要保留的数据请先备份。网页不会操作 microSD 存储卡，卡上的书籍不受影响。
+
+</Callout>
+
+勾选安装确认选项，点击「安装 RickyOS」。保持 USB 连接和网页打开，期间不要拔掉数据线，也不要让电脑进入睡眠。
+
+</Step>
+<Step>
+
+### 等待安装完成
+
+网页会显示下载、写入与校验进度。等待「校验通过，请确认设备出现 RickyOS 首页」提示，再确认设备已经重新启动并显示 RickyOS 首页。
+
+</Step>
+</Steps>
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡、串口连接和安装后卡顿等问题的处理方法。</Card>
+  <Card href="/docs/read_0/firmware" title="恢复官方演示系统">前往 DIY 你的系统，按编译与刷写步骤恢复官方演示系统。</Card>
+</Cards>

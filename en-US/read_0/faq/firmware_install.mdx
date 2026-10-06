@@ -1,0 +1,28 @@
+---
+title: Third-Party System Installation Issues
+description: Resolve SD card, serial connection, flashing failure, and post-installation responsiveness issues on Read Pico.
+---
+
+## Common issues
+
+| Problem | What to do |
+| --- | --- |
+| No SD card detected | Insert a separately purchased microSD card, up to 512 GB. The card must be formatted as FAT32. |
+| Serial port missing | Try another USB data cable or port, and close other webpages, flashing tools, or terminals using the port. |
+| Device cannot connect | Use desktop Chrome or Edge. Mobile browsers and WeChat's in-app browser do not support these web flashing steps. If writing has not started, reconnect the device. If download mode is required, follow that system's instructions. |
+| Screen is slow, frozen, or still shows the old image after installation | Confirm that flashing has finished, then briefly press the power key. If the device still does not respond, press and hold the power key, releasing it when the screen changes. |
+| Installation interrupted or verification failed | Keep the device connected and retry as instructed by the flashing page. Do not unplug or force a restart before writing has finished. If the page provides an operation log, save it and send it to the system developer when reporting the issue. |
+
+## System-specific issues
+
+### Pico Reader cannot connect
+
+On a device already running Pico Reader, use **设置 → Pico 设备卡片 → 升级 → 进入 BOOT 模式** (Settings → Pico device card → Upgrade → Enter BOOT mode) to enter download mode. Wait for the computer to detect the serial port again, then retry. For a first installation, connect the device directly using the [Pico Reader installation steps](/docs/read_0/start/pico_reader).
+
+### No books in the Pico Reader bookshelf
+
+No books are included with the system. Put EPUB or TXT files in the microSD card's `books` folder, then open them from the device's bookshelf.
+
+### RickyOS installation is unavailable after the check
+
+Follow the installation page's instructions. Use **查看本次操作记录** (View this operation's log) to save the log, then visit the [RickyOS website](https://chinoryunqin.github.io/RickyOS-site/) to find a feedback channel and share the log with the team.

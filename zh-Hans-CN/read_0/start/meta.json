@@ -2,7 +2,8 @@
     "title": "开始使用",
     "pages": [
         "crossmux",
-        "pico_reader"
+        "pico_reader",
+        "rickyos"
     ],
     "defaultOpen": true
 }

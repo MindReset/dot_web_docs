@@ -3,7 +3,8 @@
     "pages": [
         "start",
         "demo_firmware",
-        "firmware"
+        "firmware",
+        "faq"
     ],
     "defaultOpen": true
 }

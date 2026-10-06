@@ -4,13 +4,13 @@ new: true
 description: CrossMux 延续原汁原味的 CrossPoint 阅读体验，以一流的中文支持为核心，融合各主流分支的优秀特性，再加入独家的趣味扩展。
 ---
 
-感谢 [0x1abin](https://github.com/0x1abin) 及 CrossMux 社区为小纸 Pico 带来这款开源阅读固件，特别感谢 [Moku Yui](https://github.com/MokuMMk) 的适配贡献。
+感谢 [0x1abin](https://github.com/0x1abin) 及 CrossMux 社区为小纸 Pico 带来这款开源阅读系统，特别感谢 [Moku Yui](https://github.com/MokuMMk) 的适配贡献。
 
 ## 开始之前
 
 准备一台电脑、桌面版 Chrome 或 Edge 浏览器，以及一根支持数据传输的 USB-C 数据线。
 
-刷写会替换设备当前的固件，原有设置可能被清除。首次从官方演示固件安装 CrossMux 时无需备份原系统，请保持设备电量充足。
+刷写会替换设备当前的系统，原有设置可能被清除。首次从官方演示系统安装 CrossMux 时无需备份原系统，请保持设备电量充足。
 
 <CustomCloudImage osSrc="dot/docs/crossmux_1_1790759301830.png" alt="CrossMux 官网" />
 
@@ -33,15 +33,15 @@ description: CrossMux 延续原汁原味的 CrossPoint 阅读体验，以一流�
 </Step>
 <Step>
 
-### 选择固件并连接设备
+### 选择系统并连接设备
 
-选择 **Nightly** 内测版固件，具体版本号以页面显示为准。
+选择 **Nightly** 内测版系统，具体版本号以页面显示为准。
 
 在烧录区域勾选「我确认当前连接的是 MindReset Read Pico」。浏览器会将设备识别为 ESP32-S3，无法自动区分其他使用同一芯片的机型，请确认连接的确实是小纸 Pico。
 
-**首次从官方演示固件安装 CrossMux 时无需备份**，不必勾选「是否先备份现有固件」，可以直接安装。你随时可以按照[官方示例的刷写步骤](/docs/read_0/firmware)刷回原本的演示固件，因此无需备份原有演示固件。
+**首次从官方演示系统安装 CrossMux 时无需备份**，不必勾选备份选项，可以直接安装。你随时可以通过下方的恢复入口刷回官方演示系统。
 
-<CustomCloudImage osSrc="dot/docs/crossmux_3_1790790168698.png" alt="选择 Nightly 固件并确认设备与备份选项" />
+<CustomCloudImage osSrc="dot/docs/crossmux_3_1790790168698.png" alt="选择 Nightly 系统并确认设备与备份选项" />
 
 用 USB 数据线把小纸 Pico 连接到电脑。
 
@@ -52,9 +52,9 @@ description: CrossMux 延续原汁原味的 CrossPoint 阅读体验，以一流�
 
 ### 开始安装
 
-确认设备、固件版本和备份选项后，点击「在线烧录」，在浏览器弹出的窗口中选择设备串口。
+确认设备、系统版本和备份选项后，点击「在线烧录」，在浏览器弹出的窗口中选择设备串口。
 
-页面下方会显示进度，依次下载并校验固件、连接设备、检查分区布局、安装固件、验证安装结果并重置设备。等待「烧录完成」提示，期间不要拔掉数据线、关闭网页，或让电脑进入睡眠。
+页面下方会显示进度，依次下载并校验系统、连接设备、检查分区布局、安装系统、验证安装结果并重置设备。等待「烧录完成」提示，期间不要拔掉数据线、关闭网页，或让电脑进入睡眠。
 
 <CustomCloudImage osSrc="dot/docs/crossmux_4_1790790168697.png" alt="烧录完成与重启提示" />
 
@@ -68,21 +68,14 @@ description: CrossMux 延续原汁原味的 CrossPoint 阅读体验，以一流�
 </Step>
 </Steps>
 
-## 遇到问题
-
-| 问题 | 处理方式 |
-| --- | --- |
-| 未检测到 SD 卡 | 请插入自行购买的 microSD 存储卡，最大支持 512 GB，需使用 FAT32 格式。 |
-| 找不到设备 | 换一根支持数据传输的数据线，尝试另一个 USB 接口，并关闭占用设备的其他刷写工具。 |
-| 浏览器无法连接 | 使用电脑上的 Chrome 或 Edge；手机浏览器和微信内置浏览器不适用于这套步骤。 |
-| 刷写失败 | 检查连接，按刷写页面的提示重新连接并重试。如果页面要求进入下载模式，请按对应机型的说明操作。 |
-| 完成后仍显示旧画面 | 墨水屏断电后会保留画面。重启设备，确认是否进入新固件。 |
-
-需要恢复官方示例时，查看[DIY 你的系统](/docs/read_0/firmware)。
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡、串口连接和安装后卡顿等问题的处理方法。</Card>
+  <Card href="/docs/read_0/firmware" title="恢复官方演示系统">前往 DIY 你的系统，按编译与刷写步骤恢复官方演示系统。</Card>
+</Cards>
 
 <Callout type="info" title="其他安装方式">
 
-除了使用官网的网页烧录器，你也可以克隆或 Fork CrossMux 仓库的源码，按仓库说明编译、刷写，或从仓库的 Releases 下载固件，按对应版本的说明安装。请选择明确支持小纸 Pico 的固件与安装方式。
+除了使用官网的网页烧录器，你也可以克隆或 Fork CrossMux 仓库的源码，按仓库说明编译、刷写，或从仓库的 Releases 下载系统，按对应版本的说明安装。请选择明确支持小纸 Pico 的系统与安装方式。
 
 </Callout>
 

@@ -1,0 +1,77 @@
+---
+title: RickyOS
+new: true
+description: Open a book. Leave a little time for yourself. A reading and lifestyle system by Ricky AI Studio.
+---
+
+Thank you to [Ricky Young](https://github.com/chinoryunqin) and the [RickyOS team](https://chinoryunqin.github.io/RickyOS-site/) for creating RickyOS for Read Pico.
+
+## Before you start
+
+<CustomCloudImage osSrc="dot/docs/rickyos_1_1791255643903.png" alt="RickyOS reading and lifestyle system" />
+
+Prepare a Read Pico with sufficient charge, a computer running desktop Chrome or Edge, and a USB-C data cable. Close other webpages, flashing tools, or terminals using the device's serial port.
+
+You do not need to install another system first. The website checks the current system and selects the installation method.
+
+<Steps>
+<Step>
+
+### Open the installation page
+
+Open the [RickyOS website](https://chinoryunqin.github.io/RickyOS-site/) in Chrome or Edge on your computer, then click **安装 RickyOS** (Install RickyOS) to open the installer. Check the page for the system version.
+
+</Step>
+<Step>
+
+### Connect your device
+
+Connect Read Pico to your computer with the USB data cable. Select the device confirmation checkbox and click **连接并检查设备** (Connect and check device). In the browser picker, select Read Pico's serial port and click **Connect**.
+
+If you are unsure which entry to use, cancel the picker, unplug and reconnect the device, and look for the newly added port. Once connected, the page shows **芯片检查通过** (Chip check passed). The device's system has not been changed at this point.
+
+<CustomCloudImage osSrc="dot/docs/rickyos_2_1791255643905.png" alt="RickyOS installer and device connection options" />
+
+</Step>
+<Step>
+
+### Check your device and choose whether to back up
+
+To keep a copy of the current system, select **先备份完整 16 MB Flash** (Back up the full 16 MB Flash first), then click **备份并检查设备** (Back up and check device). The backup downloads automatically when complete. Save the file. It does not include the contents of the microSD card.
+
+If you do not need a backup, click **检查设备** (Check device). The website reads the partition and boot information and selects the installation method:
+
+- If it detects a compatible CrossMux or RickyOS installation, it updates only the application.
+- For the official demo system or another system, it performs a full installation.
+
+Read the installation notes shown on the page and wait for the check to finish before continuing.
+
+<CustomCloudImage osSrc="dot/docs/rickyos_3_1791255643905.png" alt="Check the current system, choose a backup, and confirm RickyOS installation" />
+
+</Step>
+<Step>
+
+### Confirm installation
+
+<Callout type="warn" title="Device data">
+
+A full installation replaces the current system and clears internal files and settings. Back up any data you want to keep first. The website does not access the microSD card, so books on the card are not affected.
+
+</Callout>
+
+Select the installation confirmation checkbox, then click **安装 RickyOS** (Install RickyOS). Keep USB connected and the page open. Do not unplug the cable or let your computer go to sleep.
+
+</Step>
+<Step>
+
+### Wait for installation to finish
+
+The page shows download, flashing, and verification progress. Wait for **校验通过，请确认设备出现 RickyOS 首页。** (Verification passed; check that the device shows the RickyOS home screen), then confirm that Read Pico has restarted and displays the RickyOS home screen.
+
+</Step>
+</Steps>
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="Installation and Usage FAQ">Find help with SD cards, serial connections, and slow or frozen screens after installation.</Card>
+  <Card href="/docs/read_0/firmware" title="Restore the Official Demo System">Follow the build and flash instructions in DIY Your System to restore the official demo system.</Card>
+</Cards>
