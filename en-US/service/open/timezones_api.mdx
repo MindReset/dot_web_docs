@@ -36,12 +36,12 @@ Use the Timezones API to query the timezone list currently supported by the serv
 <TypeTable
 	type={{
 		key: {
-			description: 'Timezone key. Use this value for the timezone field in the Device Settings API.',
+			description: 'Identifier accepted when setting the device timezone.',
 			type: 'string',
 			required: true,
 		},
 		name: {
-			description: 'Localized timezone name based on the current user preference.',
+			description: 'Display name in the language selected by the user.',
 			type: 'string',
 			required: true,
 		},
@@ -51,7 +51,7 @@ Use the Timezones API to query the timezone list currently supported by the serv
 			required: true,
 		},
 		utcOffsetLabel: {
-			description: 'Current UTC offset display label.',
+			description: 'Current UTC offset, formatted for display.',
 			type: 'string',
 			required: true,
 		},

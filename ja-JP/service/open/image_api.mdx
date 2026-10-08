@@ -14,7 +14,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     連携の互換性を保つため、以下を行ってください：
     - リクエスト URL を新しいエンドポイントへ更新：`/api/authV2/open/device/:deviceId/image`
-    - 本ドキュメントのリクエスト構造に従ってパラメータを送信（例：`refreshNow` / `taskAlias` / `image` / `link` / `border` / `ditherType` / `ditherKernel` / `taskKey`）
+    - 本ドキュメントのリクエスト構造に従ってパラメータを送信（例：`taskType` / `refreshNow` / `taskAlias` / `image` / `link` / `border` / `ditherType` / `ditherKernel` / `taskKey`）
     - 旧版のレスポンス内容やエラーコードに依存している場合は、新版 API のレスポンスに合わせて調整
 
 </Callout>
@@ -27,18 +27,20 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 2. 自分のデバイスが少なくとも 1 台あり、<Link href="/docs/service/studio/api/get_device_id">デバイスのシリアル番号</Link>を取得していること
 3. デバイスが電源に接続されていること
 4. デバイスがネットワークに接続されていること
-5. Dot. アプリの創造所から「画像 API」コンテンツをデバイスの **ループ** タスクに追加していること
+5. Dot. アプリの創造所から「画像 API」コンテンツをデバイスの**ループリストまたは固定リスト**に追加していること
 
 <Callout type="info" title="Image API の用途">
 	Image API は、ポスター、スクリーンショット、ダッシュボード、お気に入りの画像をデバイスに送ります。すでに完成したビジュアルを、そのまま表示したい場合に向いています。
 </Callout>
 
-<Callout type="info" title="API の表示タイミングについて">
-	API の即時表示は、デバイスが現在オンラインかどうかに依存します。デバイスがバッテリー駆動でスリープ中の場合、内容はまずサーバーに保存され、デバイスが次回自動起動したあとに表示されます。詳しくは<Link href="/docs/quote_0/faq/refresh_timing">時間の仕組み</Link>をご覧ください。
+<Callout type="info" title="コンテンツリストと表示タイミング">
+	更新するコンテンツをループリストまたは固定リストから選びます。指定しない場合はループリストを使用します。タスク識別子は選択したリスト内だけで検索し、省略時はそのリストの最初の対応する API コンテンツを更新します。
+
+	ループリストでは即時表示を有効にすると、オンラインのデバイスへ更新を要求します。バッテリー駆動でスリープ中の場合は保存し、自動起動時に取得します。固定リストでは Dot. App の時間設定に従い、現在表示中でも次回の予定された更新を待ちます。API は時間設定を変更しません。詳しくは<Link href="/docs/quote_0/faq/refresh_timing">時間の仕組み</Link>をご覧ください。
 </Callout>
 
 <Callout type="info" title="画像入力について">
-	`image` フィールドは必須です。PNG Base64 データまたは完全なオンライン `http(s)` 画像 URL を指定する必要があります。PNG Base64 は裸の Base64、または `data:image/png;base64,` プレフィックス付きの形式を使用でき、デコード後のサイズは最大 3MB です。リモート画像 URL は匿名で直接アクセスでき、認証や特別な Referer を必要とせず、URL 長は 2048 文字以内、レスポンス本文は最大 3MB で、`image/*` を直接返す必要があります。
+	表示する画像を PNG Base64 データまたは完全なオンライン `http(s)` 画像 URL で送信します。PNG Base64 は裸の Base64、または `data:image/png;base64,` プレフィックス付きの形式を使用でき、デコード後のサイズは最大 3MB です。リモート画像 URL は匿名で直接アクセスでき、認証や特別な Referer を必要とせず、URL 長は 2048 文字以内、レスポンス本文は最大 3MB で、`image/*` を直接返す必要があります。
 </Callout>
 
 <Callout type="info" title="デバッグ用のテスト画像 URL">
@@ -83,16 +85,27 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		},
 	}}
 	bodyParams={{
+		taskType: {
+			type: 'select',
+			name: 'コンテンツリスト',
+			default: 'loop',
+			description: '更新するコンテンツのリスト。ループリストまたは固定リストを選び、省略時はループリストを使用します。',
+			options: [
+				{ value: 'loop', label: 'ループリスト' },
+				{ value: 'fixed', label: '固定リスト' },
+			],
+		},
 		refreshNow: {
 			type: 'boolean',
 			name: '内容を即時表示するか',
+			description: 'ループリストでは、有効にすると即時表示を要求し、無効にすると保存のみ行います。固定リストではこの設定に関係なく、現在表示中でも次回の予定された更新を待ちます。',
 			default: true,
 		},
 		taskKey: {
 			type: 'string',
 			name: 'タスク識別子',
 			description:
-				'「デバイスタスク一覧」API で取得できます（複数の「画像 API」コンテンツがある場合に対象を指定）。',
+				'選択したリストの一覧 API で取得したタスク識別子。省略すると、そのリストの最初の対応する API コンテンツを更新します。ほかのリストは検索しません。',
 		},
 		taskAlias: {
 			type: 'string',
@@ -150,7 +163,32 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 	defaultOpen={false}
 />
 
+### 固定リストのコンテンツを更新する
+
+固定リストを取得し、レスポンスから `IMAGE_API` コンテンツを探して、その `key` を `taskKey` として使います。
+
+```bash
+curl 'https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/fixed/list' \
+  -H 'Authorization: Bearer dot_app_{{apiKey}}'
+```
+
+同じ書き込み API に、`taskType: "fixed"` と取得した `taskKey` をリクエストのトップレベルで送ります。次のリクエストは保存のみを行い、`refreshNow: true` でも固定コンテンツを早めに表示・更新しません。
+
+```bash
+curl -X POST 'https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image' \
+  -H 'Authorization: Bearer dot_app_{{apiKey}}' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "taskType": "fixed",
+  "taskKey": "{{taskKey}}",
+  "refreshNow": true,
+  "image": "https://placehold.co/600x400/png"
+}'
+```
+
 ### レスポンス例
+
+以下はループコンテンツを即時表示した場合のレスポンス例です。
 
 ```json
 {
@@ -366,45 +404,50 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
 
 <TypeTable
 	type={{
+		taskType: {
+			description: '更新するコンテンツのリスト。ループリストまたは固定リストを選び、省略時はループリストを使用します。',
+			type: "'loop' | 'fixed'",
+			default: 'loop',
+		},
 		refreshNow: {
-			description: 'コンテンツを即時に表示するかどうか（表示タイミング制御）',
+			description: 'ループリストでは、有効にすると即時表示を要求し、無効にすると保存のみ行います。固定リストではこの設定に関係なく、現在表示中でも次回の予定された更新を待ちます。',
 			type: 'bool',
 			default: 'true',
 		},
 		image: {
 			description:
-				'必須。PNG Base64 画像データ（裸の Base64 または data:image/png;base64, プレフィックス付き、デコード後最大 3MB）または完全な http(s) 画像 URL（296px×152px、かつリモート URL は匿名アクセス可能、2048 文字以内、レスポンス本文最大 3MB、image/* を直接返す必要があります）（表示する画像）',
+				'画面に表示する 296px×152px の画像。PNG Base64（デコード後最大 3MB）または完全な http(s) 画像 URL を指定します。Base64 は data:image/png;base64, プレフィックス付きでも指定できます。リモート URL は匿名アクセス可能、2048 文字以内で、3MB 以内の image/* レスポンスを直接返す必要があります。',
 			type: 'string',
 			required: true,
 		},
 		link: {
-			description: 'http/https またはスキーム URL（タッチ操作の遷移先）',
+			description: 'タッチ操作時に開くリンク。ウェブ URL またはアプリ用の URL スキームを指定できます。',
 			type: 'string',
 		},
 		border: {
-			description: '0は白枠、1は黒枠（画面の枠色）',
+			description: '画面の枠色。白または黒を選べます。',
 			type: 'number',
 			default: '0',
 		},
 		ditherType: {
-			description: 'ディザ種別（DIFFUSION、ORDERED、NONE）（画像ディザ効果）',
+			description: '画像の階調を表現する方法。誤差拡散、順序ディザ、ディザなしから選べます。',
 			type: 'string',
 			default: 'DIFFUSION',
 		},
 		ditherKernel: {
 			description:
-				'ディザアルゴリズム（THRESHOLD、ATKINSON、BURKES、FLOYD_STEINBERG、SIERRA2、STUCKI、JARVIS_JUDICE_NINKE、DIFFUSION_ROW、DIFFUSION_COLUMN、DIFFUSION_2D）（ディザのアルゴリズム）',
+				'ディザ処理に使うアルゴリズム。画像に合わせて選べます。',
 			type: 'string',
 			default: 'FLOYD_STEINBERG',
 		},
 		taskKey: {
 			description:
-				'デバイスに複数の「画像 API」コンテンツがある場合、更新して切り替える対象を taskKey で指定します。taskKey は「デバイスタスク一覧」で取得できます。未指定の場合は最初の画像 API コンテンツが選択されます。',
+				'選択したリストの一覧 API で取得したタスク識別子。省略すると、そのリストの最初の対応する API コンテンツを更新します。ほかのリストは検索しません。',
 			type: 'string',
 		},
 		taskAlias: {
 			description:
-				'デバイスタスク一覧に表示するタスク別名です。同じ API 種別の複数コンテンツを区別できます。文字列または数値を指定でき、最大 100 文字です。省略すると既存の別名を維持し、空文字列または null を送ると別名を消去します。',
+				'デバイスタスク一覧に表示するタスク別名です。同じ API 種別の複数コンテンツを区別できます。文字列または数値を指定でき、最大 100 文字です。省略すると既存の別名を維持し、空文字列または空の値を送ると別名を消去します。',
 			type: 'string | number',
 		},
 	}}
@@ -417,7 +460,7 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
 <TypeTable
 	type={{
 		message: {
-			description: '人間が読めるレスポンスメッセージ。成功時もエラー時もこのフィールドを使用します。',
+			description: '処理結果やエラーの内容。',
 			type: 'string',
 			required: true,
 		},
@@ -429,7 +472,13 @@ Figma、Sketch、Adobe Photoshop などでテキストを PNG に変換し、さ
 | HTTP ステータス | 意味             | 説明                                                                                                               |
 | :-------------- | :--------------- | :----------------------------------------------------------------------------------------------------------------- |
 | `200`           | 成功             | デバイスの画像 API コンテンツを切り替え／データ更新（ただし表示は切り替わっていない）                              |
-| `400`           | パラメータ不正   | デバイス ID の欠如または形式不正／無効な画像形式／border は 0 または 1／無効なディザ種別／無効なディザアルゴリズム |
+| `400`           | パラメータ不正   | コンテンツリストの種類が無効／デバイス ID の欠如または形式不正／画像形式が無効／画面の枠色が無効／ディザ種別またはアルゴリズムが無効 |
 | `403`           | 権限不足         | 当該デバイスを操作する権限がありません                                                                             |
-| `404`           | 未検出           | デバイスが存在しない・未登録／画像 API コンテンツがループタスクに未追加                                           |
+| `404`           | 未検出           | デバイスが存在しない・未登録／選択したリストに対応する API コンテンツがない、またはタスク識別子がそのコンテンツを示していない                                           |
 | `500`           | デバイス応答失敗 | 画像 API コンテンツの切替に失敗                                                                                    |
+
+### リストと表示タイミングの確認
+
+- `400`：`taskType` には `loop` または `fixed` を指定してください。
+- `404`：一覧取得と書き込みで同じ `taskType` を使い、そのリスト内の対応する API コンテンツの `taskKey` を指定してください。`taskType` の省略時はループリストを選択します。
+- 固定コンテンツの保存後も画面が変わらない場合：Dot. App の時間設定を確認し、次回の予定された更新を待ってください。`refreshNow: true` でも固定コンテンツは即時更新されません。

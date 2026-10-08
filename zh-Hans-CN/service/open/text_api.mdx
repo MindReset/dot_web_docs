@@ -15,7 +15,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     为保持集成兼容：
     - 将请求地址更新为新版接口：`/api/authV2/open/device/:deviceId/text`
-    - 按本文档的请求结构发送参数（例如 `refreshNow` / `taskAlias` / `title` / `message` / `signature` / `icon` / `link` / `taskKey` / `styles`）
+    - 按本文档的请求结构发送参数（例如 `taskType` / `refreshNow` / `taskAlias` / `title` / `message` / `signature` / `icon` / `link` / `taskKey` / `styles`）
     - 如您依赖旧版接口的返回内容或错误码，请以新版接口的响应为准进行适配
 
 </Callout>
@@ -28,18 +28,20 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 2. 确保您至少有一台所属于自己的设备并已<Link href="/docs/service/studio/api/get_device_id">获取设备序列号</Link>；
 3. 确保您的设备已接入电源；
 4. 确保您的设备已接入网络；
-5. 确保已从 Dot. App 内容工坊中添加 `文本 API` 内容到设备**循环**任务中。
+5. 确保已从 Dot. App 内容工坊中添加 `文本 API` 内容到设备的**循环列表或固定列表**中。
 
 <Callout type="info" title="文本 API 的用途">
 	文本 API 适合把提醒、灵感、签名和小图标组合成一张适合设备阅读的文字卡片。您可以用它发送自动化消息、轻量通知、每日摘录或需要立即看到的一段文本。
 </Callout>
 
-<Callout type="info" title="关于 API 显示时机">
-	API 的即时显示能力依赖设备当前是否在线。若设备使用电池供电并处于睡眠状态，内容会先保存至服务器，并在设备下一次自动唤醒后显示。您可以阅读<Link href="/docs/quote_0/faq/refresh_timing">时间机制</Link>了解更多。
+<Callout type="info" title="选择内容列表与显示时机">
+	可选择循环列表或固定列表，省略时使用循环列表。任务唯一标识只在所选列表中查找；省略时更新该列表中的第一个同类 API 内容，不会查找其他列表。
+
+	立即显示设置仅对循环内容有效：开启时请求立即显示，关闭时仅保存。设备需要在线；电池供电且睡眠时，内容先保存，待设备自动唤醒后获取。固定内容始终按 App 中设置的时间显示，即使当前正在显示该固定内容，也要等下一次计划刷新。API 不改变固定内容的时间设置。详见<Link href="/docs/quote_0/faq/refresh_timing">时间机制</Link>。
 </Callout>
 
 <Callout type="info" title="关于图标输入">
-	`icon` 字段是可选字段。如需传递图标，必须传递 PNG Base64 数据或完整的在线 `http(s)` 图片 URL。PNG Base64 可传裸 Base64，也可带 `data:image/png;base64,` 前缀，解码后最大 1MB，建议使用 40px×40px 小图标。远程图标链接必须可匿名访问、无需鉴权或特殊 Referer，URL 长度不超过 2048 个字符，响应体最大 3MB，并直接返回 `image/*` 内容。
+	图标为可选内容，可使用 PNG Base64 数据或完整的在线 `http(s)` 图片 URL。PNG Base64 可传裸 Base64，也可带 `data:image/png;base64,` 前缀，解码后最大 1MB，建议使用 40px×40px 小图标。远程图标链接必须可匿名访问、无需鉴权或特殊 Referer，URL 长度不超过 2048 个字符，响应体最大 3MB，并直接返回 `image/*` 内容。
 </Callout>
 
 <Callout type="info" title="可用于调试的测试图标链接">
@@ -84,16 +86,27 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		},
 	}}
 	bodyParams={{
+		taskType: {
+			type: 'select',
+			name: '内容列表',
+			default: 'loop',
+			description: '可选择循环列表或固定列表，省略时使用循环列表。',
+			options: [
+				{ value: 'loop', label: '循环列表' },
+				{ value: 'fixed', label: '固定列表' },
+			],
+		},
 		refreshNow: {
 			type: 'boolean',
 			name: '是否立刻显示内容',
+			description: '仅对循环内容有效：开启时请求立即显示，关闭时仅保存。固定内容始终等待下一次计划刷新，当前正在显示时也不会立即刷新。',
 			default: true,
 		},
 		taskKey: {
 			type: 'string',
 			name: '任务唯一标识',
 			description:
-				'可通过「列出设备任务」接口获取（当设备存在多个「文本 API」内容时用于指定目标内容）。',
+				'要更新的任务唯一标识，可通过「列出设备内容」查询所选列表获取。省略时更新所选列表中的第一个同类 API 内容，不会查找其他列表。',
 		},
 		taskAlias: {
 			type: 'string',
@@ -183,7 +196,33 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 	defaultOpen={false}
 />
 
+### 更新固定列表中的内容
+
+先查询固定列表，从返回数组中找到 `TEXT_API` 内容，并将它的 `key` 作为 `taskKey`：
+
+```bash
+curl 'https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/fixed/list' \
+  -H 'Authorization: Bearer dot_app_{{apiKey}}'
+```
+
+再调用同一接口，在请求顶层传入 `taskType: "fixed"` 和该 `taskKey`。以下请求只保存内容，`refreshNow: true` 不会提前显示或刷新固定内容：
+
+```bash
+curl -X POST 'https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/text' \
+  -H 'Authorization: Bearer dot_app_{{apiKey}}' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "taskType": "fixed",
+  "taskKey": "{{taskKey}}",
+  "refreshNow": true,
+  "title": "今日提醒",
+  "message": "会议改到 10:30。"
+}'
+```
+
 ### 响应示例
+
+以下为循环内容立即显示时的响应。
 
 ```json
 {
@@ -295,13 +334,18 @@ Text API 会保留 `message` 中的换行和制表符。
 
 <TypeTable
 	type={{
+		taskType: {
+			description: '可选择循环列表或固定列表，省略时使用循环列表。',
+			type: "'loop' | 'fixed'",
+			default: 'loop',
+		},
 		refreshNow: {
-			description: '是否**立刻显示**内容（控制内容的显示时机）',
+			description: '仅对循环内容有效：开启时请求立即显示，关闭时仅保存。固定内容始终等待下一次计划刷新，当前正在显示时也不会立即刷新。',
 			type: 'bool',
 			default: 'true',
 		},
 		title: {
-			description: '文本标题（显示在屏幕上的标题）',
+			description: '显示在屏幕上的标题。',
 			type: 'string',
 		},
 		message: {
@@ -309,7 +353,7 @@ Text API 会保留 `message` 中的换行和制表符。
 			type: 'string',
 		},
 		signature: {
-			description: '文本签名（显示在屏幕上的签名）',
+			description: '显示在屏幕上的签名。',
 			type: 'string',
 		},
 		icon: {
@@ -318,22 +362,22 @@ Text API 会保留 `message` 中的换行和制表符。
 			type: 'string',
 		},
 		link: {
-			description: 'http/https 链接或 Scheme Url（碰一碰跳转的内容）',
+			description: '碰一碰后打开的网页或应用链接，支持 HTTP(S) 地址和 URL Scheme。',
 			type: 'string',
 		},
 		taskKey: {
 			description:
-				'当设备存在多个「文本 API」内容时，用于指定要更新并切换的目标内容 taskKey。可通过「列出设备任务」获取。不传递则默认选择第一个文本 API 内容。',
+				'要更新的任务唯一标识，可通过「列出设备内容」查询所选列表获取。省略时更新所选列表中的第一个同类 API 内容，不会查找其他列表。',
 			type: 'string',
 		},
 		taskAlias: {
 			description:
-				'任务别名，用于在设备任务列表中区分多个同类 API 内容。支持字符串或数字，最大 100 字；省略时不改变已有别名，传空字符串或 null 可清理别名。',
+				'在设备任务列表中显示的名称，用于区分多个同类 API 内容，最长 100 字。省略时保留已有名称，传空值或空字符串可清除。',
 			type: 'string | number',
 		},
 		styles: {
 			description:
-				'可选排版覆盖。styles.title 和 styles.signature 支持 fontFamily、fontSize、fontWeight；styles.message 额外支持 lineHeight。',
+				'可分别调整标题、正文和签名的字体、字号与字重，正文还可调整行高。',
 			type: 'object',
 		},
 	}}
@@ -373,7 +417,7 @@ Text API 会保留 `message` 中的换行和制表符。
 <TypeTable
 	type={{
 		message: {
-			description: '响应描述。成功和错误响应都通过此字段返回可读说明。',
+			description: '请求结果的说明，包括成功提示或错误原因。',
 			type: 'string',
 			required: true,
 		},
@@ -385,7 +429,13 @@ Text API 会保留 `message` 中的换行和制表符。
 | HTTP 状态码 | 含义             | 描述                                           |
 | ----------- | ---------------- | ---------------------------------------------- |
 | `200`       | 成功             | 设备文本 API 内容已切换/数据已更新但未切换内容 |
-| `400`       | 参数错误         | 无效的图标格式                                 |
+| `400`       | 参数错误         | 内容列表类型无效<br/>无效的图标格式 |
 | `403`       | 权限不足         | 您没有权限操作此设备                           |
-| `404`       | 设备或内容不存在 | 设备不存在或未注册<br/>未添加文本 API 内容到循环任务中 |
+| `404`       | 设备或内容不存在 | 设备不存在或未注册<br/>所选列表中未添加对应 API 内容，或任务唯一标识与该列表中的对应 API 内容不符 |
 | `500`       | 设备响应失败     | 设备文本 API 内容切换失败                      |
+
+### 列表与显示时机排查
+
+- `400`：确认 `taskType` 只使用 `loop` 或 `fixed`。
+- `404`：确认请求的 `taskType` 与查询列表一致，且 `taskKey` 来自该列表中的对应 API 内容；省略 `taskType` 会查询循环列表。
+- 固定内容已保存但画面未变化：检查 App 中的时间设置，并等待下一次计划刷新；`refreshNow: true` 不会触发固定内容立即刷新。

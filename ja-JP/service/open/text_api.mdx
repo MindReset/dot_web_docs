@@ -15,7 +15,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     連携の互換性を保つため、以下を行ってください：
     - リクエスト URL を新しいエンドポイントへ更新：`/api/authV2/open/device/:deviceId/text`
-    - 本ドキュメントのリクエスト構造に従ってパラメータを送信（例：`refreshNow` / `taskAlias` / `title` / `message` / `signature` / `icon` / `link` / `taskKey` / `styles`）
+    - 本ドキュメントのリクエスト構造に従ってパラメータを送信（例：`taskType` / `refreshNow` / `taskAlias` / `title` / `message` / `signature` / `icon` / `link` / `taskKey` / `styles`）
     - 旧版のレスポンス内容やエラーコードに依存している場合は、新版 API のレスポンスに合わせて調整
 
 </Callout>
@@ -28,18 +28,20 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 2. 自分のデバイスが少なくとも 1 台あり、<Link href="/docs/service/studio/api/get_device_id">デバイスのシリアル番号</Link>を取得していること
 3. デバイスが電源に接続されていること
 4. デバイスがネットワークに接続されていること
-5. Dot. アプリの創造所から「テキスト API」コンテンツをデバイスの **ループ** タスクに追加していること
+5. Dot. アプリの創造所から「テキスト API」コンテンツをデバイスの**ループリストまたは固定リスト**に追加していること
 
 <Callout type="info" title="Text API の用途">
 	Text API は、リマインダー、メモ、署名、小さなアイコンを読みやすいデバイスカードにします。自動化メッセージ、軽い通知、毎日の抜粋、すぐに見たい短いテキストに向いています。
 </Callout>
 
-<Callout type="info" title="API の表示タイミングについて">
-	API の即時表示は、デバイスが現在オンラインかどうかに依存します。デバイスがバッテリー駆動でスリープ中の場合、内容はまずサーバーに保存され、デバイスが次回自動起動したあとに表示されます。詳しくは<Link href="/docs/quote_0/faq/refresh_timing">時間の仕組み</Link>をご覧ください。
+<Callout type="info" title="コンテンツリストと表示タイミング">
+	更新するコンテンツをループリストまたは固定リストから選びます。指定しない場合はループリストを使用します。タスク識別子は選択したリスト内だけで検索し、省略時はそのリストの最初の対応する API コンテンツを更新します。
+
+	ループリストでは即時表示を有効にすると、オンラインのデバイスへ更新を要求します。バッテリー駆動でスリープ中の場合は保存し、自動起動時に取得します。固定リストでは Dot. App の時間設定に従い、現在表示中でも次回の予定された更新を待ちます。API は時間設定を変更しません。詳しくは<Link href="/docs/quote_0/faq/refresh_timing">時間の仕組み</Link>をご覧ください。
 </Callout>
 
 <Callout type="info" title="アイコン入力について">
-	`icon` フィールドは任意です。アイコンを送る場合は、PNG Base64 データまたは完全なオンライン `http(s)` 画像 URL を指定する必要があります。PNG Base64 は裸の Base64、または `data:image/png;base64,` プレフィックス付きの形式を使用でき、デコード後のサイズは最大 1MB です。40px×40px の小さなアイコンを推奨します。リモートアイコン URL は匿名で直接アクセスでき、認証や特別な Referer を必要とせず、URL 長は 2048 文字以内、レスポンス本文は最大 3MB で、`image/*` を直接返す必要があります。
+	アイコンは任意です。表示する場合は、PNG Base64 データまたは完全なオンライン `http(s)` 画像 URL を指定する必要があります。PNG Base64 は裸の Base64、または `data:image/png;base64,` プレフィックス付きの形式を使用でき、デコード後のサイズは最大 1MB です。40px×40px の小さなアイコンを推奨します。リモートアイコン URL は匿名で直接アクセスでき、認証や特別な Referer を必要とせず、URL 長は 2048 文字以内、レスポンス本文は最大 3MB で、`image/*` を直接返す必要があります。
 </Callout>
 
 <Callout type="info" title="デバッグ用のテストアイコン URL">
@@ -84,16 +86,27 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		},
 	}}
 	bodyParams={{
+		taskType: {
+			type: 'select',
+			name: 'コンテンツリスト',
+			default: 'loop',
+			description: '更新するコンテンツのリスト。ループリストまたは固定リストを選び、省略時はループリストを使用します。',
+			options: [
+				{ value: 'loop', label: 'ループリスト' },
+				{ value: 'fixed', label: '固定リスト' },
+			],
+		},
 		refreshNow: {
 			type: 'boolean',
 			name: '内容を即時表示するか',
+			description: 'ループリストでは、有効にすると即時表示を要求し、無効にすると保存のみ行います。固定リストではこの設定に関係なく、現在表示中でも次回の予定された更新を待ちます。',
 			default: true,
 		},
 		taskKey: {
 			type: 'string',
 			name: 'タスク識別子',
 			description:
-				'「デバイスタスク一覧」API で取得できます（複数の「テキスト API」コンテンツがある場合に対象を指定）。',
+				'選択したリストの一覧 API で取得したタスク識別子。省略すると、そのリストの最初の対応する API コンテンツを更新します。ほかのリストは検索しません。',
 		},
 		taskAlias: {
 			type: 'string',
@@ -135,7 +148,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		'styles.title.fontWeight': {
 			type: 'number',
 			name: 'タイトルの太さ',
-			description: '100、200、300、400、500、600、700、800、900 のいずれか。',
+			description: '文字の太さ。100 から 900 まで、100 刻みで指定します。',
 			example: 700,
 		},
 		'styles.message.fontFamily': {
@@ -152,13 +165,13 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		'styles.message.fontWeight': {
 			type: 'number',
 			name: '本文の太さ',
-			description: '100、200、300、400、500、600、700、800、900 のいずれか。',
+			description: '文字の太さ。100 から 900 まで、100 刻みで指定します。',
 			example: 400,
 		},
 		'styles.message.lineHeight': {
 			type: 'number',
 			name: '本文行高',
-			description: '0.8-3。',
+			description: '行の高さ。文字サイズに対する倍率で、0.8 から 3 の範囲で指定します。',
 			example: 1.25,
 		},
 		'styles.signature.fontFamily': {
@@ -175,7 +188,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		'styles.signature.fontWeight': {
 			type: 'number',
 			name: '署名の太さ',
-			description: '100、200、300、400、500、600、700、800、900 のいずれか。',
+			description: '文字の太さ。100 から 900 まで、100 刻みで指定します。',
 			example: 400,
 		},
 	}}
@@ -183,7 +196,33 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 	defaultOpen={false}
 />
 
+### 固定リストのコンテンツを更新する
+
+固定リストを取得し、レスポンスから `TEXT_API` コンテンツを探して、その `key` を `taskKey` として使います。
+
+```bash
+curl 'https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/fixed/list' \
+  -H 'Authorization: Bearer dot_app_{{apiKey}}'
+```
+
+同じ書き込み API に、`taskType: "fixed"` と取得した `taskKey` をリクエストのトップレベルで送ります。次のリクエストは保存のみを行い、`refreshNow: true` でも固定コンテンツを早めに表示・更新しません。
+
+```bash
+curl -X POST 'https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/text' \
+  -H 'Authorization: Bearer dot_app_{{apiKey}}' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "taskType": "fixed",
+  "taskKey": "{{taskKey}}",
+  "refreshNow": true,
+  "title": "今日のお知らせ",
+  "message": "会議は 10:30 に変更されました。"
+}'
+```
+
 ### レスポンス例
+
+以下はループコンテンツを即時表示した場合のレスポンス例です。
 
 ```json
 {
@@ -295,45 +334,50 @@ Text API は `message` 内の改行とタブを保持します。
 
 <TypeTable
 	type={{
+		taskType: {
+			description: '更新するコンテンツのリスト。ループリストまたは固定リストを選び、省略時はループリストを使用します。',
+			type: "'loop' | 'fixed'",
+			default: 'loop',
+		},
 		refreshNow: {
-			description: 'コンテンツを即時に表示するか（表示タイミング制御）',
+			description: 'ループリストでは、有効にすると即時表示を要求し、無効にすると保存のみ行います。固定リストではこの設定に関係なく、現在表示中でも次回の予定された更新を待ちます。',
 			type: 'bool',
 			default: 'true',
 		},
 		title: {
-			description: 'テキストのタイトル（画面上のタイトル）',
+			description: '画面に表示するタイトル。',
 			type: 'string',
 		},
 		message: {
-			description: 'テキスト本文（\\n 改行と \\t タブに対応）',
+			description: '画面に表示する本文。改行とタブに対応します。',
 			type: 'string',
 		},
 		signature: {
-			description: '署名（画面上の署名）',
+			description: '画面に表示する署名。',
 			type: 'string',
 		},
 		icon: {
 			description:
-				'任意。PNG Base64 アイコンデータ（裸の Base64 または data:image/png;base64, プレフィックス付き、デコード後最大 1MB）または完全な http(s) 画像 URL（40px×40px、かつリモート URL は匿名アクセス可能、2048 文字以内、レスポンス本文最大 3MB、image/* を直接返す必要があります）（左下に表示するアイコン）',
+				'左下に表示する 40px×40px のアイコン。PNG Base64（デコード後最大 1MB）または完全な http(s) 画像 URL を指定します。Base64 は data:image/png;base64, プレフィックス付きでも指定できます。リモート URL は匿名アクセス可能、2048 文字以内で、3MB 以内の image/* レスポンスを直接返す必要があります。',
 			type: 'string',
 		},
 		link: {
-			description: 'http/https またはスキーム URL（タッチ操作の遷移先）',
+			description: 'タッチ操作時に開くリンク。ウェブ URL またはアプリ用の URL スキームを指定できます。',
 			type: 'string',
 		},
 		taskKey: {
 			description:
-				'デバイスに複数の「テキスト API」コンテンツがある場合、更新して切り替える対象を taskKey で指定します。taskKey は「デバイスタスク一覧」で取得できます。未指定の場合は最初のテキスト API コンテンツが選択されます。',
+				'選択したリストの一覧 API で取得したタスク識別子。省略すると、そのリストの最初の対応する API コンテンツを更新します。ほかのリストは検索しません。',
 			type: 'string',
 		},
 		taskAlias: {
 			description:
-				'デバイスタスク一覧に表示するタスク別名です。同じ API 種別の複数コンテンツを区別できます。文字列または数値を指定でき、最大 100 文字です。省略すると既存の別名を維持し、空文字列または null を送ると別名を消去します。',
+				'デバイスタスク一覧に表示するタスク別名です。同じ API 種別の複数コンテンツを区別できます。文字列または数値を指定でき、最大 100 文字です。省略すると既存の別名を維持し、空文字列または空の値を送ると別名を消去します。',
 			type: 'string | number',
 		},
 		styles: {
 			description:
-				'任意のタイポグラフィ上書き。styles.title と styles.signature は fontFamily、fontSize、fontWeight に対応し、styles.message のみ lineHeight を追加指定できます。',
+				'タイトル・本文・署名のフォント、文字サイズ、太さを調整します。本文のみ行の高さも設定できます。',
 			type: 'object',
 		},
 	}}
@@ -373,7 +417,7 @@ Text API は `message` 内の改行とタブを保持します。
 <TypeTable
 	type={{
 		message: {
-			description: '人間が読めるレスポンスメッセージ。成功時もエラー時もこのフィールドを使用します。',
+			description: '処理結果やエラーの内容。',
 			type: 'string',
 			required: true,
 		},
@@ -385,7 +429,13 @@ Text API は `message` 内の改行とタブを保持します。
 | HTTP ステータス | 意味             | 説明                                                |
 | :-------------- | :--------------- | :-------------------------------------------------- |
 | `200`           | 成功             | テキスト API コンテンツを切替／データ更新（未切替） |
-| `400`           | パラメータ不正   | 無効なアイコン形式                                  |
+| `400`           | パラメータ不正   | コンテンツリストの種類が無効／アイコン形式が無効 |
 | `403`           | 権限不足         | 当該デバイスを操作する権限がありません              |
-| `404`           | 未検出           | デバイスが存在しない・未登録／テキスト API コンテンツがループタスクに未追加   |
+| `404`           | 未検出           | デバイスが存在しない・未登録／選択したリストに対応する API コンテンツがない、またはタスク識別子がそのコンテンツを示していない   |
 | `500`           | デバイス応答失敗 | テキスト API コンテンツの切替に失敗                 |
+
+### リストと表示タイミングの確認
+
+- `400`：`taskType` には `loop` または `fixed` を指定してください。
+- `404`：一覧取得と書き込みで同じ `taskType` を使い、そのリスト内の対応する API コンテンツの `taskKey` を指定してください。`taskType` の省略時はループリストを選択します。
+- 固定コンテンツの保存後も画面が変わらない場合：Dot. App の時間設定を確認し、次回の予定された更新を待ってください。`refreshNow: true` でも固定コンテンツは即時更新されません。

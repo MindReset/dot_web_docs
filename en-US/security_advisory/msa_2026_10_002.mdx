@@ -1,0 +1,67 @@
+---
+title: MSA-2026-10-002
+description: Insufficient verification email throttling allowed repeated sends to the same recipient
+---
+
+**Release Date**: Oct 08, 2026  
+**Last Updated**: Oct 08, 2026  
+**Severity**: Medium  
+**Status**: Fixed  
+**CVSS 4.0 Score**: 6.9 (AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N)
+
+---
+
+## Overview
+
+The verification email flow allowed unauthenticated requests to trigger repeated one-time password (OTP) emails to the same recipient without a shared recipient cooldown or hourly and daily sending limits. Existing IP-based controls did not adequately restrict this behavior.
+
+Additional rate limits and input validation have been added to email and SMS verification requests.
+
+## Impact Scope
+
+| Item               | Details                                                                   |
+| :----------------- | :------------------------------------------------------------------------ |
+| Affected Product   | Dot Server-side authentication API                                        |
+| Affected Version   | Verification email flow before the server-side fix                        |
+| Fixed Version      | Server-side fix                                                           |
+| Affected Component | `/api/authV2/email-otp/send-verification-otp` and related OTP send flows     |
+| Attack Vector      | Network                                                                   |
+| Required Privilege | None (verification requests are available before sign-in)                 |
+
+## Technical Description
+
+The configured email-send rate-limit rule referred to a different path from the endpoint used by the login flow. There was also no shared limit on sends to a particular recipient. Requests from different IP addresses could therefore continue targeting the same mailbox.
+
+The previous shared rate-limit storage read and updated counters in separate operations. Concurrent requests could read the same count before updating it, weakening IP-based enforcement.
+
+Accepted resend requests generated new verification records and triggered email delivery. Verification used the newest record, so a resend could invalidate a code that the recipient was about to enter. Repeated sends could also overwhelm the recipient with unwanted messages. Requesting an OTP did not reveal the code to the requester or provide authenticated access to the recipient's account.
+
+## Potential Consequences
+
+- Repeated unsolicited verification emails to a targeted mailbox.
+- Increased email delivery costs and consumption of sending capacity.
+- Disruption of normal verification attempts and reduced availability of the verification flow.
+
+## Remediation
+
+- Added rate limits to email and SMS verification requests.
+- Improved input validation and feedback when requests are sent too frequently.
+
+## Impact Assessment
+
+We classify this issue as **Medium**, with a CVSS 4.0 base score of **6.9**. An unauthenticated network attacker could repeatedly invoke the verification flow without user interaction. The assessment assigns limited availability impact to the verification service (`VA:L`), reflecting disruption of legitimate verification and consumption of sending capacity. It does not establish confidentiality or integrity loss, account takeover, or a complete service outage.
+
+## User Action
+
+No client update is required. When a verification request is rate-limited, wait for the indicated retry period. A rejected resend leaves the previously issued code unchanged.
+
+## Acknowledgements
+
+We thank [Shuvo Kumar Saha (Syper-shuvo)](https://www.linkedin.com/in/syper-shuvo) for responsibly reporting the verification email flooding issue and providing reproduction details.
+
+---
+
+**Disclaimer**: This advisory reflects information available at publication and will be updated if material changes occur.  
+**Document ID**: MSA-2026-10-002  
+**Classification**: Public  
+**Issued by**: MindReset Security Team

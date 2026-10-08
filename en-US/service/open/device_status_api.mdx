@@ -93,6 +93,8 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### Response Schema
 
+The screen border color is returned as `0` for white or `1` for black.
+
 <TypeTable
 	type={{
 		deviceId: {
@@ -101,57 +103,57 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			required: true,
 		},
 		alias: {
-			description: 'Device alias',
+			description: 'Name assigned by the user to identify the device.',
 			type: 'string | null',
 		},
 		location: {
-			description: 'Device location',
+			description: 'User-assigned label for where the device is placed.',
 			type: 'string | null',
 		},
 		status: {
-			description: 'Device status information',
+			description: 'Current operating state, power status, and connection details.',
 			type: 'object',
 			required: true,
 			parameters: {
 				version: {
-					description: 'Software version',
+					description: 'Firmware version running on the device.',
 					type: 'string',
 					required: true,
 				},
 				current: {
-					description: 'Current device status',
+					description: 'Current operating state.',
 					type: 'string',
 					required: true,
 				},
 				description: {
-					description: 'Detailed description of device status',
+					description: 'Human-readable explanation of the current operating state.',
 					type: 'string',
 					required: true,
 				},
 				battery: {
-					description: 'Battery status',
+					description: 'Battery charge or power status.',
 					type: 'string',
 					required: true,
 				},
 				wifi: {
-					description: 'WiFi signal strength',
+					description: 'Wi-Fi signal strength.',
 					type: 'string',
 					required: true,
 				},
 			},
 		},
 		renderInfo: {
-			description: 'Render timing information',
+			description: 'Current screen content and refresh schedule.',
 			type: 'object',
 			required: true,
 			parameters: {
 				last: {
-					description: 'Time when device last rendered',
+					description: 'Most recent content refresh time.',
 					type: 'string',
 					required: true,
 				},
 				current: {
-					description: 'Current render information',
+					description: 'Settings and images used for the current screen.',
 					type: 'object',
 					required: true,
 					parameters: {
@@ -161,28 +163,28 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 							required: true,
 						},
 						border: {
-							description: 'Border color (0 = white, 1 = black)',
+							description: 'White or black screen border.',
 							type: 'number',
 							required: true,
 						},
 						image: {
-							description: 'Current rendered image URLs',
+							description: 'URLs of the images used for the current screen.',
 							type: 'string[] | null',
 						},
 					},
 				},
 				next: {
-					description: 'Next scheduled render times',
+					description: 'Upcoming content refresh times for each power source.',
 					type: 'object',
 					required: true,
 					parameters: {
 						battery: {
-							description: 'Next rendering time in battery mode',
+							description: 'Next content refresh while running on battery power.',
 							type: 'string',
 							required: true,
 						},
 						power: {
-							description: 'Next rendering time in power mode',
+							description: 'Next content refresh while connected to power.',
 							type: 'string',
 							required: true,
 						},

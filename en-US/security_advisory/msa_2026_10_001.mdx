@@ -1,0 +1,63 @@
+---
+title: MSA-2026-10-001
+description: Missing server-side allowlist for API key prefixes
+---
+
+**Release Date**: Oct 08, 2026  
+**Last Updated**: Oct 08, 2026  
+**Severity**: Informational  
+**Status**: Fixed  
+**CVSS 4.0 Score**: 0.0 (AV:N/AC:L/AT:N/PR:L/UI:N/VC:N/VI:N/VA:N/SC:N/SI:N/SA:N)
+
+---
+
+## Overview
+
+An authenticated user could change the `prefix` parameter when creating an API key and obtain a key with a prefix outside the supported Dot namespace. The server checked the prefix's format and length but did not restrict it to the prefixes supported by Dot.
+
+This behavior has been addressed with a server-side allowlist and a consistent default prefix.
+
+## Impact Scope
+
+| Item               | Details                                                   |
+| :----------------- | :-------------------------------------------------------- |
+| Affected Product   | Dot Server-side API                                       |
+| Affected Version   | API key creation endpoint before the server-side fix       |
+| Fixed Version      | Server-side fix                                           |
+| Affected Component | `/api/authV2/api-key/create`                               |
+| Attack Vector      | Network                                                   |
+| Required Privilege | Low (authenticated user creating keys for their account)  |
+
+## Technical Description
+
+The creation endpoint accepted a client-provided prefix and included it in the generated key. Validation allowed prefixes that met the underlying API key plugin's character and length requirements, even when they were outside Dot's supported set.
+
+The prefix did not determine the key's owner or grant additional permissions. API key authentication verified the complete key and resolved its stored owner; access to protected resources remained subject to authorization checks.
+
+## Potential Consequences
+
+- Keys could be created with unsupported names, causing inconsistent key identification or rejection by integrations that expect Dot's supported prefixes.
+
+## Remediation
+
+- Strengthened server-side validation of API key prefixes.
+- Added clear errors for unsupported values.
+
+## Impact Assessment
+
+We classify this issue as **Informational**. The assessed impact is limited to key naming and validation. Changing a prefix does not confer another user's identity or additional access rights, and no confidentiality, integrity, or availability impact has been established. The CVSS 4.0 base score is **0.0**.
+
+## User Action
+
+No client update is required. Integrations creating API keys should use a supported prefix or omit the parameter to use `dot_`.
+
+## Acknowledgements
+
+We thank [Shuvo Kumar Saha (Syper-shuvo)](https://www.linkedin.com/in/syper-shuvo) for reporting this issue through responsible disclosure and helping us improve API key validation.
+
+---
+
+**Disclaimer**: This advisory reflects information available at publication and will be updated if material changes occur.  
+**Document ID**: MSA-2026-10-001  
+**Classification**: Public  
+**Issued by**: MindReset Security Team

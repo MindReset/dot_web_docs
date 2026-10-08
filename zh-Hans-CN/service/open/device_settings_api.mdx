@@ -63,15 +63,15 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 <TypeTable
 	type={{
 		alias: {
-			description: '设备别名。传 null 或空字符串会清除别名，最长 100 字。',
+			description: '设备显示的名称，最长 100 字。传空值或空字符串可清除，省略时保留已有设置。',
 			type: 'string | null',
 		},
 		location: {
-			description: '设备位置。传 null 或空字符串会清除位置，最长 100 字。',
+			description: '设备所在的位置，最长 100 字。传空值或空字符串可清除，省略时保留已有设置。',
 			type: 'string | null',
 		},
 		timezone: {
-			description: '设备时区。必须是「列出时区」接口返回的 key。',
+			description: '设备所在时区，使用「获取时区」接口返回的时区标识。',
 			type: 'string',
 		},
 		interval: {
@@ -89,7 +89,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			},
 		},
 		sleep: {
-			description: '睡眠设置。start/end 使用设备时区下的本地 HH:mm 时间；如果 end 早于 start，表示跨天。',
+			description: '按设备所在时区设置睡眠时间，采用 HH:mm 格式。结束时间早于开始时间时，表示跨天。',
 			type: 'object',
 			parameters: {
 				enabled: {
@@ -103,7 +103,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 					required: true,
 				},
 				end: {
-					description: '睡眠结束时间，24 小时制 HH:mm，不能与 start 相同。',
+					description: '睡眠结束时间，24 小时制 HH:mm，不能与开始时间相同。',
 					type: 'string',
 					required: true,
 				},

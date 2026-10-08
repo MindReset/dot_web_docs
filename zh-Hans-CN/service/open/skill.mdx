@@ -153,15 +153,29 @@ Authorization: Bearer dot_app_<your_api_key>
 
 该 schema 覆盖设备发现、状态、设置、时区、任务列表、内容切换，以及 Text、Image 和 Canvas API 内容。
 
+## 选择循环列表或固定列表
+
+三类写入都接受顶层 `taskType: "loop" | "fixed"`，省略时使用 `loop`。`taskKey` 只在所选列表中查找；省略时更新该列表中的第一个同类 API 内容，不会查找另一列表。
+
+`refreshNow` 只控制循环内容的即时显示。固定内容按 App 中已设置的时间显示，API 不改变时间设置，也不立即刷新；即使正在显示该固定内容，也要等下一次计划刷新。
+
+先查固定列表，再使用返回的 Text API `key`：
+
+```bash
+python scripts/list_tasks.py --device-id '{{deviceId}}' --type fixed
+python scripts/send_text.py --device-id '{{deviceId}}' --task-type fixed \
+  --task-key '{{taskKey}}' --title '今日提醒'
+```
+
 ## API 与 payload 限制
 
 - 服务速率限制为每秒 10 个请求。
-- Text、Image 和 Canvas 写入要求对应的 API content item 已经存在于 Dot. App 内容工坊的设备循环任务中。
+- Text、Image 和 Canvas 写入要求所选的循环列表或固定列表中已添加对应 API 内容。
 - 设备设置 interval 必须在 60,000 到 43,200,000 毫秒之间，并使用整分钟倍数。
 - Canvas `data` 最大 64 KB，`windowData` 最大 128 KB，`layoutFull` 最大 8 KB。
 - Canvas 布局最多包含 80 个元素，最大嵌套深度为 16。
 - Canvas 字符串最大长度为 4,000 个字符。
-- `taskAlias` 应放在 Text、Image 和 Canvas 请求的顶层，不要放进 Canvas `data`。
+- `taskType`、`taskKey`、`refreshNow` 和 `taskAlias` 都放在请求顶层，不要放进 Canvas `data`。
 
 ## 错误与排查
 
@@ -169,7 +183,7 @@ Authorization: Bearer dot_app_<your_api_key>
 - `404`：检查设备序列号，并确认对应的内容任务存在。
 - `429`：遵守每秒 10 个请求的限制，在速率窗口结束后再有意重试。
 - Canvas 校验错误：先调用 `dot_validate_canvas`，或使用 `send_canvas.py --dry-run`。
-- Text、Image 或 Canvas 任务错误：确认对应的 API content item 已存在于设备循环任务中。
+- Text、Image 或 Canvas 任务错误：确认查询和写入使用相同的 `taskType`，且 `taskKey` 来自该列表中的对应 API 内容。省略 `taskType` 默认使用循环列表。
 
 ## 辅助脚本
 

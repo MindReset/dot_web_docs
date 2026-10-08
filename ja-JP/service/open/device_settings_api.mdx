@@ -63,19 +63,19 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 <TypeTable
 	type={{
 		alias: {
-			description: 'デバイス別名。null または空文字列を送るとクリアします。最大 100 文字。',
+			description: 'デバイス一覧に表示する名前。最大 100 文字。空の値または空文字列を送ると消去し、省略すると既存の名前を維持します。',
 			type: 'string | null',
 		},
 		location: {
-			description: 'デバイス位置。null または空文字列を送るとクリアします。最大 100 文字。',
+			description: 'デバイスの設置場所。最大 100 文字。空の値または空文字列を送ると消去し、省略すると既存の設置場所を維持します。',
 			type: 'string | null',
 		},
 		timezone: {
-			description: 'デバイスタイムゾーン。タイムゾーン一覧 API が返す key のみ指定できます。',
+			description: 'デバイスのタイムゾーン。タイムゾーン一覧 API から取得した識別子を指定します。',
 			type: 'string',
 		},
 		interval: {
-			description: 'コンテンツ更新とデバイス自動ウェイクの間隔設定。',
+			description: 'コンテンツ更新とデバイスの自動起動の間隔。',
 			type: 'object',
 			parameters: {
 				powerMs: {
@@ -83,13 +83,13 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 					type: 'number',
 				},
 				batteryMs: {
-					description: 'バッテリー使用時の自動ウェイクと更新間隔（ミリ秒）。60,000 から 43,200,000 の範囲で、60,000 の倍数にしてください。',
+					description: 'バッテリー駆動時の自動起動と更新間隔（ミリ秒）。60,000 から 43,200,000 の範囲で、60,000 の倍数にしてください。',
 					type: 'number',
 				},
 			},
 		},
 		sleep: {
-			description: 'スリープ設定。start/end はデバイスのタイムゾーンにおけるローカル HH:mm 時刻です。end が start より早い場合は翌日を意味します。',
+			description: 'デバイスのタイムゾーンに合わせたスリープ時間帯。終了時刻が開始時刻より早い場合は翌日の終了として扱います。',
 			type: 'object',
 			parameters: {
 				enabled: {
@@ -103,7 +103,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 					required: true,
 				},
 				end: {
-					description: 'スリープ終了時刻。24 時間制 HH:mm。start と同じ時刻にはできません。',
+					description: 'スリープ終了時刻。24 時間制 HH:mm。開始時刻と同じ時刻にはできません。',
 					type: 'string',
 					required: true,
 				},

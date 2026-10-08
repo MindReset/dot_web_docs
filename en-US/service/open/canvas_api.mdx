@@ -13,7 +13,7 @@ import { ApiPlayground } from "src/shadcn/components/api-playground";
 1. Get and save an API key from Dot. App;
 2. Get the serial number of a device you own;
 3. Make sure the device is powered and online;
-4. Add the `Canvas API` content to the device **loop** task in Dot. App Content Studio.
+4. Add the `Canvas API` content to the device **loop or fixed list** in Dot. App Content Studio.
 
 <Callout type="info" title="What Canvas API is for">
   Text API is best for quickly sending a text card, and Image API is best for
@@ -35,6 +35,12 @@ import { ApiPlayground } from "src/shadcn/components/api-playground";
   `layoutFull`.
 </Callout>
 
+<Callout type="info" title="Choose a content list and display timing">
+	Choose the loop list or fixed list; the loop list is used by default. A task identifier targets an item only in the selected list. Without an identifier, the first Canvas API item in that list is updated.
+
+	Enable immediate display for loop content to request a screen update while the device is online. A sleeping device on battery retrieves saved content after automatic wake. Fixed content follows the times configured in Dot. App: even the item currently on screen waits for the next scheduled refresh. The API preserves its time settings. Read <Link href="/docs/quote_0/faq/refresh_timing">Timing</Link> for details.
+</Callout>
+
 ### Playground
 
 <ApiPlayground
@@ -49,16 +55,27 @@ import { ApiPlayground } from "src/shadcn/components/api-playground";
     },
   }}
   bodyParams={{
+    taskType: {
+      type: "select",
+      name: "Content list",
+      default: "loop",
+      description: "Choose the loop list or fixed list. If omitted, the loop list is used.",
+      options: [
+        { value: "loop", label: "Loop list" },
+        { value: "fixed", label: "Fixed list" },
+      ],
+    },
     refreshNow: {
       type: "boolean",
       name: "Display immediately",
+      description: "When enabled, requests immediate display of loop content; when disabled, only saves the content. Fixed content always waits for the next scheduled refresh, including the item currently on screen.",
       default: true,
     },
     taskKey: {
       type: "string",
       name: "Task key",
       description:
-        "Use the task list endpoint to get this value when the device has multiple Canvas API contents.",
+        "Task identifier from the selected list. If omitted, updates the first Canvas API item in that list.",
     },
     taskAlias: {
       type: "string",
@@ -215,9 +232,47 @@ import { ApiPlayground } from "src/shadcn/components/api-playground";
   defaultOpen={false}
 />
 
+### Update content in the fixed list
+
+Query the fixed list, find the `CANVAS_API` item in the response, and use its `key` as `taskKey`:
+
+```bash
+curl 'https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/fixed/list' \
+  -H 'Authorization: Bearer dot_app_{{apiKey}}'
+```
+
+Call the same write endpoint with `taskType: "fixed"` and that `taskKey` at the top level. This request only saves the content; `refreshNow: true` does not display or refresh fixed content early:
+
+```bash
+curl -X POST 'https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/canvas' \
+  -H 'Authorization: Bearer dot_app_{{apiKey}}' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "taskType": "fixed",
+  "taskKey": "{{taskKey}}",
+  "refreshNow": true,
+  "data": {
+    "title": "Daily progress"
+  },
+  "windowData": {
+    "default": [
+      {
+        "type": "div",
+        "props": {
+          "tw": "flex w-full h-full items-center justify-center bg-white text-black",
+          "children": "{{get inputData \"title\"}}"
+        }
+      }
+    ]
+  }
+}'
+```
+
 ### Request Body
 
 Canvas API requests combine content data with a screen description. Use `data` for values the screen can read, and use `windowData` to describe the element structure. You can also pass `taskAlias` to label the item in the device task list, `layoutFull` to adjust the FULL layout, `link` to set the tap-to-open URL, and `border` to choose the screen border color.
+
+Put `taskType`, `taskKey`, and `refreshNow` at the request top level, outside `data`.
 
 To avoid conflicting meanings, do not use `type`, `key`, `windowData`, `layoutFull`, `taskAlias`, `link`, `border`, `__proto__`, `constructor`, or `prototype` as keys inside `data`.
 
@@ -485,6 +540,8 @@ For image layout, use `style.objectFit` and `style.objectPosition`, such as `con
 
 ### Response
 
+This is an example response for immediate display of loop content.
+
 ```json
 {
   "message": "Device ABCD1234ABCD Canvas API content switched."
@@ -582,3 +639,9 @@ Response:
   "message": "The canvas image src for device ABCD1234ABCD is invalid (path: windowData.default[0].props.children[0].props.src). Provide data:image/*;base64,... or an anonymously accessible http(s) image URL."
 }
 ```
+
+### Troubleshoot list selection and display timing
+
+- `400`: use only `loop` or `fixed` for `taskType`.
+- `404`: ensure the request uses the same `taskType` as the list query and a `taskKey` from a matching API item in that list. Omitting `taskType` selects the loop list.
+- Fixed content was saved but the screen did not change: check its time settings in Dot. App and wait for the next scheduled refresh. `refreshNow: true` does not immediately refresh fixed content.

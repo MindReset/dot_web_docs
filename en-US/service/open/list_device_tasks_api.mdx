@@ -39,7 +39,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		taskType: {
 			type: 'select',
 			required: true,
-			name: 'Content type',
+			name: 'Content list',
 			default: 'loop',
 			options: [
 				{ value: 'loop', label: 'Loop content' },
@@ -99,8 +99,8 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			required: true,
 		},
 		taskType: {
-			description: 'Content type',
-			type: 'string',
+			description: 'Choose the loop list or fixed list to retrieve.',
+			type: "'loop' | 'fixed'",
 			required: true,
 		},
 	}}
@@ -111,7 +111,9 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 This interface does not require a request body, only an API key in the request header.
 
 - `deviceId`: device serial number
-- `taskType`: content type, e.g. `loop` (loop content)
+- `taskType`: required; `loop` (loop list) or `fixed` (fixed list)
+
+To update API content, use the returned `key` as `taskKey` and send the same `taskType` at the write request top level. For example, update an item from `/fixed/list` with `taskType: "fixed"`. Omitting `taskType` in a write selects the loop list; the fixed list is not searched automatically.
 
 ### Response Schema
 
@@ -124,58 +126,58 @@ The response is an array of content items.
 <TypeTable
 	type={{
 		'[]': {
-			description: 'Content array',
+			description: 'Items in the selected content list.',
 			type: 'array',
 			required: true,
 			items: {
 				type: {
-					description: 'Content type (`TEXT_API` / `IMAGE_API` / `CANVAS_API` / `GENERAL`)',
+					description: 'Identifies text, image, canvas, or other content.',
 					type: "'TEXT_API' | 'IMAGE_API' | 'CANVAS_API' | 'GENERAL'",
 					required: true,
 				},
 				key: {
-					description: 'Content identifier (used as taskKey for Text/Image/Canvas API)',
+					description: 'Task identifier used to target this item when updating API content.',
 					type: 'string | null',
 					required: true,
 				},
 				refreshNow: {
-					description: 'Show immediately (may exist)',
+					description: 'Immediate-display preference for loop content; ignored for fixed content.',
 					type: 'boolean',
 				},
 				title: {
-					description: 'Title (Text API may exist)',
+					description: 'Heading saved for text content, when present.',
 					type: 'string',
 				},
 				message: {
-					description: 'Message (Text API may exist)',
+					description: 'Main text, when present.',
 					type: 'string',
 				},
 				signature: {
-					description: 'Signature (Text API may exist)',
+					description: 'Signature below the main text, when present.',
 					type: 'string',
 				},
 				icon: {
-					description: 'Icon (Text API may exist)',
+					description: 'Icon displayed with text content, when present.',
 					type: 'string',
 				},
 				link: {
-					description: 'NFC redirect link (may exist)',
+					description: 'Destination opened by an NFC tap, when present.',
 					type: 'string',
 				},
 				image: {
-					description: 'Image data (Image API may exist)',
+					description: 'Image saved for display, when present.',
 					type: 'string',
 				},
 				border: {
-					description: 'Border color (Image API may exist)',
+					description: 'White or black screen border, when present.',
 					type: '0 | 1',
 				},
 				ditherType: {
-					description: 'Dither type (Image API may exist)',
+					description: 'How grayscale is converted to black and white, when present.',
 					type: 'string',
 				},
 				ditherKernel: {
-					description: 'Dither algorithm (Image API may exist)',
+					description: 'Algorithm used for error diffusion, when present.',
 					type: 'string',
 				},
 			},

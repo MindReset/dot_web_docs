@@ -6,7 +6,7 @@ description: Learn how Quote/0 calculates refresh timing when connected to power
 
 Quote/0 content refreshes do not work like a fixed alarm clock. The device dynamically calculates the next refresh time based on the current time, power state, content mode, sleep state, and server scheduling.
 
-If you want to use the API to show content at a more precise time, we recommend keeping Quote/0 connected to power.
+To use the API to show loop content at a more precise time, keep Quote/0 connected to power and use `taskType: "loop"`.
 
 ## How refresh timing is calculated
 
@@ -27,7 +27,7 @@ When running on battery, the device prioritizes battery life. When it does not n
 
 When the device is in a sleep window, the system prioritizes waiting until sleep ends instead of repeatedly waking the device according to the normal loop interval.
 
-If you set new text or image content through the API while the device is asleep, the content is saved to the server first. The device will retrieve and display the latest content after its next automatic wake, Wi-Fi reconnection, and server connection.
+If you set new text or image content through the API while the device is asleep, the content is saved to the server first. After its next automatic wake, Wi-Fi reconnection, and server connection, the device retrieves the latest content according to its loop or fixed schedule.
 
 </Step>
 
@@ -59,7 +59,7 @@ For example, if you set the refresh interval to 30 minutes:
 | Automatic refresh at 5:45 | Around 6:15 |
 | Manual refresh at 6:10 | Around 6:40 |
 
-Manual refreshes, content switches in the Dot. App, and immediate API switches may all change the baseline used for the next automatic refresh.
+Manual refreshes, content switches in the Dot. App, and immediate API switches of loop content may all change the baseline used for the next automatic refresh.
 
 </Step>
 
@@ -76,9 +76,9 @@ As a result, Quote/0 automatic refresh is better suited for periodic information
 
 ## Power connection vs. battery power
 
-When connected to power, Quote/0 can maintain a more stable network connection and is better suited as an always-online information terminal. In this state, using the API with `refreshNow` set to `true` is better for script triggers, automation reminders, and real-time status displays.
+When connected to power, Quote/0 can maintain a more stable network connection and is better suited as an always-online information terminal. In this state, updating loop content with `taskType: "loop"` and `refreshNow: true` is better for script triggers, automation reminders, and real-time status displays.
 
-When running on battery, Quote/0 prioritizes battery life. The device does not keep a continuous network connection while asleep. Content submitted through the API is saved to the server first, then retrieved and displayed after the device wakes automatically.
+When running on battery, Quote/0 prioritizes battery life. The device does not keep a continuous network connection while asleep. Content submitted through the API is saved to the server first, then retrieved after automatic wake according to its loop or fixed schedule.
 
 You can set both power and battery intervals from **1 minute to 12 hours** in Dot. App or through the Device Settings API. On battery, this interval controls how often Quote/0 wakes automatically to reconnect and check for new content.
 
@@ -88,13 +88,15 @@ Loop content switches according to the list order and configured interval.
 
 Fixed content becomes active during a specified time window. When entering or leaving a fixed content window, the device may switch content first instead of waiting for the normal loop interval to end.
 
+Text, Image, and Canvas APIs can update fixed content with `taskType: "fixed"`. The request saves content without changing its times configured in Dot. App. Fixed content ignores `refreshNow`: even if that item is currently on screen, it waits for the next scheduled refresh.
+
 If the device encounters sleep, fixed content changes, loop intervals, and other timing points at the same time, the system evaluates these candidates together and chooses the more suitable refresh timing.
 
 ## Common scenarios
 
 ### Scenario 1: The device is connected to power and the API requests immediate display
 
-The device is connected to power and has a stable network connection. You submit content through the Text API or Image API with `refreshNow` set to `true`.
+The device is connected to power and has a stable network connection. You update loop content through the Text, Image, or Canvas API with `taskType: "loop"` and `refreshNow: true`.
 
 In this case, the device can usually receive the refresh task from the server quickly and switch to the new content. This is suitable for verification codes, calendar reminders, automation script results, desktop status screens, and other scenarios that are sensitive to display timing.
 
@@ -112,7 +114,7 @@ Assume the loop refresh interval is set to 30 minutes, and the device completed 
 
 If nothing else happens, the next automatic refresh will occur around 6:15.
 
-If you manually switch content in the Dot. App at 6:10, or immediately switch content through the API, the 6:10 refresh becomes the new timing baseline. The next automatic refresh will occur around 6:40 instead of the original 6:15.
+If you manually switch content in the Dot. App at 6:10, or immediately switch loop content through the API, the 6:10 refresh becomes the new timing baseline. The next automatic refresh will occur around 6:40 instead of the original 6:15.
 
 ### Scenario 4: The device has a fixed content time window
 
@@ -126,7 +128,7 @@ After the fixed content window ends, the device recalculates subsequent refresh 
 
 If many devices are configured to refresh at the same time, the server keeps necessary scheduling variation to avoid too many devices requesting content simultaneously and causing blocking or timeouts.
 
-Therefore, even when the device is connected to power, automatic refresh should not be understood as a strict second-level timer. For content that needs to appear closer to an exact moment, use a device connected to power and actively control display through the API.
+Therefore, even when the device is connected to power, automatic refresh should not be understood as a strict second-level timer. For content that needs to appear closer to an exact moment, use a device connected to power and actively control loop content display through the API.
 
 ## API usage recommendations
 
@@ -134,7 +136,7 @@ If your content is sensitive to display timing, such as verification codes, cale
 
 1. Keep the device connected to power;
 2. Keep the device network stable;
-3. Set content through the API;
+3. Set loop content through the API with `taskType: "loop"`;
 4. Set `refreshNow` to `true`.
 
 If the device runs on battery, we recommend showing fixed content, loop content, weather, RSS, calendar summaries, and other content that is less sensitive to display timing.

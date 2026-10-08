@@ -93,6 +93,8 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### レスポンス構造
 
+画面の枠色は、白の場合は `0`、黒の場合は `1` で返されます。
+
 <TypeTable
 	type={{
 		deviceId: {
@@ -105,7 +107,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'string | null',
 		},
 		location: {
-			description: 'デバイスの場所',
+			description: 'デバイスの設置場所。',
 			type: 'string | null',
 		},
 		status: {
@@ -141,17 +143,17 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			},
 		},
 		renderInfo: {
-			description: 'レンダリング情報',
+			description: '画面表示と更新時刻の情報。',
 			type: 'object',
 			required: true,
 			parameters: {
 				last: {
-					description: 'デバイスが最後にレンダリングした時刻',
+					description: '前回の画面更新時刻。',
 					type: 'string',
 					required: true,
 				},
 				current: {
-					description: '現在のレンダリング情報',
+					description: '現在表示している画像と画面設定。',
 					type: 'object',
 					required: true,
 					parameters: {
@@ -161,28 +163,28 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 							required: true,
 						},
 						border: {
-							description: '画面のボーダーカラー（0=白、1=黒）',
+							description: '画面の枠色。',
 							type: 'number',
 							required: true,
 						},
 						image: {
-							description: '現在のレンダリング画像 URL 一覧',
+							description: '現在表示している画像の URL 一覧。',
 							type: 'string[] | null',
 						},
 					},
 				},
 				next: {
-					description: '次回のスケジュールされたレンダリング時刻',
+					description: '次回の画面更新時刻。',
 					type: 'object',
 					required: true,
 					parameters: {
 						battery: {
-							description: 'バッテリーモードでの次回レンダリング時刻',
+							description: 'バッテリー駆動時の次回更新時刻。',
 							type: 'string',
 							required: true,
 						},
 						power: {
-							description: '電源モードでの次回レンダリング時刻',
+							description: '電源接続時の次回更新時刻。',
 							type: 'string',
 							required: true,
 						},

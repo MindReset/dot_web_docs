@@ -39,7 +39,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		taskType: {
 			type: 'select',
 			required: true,
-			name: 'コンテンツ種別',
+			name: 'コンテンツリスト',
 			default: 'loop',
 			options: [
 				{ value: 'loop', label: 'ループコンテンツ' },
@@ -99,8 +99,8 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			required: true,
 		},
 		taskType: {
-			description: 'コンテンツ種別',
-			type: 'string',
+			description: '取得するリスト。ループリストまたは固定リストを選びます。',
+			type: "'loop' | 'fixed'",
 			required: true,
 		},
 	}}
@@ -111,7 +111,9 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 このインターフェースはリクエストボディを必要とせず、リクエストヘッダーに API キーを提供するだけです。
 
 - `deviceId`: デバイスのシリアル番号
-- `taskType`: コンテンツ種別（例: `loop` ループコンテンツ）
+- `taskType`: 必須。`loop`（ループリスト）または `fixed`（固定リスト）
+
+API コンテンツの更新には、返された `key` を `taskKey` として使い、書き込みリクエストのトップレベルに同じ `taskType` を指定します。例えば `/fixed/list` から取得したコンテンツは `taskType: "fixed"` で更新します。書き込みで `taskType` を省略するとループリストを選び、固定リストは自動検索しません。
 
 ### レスポンス構造
 
@@ -129,17 +131,17 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			required: true,
 			items: {
 				type: {
-					description: 'コンテンツ種別（`TEXT_API` / `IMAGE_API` / `CANVAS_API` / `GENERAL`）',
+					description: 'テキスト、画像、キャンバス、一般コンテンツを区別する種別。',
 					type: "'TEXT_API' | 'IMAGE_API' | 'CANVAS_API' | 'GENERAL'",
 					required: true,
 				},
 				key: {
-					description: 'コンテンツ識別子（Text/Image/Canvas API の taskKey として使用）',
+					description: 'コンテンツ更新に使うタスク識別子。',
 					type: 'string | null',
 					required: true,
 				},
 				refreshNow: {
-					description: '即時表示（存在する場合）',
+					description: '即時表示の設定。ループリストでのみ有効です。',
 					type: 'boolean',
 				},
 				title: {

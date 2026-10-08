@@ -14,7 +14,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
     To keep your integration compatible:
     - Update the request URL to the new endpoint: `/api/authV2/open/device/:deviceId/image`
-    - Send parameters according to this document (e.g. `refreshNow` / `taskAlias` / `image` / `link` / `border` / `ditherType` / `ditherKernel` / `taskKey`)
+    - Send parameters according to this document (e.g. `taskType` / `refreshNow` / `taskAlias` / `image` / `link` / `border` / `ditherType` / `ditherKernel` / `taskKey`)
     - If you rely on legacy response payloads or error codes, adapt your integration to the new API responses
 
 </Callout>
@@ -27,18 +27,20 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 2. Make sure you own at least one device and have <Link href="/docs/service/studio/api/get_device_id">obtained its device serial number</Link>;
 3. Make sure your device is connected to power;
 4. Make sure your device is connected to the network;
-5. Make sure you've added the Image API content to the device **Loop** task from the Content Studio in the Dot. App.
+5. Make sure you've added the Image API content to the device **loop or fixed list** from the Content Studio in the Dot. App.
 
 <Callout type="info" title="What Image API is for">
 	Image API sends posters, screenshots, dashboards, or a favorite image to your device. It is best when you already have a complete visual and want the device to show that image directly.
 </Callout>
 
-<Callout type="info" title="About API display timing">
-	The API's immediate display capability depends on whether the device is currently online. If the device is running on battery and asleep, the content is saved to the server first and displayed after the device wakes automatically. Read <Link href="/docs/quote_0/faq/refresh_timing">Timing</Link> to learn more.
+<Callout type="info" title="Choose a content list and display timing">
+	Choose the loop list or fixed list; the loop list is used by default. A task identifier targets an item only in the selected list. Without an identifier, the first Image API item in that list is updated.
+
+	Enable immediate display for loop content to request a screen update while the device is online. A sleeping device on battery retrieves saved content after automatic wake. Fixed content follows the times configured in Dot. App: even the item currently on screen waits for the next scheduled refresh. The API preserves its time settings. Read <Link href="/docs/quote_0/faq/refresh_timing">Timing</Link> for details.
 </Callout>
 
 <Callout type="info" title="About image input">
-	The `image` field is required. It must be PNG Base64 data or a full online `http(s)` image URL. PNG Base64 may be bare Base64 or include the `data:image/png;base64,` prefix; the decoded payload must be no larger than 3MB. Remote image URLs must be anonymously accessible, require no authentication or special Referer, be no longer than 2048 characters, return a response body no larger than 3MB, and return `image/*` content directly.
+	Send an image as PNG Base64 data or a full HTTP(S) image URL. PNG Base64 may be bare Base64 or include the `data:image/png;base64,` prefix; the decoded payload must be no larger than 3MB. Remote image URLs must be anonymously accessible, require no authentication or special Referer, be no longer than 2048 characters, return a response body no larger than 3MB, and return `image/*` content directly.
 </Callout>
 
 <Callout type="info" title="Test image URLs for debugging">
@@ -83,16 +85,27 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		},
 	}}
 	bodyParams={{
+		taskType: {
+			type: 'select',
+			name: 'Content list',
+			default: 'loop',
+			description: 'Choose the loop list or fixed list. If omitted, the loop list is used.',
+			options: [
+				{ value: 'loop', label: 'Loop list' },
+				{ value: 'fixed', label: 'Fixed list' },
+			],
+		},
 		refreshNow: {
 			type: 'boolean',
 			name: 'Show immediately',
+			description: 'When enabled, requests immediate display of loop content; when disabled, only saves the content. Fixed content always waits for the next scheduled refresh, including the item currently on screen.',
 			default: true,
 		},
 		taskKey: {
 			type: 'string',
 			name: 'Task identifier',
 			description:
-				"Retrieve it via the 'List Device Tasks' API (used to target a specific Image API content when multiple exist).",
+				'Task identifier from the selected list. If omitted, updates the first Image API item in that list.',
 		},
 		taskAlias: {
 			type: 'string',
@@ -150,7 +163,32 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 	defaultOpen={false}
 />
 
+### Update content in the fixed list
+
+Query the fixed list, find the `IMAGE_API` item in the response, and use its `key` as `taskKey`:
+
+```bash
+curl 'https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/fixed/list' \
+  -H 'Authorization: Bearer dot_app_{{apiKey}}'
+```
+
+Call the same write endpoint with `taskType: "fixed"` and that `taskKey` at the top level. This request only saves the content; `refreshNow: true` does not display or refresh fixed content early:
+
+```bash
+curl -X POST 'https://dot.mindreset.tech/api/authV2/open/device/{{deviceId}}/image' \
+  -H 'Authorization: Bearer dot_app_{{apiKey}}' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "taskType": "fixed",
+  "taskKey": "{{taskKey}}",
+  "refreshNow": true,
+  "image": "https://placehold.co/600x400/png"
+}'
+```
+
 ### Response Example
+
+This is an example response for immediate display of loop content.
 
 ```json
 {
@@ -366,45 +404,50 @@ If you primarily display text images via the Image API, we recommend disabling d
 
 <TypeTable
 	type={{
+		taskType: {
+			description: 'Choose the loop list or fixed list. If omitted, the loop list is used.',
+			type: "'loop' | 'fixed'",
+			default: 'loop',
+		},
 		refreshNow: {
-			description: 'Whether to display the content immediately (Control display timing)',
+			description: 'When enabled, requests immediate display of loop content; when disabled, only saves the content. Fixed content always waits for the next scheduled refresh, including the item currently on screen.',
 			type: 'bool',
 			default: 'true',
 		},
 		image: {
 			description:
-				'Required. PNG Base64 image data (bare Base64 or data:image/png;base64, prefix, decoded payload max 3MB) or full http(s) image URL (296px×152px, and remote URLs must be anonymously accessible, no longer than 2048 characters, response body max 3MB, and return image/* directly) (Image to render on screen)',
+				'Image displayed on the screen. Accepts PNG Base64 with or without a data URI prefix (decoded size up to 3MB), or a public HTTP(S) image URL. Recommended size: 296px×152px. URLs may contain up to 2048 characters and must directly return an image of up to 3MB without authentication.',
 			type: 'string',
 			required: true,
 		},
 		link: {
-			description: 'http/https link or URL scheme (NFC tap redirect target)',
+			description: 'Destination opened when the device is tapped with NFC. Accepts HTTP(S) URLs or an app URL scheme.',
 			type: 'string',
 		},
 		border: {
-			description: '0 = white border, 1 = black border (Screen border color)',
+			description: 'White or black screen border.',
 			type: 'number',
 			default: '0',
 		},
 		ditherType: {
-			description: 'Dither type (DIFFUSION, ORDERED, NONE) (Control dithering behavior)',
+			description: 'How grayscale is converted to black and white: error diffusion, ordered dithering, or no dithering.',
 			type: 'string',
 			default: 'DIFFUSION',
 		},
 		ditherKernel: {
 			description:
-				'Dither algorithm (THRESHOLD, ATKINSON, BURKES, FLOYD_STEINBERG, SIERRA2, STUCKI, JARVIS_JUDICE_NINKE, DIFFUSION_ROW, DIFFUSION_COLUMN, DIFFUSION_2D) (Control dither algorithm)',
+				'Algorithm used for error diffusion. See the visual comparisons above to choose the desired texture.',
 			type: 'string',
 			default: 'FLOYD_STEINBERG',
 		},
 		taskKey: {
 			description:
-				"When multiple Image API contents exist on the device, use this taskKey to specify which content to update and switch. You can retrieve it via the 'List Device Tasks' API. If omitted, the first Image API content is used.",
+				'Task identifier from the selected list. If omitted, updates the first Image API item in that list.',
 			type: 'string',
 		},
 		taskAlias: {
 			description:
-				'Task alias shown in the device task list. Use it to distinguish multiple contents of the same API type. Accepts a string or number, max 100 characters. Omit it to keep the existing alias, or send an empty string/null to clear it.',
+				'Name shown in the device task list, up to 100 characters. Omit to keep the current name; send an empty string to clear it. Does not change the displayed content.',
 			type: 'string | number',
 		},
 	}}
@@ -417,7 +460,7 @@ The endpoint uses the HTTP status code to indicate the request result. The JSON 
 <TypeTable
 	type={{
 		message: {
-			description: 'Human-readable response message. Both success and error responses use this field.',
+			description: 'Human-readable result for a successful or failed request.',
 			type: 'string',
 			required: true,
 		},
@@ -429,7 +472,13 @@ The endpoint uses the HTTP status code to indicate the request result. The JSON 
 | HTTP status | Meaning                 | Description                                                                                                                                    |
 | :---------- | :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- |
 | `200`       | Success                 | Image API content switched / Data updated but content not switched                                                                             |
-| `400`       | Invalid parameters      | Missing or invalid device ID<br/>Invalid image format<br/>Invalid border (must be 0 or 1)<br/>Invalid dither type<br/>Invalid dither algorithm |
+| `400`       | Invalid parameters      | Invalid content list type<br/>Missing or invalid device ID<br/>Invalid image format<br/>Invalid screen border color<br/>Invalid dither type<br/>Invalid dither algorithm |
 | `403`       | Forbidden               | You do not have permission to operate this device                                                                                              |
-| `404`       | Not found               | Device not found or not registered<br/>Image API content not added to the loop task                                                            |
+| `404`       | Not found               | Device not found or not registered<br/>Matching API content is missing from the selected list, or the task identifier does not match an Image API item in that list |
 | `500`       | Device response failure | Failed to switch Image API content                                                                                                             |
+
+### Troubleshoot list selection and display timing
+
+- `400`: use only `loop` or `fixed` for `taskType`.
+- `404`: ensure the request uses the same `taskType` as the list query and a `taskKey` from a matching API item in that list. Omitting `taskType` selects the loop list.
+- Fixed content was saved but the screen did not change: check its time settings in Dot. App and wait for the next scheduled refresh. `refreshNow: true` does not immediately refresh fixed content.

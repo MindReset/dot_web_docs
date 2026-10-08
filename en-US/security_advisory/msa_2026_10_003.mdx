@@ -1,0 +1,66 @@
+---
+title: MSA-2026-10-003
+description: Concurrent API key creation could bypass the ten-key account limit
+---
+
+**Release Date**: Oct 08, 2026  
+**Last Updated**: Oct 08, 2026  
+**Severity**: Low  
+**Status**: Fixed  
+**CVSS 4.0 Score**: 2.3 (AV:N/AC:L/AT:P/PR:L/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N)
+
+---
+
+## Overview
+
+An authenticated user could submit concurrent API key creation requests that passed the account's ten-key limit check before any of the requests completed its database insert. This race condition allowed additional keys to be stored for that user's account.
+
+The account limit is now enforced for concurrent requests as well as individual requests.
+
+## Impact Scope
+
+| Item               | Details                                                   |
+| :----------------- | :-------------------------------------------------------- |
+| Affected Product   | Dot Server-side API                                       |
+| Affected Version   | API key creation endpoint before the server-side fix       |
+| Fixed Version      | Server-side fix                                           |
+| Affected Component | `/api/authV2/api-key/create`                               |
+| Attack Vector      | Network                                                   |
+| Required Privilege | Low (authenticated user creating keys for their account)  |
+
+## Technical Description
+
+The server first counted the user's existing keys and then performed a separate insert. Several concurrent requests could observe a count below ten and each proceed to create a key. Concurrent deletion and creation could also change the count between the check and the insert.
+
+The key list interface displayed a limited number of entries, but that display limit did not constrain the records stored in the database.
+
+The additional keys remained associated with the authenticated user's account and retained the normal authorization checks. The affected resources were API keys; the endpoint did not create relay proxies.
+
+## Potential Consequences
+
+- Creation of more API key records than the account policy allowed.
+- Increased credential storage and management overhead for the affected account.
+
+## Remediation
+
+- Strengthened account-level quota enforcement during concurrent requests.
+- Improved handling of key creation and deletion to keep limits consistent.
+
+## Impact Assessment
+
+We classify this issue as **Low**, with a CVSS 4.0 base score of **2.3**. Exploitation requires an authenticated account (`PR:L`) and winning a timing race (`AT:P`). The confirmed consequence is a limited integrity impact on the account's key-count policy (`VI:L`). Additional keys do not grant access to another account or broader permissions, and service-wide availability loss has not been established.
+
+## User Action
+
+No client update or key rotation is required to address this issue. If an account already has ten or more keys, delete unused keys before creating another.
+
+## Acknowledgements
+
+We thank [Shuvo Kumar Saha (Syper-shuvo)](https://www.linkedin.com/in/syper-shuvo) for responsibly reporting the API key quota race condition and providing reproduction details.
+
+---
+
+**Disclaimer**: This advisory reflects information available at publication and will be updated if material changes occur.  
+**Document ID**: MSA-2026-10-003  
+**Classification**: Public  
+**Issued by**: MindReset Security Team

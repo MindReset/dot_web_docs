@@ -153,15 +153,29 @@ Authorization: Bearer dot_app_<your_api_key>
 
 The schema covers device discovery, status, settings, timezones, task lists, content switching, and Text, Image, and Canvas API content.
 
+## Choose the loop or fixed list
+
+All three write APIs accept top-level `taskType: "loop" | "fixed"`; omitting it selects `loop`. `taskKey` is looked up only in the selected list. If omitted, the first matching API item in that list is updated; the other list is not searched.
+
+`refreshNow` controls immediate display for loop content only. Fixed content follows its times configured in Dot. App. The API does not change those settings or immediately refresh it: even a fixed item currently on screen waits for the next scheduled refresh.
+
+List fixed content first, then use the returned Text API `key`:
+
+```bash
+python scripts/list_tasks.py --device-id '{{deviceId}}' --type fixed
+python scripts/send_text.py --device-id '{{deviceId}}' --task-type fixed \
+  --task-key '{{taskKey}}' --title 'Today'
+```
+
 ## API and payload limits
 
 - The service rate limit is 10 requests per second.
-- Text, Image, and Canvas writes require the matching API content item to already exist in the device loop task in Dot. App Content Studio.
+- Text, Image, and Canvas writes require the matching API content item to already exist in the selected loop or fixed list.
 - Settings intervals must be between 60,000 and 43,200,000 milliseconds and use whole-minute multiples.
 - Canvas `data` is limited to 64 KB; `windowData` to 128 KB; and `layoutFull` to 8 KB.
 - Canvas layouts allow at most 80 elements and a maximum nesting depth of 16.
 - Canvas strings are limited to 4,000 characters.
-- `taskAlias` belongs at the top level of Text, Image, and Canvas requests. Do not put it inside Canvas `data`.
+- Put `taskType`, `taskKey`, `refreshNow`, and `taskAlias` at the request top level, outside Canvas `data`.
 
 ## Errors and troubleshooting
 
@@ -169,7 +183,7 @@ The schema covers device discovery, status, settings, timezones, task lists, con
 - `404`: check the device serial number and confirm the requested content task exists.
 - `429`: respect the 10 requests-per-second limit and retry deliberately after the rate window passes.
 - Canvas validation errors: run `dot_validate_canvas` or use `send_canvas.py --dry-run` before sending.
-- Text, Image, or Canvas task errors: confirm that the corresponding API content item exists in the device loop task.
+- Text, Image, or Canvas task errors: use the same `taskType` for listing and writing, and a `taskKey` from a matching API item in that list. Omitting `taskType` selects the loop list.
 
 ## Helper scripts
 

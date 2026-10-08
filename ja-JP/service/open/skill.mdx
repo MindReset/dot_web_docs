@@ -153,15 +153,29 @@ Authorization: Bearer dot_app_<your_api_key>
 
 schema には、デバイス検出、状態、設定、タイムゾーン、タスク一覧、コンテンツ切り替え、Text、Image、Canvas API が含まれます。
 
+## ループリストまたは固定リストを選ぶ
+
+3 種類の書き込み API はトップレベルの `taskType: "loop" | "fixed"` に対応し、省略時は `loop` です。`taskKey` は選択したリスト内だけで検索します。省略時はそのリスト内の最初の同種 API コンテンツを更新し、別のリストは検索しません。
+
+`refreshNow` はループコンテンツの即時表示だけを制御します。固定コンテンツは Dot. App の時間設定に従います。API は時間設定の変更や即時更新を行わず、現在表示中の固定コンテンツでも次回の予定された更新を待ちます。
+
+固定リストを取得してから、返された Text API の `key` を使います。
+
+```bash
+python scripts/list_tasks.py --device-id '{{deviceId}}' --type fixed
+python scripts/send_text.py --device-id '{{deviceId}}' --task-type fixed \
+  --task-key '{{taskKey}}' --title '今日のお知らせ'
+```
+
 ## API と payload の制限
 
 - サービスのレート制限は 1 秒あたり 10 リクエストです。
-- Text、Image、Canvas の書き込みには、Dot. App Content Studio のデバイスループタスクに対応する API content item が必要です。
+- Text、Image、Canvas の書き込みには、選択したループリストまたは固定リストに対応する API コンテンツが必要です。
 - デバイス設定の interval は 60,000～43,200,000 ミリ秒、かつ整数分の倍数で指定します。
 - Canvas の `data` は 64 KB、`windowData` は 128 KB、`layoutFull` は 8 KB までです。
 - Canvas レイアウトは最大 80 要素、最大ネスト深度 16 です。
 - Canvas の文字列は 4,000 文字までです。
-- `taskAlias` は Text、Image、Canvas リクエストのトップレベルに置き、Canvas `data` の中には入れません。
+- `taskType`、`taskKey`、`refreshNow`、`taskAlias` はリクエストのトップレベルに置き、Canvas の `data` に入れないでください。
 
 ## エラーとトラブルシューティング
 
@@ -169,7 +183,7 @@ schema には、デバイス検出、状態、設定、タイムゾーン、タ�
 - `404`：デバイスのシリアル番号と、対応するコンテンツタスクを確認します。
 - `429`：1 秒あたり 10 リクエストの制限を守り、レートウィンドウ後に意図的に再試行します。
 - Canvas 検証エラー：`dot_validate_canvas` または `send_canvas.py --dry-run` を使います。
-- Text、Image、Canvas のタスクエラー：対応する API content item がデバイスのループタスクに存在するか確認します。
+- Text、Image、Canvas のタスクエラー：一覧取得と書き込みで同じ `taskType` を使い、そのリスト内の対応する API コンテンツの `taskKey` を指定してください。`taskType` の省略時はループリストを選択します。
 
 ## ヘルパースクリプト
 

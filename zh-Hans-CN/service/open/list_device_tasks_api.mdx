@@ -39,7 +39,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		taskType: {
 			type: 'select',
 			required: true,
-			name: '内容类型',
+			name: '内容列表',
 			default: 'loop',
 			options: [
 				{ value: 'loop', label: '循环内容' },
@@ -99,8 +99,8 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			required: true,
 		},
 		taskType: {
-			description: '内容类型',
-			type: 'string',
+			description: '可选择循环列表或固定列表。',
+			type: "'loop' | 'fixed'",
 			required: true,
 		},
 	}}
@@ -111,7 +111,9 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 此接口不需要请求体，仅需在请求头中提供 API 密钥。
 
 - `deviceId`: 设备序列号
-- `taskType`: 内容类型，例如 `loop`（循环内容）
+- `taskType`: 必填。`loop`（循环列表）或 `fixed`（固定列表）
+
+更新 API 内容时，将本接口返回的 `key` 作为 `taskKey`，并在写入请求顶层传入相同的 `taskType`。例如，从 `/fixed/list` 查询得到的内容，要使用 `taskType: "fixed"` 更新。写入时省略 `taskType` 默认查询循环列表，不会自动查找固定列表。
 
 ### 响应结构
 
@@ -129,33 +131,33 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			required: true,
 			items: {
 				type: {
-					description: '内容类型（`TEXT_API` / `IMAGE_API` / `CANVAS_API` / `GENERAL`）',
+					description: '内容类型，包括文本 API、图像 API、画板 API 或普通内容。',
 					type: "'TEXT_API' | 'IMAGE_API' | 'CANVAS_API' | 'GENERAL'",
 					required: true,
 				},
 				key: {
-					description: '内容唯一标识（可用于 Text/Image/Canvas API 的 taskKey 参数）',
+					description: '任务唯一标识，可用于指定要更新的文本、图像或画板 API 内容。',
 					type: 'string | null',
 					required: true,
 				},
 				refreshNow: {
-					description: '是否立刻显示内容（可能存在）',
+					description: '是否请求立即显示循环内容；固定内容会忽略此设置。',
 					type: 'boolean',
 				},
 				title: {
-					description: '标题（Text API 可能存在）',
+					description: '显示在屏幕上的标题，文本 API 可能返回。',
 					type: 'string',
 				},
 				message: {
-					description: '内容（Text API 可能存在）',
+					description: '显示在屏幕上的正文，文本 API 可能返回。',
 					type: 'string',
 				},
 				signature: {
-					description: '签名（Text API 可能存在）',
+					description: '显示在屏幕上的签名，文本 API 可能返回。',
 					type: 'string',
 				},
 				icon: {
-					description: '图标（Text API 可能存在）',
+					description: '显示在屏幕上的图标，文本 API 可能返回。',
 					type: 'string',
 				},
 				link: {
@@ -163,19 +165,19 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 					type: 'string',
 				},
 				image: {
-					description: '图像数据（Image API 可能存在）',
+					description: '显示在屏幕上的图像，图像 API 可能返回。',
 					type: 'string',
 				},
 				border: {
-					description: '边框颜色（Image API 可能存在）',
+					description: '屏幕边框的颜色，图像 API 可能返回。',
 					type: '0 | 1',
 				},
 				ditherType: {
-					description: '抖动类型（Image API 可能存在）',
+					description: '图像的抖动效果，图像 API 可能返回。',
 					type: 'string',
 				},
 				ditherKernel: {
-					description: '抖动算法（Image API 可能存在）',
+					description: '图像使用的抖动算法，图像 API 可能返回。',
 					type: 'string',
 				},
 			},

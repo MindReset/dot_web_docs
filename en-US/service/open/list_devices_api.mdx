@@ -74,16 +74,16 @@ This interface does not require a request body, only an API key in the request h
 <TypeTable
 	type={{
 		'[]': {
-			description: 'Device list array',
+			description: 'Devices available to this API key.',
 			type: 'array',
 			required: true,
 			items: {
 				alias: {
-					description: 'Device alias',
+					description: 'Name assigned by the user to identify the device.',
 					type: 'string',
 				},
 				location: {
-					description: 'Device location',
+					description: 'User-assigned label for where the device is placed.',
 					type: 'string',
 				},
 				id: {
@@ -92,17 +92,17 @@ This interface does not require a request body, only an API key in the request h
 					required: true,
 				},
 				series: {
-					description: 'Device series (e.g., quote)',
+					description: 'Product family the device belongs to.',
 					type: 'string',
 					required: true,
 				},
 				model: {
-					description: 'Device model (e.g., quote_0)',
+					description: 'Specific model within the product family.',
 					type: 'string',
 					required: true,
 				},
 				edition: {
-					description: 'Device edition (1 or 2)',
+					description: 'Hardware edition of the device.',
 					type: 'number',
 					required: true,
 				},
