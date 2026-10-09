@@ -1,0 +1,53 @@
+---
+title: WhiteOS
+new: true
+description: Bring your phone’s bookshelf to e-paper and give your documents a place of their own. Pick a favorite font and keep reading; open a deck and learn a little each day.
+---
+
+Thank you to the [WhiteOS developer](https://446599.github.io/whiteos/) for creating a reading and learning system for Read Pico.
+
+## Before you start
+
+<CustomCloudImage osSrc="dot/docs/whiteos_0_1791539395253.png" alt="WhiteOS website and reading interface illustration" />
+
+<Callout type="info" title="Installation availability">
+
+WhiteOS has not yet published a system image. The website’s full installation and system update buttons are currently unavailable. Check the website for release availability.
+
+</Callout>
+
+Installation requires a sufficiently charged Read Pico, a computer running desktop Chrome or Edge, and a USB-C data cable. Provide your own microSD card for local books and fonts. Read Pico supports cards up to 512 GB, formatted as FAT32.
+
+## Install through the website
+
+Visit the [WhiteOS website](https://446599.github.io/whiteos/) and open the [installation page](https://446599.github.io/whiteos/install/). It describes two installation options:
+
+- **全新烧录** (Full installation): for a first installation, writes the bootloader, partition table, and system application. Save files and reading records you want to keep and read the page’s data notices first.
+- **固件更新** (System update): updates only the application of an existing compatible WhiteOS installation. The installer stops if the partition layout is incompatible.
+
+<CustomCloudImage osSrc="dot/docs/whiteos_1_1791539395254.png" alt="WhiteOS installation page and installation options" className="mx-auto w-full max-w-xl rounded-xl object-contain" />
+
+## Reading and learning
+
+The features and controls below follow the website’s description. Availability depends on the released version.
+
+### WeRead
+
+Browse your WeRead bookshelf, download books, and manually confirm reading progress synchronization. Uploading progress and reading time from the device to the cloud is not yet confirmed as available. Annotations do not sync to the cloud. WhiteOS uses an unofficial WeRead integration; use only content you are authorized to access.
+
+### Local reading and layout
+
+Transfer files through a Wi-Fi webpage or copy them over USB storage to read local EPUB and PDF books. Once saved, local books do not require a continuous network connection.
+
+Tap the center of the text or press the middle key to open the reading menu. Adjust fonts, font size, line spacing, and margins, or access the table of contents, bookmarks, and reading progress. Menu options vary by file format.
+
+Spread or pinch two fingers to change the display size: EPUB and TXT adjust font size, while PDF adjusts page zoom. Copy TTF or OTF font files to the card, then select a font in the layout menu. No font conversion is needed.
+
+### Anki study
+
+Import legacy `.apkg` decks for offline review of question-and-answer cards, cloze cards, and static multiple-choice cards, with four review ratings and a daily review plan. Common images are supported. Existing review history is not migrated, and AnkiWeb is not connected. Templates with complex scripts, audio, or video are not supported.
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="Installation and Usage FAQ">Find help with SD cards, serial connections, and slow or frozen screens after installation.</Card>
+  <Card href="/docs/read_0/firmware" title="Restore the Official Demo System">Follow the build and flash instructions in DIY Your System to restore the official demo system.</Card>
+</Cards>

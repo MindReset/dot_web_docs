@@ -1,0 +1,53 @@
+---
+title: WhiteOS
+new: true
+description: 让手机里的书架来到墨水屏，让随身的文档找到自己的位置。换一种喜欢的字体，接着读；打开一副牌组，每天记住一点。
+---
+
+感谢 [WhiteOS 开发者](https://446599.github.io/whiteos/) 为小纸 Pico 贡献阅读与学习系统。
+
+## 开始之前
+
+<CustomCloudImage osSrc="dot/docs/whiteos_0_1791539395253.png" alt="WhiteOS 官网与阅读界面示意" />
+
+<Callout type="info" title="安装状态">
+
+WhiteOS 的系统镜像暂未发布，官网的「全新烧录」和「固件更新」按钮目前不可用。请以官网显示的发布状态为准。
+
+</Callout>
+
+安装时需要电量充足的小纸 Pico、使用桌面版 Chrome 或 Edge 的电脑，以及支持数据传输的 USB-C 数据线。存放本地书籍与字体的 microSD 卡需自行准备，小纸 Pico 最大支持 512 GB，格式为 FAT32。
+
+## 通过官网安装
+
+前往 [WhiteOS 官网](https://446599.github.io/whiteos/)，进入[安装页面](https://446599.github.io/whiteos/install/)。页面介绍了两种安装方式：
+
+- **全新烧录**：用于首次安装，写入启动程序、分区表和系统应用。安装前请保存需要保留的文件与阅读记录，并阅读页面的数据说明。
+- **固件更新**：用于更新已有且兼容的 WhiteOS，仅更新系统应用。分区不兼容时，安装程序会停止更新。
+
+<CustomCloudImage osSrc="dot/docs/whiteos_1_1791539395254.png" alt="WhiteOS 安装页面与两种安装方式" className="mx-auto w-full max-w-xl rounded-xl object-contain" />
+
+## 阅读与学习
+
+以下功能与操作依据官网介绍，具体可用范围请以发布版本为准。
+
+### 微信读书
+
+查看微信读书书架、下载书籍，并手动确认阅读进度同步。设备向云端上传进度和阅读时长的功能暂未确认可用，批注不支持云端同步。WhiteOS 与微信读书的连接为非官方方式，请仅使用已获授权的内容。
+
+### 本地阅读与排版
+
+通过 Wi-Fi 网页传书或 USB 磁盘复制文件，阅读本地 EPUB 与 PDF。书籍保存后，阅读无需保持网络连接。
+
+点击正文中央或按中间按键打开阅读菜单，调整字体、字号、行距和页边距，或查看目录、书签与阅读进度。菜单项目随文件格式变化。
+
+双指张开或合拢可调整显示大小：EPUB 与 TXT 调整字号，PDF 调整页面缩放。将 TTF 或 OTF 字体文件复制到存储卡后，可在排版菜单中选择字体，无需预先转换。
+
+### Anki 学习
+
+导入旧版 `.apkg` 牌组后，可离线复习问答、填空和静态选择题，并使用四档评分与每日复习计划。支持常见图片；不迁移原有复习历史，也不连接 AnkiWeb。包含复杂脚本、音频或视频的模板不在支持范围内。
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡、串口连接和安装后卡顿等问题的处理方法。</Card>
+  <Card href="/docs/read_0/firmware" title="恢复官方演示系统">前往 DIY 你的系统，按编译与刷写步骤恢复官方演示系统。</Card>
+</Cards>

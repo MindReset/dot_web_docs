@@ -3,7 +3,8 @@
     "pages": [
         "crossmux",
         "pico_reader",
-        "rickyos"
+        "rickyos",
+        "whiteos"
     ],
     "defaultOpen": true
 }

@@ -1,0 +1,31 @@
+---
+title: "QuotaFrame"
+new: true
+description: Read Pico で Codex と Claude の使用率、使用枠のリセットまでの時間、使用量の推移を確認。
+---
+
+<GithubInfo owner="eMUQI" repo="QuotaFrame" />
+
+QuotaFrame は、Read Pico をデスク上の AI コーディング用使用枠モニターにするプロジェクトです。Codex と Claude の使用率やリセットまでの時間を電子ペーパーで確認でき、使用枠を見るためにウィンドウを切り替える手間を減らせます。
+
+[QuotaFrame 公式サイト](https://quotaframe.com/)で設定手順を確認し、**MindReset Read Pico** を選んでデスクトップ版 Chrome または Edge からインストールしてください。
+
+<div className="my-6 grid grid-cols-2 items-start gap-4">
+	<CustomCloudImage osSrc="dot/docs/%E6%88%AA%E5%B1%8F2026-10-09%2017.11.30_1791537129475.png" alt="QuotaFrame の画面例 1" />
+	<CustomCloudImage osSrc="dot/docs/%E6%88%AA%E5%B1%8F2026-10-09%2017.11.49_1791537129476.png" alt="QuotaFrame の画面例 2" />
+</div>
+
+### 主な機能
+
+- **使用量の一覧**：Codex と Claude の短期・週間の使用率と、それぞれのリセットまでの時間を同じ画面で確認。
+- **Bluetooth 同期**：パソコンの QuotaFrame Bridge が使用量を自動で同期。接続が切れても、最後に受信した情報が画面に残ります。
+- **使用量の推移**：使用量の変化を確認できます。推移の記録には microSD カードが必要です。
+- **Read Pico の操作**：タッチ画面と 3 つのタッチキーで操作。時計表示、4 方向の自動回転、画面上の設定に対応します。
+
+### 使用前の準備
+
+Read Pico に対応する QuotaFrame システムをインストールし、パソコンで QuotaFrame Bridge を起動します。Bridge は Windows と macOS 向けに提供されています。macOS は 14 以降と Apple Silicon 搭載 Mac が必要です。
+
+使用量は macOS の CodexBar、または Windows の Win-CodexBar から取得します。先にアカウントを設定し、使用量を取得できることを確認してください。情報を更新するには、パソコンと Bridge を起動したままにする必要があります。
+
+Bridge のインストーラーは[リポジトリの Releases](https://github.com/eMUQI/QuotaFrame/releases)からダウンロードできます。
