@@ -1,83 +1,115 @@
 ---
-title: Pico Reader
+title: kiikoread
 new: true
-description: Pico Reader is a community reading system designed for Read Pico, with EPUB and TXT support, saved reading progress, and book transfers over Wi-Fi, a device hotspot, or USB.
+description: kiikoread is a community reading system for an e-paper device, with EPUB and TXT support, imported fonts, multiple bookshelf and lock-screen styles, and WiFi, hotspot, and USB file transfers.
 ---
 
-Thank you to [Kiiko厂长](https://github.com/wegooo-cell) for developing and open-sourcing Pico Reader for Read Pico.
+Thank you to [Kiiko厂长](https://github.com/wegooo-cell) for developing and open-sourcing kiikoread. Home, Bookshelf, File Manager, and Settings share a consistent design. Reading progress, bookmarks, and reading time are saved on the device.
+
+<Cards>
+  <Card href="https://kiikoread.com/" title="kiikoread Website">Explore the current interface, features, and official releases.</Card>
+  <Card href="https://kiikoread.com/#flash-action" title="Web Installation and Bin Downloads">Connect the device from a computer to install the system, or download a microSD update image.</Card>
+  <Card href="https://kiikoread.com/manual.html" title="User Guide">Find instructions for transfers, fonts, buttons, updates, backups, and restoration. The website and guide are in Chinese.</Card>
+</Cards>
+
+## Interface and features
+
+<div className="my-6 grid grid-cols-2 items-start gap-4">
+  <figure>
+    <img src="https://raw.githubusercontent.com/wegooo-cell/read-pico-reader/b9155ce15f56fb6bea2542c659178864b516e459/flash/assets/screens/home.png" alt="kiikoread Home with Continue Reading and the last seven days of reading records" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>Home: continue reading and review reading records</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/wegooo-cell/read-pico-reader/b9155ce15f56fb6bea2542c659178864b516e459/flash/assets/screens/shelf-list.png" alt="kiikoread list bookshelf with covers, titles, authors, and reading progress" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>Bookshelf: covers, authors, and reading progress</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/wegooo-cell/read-pico-reader/b9155ce15f56fb6bea2542c659178864b516e459/flash/assets/screens/reader.png" alt="kiikoread reading interface showing the book text and reading toolbar" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>Reading: fonts, contents, bookmarks, and reading settings</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/wegooo-cell/read-pico-reader/b9155ce15f56fb6bea2542c659178864b516e459/flash/assets/screens/lock-collage.png" alt="kiikoread bookshelf collage lock screen with tilted covers, profile name, and book count" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>Lock screen: bookshelf collage and book count</figcaption>
+  </figure>
+</div>
+
+These interface illustrations are supplied by the project website. Refresh behavior depends on the device. Switch between more bookshelf and lock-screen styles in the [website preview](https://kiikoread.com/#preview).
+
+- **Bookshelves and lock screens:** acrylic, dark rail, and list bookshelves; reading ticket, image wallpaper, and bookshelf collage lock screens.
+- **Reading layout:** EPUB and TXT, imported fonts, and adjustments for font size, line spacing, margins, and first-line indentation.
+- **Page controls:** taps, horizontal swipes, Bluetooth page turners, and configurable short presses on the three buttons and a long press on the center button.
+- **Refresh options:** normal, fast, and ripple modes for the main pages; configurable full-refresh intervals and manual full refresh while reading.
+- **File transfers:** separate WiFi, device hotspot, and USB entries, with books and fonts stored on the microSD card.
+- **Records and maintenance:** progress, bookmarks, reading time, profile, and status-bar signature; automatic sleep, configuration backups, microSD updates, and online OTA.
 
 ## Before you start
 
-<CustomCloudImage osSrc="dot/docs/kiiko_1_1791023749070.png" alt="Pico Reader web installation guide" />
+Prepare a sufficiently charged e-paper device, model **RDP-G01-W**, a computer running desktop Chrome or Edge, and a USB-C data cable. Do not use this firmware package on other models. A charge-only cable cannot flash the device. Close other webpages, flashing tools, or terminals using the device's serial port.
 
-Prepare the following:
-
-- A Read Pico with sufficient charge
-- A computer running desktop Chrome or Edge
-- A USB-C cable that supports data transfer. A charge-only cable cannot flash the device.
-
-<CustomCloudImage osSrc="dot/docs/kiiko_2_1791023749071.png" alt="Prepare Read Pico, a browser, and a USB-C data cable" />
+Use full web installation for a first installation, system repair, or base-package change. Devices with a compatible base package can also update through microSD or WiFi.
 
 <Steps>
 <Step>
 
-### Open the flashing page
+### Open the website and choose a release
 
-Open the [Pico Reader website](https://wegooo-cell.github.io/read-pico-reader/) in Chrome or Edge on your computer and find **连接 Pico，开始刷机** (Connect Pico and start flashing). The website installs the system version supplied by the project. Check the page for the exact version number.
+Open [kiikoread Installation and Downloads](https://kiikoread.com/#flash-action) in desktop Chrome or Edge. Choose the latest official release or a listed historical release. Review its version, update time, and changelog, then find **连接墨水屏，刷入…** (Connect the e-paper device and install…). The button ends with the selected version.
 
 </Step>
 <Step>
 
 ### Connect the device and select its serial port
 
-Connect Read Pico to your computer with the USB data cable, then click **连接 Pico，开始刷机**.
+Connect the device with the USB data cable and click the connect button. In the browser's picker, select the corresponding USB serial port and click **Connect**. If you are unsure which entry to use, cancel the picker, unplug and reconnect the device, and look for the newly added port.
 
-In the browser's serial port picker, select the port for Read Pico and click **Connect**. If you are unsure which entry to use, cancel the picker, unplug and reconnect the device, and look for the newly added port.
+If the connection fails, open **设置 → 升级和恢复 → BOOT 刷机** (Settings → Upgrade and Restore → BOOT Flashing) on the device and enter BOOT mode. Wait for the computer to detect the port again, then retry. If the system cannot start, follow the [website connection instructions](https://kiikoread.com/manual.html#install).
 
 </Step>
 <Step>
 
-### Confirm installation
+### Confirm installation as instructed
 
-<Callout type="warn" title="Device data">
+Once connected, select **安装** (Install) in the dialog, check the target release, and follow the confirmation prompts.
 
-On first installation, the confirmation dialog states **All data on the device will be erased.** Installation erases the device's internal data, including the previous system's settings and reading records. Back up any data you want to keep before confirming installation. Book files on the microSD card are not deleted by flashing.
+<Callout type="warn" title="Back up data you want to keep">
+
+Flashing replaces the current system. Selecting **擦除设备** (Erase device) clears internal settings and reading records; settings from another system are not guaranteed to be compatible. Back up data you want to keep and read the actual prompts in the installer. Web flashing does not delete books, fonts, or images on the microSD card.
 
 </Callout>
-
-Once connected, select the **Install** option for Read Pico in the installer dialog. On the **Confirm Installation** screen, read the data erasure warning, then click **Install** to begin.
-
-<CustomCloudImage osSrc="dot/docs/kiiko_3_1791023749072.png" alt="Connect Pico, select its serial port, and confirm installation" />
 
 </Step>
 <Step>
 
 ### Wait for installation to finish
 
-Progress is shown during installation. Keep USB connected and the page open. Do not unplug the cable or let your computer go to sleep.
-
-Wait for **Installation complete!**, then click **Next** to finish. The device restarts. If it does not start, unplug and reconnect USB, then turn it on with the power key.
+The website shows installation progress. Keep USB connected and the page open. Do not unplug the cable or let your computer go to sleep. Wait for the completion message, finish as instructed, and confirm that the device restarts.
 
 </Step>
 <Step>
 
-### Start reading
+### Import your books and fonts
 
-No books are included with the system. When the microSD card is first mounted, the system creates the `books`, `fonts`, and `pictures` folders as needed.
-
-Put EPUB or TXT books in `books`, then open them from the device's bookshelf. You can also manage files using the system's Wi-Fi, device hotspot, or USB book transfer features.
+No books or additional fonts are included. Prepare a FAT16 or FAT32 microSD card. Put EPUB / TXT files in `books`, fonts in `fonts`, and images in `pictures`, then open books from the bookshelf. File Manager also offers WiFi, device hotspot, and USB transfers. See the [user guide](https://kiikoread.com/manual.html) for the full instructions.
 
 </Step>
 </Steps>
+
+## Existing users: microSD and online updates
+
+Choose a release on the [Installation and Downloads page](https://kiikoread.com/#flash-action), download its microSD update Bin, name it `Pico-update.bin`, and place it in the card's root directory. Open **设置 → 升级和恢复 → 系统升级 → TF 卡升级** (Settings → Upgrade and Restore → System Upgrade → TF Card Upgrade). Keep this filename for compatibility with existing firmware.
+
+MicroSD updates require a compatible dual-slot base package from rc72 or later; online OTA requires a compatible base package from rc79 or later. After connecting WiFi, use System Upgrade to check for updates, read the changelog, and confirm download and installation. Earlier releases or other systems need full web installation first. See the [update guide](https://kiikoread.com/manual.html#update) for compatibility details.
+
+The application Bin is only an update image; do not flash it to address 0 as a full installation package. Official firmware and checksum files are published in [GitHub Releases](https://github.com/wegooo-cell/read-pico-reader/releases). Refer to the website and releases for current version information.
 
 <Cards>
   <Card href="/docs/read_0/faq/firmware_install" title="Installation and Usage FAQ">Find help with SD cards, serial connections, and slow or frozen screens after installation.</Card>
   <Card href="/docs/read_0/firmware" title="Restore the Official Demo System">Follow the build and flash instructions in DIY Your System to restore the official demo system.</Card>
 </Cards>
 
-<Callout type="info" title="Other installation options">
+<Callout type="info" title="Source and other installation options">
 
-You can also follow the repository's instructions to build and flash the system, or fork the project for further development.
+kiikoread is maintained by the community. You can also follow the repository's instructions to build and flash the system, or fork it for further development. The project name has changed; the source repository address remains the same.
 
 </Callout>
 
