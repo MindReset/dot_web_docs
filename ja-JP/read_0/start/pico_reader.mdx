@@ -1,83 +1,115 @@
 ---
-title: Pico Reader
+title: kiikoread
 new: true
-description: Pico Reader は Read Pico 専用のコミュニティ製読書システムです。EPUB と TXT、読書進捗の保存、Wi-Fi・端末のアクセスポイント・USB による書籍転送に対応しています。
+description: kiikoread は電子ペーパー端末向けのコミュニティ製読書システムです。EPUB と TXT、持ち込みフォント、複数の本棚・ロック画面、WiFi・アクセスポイント・USB によるファイル転送に対応しています。
 ---
 
-Read Pico 向けに Pico Reader 読書システムを開発・公開してくださった [Kiiko厂长](https://github.com/wegooo-cell) さんに感謝します。
+Read Pico 向けに kiikoread（旧名称：Pico Reader）読書システムを開発・公開してくださった [Kiiko厂长](https://github.com/wegooo-cell) さんに感謝します。ホーム、本棚、ファイル管理、設定は統一されたデザインで、読書の進捗、しおり、読書時間は端末に保存されます。
+
+<Cards>
+  <Card href="https://kiikoread.com/" title="kiikoread 公式サイト">最新の画面デザイン、機能、正式リリースを確認できます。</Card>
+  <Card href="https://kiikoread.com/#flash-action" title="Web 書き込みと Bin ダウンロード">パソコンから端末を接続してインストールするか、microSD 更新ファイルをダウンロードできます。</Card>
+  <Card href="https://kiikoread.com/manual.html" title="使い方ガイド">転送、フォント、ボタン、更新、バックアップ、復元の手順。サイトとガイドは中国語です。</Card>
+</Cards>
+
+## 画面と主な機能
+
+<div className="my-6 grid grid-cols-2 items-start gap-4">
+  <figure>
+    <img src="https://raw.githubusercontent.com/wegooo-cell/read-pico-reader/b9155ce15f56fb6bea2542c659178864b516e459/flash/assets/screens/home.png" alt="kiikoread のホーム画面。読書の続きと直近七日間の読書記録を表示" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>ホーム：読書の続きと読書記録</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/wegooo-cell/read-pico-reader/b9155ce15f56fb6bea2542c659178864b516e459/flash/assets/screens/shelf-list.png" alt="kiikoread の一覧式本棚。表紙、書名、著者、読書進捗を表示" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>本棚：表紙、著者、読書進捗</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/wegooo-cell/read-pico-reader/b9155ce15f56fb6bea2542c659178864b516e459/flash/assets/screens/reader.png" alt="kiikoread の読書画面。本文と読書ツールバーを表示" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>読書：フォント、目次、しおり、読書設定</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/wegooo-cell/read-pico-reader/b9155ce15f56fb6bea2542c659178864b516e459/flash/assets/screens/lock-collage.png" alt="kiikoread の本棚コラージュ型ロック画面。傾けた表紙、プロフィール名、蔵書数を表示" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>ロック画面：本棚コラージュと蔵書数</figcaption>
+  </figure>
+</div>
+
+画像はプロジェクトの公式サイトが提供する画面イメージです。画面更新の見え方は実機で確認してください。ほかの本棚・ロック画面は[公式サイトのプレビュー](https://kiikoread.com/#preview)で切り替えて確認できます。
+
+- **本棚とロック画面**：アクリル、ダークレール、一覧式の本棚。読書チケット、画像壁紙、本棚コラージュのロック画面。
+- **読書レイアウト**：EPUB と TXT、持ち込みフォント、文字サイズ、行間、余白、段落の字下げを調整できます。
+- **ページ操作**：タップ、左右スワイプ、Bluetooth ページめくり機器。三つのボタンの短押しと中央ボタンの長押しを設定できます。
+- **画面更新**：メイン画面には通常、高速、波紋の三つのモード。読書中は全画面更新の間隔や手動更新を設定できます。
+- **ファイル転送**：WiFi、端末のアクセスポイント、USB の独立した入口。書籍やフォントは microSD カードに保存します。
+- **記録とメンテナンス**：進捗、しおり、読書時間、プロフィール、ステータスバーのメッセージ。自動スリープ、設定のバックアップ、microSD 更新、オンライン OTA。
 
 ## はじめる前に
 
-<CustomCloudImage osSrc="dot/docs/kiiko_1_1791023749070.png" alt="Pico Reader の Web インストールガイド" />
+十分に充電した Read Pico、デスクトップ版 Chrome または Edge を使えるパソコン、データ転送に対応した USB-C ケーブルを用意してください。このインストールパッケージは Read Pico 専用です。充電専用のケーブルでは書き込めません。シリアルポートを使うほかのページ、書き込みツール、ターミナルを閉じてください。
 
-次のものを用意してください。
-
-- 十分に充電した Read Pico
-- デスクトップ版 Chrome または Edge を使えるパソコン
-- データ転送に対応した USB-C ケーブル。充電専用のケーブルでは書き込めません。
-
-<CustomCloudImage osSrc="dot/docs/kiiko_2_1791023749071.png" alt="Read Pico、ブラウザ、USB-C データケーブルの準備" />
+初回インストール、システム修復、基本パッケージの変更には Web からの完全インストールを使います。互換性のある基本パッケージを導入済みなら、microSD や WiFi でも更新できます。
 
 <Steps>
 <Step>
 
-### 書き込みページを開く
+### サイトを開いてバージョンを選ぶ
 
-パソコンの Chrome または Edge で [Pico Reader 公式サイト](https://wegooo-cell.github.io/read-pico-reader/)を開き、「连接 Pico，开始刷机」（Pico に接続して書き込みを開始）のボタンを探します。サイトからはプロジェクトが提供するバージョンのシステムがインストールされます。具体的なバージョン番号はページで確認してください。
+パソコンの Chrome または Edge で [kiikoread の書き込み・ダウンロードページ](https://kiikoread.com/#flash-action)を開き、最新の正式版または掲載された過去の正式版を選びます。バージョン、更新日時、更新履歴を確認し、「连接墨水屏，刷入…」（電子ペーパー端末に接続して書き込む）のボタンを探してください。末尾には選択したバージョンが表示されます。
 
 </Step>
 <Step>
 
 ### 端末を接続してシリアルポートを選ぶ
 
-USB データケーブルで Read Pico をパソコンに接続し、「连接 Pico，开始刷机」を押します。
+USB データケーブルで端末を接続し、接続ボタンを押します。ブラウザの一覧で対応する USB シリアルポートを選び、「接続」を押してください。どの項目か分からない場合は、いったん一覧を閉じて端末を抜き差しし、新しく表示されるポートを確認します。
 
-ブラウザのシリアルポート一覧で Read Pico に対応するポートを選び、「接続」を押してください。どの項目か分からない場合は、いったん一覧を閉じて端末を抜き差しし、新しく表示されるポートを確認します。
+接続できない場合は、端末で「设置 → 升级和恢复 → BOOT 刷机」（設定 → 更新と復元 → BOOT 書き込み）を開き、BOOT モードに入ります。パソコンがポートを再認識してからやり直してください。システムが起動しない場合は、[公式サイトの接続手順](https://kiikoread.com/manual.html#install)を参照してください。
 
 </Step>
 <Step>
 
-### インストールを確認する
+### 案内に従ってインストールを確認する
 
-<Callout type="warn" title="端末内のデータ">
+接続できたら、ダイアログの「安装」（インストール）を選び、対象バージョンを確認して案内に従います。
 
-初回インストール時の確認画面には **All data on the device will be erased.** と表示されます。インストールによって端末の内部データが消去され、以前のシステムの設定や読書記録も失われます。残したいデータを先にバックアップしてから、インストールを確認してください。microSD カード内の書籍ファイルは、書き込みによって削除されません。
+<Callout type="warn" title="残したいデータを先にバックアップ">
+
+書き込みによって現在のシステムが置き換わります。「擦除设备」（端末を消去）を選ぶと、端末内の設定と読書記録が消去されます。別のシステムの設定には互換性が保証されません。残したいデータを先にバックアップし、インストール画面の実際の案内を読んでください。Web 書き込みで microSD カード内の書籍、フォント、画像は削除されません。
 
 </Callout>
-
-接続できたら、インストールのダイアログで Read Pico の **Install** を選びます。**Confirm Installation** の確認画面でデータ消去の案内を読んでから、**Install** を押して開始してください。
-
-<CustomCloudImage osSrc="dot/docs/kiiko_3_1791023749072.png" alt="Pico に接続し、シリアルポートを選んでインストールを確認" />
 
 </Step>
 <Step>
 
 ### 完了するまで待つ
 
-インストール中は進捗が表示されます。USB 接続とページを開いた状態を保ち、ケーブルを抜いたり、パソコンをスリープさせたりしないでください。
-
-**Installation complete!** と表示されたら、**Next** を押して終了します。端末は再起動します。起動しない場合は USB を抜き差しし、電源キーで起動してください。
+サイトにインストールの進捗が表示されます。USB 接続とページを開いた状態を保ち、ケーブルを抜いたり、パソコンをスリープさせたりしないでください。完了の表示を待ち、案内に従って操作を終了し、端末の再起動を確認します。
 
 </Step>
 <Step>
 
-### 読書をはじめる
+### 自分の書籍とフォントを入れる
 
-システムには書籍が含まれていません。microSD カードを初めてマウントすると、必要に応じて `books`、`fonts`、`pictures` フォルダーが作成されます。
-
-EPUB または TXT の書籍を `books` に入れ、端末の本棚から開いてください。システムの Wi-Fi、端末のアクセスポイント、USB による書籍転送機能でファイルを管理することもできます。
+システムには書籍や追加フォントは含まれていません。FAT32 形式の microSD カード（最大 512 GB）を用意し、EPUB / TXT を `books`、フォントを `fonts`、画像を `pictures` に入れて、本棚から書籍を開いてください。ファイル管理の WiFi、端末のアクセスポイント、USB 転送でもファイルを管理できます。詳しくは[使い方ガイド](https://kiikoread.com/manual.html)を参照してください。
 
 </Step>
 </Steps>
+
+## 導入済みの場合：microSD とオンライン更新
+
+[書き込み・ダウンロードページ](https://kiikoread.com/#flash-action)でバージョンを選び、TF カード更新用 Bin をダウンロードします。ファイル名を `Pico-update.bin` にしてカードのルートに置き、「设置 → 升级和恢复 → 系统升级 → TF 卡升级」（設定 → 更新と復元 → システム更新 → TF カード更新）を開きます。既存ファームウェアとの互換性のため、このファイル名を維持してください。
+
+microSD 更新には rc72 以降の互換性のあるデュアルスロット基本パッケージ、オンライン OTA には rc79 以降の互換性のある基本パッケージが必要です。WiFi 接続後、システム更新で新しいバージョンを確認し、更新履歴を読んでダウンロードとインストールを開始できます。古いバージョンや別のシステムでは、先に Web から完全インストールしてください。互換性の詳細は[更新ガイド](https://kiikoread.com/manual.html#update)にあります。
+
+アプリケーション Bin は更新専用です。完全インストール用のファイルとしてアドレス 0 に書き込まないでください。正式ファームウェアとチェックサムは [GitHub Releases](https://github.com/wegooo-cell/read-pico-reader/releases)で公開しています。現在のバージョンは公式サイトと Release で確認してください。
 
 <Cards>
   <Card href="/docs/read_0/faq/firmware_install" title="インストールと使用に関するよくある質問">SD カード、シリアル接続、インストール後に動作が遅い・画面が固まる場合の対処方法。</Card>
   <Card href="/docs/read_0/firmware" title="公式デモシステムに戻す">「自分だけのシステムを作る」のビルドと書き込み手順で、公式デモシステムに戻せます。</Card>
 </Cards>
 
-<Callout type="info" title="その他のインストール方法">
+<Callout type="info" title="ソースとほかのインストール方法">
 
-リポジトリの説明に従ってシステムをビルド・書き込みしたり、プロジェクトを Fork して開発したりすることもできます。
+kiikoread はコミュニティが開発・保守しています。リポジトリの説明に従ってビルド・書き込みしたり、Fork して開発したりすることもできます。プロジェクト名は変更されましたが、ソースのリポジトリアドレスは変わりません。
 
 </Callout>
 
