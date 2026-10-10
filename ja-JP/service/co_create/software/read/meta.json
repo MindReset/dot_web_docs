@@ -3,7 +3,7 @@
     "defaultOpen": false,
     "pages": [
         "[CrossMux](/docs/read_0/start/crossmux)",
-        "[Pico Reader](/docs/read_0/start/pico_reader)",
+        "[kiikoread](/docs/read_0/start/pico_reader)",
         "[RickyOS](/docs/read_0/start/rickyos)",
         "[WhiteOS](/docs/read_0/start/whiteos)",
         "../quota_frame",
