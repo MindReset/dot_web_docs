@@ -1,83 +1,115 @@
 ---
-title: Pico Reader
+title: kiikoread
 new: true
-description: Pico Reader 是一款专为小纸 Pico 开发的社区阅读系统，支持 EPUB 与 TXT、阅读进度记忆，以及 Wi-Fi、热点和 USB 传书。
+description: kiikoread 是面向墨水屏的社区阅读系统，支持 EPUB 与 TXT、自定义字体、多种书架和锁屏样式，以及 WiFi、热点和 USB 传书。
 ---
 
-感谢 [Kiiko厂长](https://github.com/wegooo-cell) 为小纸 Pico 开发并开源 Pico Reader 阅读系统。
+感谢 [Kiiko厂长](https://github.com/wegooo-cell) 开发并开源 kiikoread 阅读系统。首页、书架、文件管理和设置采用统一的界面设计，阅读进度、书签和时长会保存在设备上。
+
+<Cards>
+  <Card href="https://kiikoread.com/" title="kiikoread 官网">查看最新界面设计、特色功能和正式版本。</Card>
+  <Card href="https://kiikoread.com/#flash-action" title="网页刷机与 Bin 下载">在电脑上连接墨水屏安装系统，或下载 TF 卡升级文件。</Card>
+  <Card href="https://kiikoread.com/manual.html" title="使用说明">查看传书、字体、按键、升级、备份与恢复的完整说明。</Card>
+</Cards>
+
+## 界面与特色功能
+
+<div className="my-6 grid grid-cols-2 items-start gap-4">
+  <figure>
+    <img src="https://raw.githubusercontent.com/wegooo-cell/read-pico-reader/b9155ce15f56fb6bea2542c659178864b516e459/flash/assets/screens/home.png" alt="kiikoread 首页，包含继续阅读和近七天阅读记录" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>首页：继续阅读与阅读记录</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/wegooo-cell/read-pico-reader/b9155ce15f56fb6bea2542c659178864b516e459/flash/assets/screens/shelf-list.png" alt="kiikoread 列表书架，按行显示封面、书名、作者和阅读进度" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>书架：封面、作者与阅读进度</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/wegooo-cell/read-pico-reader/b9155ce15f56fb6bea2542c659178864b516e459/flash/assets/screens/reader.png" alt="kiikoread 阅读界面，展示正文和阅读工具栏" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>阅读：字体、目录、书签与阅读设置</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/wegooo-cell/read-pico-reader/b9155ce15f56fb6bea2542c659178864b516e459/flash/assets/screens/lock-collage.png" alt="kiikoread 书架拼贴锁屏，展示倾斜封面、资料卡名字与藏书数量" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>锁屏：书架拼贴与藏书数量</figcaption>
+  </figure>
+</div>
+
+以上为项目官网提供的界面示意，刷新效果以实机为准。更多书架与锁屏样式可在[官网界面预览](https://kiikoread.com/#preview)中切换查看。
+
+- **书架与锁屏**：亚克力书架、深色书轨和列表书架；阅读票根、图片壁纸和书架拼贴锁屏。
+- **阅读排版**：支持 EPUB 与 TXT，导入自己的字体，调整字号、行距、页边距与首行缩进。
+- **翻页操作**：轻点、左右滑动、蓝牙翻页器，以及三键短按与中键长按自定义。
+- **刷新选择**：普通、快刷和水波纹三种主页刷新模式；阅读界面可设置全刷间隔或手动全刷。
+- **文件传输**：WiFi、热点和 USB 三个独立入口，书籍与字体保存在 TF 卡上。
+- **阅读记录与维护**：进度、书签、时长、资料卡与签名；自动休眠、配置备份、TF 卡升级和联网 OTA。
 
 ## 开始之前
 
-<CustomCloudImage osSrc="dot/docs/kiiko_1_1791023749070.png" alt="Pico Reader 网页安装指南" />
+准备一台电量充足、型号为 **RDP-G01-W** 的墨水屏、一台使用桌面版 Chrome 或 Edge 的电脑，以及支持数据传输的 USB-C 数据线。其他型号不要使用这套刷机包；仅能充电的线缆无法刷写。关闭其他占用设备串口的网页、刷写工具或终端。
 
-准备以下设备：
-
-- 一台小纸 Pico，并保持电量充足；
-- 一台电脑，使用桌面版 Chrome 或 Edge 浏览器；
-- 一根支持数据传输的 USB-C 数据线，仅能充电的线缆无法刷写。
-
-<CustomCloudImage osSrc="dot/docs/kiiko_2_1791023749071.png" alt="小纸 Pico、浏览器与 USB-C 数据线准备说明" />
+首次安装、修复系统或更换基础包时，使用网页完整刷机；已安装兼容基础包的设备也可使用 TF 卡或联网升级。
 
 <Steps>
 <Step>
 
-### 打开刷写页面
+### 打开官网，选择版本
 
-在电脑的 Chrome 或 Edge 中打开 [Pico Reader 官网](https://wegooo-cell.github.io/read-pico-reader/)，找到「连接 Pico，开始刷机」按钮。网页会安装该项目提供的系统版本，具体版本号以页面显示为准。
+在电脑的 Chrome 或 Edge 中打开 [kiikoread 刷机与下载](https://kiikoread.com/#flash-action)，选择最新正式版或需要的历史正式版。核对版本号、更新时间和更新日志，找到「连接墨水屏，刷入…」按钮；按钮末尾显示所选版本。
 
 </Step>
 <Step>
 
 ### 连接设备并选择串口
 
-用 USB 数据线将小纸 Pico 连接到电脑，点击「连接 Pico，开始刷机」。
+用 USB 数据线连接墨水屏，点击连接按钮。在浏览器弹出的窗口中选择对应的 USB 串口，再点击「连接」。如果无法确定对应条目，可先取消窗口，拔下设备后重新连接，查看新增的串口。
 
-在浏览器弹出的串口选择窗口中，选择小纸 Pico 对应的串口，再点击「连接」。如果无法确定对应条目，可先取消窗口，拔下设备后重新连接，查看新增的串口。
+如提示连接失败，可在墨水屏打开「设置 → 升级和恢复 → BOOT 刷机」，进入 BOOT 模式，等待电脑重新识别串口后重试。设备无法进入系统时，参照[官网连接说明](https://kiikoread.com/manual.html#install)处理。
 
 </Step>
 <Step>
 
-### 确认安装
+### 按提示确认安装
 
-<Callout type="warn" title="设备数据">
+连接成功后，选择弹窗中的「安装」，核对目标版本，再按提示确认。
 
-首次安装时，确认窗口会提示 **All data on the device will be erased.** 安装将清除设备内部数据，原系统的设置与阅读记录会被清除。请先备份需要保留的数据，再确认安装。microSD 存储卡中的书籍文件不会因刷写被删除。
+<Callout type="warn" title="先备份需要保留的数据">
+
+刷机会替换当前系统。勾选「擦除设备」会清除设备内部设置与阅读记录；从其他系统迁移时，原有设置也不保证兼容。请先备份需要保留的数据，并阅读安装弹窗中的实际提示。TF 卡中的书籍、字体和图片不会因网页刷写被删除。
 
 </Callout>
-
-连接成功后，在安装弹窗中选择小纸 Pico 对应的 **Install** 项目。进入 **Confirm Installation** 确认页，阅读数据清除提示后，再点击 **Install** 开始安装。
-
-<CustomCloudImage osSrc="dot/docs/kiiko_3_1791023749072.png" alt="连接 Pico、选择串口并确认安装" />
 
 </Step>
 <Step>
 
 ### 等待安装完成
 
-安装过程中会显示进度。保持 USB 连接和网页打开，不要拔掉数据线，也不要让电脑进入睡眠。
-
-等待弹窗显示 **Installation complete!**，点击 **Next** 结束安装。设备会重新启动；如果没有启动，可重新插拔 USB，再使用电源键开机。
+网页会显示安装进度。保持 USB 连接和网页打开，不要拔掉数据线，也不要让电脑进入睡眠。等待弹窗提示安装完成，再按提示结束操作并确认设备重新启动。
 
 </Step>
 <Step>
 
-### 开始阅读
+### 导入自己的书籍与字体
 
-系统不预装书籍。首次挂载 microSD 存储卡时，会按需创建 `books`、`fonts` 和 `pictures` 文件夹。
-
-将 EPUB 或 TXT 书籍放入 `books`，再通过设备的书架打开。你也可以通过系统提供的 Wi-Fi、设备热点或 USB 传书功能管理文件。
+系统不预装书籍或额外字体。准备 FAT16 或 FAT32 格式的 TF 卡，将 EPUB / TXT 放入 `books`，字体放入 `fonts`，图片放入 `pictures`；再从书架打开书籍。也可通过「文件管理」中的 WiFi、热点或 USB 传输管理文件。完整操作见[使用说明](https://kiikoread.com/manual.html)。
 
 </Step>
 </Steps>
+
+## 已安装用户：TF 卡与联网升级
+
+在[官网刷机与下载](https://kiikoread.com/#flash-action)选择版本，下载 TF 卡升级 Bin，将文件命名为 `Pico-update.bin` 并放在 TF 卡根目录，再打开「设置 → 升级和恢复 → 系统升级 → TF 卡升级」。该文件名用于兼容已有固件，不要更改。
+
+TF 卡升级需要 rc72 或更新的兼容双槽基础包；联网 OTA 需要 rc79 或更新的兼容基础包。连接 WiFi 后，可在系统升级中检查更新、查看日志并确认下载安装。更早版本或其他系统先使用网页完整刷机，具体兼容要求见[升级说明](https://kiikoread.com/manual.html#update)。
+
+应用 Bin 仅用于升级，不能作为完整刷机包写入地址 0。正式固件及校验文件统一在 [GitHub Releases](https://github.com/wegooo-cell/read-pico-reader/releases)提供；具体版本以官网和 Release 为准。
 
 <Cards>
   <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡、串口连接和安装后卡顿等问题的处理方法。</Card>
   <Card href="/docs/read_0/firmware" title="恢复官方演示系统">前往 DIY 你的系统，按编译与刷写步骤恢复官方演示系统。</Card>
 </Cards>
 
-<Callout type="info" title="其他安装方式">
+<Callout type="info" title="源码与其他安装方式">
 
-除了通过官网安装，你也可以按照仓库说明编译、刷写系统，或 Fork 项目进行开发。
+kiikoread 由社区维护。你也可以按照仓库说明编译、刷写系统，或 Fork 项目进行开发。项目名称已更新，源码仓库地址保持不变。
 
 </Callout>
 
