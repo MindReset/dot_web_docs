@@ -1,0 +1,68 @@
+---
+title: CrossLink
+new: true
+description: 用像素风格界面阅读，在小纸 Pico 上体验针对墨水屏刷新与中文排版优化的 CrossLink Pixel。
+---
+
+感谢 [CrossLink 团队](https://crosslink-reader.top/) 为小纸 Pico 带来 CrossLink Pixel 阅读系统。
+
+## 开始之前
+
+准备电量充足的小纸 Pico、使用桌面版 Chrome 或 Edge 的电脑，以及支持数据传输的 USB-C 数据线。关闭其他占用设备串口的网页、刷写工具或终端。
+
+安装会替换设备当前的系统，原有设置可能被清除。请先保存需要保留的数据，并阅读安装页面的提示。
+
+<Steps>
+<Step>
+
+### 打开官网
+
+在电脑的 Chrome 或 Edge 中打开 [CrossLink 官网](https://crosslink-reader.top/)，进入「刷入CrossLink系统」页面。
+
+</Step>
+<Step>
+
+### 选择你的设备
+
+在「选择设备型号」中选择 **小纸Pico**。
+
+<CustomCloudImage osSrc="dot/docs/crosslink_1_1791685514531.png" alt="在 CrossLink 官网选择小纸 Pico" />
+
+</Step>
+<Step>
+
+### 选择 CrossLink Pixel
+
+在「选择固件版本」中选择 **CrossLink Pixel**。它采用像素风格主题，以阅读为核心，针对墨水屏刷新与中文排版进行优化。
+
+可用系统与版本号以官网显示为准。
+
+<CustomCloudImage osSrc="dot/docs/crosslink_2_1791685514532.png" alt="小纸 Pico 的 CrossLink Pixel 版本选择" />
+
+</Step>
+<Step>
+
+### 连接设备并安装
+
+用 USB 数据线将小纸 Pico 连接到电脑，点击「刷入全量包」。浏览器会弹出设备选择窗口，选择小纸 Pico 的串口，再点击「连接」。窗口中设备可能显示为 **USB JTAG**。
+
+如果不确定哪个是小纸 Pico，可先取消窗口，拔下设备，再重新连接，查看新增的串口。
+
+<CustomCloudImage osSrc="dot/docs/crosslink_3_1791685514533.png" alt="CrossLink Pixel 全量包安装入口与版本信息" />
+
+</Step>
+<Step>
+
+### 等待安装完成
+
+安装进度会显示在页面下方。保持 USB 连接和页面打开，期间不要拔掉数据线、关闭网页，或让电脑进入睡眠。
+
+等待完成提示后，按页面指引重启设备，确认小纸 Pico 显示 CrossLink Pixel 界面。
+
+</Step>
+</Steps>
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡、串口连接和安装后卡顿等问题的处理方法。</Card>
+  <Card href="/docs/read_0/firmware" title="恢复官方演示系统">前往 DIY 你的系统，按编译与刷写步骤恢复官方演示系统。</Card>
+</Cards>

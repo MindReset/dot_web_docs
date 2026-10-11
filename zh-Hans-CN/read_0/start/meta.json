@@ -4,7 +4,8 @@
         "crossmux",
         "kiikoread",
         "rickyos",
-        "whiteos"
+        "whiteos",
+        "crosslink"
     ],
     "defaultOpen": true
 }

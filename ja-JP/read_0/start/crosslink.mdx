@@ -1,0 +1,68 @@
+---
+title: CrossLink
+new: true
+description: ピクセル風の画面で読書を。Read Pico で、電子ペーパーの画面更新と中国語の組版に最適化された CrossLink Pixel を使えます。
+---
+
+Read Pico 向けに CrossLink Pixel 読書システムを提供してくださった [CrossLink チーム](https://crosslink-reader.top/) に感謝します。
+
+## はじめる前に
+
+十分に充電した Read Pico、デスクトップ版 Chrome または Edge を使えるパソコン、データ転送に対応した USB-C ケーブルを用意してください。端末のシリアルポートを使用しているほかのページ、書き込みツール、ターミナルを閉じます。
+
+インストールすると現在のシステムが置き換わり、設定が消去される場合があります。残したいデータを先に保存し、インストール画面の案内を読んでください。
+
+<Steps>
+<Step>
+
+### 公式サイトを開く
+
+パソコンの Chrome または Edge で [CrossLink 公式サイト](https://crosslink-reader.top/)を開き、「刷入CrossLink系统」（CrossLink システムを書き込む）に進みます。
+
+</Step>
+<Step>
+
+### 端末を選ぶ
+
+「选择设备型号」（端末を選択）で **小纸Pico**（Read Pico）を選びます。
+
+<CustomCloudImage osSrc="dot/docs/crosslink_1_1791685514531.png" alt="CrossLink 公式サイトで Read Pico を選択" />
+
+</Step>
+<Step>
+
+### CrossLink Pixel を選ぶ
+
+「选择固件版本」（システムのバージョンを選択）で **CrossLink Pixel** を選びます。ピクセル風のテーマを採用し、読書を中心に電子ペーパーの画面更新と中国語の組版を最適化しています。
+
+利用できるシステムとバージョン番号は公式サイトで確認してください。
+
+<CustomCloudImage osSrc="dot/docs/crosslink_2_1791685514532.png" alt="Read Pico 用 CrossLink Pixel のバージョン選択" />
+
+</Step>
+<Step>
+
+### 端末を接続してインストールする
+
+USB データケーブルで Read Pico をパソコンに接続し、「刷入全量包」（システム全体を書き込む）を押します。ブラウザの一覧で Read Pico のシリアルポートを選び、「接続」を押してください。端末名が **USB JTAG** と表示される場合があります。
+
+どの項目か分からない場合は、いったん一覧を閉じて端末を抜き差しし、新しく表示されるポートを確認してください。
+
+<CustomCloudImage osSrc="dot/docs/crosslink_3_1791685514533.png" alt="CrossLink Pixel の全体インストールボタンとバージョン情報" />
+
+</Step>
+<Step>
+
+### 完了するまで待つ
+
+ページ下部に進捗が表示されます。USB 接続とページを開いた状態を保ち、ケーブルを抜いたり、ページを閉じたり、パソコンをスリープさせたりしないでください。
+
+完了の表示を待ち、ページの案内に従って端末を再起動します。Read Pico に CrossLink Pixel の画面が表示されることを確認してください。
+
+</Step>
+</Steps>
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="インストールと使用に関するよくある質問">SD カード、シリアル接続、インストール後に動作が遅い・画面が固まる場合の対処方法。</Card>
+  <Card href="/docs/read_0/firmware" title="公式デモシステムに戻す">「自分だけのシステムを作る」のビルドと書き込み手順で、公式デモシステムに戻せます。</Card>
+</Cards>

@@ -1,0 +1,68 @@
+---
+title: CrossLink
+new: true
+description: Read with a pixel-style interface on Read Pico. CrossLink Pixel focuses on e-ink refresh and Chinese text layout.
+---
+
+Thank you to the [CrossLink team](https://crosslink-reader.top/) for bringing the CrossLink Pixel reading system to Read Pico.
+
+## Before you start
+
+Prepare a sufficiently charged Read Pico, a computer running desktop Chrome or Edge, and a USB-C data cable. Close other webpages, flashing tools, or terminals using the device's serial port.
+
+Installation replaces the current system and may clear existing settings. Save any data you want to keep and read the installation notes on the website.
+
+<Steps>
+<Step>
+
+### Open the website
+
+Open the [CrossLink website](https://crosslink-reader.top/) in Chrome or Edge on your computer and go to **刷入CrossLink系统** (Flash CrossLink System).
+
+</Step>
+<Step>
+
+### Select your device
+
+Under **选择设备型号** (Select device model), select **小纸Pico** (Read Pico).
+
+<CustomCloudImage osSrc="dot/docs/crosslink_1_1791685514531.png" alt="Select Read Pico on the CrossLink website" />
+
+</Step>
+<Step>
+
+### Select CrossLink Pixel
+
+Under **选择固件版本** (Select firmware version), select **CrossLink Pixel**. Its pixel-style theme focuses on reading, with optimizations for e-ink refresh and Chinese text layout.
+
+Check the website for available systems and version numbers.
+
+<CustomCloudImage osSrc="dot/docs/crosslink_2_1791685514532.png" alt="Select the CrossLink Pixel version for Read Pico" />
+
+</Step>
+<Step>
+
+### Connect and install
+
+Connect Read Pico to your computer with the USB data cable and click **刷入全量包** (Flash full package). In the browser's device picker, select Read Pico's serial port and click **Connect**. The device may appear as **USB JTAG**.
+
+If you are unsure which entry to use, cancel the picker, unplug and reconnect the device, and look for the newly added port.
+
+<CustomCloudImage osSrc="dot/docs/crosslink_3_1791685514533.png" alt="CrossLink Pixel full installation button and version information" />
+
+</Step>
+<Step>
+
+### Wait for installation to finish
+
+Progress appears below the installer. Keep USB connected and the page open. Do not unplug the cable, close the tab, or let your computer go to sleep.
+
+Wait for the completion message, follow the page's restart instructions, and check that Read Pico displays the CrossLink Pixel interface.
+
+</Step>
+</Steps>
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="Installation and Usage FAQ">Find help with SD cards, serial connections, and slow or frozen screens after installation.</Card>
+  <Card href="/docs/read_0/firmware" title="Restore the Official Demo System">Follow the build and flash instructions in DIY Your System to restore the official demo system.</Card>
+</Cards>

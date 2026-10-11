@@ -1,5 +1,5 @@
 {
     "title": "はじめに",
-    "pages": ["crossmux", "kiikoread", "rickyos", "whiteos"],
+    "pages": ["crossmux", "kiikoread", "rickyos", "whiteos", "crosslink"],
     "defaultOpen": true
 }
