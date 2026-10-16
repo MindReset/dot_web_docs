@@ -3,18 +3,37 @@ title: Pico Manager
 new: true
 ---
 
-<GithubInfo owner="Coldin04" repo="Pico_Manage_App" />
+<GithubInfo owner="Coldin04" repo="Pico_Manager" />
 
-Pico Manager は、電子ペーパーの読書端末向けに書籍とデバイスを管理するツールです。Android スマートフォンから端末に接続し、書籍をまとめて転送したり、ファイルやフォルダーを整理したり、対応ファームウェアが提供するネットワーク設定や読書設定を管理したりできます。
+Pico Manager は、小型の電子ペーパー読書端末向けのネイティブ管理ツールで、Android 版と iOS 版を提供しています。端末に接続して書籍をワイヤレスで転送し、ファイルやフォルダーを整理したり、フォント、壁紙、ネットワーク設定、読書設定を管理したりできます。画面と利用できる機能は、端末とファームウェアの対応状況に合わせて自動的に切り替わります。
+
+### 画面プレビュー
+
+<div className="my-6 grid grid-cols-1 items-start gap-4 sm:grid-cols-3">
+  <figure>
+    <img src="https://bu.dusays.com/2026/10/16/6ad21029a8a63.png" alt="Pico Manager iOS 版の機能画面。Wi-Fi、端末設定、フォント、OPDS の管理項目を表示" width="750" height="1334" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>iOS：機能と端末管理</figcaption>
+  </figure>
+  <figure>
+    <img src="https://bu.dusays.com/2026/10/16/6ad2102a9d935.png" alt="Pico Manager iOS 版の共有画面。転送先の端末と転送する書籍を表示" width="750" height="1334" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>iOS：システムの共有機能から書籍を転送</figcaption>
+  </figure>
+  <figure>
+    <img src="https://bu.dusays.com/2026/10/16/6ad2102941b47.png" alt="Pico Manager Android 版の機能画面。Wi-Fi、端末設定、フォント、OPDS の管理とファームウェアの書き込み項目を表示" width="1080" height="2340" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>Android：機能と端末管理</figcaption>
+  </figure>
+</div>
 
 ### 主な機能
 
-- **端末への接続：** アドレスを手動で入力するか、カメラや写真内の QR コードを使って接続できます。複数の端末を保存し、必要に応じて切り替えられます。
-- **書籍の一括転送：** 複数の書籍ファイルを選択するか、ほかの Android アプリからファイルを共有し、転送の進捗と結果を確認できます。
-- **ファイルとフォルダーの管理：** 端末内のファイルを閲覧し、アップロード、ダウンロード、移動、名前の変更、削除、フォルダーの作成ができます。
-- **ネットワークと読書設定：** Wi-Fi の管理、端末設定の確認と変更、フォントのアップロードと削除、OPDS 書庫の管理ができます。
-- **端末情報：** ファームウェアのバージョン、ネットワークアドレス、ストレージの空き容量を確認できます。
+- **書籍のワイヤレス転送：** システムの共有機能から書籍やフォントを取り込み、端末が対応するファイル形式の確認と転送先フォルダーの選択を自動で行います。
+- **ファイルとフォルダーの管理：** 端末内のファイルを閲覧し、アップロード、ダウンロード、移動、名前の変更、一括削除、フォルダーの作成ができます。
+- **端末設定：** ファームウェアの対応状況に応じて利用できる項目が切り替わり、Wi-Fi ネットワーク管理、フォント管理、壁紙のアップロードと管理、OPDS 書庫の設定、端末パラメーターの調整ができます。
 
 ### 使用前の準備
 
-Pico Manager は現在 Android 向けプレビュー版を提供しており、Android 9 以降が必要です。接続前に、読書端末で対応するサードパーティ製ファームウェアが動作し、書籍転送モードが有効になっていることと、スマートフォンから端末のネットワークアドレスにアクセスできることを確認してください。転送できるファイル形式や利用できる管理機能は、接続したファームウェアの対応状況によって異なります。
+対応ファームウェアは [Pico Manager 公式サイト](https://pico.cold04.com/)で確認してください。接続前に、読書端末で対応ファームウェアが動作し、書籍転送モードが有効になっていることと、スマートフォンから端末のネットワークアドレスにアクセスできることを確認してください。転送できるファイル形式や利用できる管理機能は、接続したファームウェアの対応状況によって異なります。
+
+### ダウンロード
+
+Android 版と iOS 版は、[Pico Manager 公式サイト](https://pico.cold04.com/)からダウンロードしてください。
