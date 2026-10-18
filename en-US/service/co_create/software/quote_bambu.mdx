@@ -1,0 +1,50 @@
+---
+title: Quote Bambu
+description: Display Bambu Lab printer progress, temperatures, AMS information, and optional camera snapshots on Quote/0.
+---
+
+<GithubInfo owner="Aiaid" repo="quote_bambu" />
+
+Quote Bambu displays Bambu Lab printer status on a Quote/0 e-paper screen.
+It runs as a Docker container on your own host, reads printer telemetry over
+local-LAN MQTT, and sends display updates through the Quote/0 Canvas or Image API.
+
+![A hand-held Quote/0 showing printer status in front of the Bambu Lab printer and its printed parts](https://raw.githubusercontent.com/Aiaid/quote_bambu/main/docs/media/quote-bambu-live-original.jpg)
+
+Author-provided device photo, exported and resized from the original without
+AI retouching. The photo shows the layout at capture time; available header
+settings in the current version may differ.
+
+### Features
+
+- **Printer dashboard**: Shows state, progress, nozzle/bed/chamber temperatures,
+  available AMS and filament-tray information, remaining time, layers, and job name.
+- **Optional camera snapshots**: Reads RTSPS or JPEG camera input where available;
+  falls back to a data-only layout when the camera is disabled or unavailable.
+- **Two display modes**: Uses the Canvas API by default, with an Image API option
+  for locally rendered 1-bit frames.
+- **Optional HMS alerts**: Set `SHOW_HMS=true` to display full-screen printer
+  health codes and available English descriptions. Alerts are disabled by default.
+- **Docker deployment**: Includes builds targeting Linux amd64 and arm64, with
+  a configurable update interval of 60 seconds by default.
+
+### Getting started
+
+Follow the [English setup guide](https://github.com/Aiaid/quote_bambu/blob/main/README.en.md).
+You need a host that can reach the printer's LAN services, its LAN access code
+and serial number, and a Quote/0 API key and device serial number. Add the
+selected API content block to the device's Loop in the Dot. App.
+
+P2S is the primary development baseline. Other models listed in the project
+README are compatibility targets, not a claim of physical testing across all
+models and firmware. LAN-only or Developer Mode requirements depend on the
+printer and firmware. The service requests a status refresh on each MQTT
+connection; it does not send print-control commands.
+
+<Callout type="warn" title="Unofficial integration and data flow">
+  This is an unofficial community project with no affiliation or endorsement
+  from Bambu Lab or MindReset. Rendered status, job names, and optional camera
+  snapshots are sent to the Quote/0 service for display. Printer certificate
+  verification is currently disabled; run on a trusted host and LAN and review
+  the project's security and privacy notes before deployment.
+</Callout>
