@@ -1,0 +1,44 @@
+---
+title: Quote Bambu
+description: 在 Quote/0 上显示 Bambu Lab 打印进度、温度、AMS 信息和可选摄像头快照。
+---
+
+<GithubInfo owner="Aiaid" repo="quote_bambu" />
+
+Quote Bambu 在 Quote/0 电纸屏上显示 Bambu Lab 打印机状态。
+它以 Docker 容器运行在用户自己的主机上，通过局域网 MQTT 读取打印状态，
+再通过 Quote/0 Canvas API 或 Image API 更新屏幕。
+
+![手持 Quote/0 展示打印状态，背景是 Bambu Lab 打印机及其打印件](https://raw.githubusercontent.com/Aiaid/quote_bambu/main/docs/media/quote-bambu-live-original.jpg)
+
+作者提供的真机照片，由原片导出并缩小尺寸，未经 AI 修饰。
+照片记录拍摄时的版面，当前版本可选的顶栏设置可能有所不同。
+
+### 功能特性
+
+- **打印状态面板**：显示状态、进度、喷头/热床/腔体温度、可用的 AMS 和料盘信息、
+  剩余时间、层数和任务名。
+- **可选摄像头快照**：在可用时读取 RTSPS 或 JPEG 摄像头；关闭摄像头或抓帧失败时，
+  回退到纯数据版面。
+- **两种显示模式**：默认使用 Canvas API，也可通过 Image API 推送本地渲染的
+  1-bit 图片。
+- **可选 HMS 提醒**：设置 `SHOW_HMS=true` 后显示全屏健康代码及可用的英文说明，
+  默认关闭。
+- **Docker 部署**：提供面向 Linux amd64 和 arm64 的构建，更新间隔可配置，默认 60 秒。
+
+### 开始使用
+
+按照[中文安装说明](https://github.com/Aiaid/quote_bambu/blob/main/README.md)部署。
+需要一台能访问打印机局域网服务的主机、打印机 LAN 访问码和序列号，
+以及 Quote/0 API key 和设备序列号。还需在 Dot. App 中把选用的 API 内容块
+加入设备的 Loop 轮播任务。
+
+P2S 是主要开发基线。项目 README 列出的其他机型属于兼容目标，
+不表示所有机型和固件均已通过真机测试。是否需要 LAN-only 或 Developer Mode
+取决于打印机及其固件。服务在每次 MQTT 连接后请求一次状态刷新，不发送打印控制指令。
+
+<Callout type="warn" title="非官方集成与数据流">
+  本项目为非官方社区项目，与 Bambu Lab 或 MindReset 无隶属或背书关系。
+  渲染后的状态、任务名和可选摄像头快照会发送到 Quote/0 服务用于显示。
+  当前未验证打印机证书；请在可信主机和局域网中运行，并在部署前阅读项目的安全与隐私说明。
+</Callout>
