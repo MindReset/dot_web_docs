@@ -6,7 +6,9 @@
         "rickyos",
         "whiteos",
         "crosslink",
-        "justread"
+        "justread",
+        "pico_page",
+        "aurareader"
     ],
     "defaultOpen": true
 }

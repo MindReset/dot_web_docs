@@ -1,0 +1,48 @@
+---
+title: Pico Page
+new: true
+description: 在小纸 Pico 上离线阅读 EPUB 与 TXT，调整字体与排版，并与 KOReader 接续 EPUB 阅读位置。
+---
+
+感谢 [eMUQI](https://github.com/eMUQI) 为小纸 Pico 提供系统。
+
+## 开始之前
+
+准备电量充足的小纸 Pico、使用桌面版 Chrome 或 Edge 的电脑，以及支持数据传输的 USB-C 数据线。关闭其他占用设备串口的网页、刷写工具或终端。
+
+请准备 microSD 存储卡，最大支持 512 GB，格式为 FAT32。
+
+<Steps>
+<Step>
+
+### 打开安装页面
+
+前往 [Pico Page 官网](https://picopage.wulu.zone/)，点击「安装固件」，进入[安装页面](https://picopage.wulu.zone/install/)。阅读安装前的说明。
+
+</Step>
+<Step>
+
+### 连接设备并安装
+
+用 USB 数据线连接小纸 Pico，点击「连接设备」，在浏览器弹窗中选择设备串口。勾选「我确认连接的是 Read Pico」，点击「安装 Pico Page」。
+
+安装会完整覆盖设备闪存，清除原有系统及 Wi-Fi 等内部设置，microSD 卡中的书籍不受影响。启用了闪存加密或安全启动的设备，安装页面会拒绝写入。
+
+保持 USB 连接、网页打开和电脑唤醒，等待安装完成并自动重启至书库。
+
+</Step>
+<Step>
+
+### 放入书籍和字体
+
+将 EPUB、TXT 文件复制到 microSD 卡的 `Books/` 文件夹，将中文 TTF 或 OTF 字体及其许可证放入 `Fonts/`。内置字库有限，遇到方框缺字时请使用完整中文字体。
+
+插回存储卡后重启设备，在书库打开书籍，轻点正文中部，进入「排版」选择字体。更多操作可查看[官网文档](https://picopage.wulu.zone/docs/)。
+
+</Step>
+</Steps>
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡、串口连接和安装后卡顿等问题的处理方法。</Card>
+  <Card href="/docs/read_0/firmware" title="恢复官方演示系统">前往 DIY 你的系统，按编译与刷写步骤恢复官方演示系统。</Card>
+</Cards>

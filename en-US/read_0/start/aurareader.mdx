@@ -1,0 +1,50 @@
+---
+title: AuraReader
+new: true
+description: Read TXT and EPUB on Read Pico, adjust fonts and spacing, and transfer books over Wi-Fi.
+---
+
+Thank you to Malus / 百变逗比i for providing a system for Read Pico.
+
+## Before you start
+
+Prepare a sufficiently charged Read Pico, a computer running desktop Chrome or Edge, and a USB-C data cable. Close other webpages, flashing tools, or terminals using the device's serial port.
+
+Prepare a microSD card, up to 512 GB, formatted as FAT32.
+
+<Steps>
+<Step>
+
+### Open the website and connect
+
+Visit the [AuraReader website](https://aurareader.cn/) and go to the [flashing section](https://aurareader.cn/#flasher). Click **选择 AuraReader 设备** (Select AuraReader device) and select Read Pico's serial port in the browser picker.
+
+Choose the **AuraReader** reading system. Check the page for its current version; **小纸 Pico 官方演示 Demo** (Read Pico official demo) is a separate option.
+
+</Step>
+<Step>
+
+### Confirm data handling and flash
+
+In **数据处理** (Data handling), keep the default **完整覆盖** (Full overwrite), or choose **先擦除再写入** (Erase before writing) if needed. Both write a full image and overwrite internal device data. Standard flashing does not access the microSD card.
+
+Continue to **确认执行** (Confirm execution). Check the system, device, and data handling choice, select the confirmation checkbox, and start writing. The page shows connection, environment checks, writing, data verification, and completion.
+
+Keep USB connected and the page open. Do not unplug the cable, close the tab, or let your computer sleep. Wait for completion and follow the page's restart instructions.
+
+</Step>
+<Step>
+
+### Add books and start reading
+
+Copy TXT or EPUB files into the card's library directory, rescan on the device, and open a book.
+
+Alternatively, open Wi-Fi book transfer in Settings. Connect your phone or computer to the same network as the device, then visit the address shown on its screen to upload books. Exit transfer mode when finished to update the library. See the [website guide](https://aurareader.cn/#guide) for more details.
+
+</Step>
+</Steps>
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="Installation and Usage FAQ">Find help with SD cards, serial connections, and slow or frozen screens after installation.</Card>
+  <Card href="/docs/read_0/firmware" title="Restore the Official Demo System">Follow the build and flash instructions in DIY Your System to restore the official demo system.</Card>
+</Cards>

@@ -1,0 +1,48 @@
+---
+title: Pico Page
+new: true
+description: Read EPUB and TXT offline on Read Pico, customize typography, and continue your EPUB reading position with KOReader.
+---
+
+Thank you to [eMUQI](https://github.com/eMUQI) for providing a system for Read Pico.
+
+## Before you start
+
+Prepare a sufficiently charged Read Pico, a computer running desktop Chrome or Edge, and a USB-C data cable. Close other webpages, flashing tools, or terminals using the device's serial port.
+
+Prepare a microSD card, up to 512 GB, formatted as FAT32.
+
+<Steps>
+<Step>
+
+### Open the installer
+
+Visit the [Pico Page website](https://picopage.wulu.zone/), click **安装固件** (Install firmware), and open the [installer](https://picopage.wulu.zone/install/). Read the installation notes.
+
+</Step>
+<Step>
+
+### Connect and install
+
+Connect Read Pico over USB. Click **连接设备** (Connect device), select its serial port, confirm **我确认连接的是 Read Pico** (I confirm this is Read Pico), then click **安装 Pico Page** (Install Pico Page).
+
+Installation overwrites the entire device flash, including the existing system and internal settings such as Wi-Fi. Books on the microSD card are unaffected. The installer refuses devices with flash encryption or secure boot enabled.
+
+Keep USB connected, the page open, and the computer awake until installation finishes and the device restarts to the library.
+
+</Step>
+<Step>
+
+### Add books and fonts
+
+Copy EPUB and TXT books into `Books/` on the microSD card. Put Chinese TTF or OTF fonts and their licenses in `Fonts/`. The built-in character set is limited; use a full Chinese font if characters appear as boxes.
+
+Reinsert the card, restart the device, open a book, and tap the center of the text to select a font under **排版** (Typography). See the [website documentation](https://picopage.wulu.zone/docs/) for more controls.
+
+</Step>
+</Steps>
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="Installation and Usage FAQ">Find help with SD cards, serial connections, and slow or frozen screens after installation.</Card>
+  <Card href="/docs/read_0/firmware" title="Restore the Official Demo System">Follow the build and flash instructions in DIY Your System to restore the official demo system.</Card>
+</Cards>

@@ -1,0 +1,50 @@
+---
+title: AuraReader
+new: true
+description: 在小纸 Pico 上阅读 TXT 与 EPUB，调整字体、字号与行距，通过 Wi-Fi 传书。
+---
+
+感谢 Malus / 百变逗比i 为小纸 Pico 提供系统。
+
+## 开始之前
+
+准备电量充足的小纸 Pico、使用桌面版 Chrome 或 Edge 的电脑，以及支持数据传输的 USB-C 数据线。关闭其他占用设备串口的网页、刷写工具或终端。
+
+请准备 microSD 存储卡，最大支持 512 GB，格式为 FAT32。
+
+<Steps>
+<Step>
+
+### 打开官网并连接设备
+
+前往 [AuraReader 官网](https://aurareader.cn/)，进入[烧录区域](https://aurareader.cn/#flasher)。点击「选择 AuraReader 设备」，在浏览器弹窗中选择小纸 Pico 的串口。
+
+选择 **AuraReader** 阅读系统，版本号以页面显示为准；「小纸 Pico 官方演示 Demo」是另一个选项。
+
+</Step>
+<Step>
+
+### 确认数据处理并写入
+
+进入「数据处理」，选择默认的「完整覆盖」，或按需选择「先擦除再写入」。两种方式都会写入完整镜像，覆盖设备内部数据；常规刷写不处理 microSD 卡。
+
+继续到「确认执行」，核对系统、设备和数据处理方式，勾选确认项后开始写入。页面会依次显示连接、环境校验、写入、数据校验和完成状态。
+
+保持 USB 连接和页面打开，不要拔线、关闭网页或让电脑进入睡眠。等待完成后，按页面提示重启设备。
+
+</Step>
+<Step>
+
+### 放入书籍并开始阅读
+
+将 TXT 或 EPUB 文件复制到存储卡的书库目录，在设备上重新扫描后打开阅读。
+
+也可以在设置中进入 Wi-Fi 传书，让手机或电脑与设备连接同一网络，在浏览器中打开设备显示的地址上传书籍。完成后退出传书模式，设备会更新书库。更多操作可查看[官网使用说明](https://aurareader.cn/#guide)。
+
+</Step>
+</Steps>
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡、串口连接和安装后卡顿等问题的处理方法。</Card>
+  <Card href="/docs/read_0/firmware" title="恢复官方演示系统">前往 DIY 你的系统，按编译与刷写步骤恢复官方演示系统。</Card>
+</Cards>
