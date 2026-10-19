@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1510" viewBox="0 0 1600 1510" role="img" aria-labelledby="title description">
 <title id="title">Pico Page 按键与正文触摸操作</title>
-<desc id="description">在 Read Pico 设备模型和原始固件正文截图上，用虚线标注 K1 上一页、K2 全刷、K3 下一页和侧边电源键，同时标出正文左、中、右与页脚左右的点击区域。设备为模型示意，书籍与阅读数据为演示内容。</desc>
+<desc id="description">在 Read Pico 设备模型和原始固件正文截图上，用虚线标注 K1 上一页、K2 全刷、K3 下一页和侧边电源键，同时标出正文左、中、右与页脚左右的点击区域。设备为模型示意；书籍文本为原创文本，阅读数据为演示数据。</desc>
 <style>
 text { font-family: "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #171717; }
 .title { font-size: 42px; font-weight: 600; }
@@ -67,5 +67,5 @@ text { font-family: "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-s
 <path d="M60 1290H1540" stroke="#e5e5e5" stroke-width="1.5"/>
 <text x="60" y="1343" font-size="30">页脚隐藏后，点原位置恢复。正文也支持左右轻扫翻页。</text>
 <text x="60" y="1393" font-size="29" fill="#555">准备休眠时，触摸与 K1 / K2 / K3 暂不响应；再次短按电源键取消休眠准备。</text>
-<text x="60" y="1470" font-size="25" fill="#777">设备模型为示意 · 屏幕使用固件原始截图，书籍与阅读数据为演示内容</text>
+<text x="60" y="1470" font-size="25" fill="#777">设备模型为示意 · 屏幕使用固件原始截图 · 书籍文本为原创，阅读数据为演示</text>
 </svg>
