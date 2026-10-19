@@ -4,43 +4,92 @@ new: true
 description: 在小纸 Pico 上离线阅读 EPUB 与 TXT，调整字体与排版，并与 KOReader 接续 EPUB 阅读位置。
 ---
 
+<img src="https://raw.githubusercontent.com/MindReset/dot_web_docs/main/assets/read_0/pico_page/hero-home.jpg" alt="Pico Page 官网首页，左侧介绍 EPUB、TXT 离线阅读与 KOReader 位置接续，右侧展示书库和正文界面" width="1232" height="490" style={{ width: "100%", maxWidth: "900px", height: "auto", marginInline: "auto" }} className="rounded-xl border" />
+
 感谢 [eMUQI](https://github.com/eMUQI) 为小纸 Pico 提供系统。
 
 ## 开始之前
 
 准备电量充足的小纸 Pico、使用桌面版 Chrome 或 Edge 的电脑，以及支持数据传输的 USB-C 数据线。关闭其他占用设备串口的网页、刷写工具或终端。
 
-请准备 microSD 存储卡，最大支持 512 GB，格式为 FAT32。
+准备一张 microSD 存储卡，容量不超过 512 GB，文件系统为 FAT32。
 
 <Steps>
 <Step>
 
 ### 打开安装页面
 
-前往 [Pico Page 官网](https://picopage.wulu.zone/)，点击「安装固件」，进入[安装页面](https://picopage.wulu.zone/install/)。阅读安装前的说明。
+前往 [Pico Page 官网](https://picopage.wulu.zone/)，点击「安装固件」，进入[安装页面](https://picopage.wulu.zone/install/)。阅读安装前的说明，版本以安装页面显示为准。
 
 </Step>
 <Step>
 
 ### 连接设备并安装
 
-用 USB 数据线连接小纸 Pico，点击「连接设备」，在浏览器弹窗中选择设备串口。勾选「我确认连接的是 Read Pico」，点击「安装 Pico Page」。
+<Callout type="warn" title="设备数据">
 
-安装会完整覆盖设备闪存，清除原有系统及 Wi-Fi 等内部设置，microSD 卡中的书籍不受影响。启用了闪存加密或安全启动的设备，安装页面会拒绝写入。
+安装会覆盖设备的整个内部闪存，清除原有系统和保存在内部闪存中的设置。存储卡上的书籍、阅读进度和 Pico Page 设置（包括已保存的 Wi-Fi）不受影响。启用了闪存加密或安全启动的设备，安装页面会拒绝写入。
 
-保持 USB 连接、网页打开和电脑唤醒，等待安装完成并自动重启至书库。
+</Callout>
+
+用 USB 数据线连接小纸 Pico，点击「连接设备」，在浏览器弹窗中选择设备串口。
+
+勾选「我确认连接的是 Read Pico」，点击「安装 Pico Page」。
+
+安装期间，保持 USB 连接和网页打开，避免电脑进入睡眠。安装完成后，设备自动重启并显示书库。
+
+找不到串口或无法连接时，按安装页面中的说明进入烧录模式，再重新连接。
 
 </Step>
 <Step>
 
 ### 放入书籍和字体
 
-将 EPUB、TXT 文件复制到 microSD 卡的 `Books/` 文件夹，将中文 TTF 或 OTF 字体及其许可证放入 `Fonts/`。内置字库有限，遇到方框缺字时请使用完整中文字体。
+将 EPUB、TXT 文件复制到存储卡的 `Books/` 文件夹。
 
-插回存储卡后重启设备，在书库打开书籍，轻点正文中部，进入「排版」选择字体。更多操作可查看[官网文档](https://picopage.wulu.zone/docs/)。
+下载并解压[官网提供的中文字体包](https://picopage.wulu.zone/#fonts)，或使用已有的 TTF、OTF 字体。将字体文件复制到存储卡的 `Fonts/` 文件夹。
+
+内置字体只有 3,500 个常用汉字，其余字符显示为方框。建议先放入完整中文字体，再开始阅读。
+
+每次取出或插入存储卡后，都需要重启设备：长按电源键，在菜单中选择「重启」。
+
+也可通过 USB 或 Wi-Fi 传书，无需取出存储卡。操作步骤见[传书说明](https://picopage.wulu.zone/docs/#transfer)。
+
+</Step>
+<Step>
+
+### 打开书籍并开始阅读
+
+在书库中打开一本书，轻点正文中部，依次选择「排版」→「字体」。选中字体后，轻点「选用此字体」。设备返回排版面板后，轻点「应用到此书」保存设置。预览不会自动保存。
+
+默认按键与正文触摸区域见下图。
+
+<a href="https://raw.githubusercontent.com/MindReset/dot_web_docs/main/assets/read_0/pico_page/operation-guide.png" target="_blank" rel="noopener noreferrer" aria-label="查看按键与触摸操作原图">
+  <img src="https://raw.githubusercontent.com/MindReset/dot_web_docs/main/assets/read_0/pico_page/operation-guide.png" alt="Read Pico 模型上显示 Pico Page 正文，以虚线标出侧边电源键、下方 K1 上一页、K2 全刷、K3 下一页，以及正文左、中、右和页脚左、右的触摸区域" width="1600" height="1510" loading="lazy" style={{ width: "100%", maxWidth: "640px", height: "auto", marginInline: "auto" }} className="rounded-lg border" />
+</a>
+
+图中的触摸区域与设备内置使用说明一致。点击图片可查看原图。机身为模型示意，屏幕使用固件截图，书籍和阅读数据均为演示内容。
+
+关闭、取消和确认操作均使用屏幕上的控件。K2 只全刷当前画面。
+
+短按电源键进入休眠，再次短按电源键唤醒设备。长按电源键可打开关机、重启菜单。
+
+准备休眠时，触摸和 K1、K2、K3 暂不响应。再次短按电源键可取消休眠准备；长按电源键仍可打开关机、重启菜单。
 
 </Step>
 </Steps>
+
+<Callout type="info" title="更多操作">
+
+在设备上打开「设置 → 使用说明」，可离线查看操作方法。书签、排版、传书和锁屏等详细步骤见[官网使用文档](https://picopage.wulu.zone/docs/)。
+
+与 KOReader 接续位置时，两端须使用内容完全相同的原始 EPUB 文件、同一同步服务器和同一账户。检查远端位置、采用远端位置和上传本机位置均需手动操作。TXT 不支持位置接续。配置方法见[同步说明](https://picopage.wulu.zone/docs/#sync)。
+
+已安装 Pico Page 的设备可在「设置 → 固件更新」中检查新版本，适用条件和操作步骤见[更新说明](https://picopage.wulu.zone/docs/#update)。
+
+移动书籍时，同时移动原书旁同名的 `.picopage/` 文件夹，以保留进度、书签和单书设置。
+
+</Callout>
 
 <Cards>
   <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡、串口连接和安装后卡顿等问题的处理方法。</Card>
