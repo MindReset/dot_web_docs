@@ -9,7 +9,8 @@
         "justread",
         "pico_page",
         "aurareader",
-        "pagerest"
+        "pagerest",
+        "if_ink_os"
     ],
     "defaultOpen": true
 }

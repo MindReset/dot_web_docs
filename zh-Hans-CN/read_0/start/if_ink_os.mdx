@@ -1,0 +1,55 @@
+---
+title: if-ink OS
+new: true
+description: 一凡可回收为小纸 Pico 开发的社区阅读固件，支持 EPUB、TXT 与 Markdown，提供坚果云下载、自定义 Banner 和阅读记录。
+---
+
+[一凡可回收](https://github.com/yiifanrecyclable) 开发并维护 **if-ink OS**，面向小纸 Pico（RDP-G01-W），以简洁的阅读界面和 Markdown 文档阅读为特色。
+
+项目基于 [kiikoread（原 Pico Reader）](https://github.com/wegooo-cell/read-pico-reader) 开发，保留 EPUB / TXT 阅读，并增加文档阅读与传输功能。这是独立的社区衍生固件，不是 MindReset 或 kiikoread 原作者的官方版本。
+
+<Cards>
+  <Card href="https://yiifanrecyclable.github.io/if-ink-OS/" title="项目介绍与在线刷机">查看特色页面、安装教程和在线刷机入口。</Card>
+  <Card href="https://github.com/yiifanrecyclable/if-ink-OS/releases" title="版本与离线下载">获取正式固件、TF 卡升级包、离线刷机包和对应源码。</Card>
+  <Card href="https://github.com/yiifanrecyclable/Sent-to-E-ink-Reader" title="Obsidian 推送插件">将选中的笔记手动推送到坚果云指定文件夹，再由 Pico 下载阅读。</Card>
+</Cards>
+
+## 界面与特色功能
+
+<div className="my-6 grid grid-cols-2 items-start gap-4">
+  <figure>
+    <img src="https://raw.githubusercontent.com/yiifanrecyclable/if-ink-OS/c7a07375929a8e0431ca377d3d13f8e0d55da026/docs/images/showcase/home.webp" alt="if-ink OS 首页：自定义 Banner、阅读记录热力图与左右分栏的最近阅读" width="1200" height="1200" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>首页：自定义 Banner、阅读记录与最近阅读</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/yiifanrecyclable/if-ink-OS/c7a07375929a8e0431ca377d3d13f8e0d55da026/docs/images/showcase/markdown.webp" alt="if-ink OS 的 Markdown 阅读界面，展示带有表头、自动换行和文字样式的表格" width="1200" height="1200" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>文档：Markdown 表格与文字样式</figcaption>
+  </figure>
+  <figure>
+    <img src="https://raw.githubusercontent.com/yiifanrecyclable/if-ink-OS/c7a07375929a8e0431ca377d3d13f8e0d55da026/docs/images/showcase/cloud.webp" alt="if-ink OS 坚果云同步页面，勾选 MD、TXT 与 EPUB 文件后下载到设备" width="1200" height="1200" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+    <figcaption>传输：从坚果云选择文件并下载到 TF 卡</figcaption>
+  </figure>
+</div>
+
+以上为项目提供的模拟器运行画面与设备外观合成展示图；阅读数据为演示数据，实际墨水屏灰度与刷新效果以实机为准。
+
+- **图书与文档**：EPUB、TXT 和 Markdown 离线阅读；Markdown 支持标准管道表格、标题字号、粗体、斜体与高亮。
+- **坚果云与 Obsidian**：读取指定 WebDAV 文件夹中的 MD / TXT / EPUB 列表，按需下载到 TF 卡。配套的 Sent to E-ink Reader 插件可从 Obsidian 手动推送 Markdown 纯文本，图片与笔记嵌入转为文字说明；插件需单独安装，不会持续自动同步笔记。
+- **首页与个性化**：自定义 Banner 背景、日期与文字；阅读记录热力图、按日 / 周查看阅读时长，以及左右分栏的最近阅读。支持系统字号、字体和锁屏壁纸轮播。
+- **阅读操作**：通过阅读控制面板访问目录、书签、字体与版式；可按需配置快捷手势，保留逐书阅读进度。
+- **传输与维护**：WiFi / 热点传书、USB 连接、WiFi 密码记忆、设置备份与恢复，以及 TF 卡和联网升级。
+
+## 安装与开始阅读
+
+1. 用支持数据传输的 USB-C 线连接小纸 Pico，在电脑桌面版 Chrome 或 Edge 中打开[在线刷机页](https://yiifanrecyclable.github.io/if-ink-OS/#install)，按页面教程选择设备并安装。网页安装无需自行安装 Python 或 esptool。
+2. 在 FAT32 格式的 TF 卡中，将 EPUB / TXT 放入 `books`，Markdown 放入 `markdown`，字体放入 `fonts`。首次安装时可在项目下载页获取字体与拼音词库资源包。
+3. 如需云端下载，在「设置 → 坚果云同步」填写账号、应用密码和坚果云根目录下已存在的同步文件夹，然后进入坚果云同步页选择文件下载。应用密码需在坚果云的第三方应用管理中生成。
+
+刷写前请备份需要保留的数据。从其他系统迁移时，内部设置与阅读记录不保证兼容；安装与升级要求以[项目安装说明](https://github.com/yiifanrecyclable/if-ink-OS/blob/main/docs/%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E.md)和所选版本说明为准。已安装兼容版本的用户，可按说明使用 TF 卡升级包，或在「设置 → 固件信息 → 在线升级」检查新版本。
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡与串口连接等常见问题。</Card>
+  <Card href="/docs/read_0/firmware" title="恢复官方演示系统">查看官方演示固件的编译与刷写说明。</Card>
+</Cards>
+
+<GithubInfo owner="yiifanrecyclable" repo="if-ink-OS" />
