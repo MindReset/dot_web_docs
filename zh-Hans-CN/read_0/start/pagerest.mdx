@@ -1,0 +1,87 @@
+---
+title: PageRest
+description: 面向小纸 Pico 的阅读优先固件，支持 TXT/EPUB、本地书架、字体管理、无线传书、USB 存储、蓝牙翻页器和多种锁屏方式。
+---
+
+# PageRest
+
+PageRest 是面向小纸 Pico 的阅读优先固件，将 4.7 英寸墨水屏开发板变成一个以本地阅读为核心的电子书系统。
+
+PageRest 支持 TXT / EPUB 图书、封面书架、阅读进度、字体管理、WiFi / 热点传书、USB 连接电脑、BLE 蓝牙翻页器，以及图片锁屏和摘录锁屏等功能。
+
+[访问 PageRest 官网](https://pico.gofree.kdns.fr/) · [小纸 Pico 官方文档](https://dot.mindreset.tech/docs/read_0)
+
+<figure>
+  <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/home.png" alt="PageRest 正在读首页，显示继续阅读、阅读进度和最近阅读" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>正在读：首页、继续阅读与最近阅读</figcaption>
+</figure>
+
+## 主要功能
+
+### 阅读优先的首页与书架
+
+首页提供继续阅读、最近阅读、阅读进度和书架入口。书架支持 TXT / EPUB 图书、封面缩略图、列表或多封面布局，并提供搜索、排序、来源筛选、批量管理和逐书进度。
+
+<figure>
+  <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/shelf.png" alt="PageRest 书架，显示多本图书封面、书名和阅读进度" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>书架：封面、书名与阅读进度</figcaption>
+</figure>
+
+### 完整的阅读工具
+
+阅读器支持字号、字体、行距、页边距、首行缩进、段落间距、目录、书签、百分比跳转和阅读进度显示。
+
+TXT 和 EPUB 均可从本地存储读取，EPUB 支持章节导航以及本地 JPEG / PNG 插图。字体可以使用内置字库，也可以从 TF 卡导入 TTF 字体。
+
+<figure>
+  <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/reader.png" alt="PageRest 阅读界面，显示中文正文、章节标题和阅读进度" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>阅读界面：正文、章节与阅读进度</figcaption>
+</figure>
+
+### 图片锁屏与摘录锁屏
+
+PageRest 支持多种锁屏方式：
+
+- 图片锁屏：使用内置图片，或从 TF 卡导入 JPG / PNG 图片作为锁屏壁纸。
+- 摘录锁屏：将阅读过程中保存的摘录展示在锁屏界面，并保留书名和来源信息。
+- 时钟、日历等信息锁屏：适合在设备休眠时显示简洁的信息页面。
+
+锁屏可以配合浅睡、深睡或关机策略使用，唤醒后返回原来的阅读位置。
+
+<figure>
+  <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/quote-lock.png" alt="PageRest 摘录锁屏，显示阅读摘录、书名来源和锁屏时间" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>摘录锁屏：保存的摘录、书名来源与锁屏信息</figcaption>
+</figure>
+
+### 无线传书与 USB 存储
+
+通过设备热点或已有 WiFi，可以在电脑或手机浏览器中上传 TXT / EPUB 图书、TTF 字体和 JPG / PNG 锁屏图片。
+
+传书页面提供二维码、连接状态、上传进度和失败恢复。设备也支持 USB 连接电脑，将 TF 卡作为磁盘使用。
+
+<figure>
+  <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/transfer.png" alt="PageRest 传书页面，显示设备热点、二维码、上传状态和进度同步入口" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>传书页面：热点、二维码与上传状态</figcaption>
+</figure>
+
+### 蓝牙翻页器
+
+PageRest 提供 BLE HID 翻页器支持，可连接兼容的蓝牙翻页设备，并配置上一页、下一页、方向反转和锁屏按键。
+
+蓝牙仅在阅读正文中生效，不控制菜单和设置页面。ESP32-S3 只支持 BLE，传统 Bluetooth Classic 设备和需要独立接收器的翻页器不在直接配对范围内。
+
+### 面向墨水屏的刷新与功耗
+
+PageRest 针对小纸 Pico 的 4.7 英寸 16 级灰阶墨水屏设计，提供标准灰阶和快速刷新路径，并支持可配置的清残影周期。
+
+系统支持浅睡、深睡和关机模式，锁屏界面可以使用图片、摘录、时钟或日历。
+
+## 安装方式
+
+请打开 [PageRest 官网](https://pico.gofree.kdns.fr/)，下载最新固件并使用桌面版 Chrome 或 Edge 进行刷写。
+
+首次安装或恢复设备时使用完整固件。已有 PageRest 的设备可以选择保留数据升级，以保留设置和阅读记录。
+
+刷写前请准备支持数据传输的 USB 数据线，并备份重要数据。固件仅适配小纸 Pico RDP-G01-W。
+
+PageRest 仍在持续完善中，不同版本的功能、刷新速度、功耗和蓝牙设备兼容性，以官网发布说明和实际设备表现为准。
