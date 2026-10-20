@@ -171,7 +171,7 @@ python scripts/send_text.py --device-id '{{deviceId}}' --task-type fixed \
 
 - The service rate limit is 10 requests per second.
 - Text, Image, and Canvas writes require the matching API content item to already exist in the selected loop or fixed list.
-- Settings intervals must be between 60,000 and 43,200,000 milliseconds and use whole-minute multiples.
+- Settings intervals use whole-minute multiples. Minimums depend on the model and power mode; see [Device Settings](./device_settings_api). The maximum is 43,200,000 milliseconds (12 hours).
 - Canvas `data` is limited to 64 KB; `windowData` to 128 KB; and `layoutFull` to 8 KB.
 - Canvas layouts allow at most 80 elements and a maximum nesting depth of 16.
 - Canvas strings are limited to 4,000 characters.

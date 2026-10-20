@@ -10,11 +10,11 @@ Dot. 製品の公式ドキュメントリポジトリへようこそ！このリ
 
 ## 📚 このリポジトリについて
 
-これは [MindReset](https://www.mindreset.tech) の Dot. ブランドのドキュメントセンターで、以下の内容を含みます：
+これは [MindReset](https://dot.mindreset.tech) の Dot. ブランドのドキュメントセンターで、以下の内容を含みます：
 
 - **製品マニュアル**: 詳細なインストール、設定、使用方法ガイド
 - **デバイスドキュメント**: Quote/0 などのデバイスの完全な操作説明
-- **開発者ドキュメント**: オープン API と Studio 統合ガイド
+- **開発者ドキュメント**: オープン API と創造所の連携ガイド
 - **よくある質問**: トラブルシューティングと問題解決方法
 - **セキュリティアドバイザリ**: 製品セキュリティアップデートと脆弱性の開示
 - **ファームウェア更新履歴**: バージョン履歴とアップデートノート
@@ -47,7 +47,7 @@ dot_web_docs/
     ├── security_advisory/  # セキュリティアドバイザリ
     └── service/         # サービスと API ドキュメント
         ├── open/        # オープン API
-        ├── studio/      # Studio 作成プラットフォーム
+        ├── studio/      # 創造所
         └── co_create/   # 共創プログラム
 ```
 
@@ -103,18 +103,18 @@ dot_web_docs/
 ご質問や提案がある場合は、以下の方法でお問い合わせください：
 
 - **メール**: hi@support.mindreset.tech
-- **ウェブサイト**: [mindreset.tech](https://www.mindreset.tech)
+- **ウェブサイト**: [dot.mindreset.tech](https://dot.mindreset.tech)
 - **GitHub Issues**: [フィードバックを送信](../../issues)
 
 ## 🔗 関連リンク
 
-- [Dot. 公式ウェブサイト](https://www.mindreset.tech)
-- [Dot. App ダウンロード](https://www.mindreset.tech/app)
-- [開発者 API ドキュメント](https://www.mindreset.tech/docs/service/open)
-- [Studio 作成プラットフォーム](https://www.mindreset.tech/studio)
+- [Dot. 公式ウェブサイト](https://dot.mindreset.tech)
+- [Dot. App ダウンロード](https://dot.mindreset.tech/app)
+- [開発者 API ドキュメント](https://dot.mindreset.tech/docs/service/open)
+- [創造所](https://dot.mindreset.tech/docs/service/studio)
 
 ---
 
 <p align="center">
-  <sub><a href="https://www.mindreset.tech">MindReset</a> が ❤️ を込めてメンテナンスしています</sub>
+  <sub><a href="https://dot.mindreset.tech">MindReset</a> が ❤️ を込めてメンテナンスしています</sub>
 </p>

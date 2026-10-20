@@ -10,11 +10,11 @@ Welcome to the official documentation repository for Dot. products! This reposit
 
 ## 📚 About This Repository
 
-This is the documentation center for [MindReset](https://www.mindreset.tech)'s Dot. brand, including:
+This is the documentation center for [MindReset](https://dot.mindreset.tech)'s Dot. brand, including:
 
 - **Product Manuals**: Detailed installation, configuration, and usage guides
 - **Device Documentation**: Complete operation instructions for Quote/0 and other devices
-- **Developer Documentation**: Open API and Studio integration guides
+- **Developer Documentation**: Open API and Content Studio integration guides
 - **FAQs**: Troubleshooting and problem-solving solutions
 - **Security Advisories**: Product security updates and vulnerability disclosures
 - **Firmware Changelogs**: Version history and update notes
@@ -47,7 +47,7 @@ dot_web_docs/
     ├── security_advisory/  # Security advisories
     └── service/         # Service & API documentation
         ├── open/        # Open API
-        ├── studio/      # Studio creation platform
+        ├── studio/      # Content Studio
         └── co_create/   # Co-creation program
 ```
 
@@ -103,18 +103,18 @@ Under the following terms:
 For any questions or suggestions, please contact us through:
 
 - **Email**: hi@support.mindreset.tech
-- **Website**: [mindreset.tech](https://www.mindreset.tech)
+- **Website**: [dot.mindreset.tech](https://dot.mindreset.tech)
 - **GitHub Issues**: [Submit feedback](../../issues)
 
 ## 🔗 Related Links
 
-- [Dot. Official Website](https://www.mindreset.tech)
-- [Dot. App Download](https://www.mindreset.tech/app)
-- [Developer API Documentation](https://www.mindreset.tech/docs/service/open)
-- [Studio Creation Platform](https://www.mindreset.tech/studio)
+- [Dot. Official Website](https://dot.mindreset.tech)
+- [Dot. App Download](https://dot.mindreset.tech/app)
+- [Developer API Documentation](https://dot.mindreset.tech/docs/service/open)
+- [Content Studio](https://dot.mindreset.tech/docs/service/studio)
 
 ---
 
 <p align="center">
-  <sub>Maintained with ❤️ by <a href="https://www.mindreset.tech">MindReset</a></sub>
+  <sub>Maintained with ❤️ by <a href="https://dot.mindreset.tech">MindReset</a></sub>
 </p>

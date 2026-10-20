@@ -45,7 +45,7 @@ Use the Device Settings API to read or update settings for a device owned by the
 		location: 'Desk',
 		timezone: 'Asia/Shanghai',
 		interval: {
-			powerMs: 300000,
+			powerMs: 900000,
 			batteryMs: 10800000,
 		},
 		sleep: {
@@ -79,11 +79,11 @@ Use the Device Settings API to read or update settings for a device owned by the
 			type: 'object',
 			parameters: {
 				powerMs: {
-					description: 'Time between content refreshes while connected to power. Use milliseconds from 60,000 to 43,200,000 in steps of 60,000.',
+					description: 'Automatic content switching interval on external power, in whole-minute multiples of 60,000 milliseconds. The minimum depends on the model; see the table below.',
 					type: 'number',
 				},
 				batteryMs: {
-					description: 'Time between automatic wakes and content refreshes while using battery power. Use milliseconds from 60,000 to 43,200,000 in steps of 60,000.',
+					description: 'Automatic wake and content switching interval on battery power, in whole-minute multiples of 60,000 milliseconds. The minimum depends on the model; see the table below.',
 					type: 'number',
 				},
 			},
@@ -111,6 +111,16 @@ Use the Device Settings API to read or update settings for a device owned by the
 		},
 	}}
 />
+
+### Automatic switching intervals
+
+| Device | External power | Battery power |
+| --- | --- | --- |
+| Quote/0, Quote/1 | 1 minute–12 hours | 1 minute–12 hours |
+| Rand/0 | 15 minutes–12 hours | 1 hour–12 hours |
+| ZenMeasure M401 | 1 minute–12 hours | 30 minutes–12 hours |
+
+These ranges apply to automatic switching. Manual refresh is not limited by this interval. Settings requests outside the range are rejected.
 
 ### Timezones
 

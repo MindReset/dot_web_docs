@@ -45,7 +45,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		location: 'Desk',
 		timezone: 'Asia/Shanghai',
 		interval: {
-			powerMs: 300000,
+			powerMs: 900000,
 			batteryMs: 10800000,
 		},
 		sleep: {
@@ -79,11 +79,11 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			type: 'object',
 			parameters: {
 				powerMs: {
-					description: '電源接続時の更新間隔（ミリ秒）。60,000 から 43,200,000 の範囲で、60,000 の倍数にしてください。',
+					description: '電源接続時の自動切り替え間隔（ミリ秒）。60,000 の倍数で指定します。最小値はモデルごとに異なります。下表を参照してください。',
 					type: 'number',
 				},
 				batteryMs: {
-					description: 'バッテリー駆動時の自動起動と更新間隔（ミリ秒）。60,000 から 43,200,000 の範囲で、60,000 の倍数にしてください。',
+					description: 'バッテリー駆動時の自動起動と切り替え間隔（ミリ秒）。60,000 の倍数で指定します。最小値はモデルごとに異なります。下表を参照してください。',
 					type: 'number',
 				},
 			},
@@ -111,6 +111,16 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 		},
 	}}
 />
+
+### 自動切り替え間隔
+
+| デバイス | 電源接続時 | バッテリー駆動時 |
+| --- | --- | --- |
+| Quote/0、Quote/1 | 1 分～12 時間 | 1 分～12 時間 |
+| Rand/0 | 15 分～12 時間 | 1 時間～12 時間 |
+| ZenMeasure M401 | 1 分～12 時間 | 30 分～12 時間 |
+
+この範囲は自動切り替えに適用されます。手動更新はこの間隔の制限を受けません。範囲外の設定リクエストは拒否されます。
 
 ### タイムゾーン
 

@@ -171,7 +171,7 @@ python scripts/send_text.py --device-id '{{deviceId}}' --task-type fixed \
 
 - サービスのレート制限は 1 秒あたり 10 リクエストです。
 - Text、Image、Canvas の書き込みには、選択したループリストまたは固定リストに対応する API コンテンツが必要です。
-- デバイス設定の interval は 60,000～43,200,000 ミリ秒、かつ整数分の倍数で指定します。
+- デバイス設定の interval は整数分の倍数で指定します。最小値はモデルと電源モードにより異なります。[デバイス設定](./device_settings_api)を参照してください。最大値は 43,200,000 ミリ秒（12 時間）です。
 - Canvas の `data` は 64 KB、`windowData` は 128 KB、`layoutFull` は 8 KB までです。
 - Canvas レイアウトは最大 80 要素、最大ネスト深度 16 です。
 - Canvas の文字列は 4,000 文字までです。

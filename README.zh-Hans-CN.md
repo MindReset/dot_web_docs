@@ -10,11 +10,11 @@
 
 ## 📚 关于本仓库
 
-这是 [MindReset](https://www.mindreset.tech) 旗下 Dot. 品牌的文档中心，包含以下内容：
+这是 [MindReset](https://dot.mindreset.tech) 旗下 Dot. 品牌的文档中心，包含以下内容：
 
 - **产品使用手册**：详细的安装、配置及使用指南
 - **设备文档**：Quote/0 等设备的完整操作说明
-- **开发者文档**：开放 API 与 Studio 集成指南
+- **开发者文档**：开放 API 与内容工坊集成指南
 - **常见问题**：故障排查与问题解决方案
 - **安全公告**：产品安全更新与漏洞披露
 - **固件更新日志**：版本历史与更新说明
@@ -47,7 +47,7 @@ dot_web_docs/
     ├── security_advisory/  # 安全公告
     └── service/         # 服务与 API 文档
         ├── open/        # 开放 API
-        ├── studio/      # Studio 创作平台
+        ├── studio/      # 内容工坊
         └── co_create/   # 共创计划
 ```
 
@@ -103,18 +103,18 @@ dot_web_docs/
 如有任何问题或建议，欢迎通过以下方式联系我们：
 
 - **邮箱**：hi@support.mindreset.tech
-- **网站**：[mindreset.tech](https://www.mindreset.tech)
+- **网站**：[dot.mindreset.tech](https://dot.mindreset.tech)
 - **GitHub Issues**：[反馈问题](../../issues)
 
 ## 🔗 相关链接
 
-- [Dot. 官网](https://www.mindreset.tech)
-- [Dot. App 下载](https://www.mindreset.tech/app)
-- [开发者 API 文档](https://www.mindreset.tech/docs/service/open)
-- [Studio 创作平台](https://www.mindreset.tech/studio)
+- [Dot. 官网](https://dot.mindreset.tech)
+- [Dot. App 下载](https://dot.mindreset.tech/app)
+- [开发者 API 文档](https://dot.mindreset.tech/docs/service/open)
+- [内容工坊](https://dot.mindreset.tech/docs/service/studio)
 
 ---
 
 <p align="center">
-  <sub>由 <a href="https://www.mindreset.tech">MindReset</a> 用 ❤️ 维护</sub>
+  <sub>由 <a href="https://dot.mindreset.tech">MindReset</a> 用 ❤️ 维护</sub>
 </p>

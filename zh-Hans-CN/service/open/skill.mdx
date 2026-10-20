@@ -171,7 +171,7 @@ python scripts/send_text.py --device-id '{{deviceId}}' --task-type fixed \
 
 - 服务速率限制为每秒 10 个请求。
 - Text、Image 和 Canvas 写入要求所选的循环列表或固定列表中已添加对应 API 内容。
-- 设备设置 interval 必须在 60,000 到 43,200,000 毫秒之间，并使用整分钟倍数。
+- 设备设置 interval 使用整分钟倍数；最小值随设备型号和供电模式变化，详见[设备设置](./device_settings_api)。最大值为 43,200,000 毫秒（12 小时）。
 - Canvas `data` 最大 64 KB，`windowData` 最大 128 KB，`layoutFull` 最大 8 KB。
 - Canvas 布局最多包含 80 个元素，最大嵌套深度为 16。
 - Canvas 字符串最大长度为 4,000 个字符。
