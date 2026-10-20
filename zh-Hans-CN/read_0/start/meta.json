@@ -8,7 +8,8 @@
         "crosslink",
         "justread",
         "pico_page",
-        "aurareader"
+        "aurareader",
+        "if_ink_os"
     ],
     "defaultOpen": true
 }
