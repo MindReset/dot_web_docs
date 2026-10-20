@@ -1,0 +1,101 @@
+---
+title: if-ink OS
+new: true
+description: Read Pico で EPUB・TXT・Markdown を読み、坚果云から文書をダウンロードし、ホームのバナーを変更して読書記録を確認できます。
+---
+
+Read Pico 向けにシステムを提供してくださった [一凡可回收](https://github.com/yiifanrecyclable) に感謝します。
+
+if-ink OS は [kiikoread](/docs/read_0/start/kiikoread) をベースに開発されています。EPUB と TXT の読書機能を引き継ぎ、Markdown 文書の閲覧、坚果云からのダウンロード、ホーム画面のカスタマイズを追加しています。
+
+## はじめる前に
+
+十分に充電した Read Pico、デスクトップ版 Chrome または Edge を使えるパソコン、データ転送に対応した USB-C ケーブルを用意してください。端末のシリアルポートを使用しているほかのページ、書き込みツール、ターミナルを閉じます。
+
+最大 512 GB、FAT32 形式の microSD カードを用意してください。
+
+## 公式サイトからインストールする
+
+<Steps>
+<Step>
+
+### 公式サイトを開く
+
+パソコンの Chrome または Edge で [if-ink OS 公式サイト](https://yiifanrecyclable.github.io/if-ink-OS/)を開き、[Web 書き込みページ](https://yiifanrecyclable.github.io/if-ink-OS/#install)に進みます。
+
+</Step>
+<Step>
+
+### 端末を接続してインストールする
+
+USB データケーブルで Read Pico をパソコンに接続し、公式サイトの手順に従って端末とバージョンを選び、インストールします。Web インストールでは、Python や esptool を自分でインストールする必要はありません。
+
+書き込みによって現在のシステムが置き換わります。残したいデータは先にバックアップしてください。ほかのシステムから移行する場合、内部設定や読書記録の互換性は保証されません。USB 接続とページを開いた状態を保ち、パソコンをスリープさせずに完了を待ちます。
+
+</Step>
+<Step>
+
+### 書籍・文書・フォントを追加する
+
+microSD カードの `books` に EPUB と TXT、`markdown` に Markdown、`fonts` にフォントを入れます。初回インストール時には、プロジェクトのダウンロードページからフォントとピンイン辞書のリソースパックを入手できます。
+
+</Step>
+</Steps>
+
+## 主な機能
+
+このページの画像は、プロジェクトが提供するシミュレーター画面と端末外観を合成したものです。読書記録はデモデータであり、実際の電子ペーパーの階調や画面更新の見え方は実機と異なる場合があります。
+
+### ホームとカスタマイズ
+
+ホームのバナー背景、日付、文字を変更できます。読書記録のヒートマップ、日別・週別の読書時間、左右に分かれた最近読んだ本が表示されます。システムの文字サイズやフォントを調整し、ロック画面の壁紙を順番に切り替えることもできます。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/yiifanrecyclable/if-ink-OS/c7a07375929a8e0431ca377d3d13f8e0d55da026/docs/images/showcase/home.webp" alt="if-ink OS のホーム。カスタムバナー、読書記録のヒートマップ、左右に分かれた最近読んだ本を表示" width="1200" height="1200" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>ホーム：カスタムバナー、読書記録、最近読んだ本</figcaption>
+</figure>
+
+### 書籍と Markdown 文書
+
+EPUB、TXT、Markdown をオフラインで読めます。Markdown は、パイプ記号で区切る標準的な表、見出しの文字サイズ、太字、斜体、ハイライトに対応しています。
+
+読書パネルから目次、しおり、フォント、組版を開けます。必要に応じてショートカットジェスチャーを設定でき、書籍ごとの読書位置が保存されます。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/yiifanrecyclable/if-ink-OS/c7a07375929a8e0431ca377d3d13f8e0d55da026/docs/images/showcase/markdown.webp" alt="if-ink OS の Markdown 読書画面。見出し、折り返し、文字装飾を含む表を表示" width="1200" height="1200" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>文書：Markdown の表と文字装飾</figcaption>
+</figure>
+
+### 坚果云からのダウンロードと Obsidian からの転送
+
+指定した WebDAV フォルダーの MD・TXT・EPUB ファイルを一覧で確認し、必要なものを microSD カードにダウンロードできます。
+
+「设置 → 坚果云同步」（設定 → 坚果云同期）で、アカウント、アプリ用パスワード、坚果云のルートディレクトリ配下にある既存の同期フォルダーを入力します。その後、坚果云の同期画面からファイルを選んでダウンロードしてください。アプリ用パスワードは、坚果云のサードパーティーアプリ管理で生成します。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/yiifanrecyclable/if-ink-OS/c7a07375929a8e0431ca377d3d13f8e0d55da026/docs/images/showcase/cloud.webp" alt="if-ink OS の坚果云同期画面。MD・TXT・EPUB を選択し、端末にダウンロード" width="1200" height="1200" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>転送：坚果云からファイルを選んで microSD カードにダウンロード</figcaption>
+</figure>
+
+連携用の Sent to E-ink Reader プラグインを使うと、Obsidian で選んだノートを坚果云の指定フォルダーに手動で送り、端末でダウンロードできます。プラグインは別途インストールが必要です。転送する内容は Markdown のプレーンテキストで、画像や埋め込みノートは文字による説明に変換されます。ノートを継続的に自動同期する機能ではありません。
+
+<GithubInfo owner="yiifanrecyclable" repo="Sent-to-E-ink-Reader" />
+
+### 転送とメンテナンス
+
+Wi-Fi や端末のアクセスポイントを使った書籍の転送、USB 接続、Wi-Fi パスワードの保存、設定のバックアップと復元に対応しています。
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="インストールと使用に関するよくある質問">SD カード、シリアル接続、インストール後に動作が遅い・画面が固まる場合の対処方法。</Card>
+  <Card href="/docs/read_0/firmware" title="公式デモシステムに戻す">「自分だけのシステムを作る」のビルドと書き込み手順で、公式デモシステムに戻せます。</Card>
+</Cards>
+
+<Callout type="info" title="その他のインストール・更新方法">
+
+公式サイトからのインストールのほか、システムのリポジトリの Releases から正式版システム、microSD カード用の更新パッケージ、オフライン書き込みパッケージ、対応するソースコードを入手できます。[リポジトリのインストール手順](https://github.com/yiifanrecyclable/if-ink-OS/blob/main/docs/%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E.md)と選択したバージョンの説明を確認してください。
+
+互換性のあるバージョンを導入済みの場合は、説明に従って microSD カードの更新パッケージを使うか、「设置 → 固件信息 → 在线升级」（設定 → システム情報 → オンライン更新）から新しいバージョンを確認できます。
+
+</Callout>
+
+<GithubInfo owner="yiifanrecyclable" repo="if-ink-OS" />
