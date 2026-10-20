@@ -1,39 +1,72 @@
 ---
 title: PageRest
-description: 面向小纸 Pico 的阅读优先固件，支持 TXT/EPUB、本地书架、字体管理、无线传书、USB 存储、蓝牙翻页器和多种锁屏方式。
+new: true
+description: 在小纸 Pico 上阅读 TXT 与 EPUB，支持本地书架、字体管理、无线传书、USB 存储、蓝牙翻页器及多种锁屏方式。
 ---
 
-# PageRest
+感谢 [PageRest 开发者](https://pico.gofree.kdns.fr/) 为小纸 Pico 提供系统。
 
-PageRest 是面向小纸 Pico 的阅读优先固件，将 4.7 英寸墨水屏开发板变成一个以本地阅读为核心的电子书系统。
+PageRest 是面向小纸 Pico 的阅读系统，以本地阅读为核心，提供封面书架、字体管理、无线传书、蓝牙翻页器，以及图片锁屏和摘录锁屏。
 
-PageRest 支持 TXT / EPUB 图书、封面书架、阅读进度、字体管理、WiFi / 热点传书、USB 连接电脑、BLE 蓝牙翻页器，以及图片锁屏和摘录锁屏等功能。
+## 开始之前
 
-[访问 PageRest 官网](https://pico.gofree.kdns.fr/) · [小纸 Pico 官方文档](https://dot.mindreset.tech/docs/read_0)
+准备电量充足的小纸 Pico、使用桌面版 Chrome 或 Edge 的电脑，以及支持数据传输的 USB-C 数据线。关闭其他占用设备串口的网页、刷写工具或终端。
 
-<figure>
+书籍、字体和自定义锁屏图片可存放在 microSD 卡中。小纸 Pico 最大支持 512 GB，格式为 FAT32。
+
+## 通过官网安装
+
+<Steps>
+<Step>
+
+### 打开官网
+
+在电脑的 Chrome 或 Edge 中打开 [PageRest 官网](https://pico.gofree.kdns.fr/)，查看当前版本的安装说明并下载对应系统。
+
+</Step>
+<Step>
+
+### 选择安装方式
+
+首次安装或恢复设备时使用完整系统。已有 PageRest 的设备可以选择保留数据升级，以保留设置和阅读记录。
+
+</Step>
+<Step>
+
+### 连接设备并刷写
+
+用 USB 数据线将小纸 Pico 连接到电脑，按官网对应版本的说明完成刷写。安装会替换设备当前的系统，请先保存需要保留的数据。
+
+保持 USB 连接、页面打开和电脑唤醒，等待刷写完成，再按官网说明启动设备。
+
+</Step>
+</Steps>
+
+## 主要功能
+
+### 首页与书架
+
+首页提供继续阅读、最近阅读、阅读进度和书架入口。
+
+<figure className="mx-auto w-full max-w-xs">
   <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/home.png" alt="PageRest 正在读首页，显示继续阅读、阅读进度和最近阅读" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
   <figcaption>正在读：首页、继续阅读与最近阅读</figcaption>
 </figure>
 
-## 主要功能
+书架支持 TXT / EPUB 图书、封面缩略图、列表或多封面布局，并提供搜索、排序、来源筛选、批量管理和逐书进度。
 
-### 阅读优先的首页与书架
-
-首页提供继续阅读、最近阅读、阅读进度和书架入口。书架支持 TXT / EPUB 图书、封面缩略图、列表或多封面布局，并提供搜索、排序、来源筛选、批量管理和逐书进度。
-
-<figure>
+<figure className="mx-auto w-full max-w-xs">
   <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/shelf.png" alt="PageRest 书架，显示多本图书封面、书名和阅读进度" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
   <figcaption>书架：封面、书名与阅读进度</figcaption>
 </figure>
 
-### 完整的阅读工具
+### 阅读工具
 
 阅读器支持字号、字体、行距、页边距、首行缩进、段落间距、目录、书签、百分比跳转和阅读进度显示。
 
 TXT 和 EPUB 均可从本地存储读取，EPUB 支持章节导航以及本地 JPEG / PNG 插图。字体可以使用内置字库，也可以从 TF 卡导入 TTF 字体。
 
-<figure>
+<figure className="mx-auto w-full max-w-xs">
   <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/reader.png" alt="PageRest 阅读界面，显示中文正文、章节标题和阅读进度" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
   <figcaption>阅读界面：正文、章节与阅读进度</figcaption>
 </figure>
@@ -48,7 +81,7 @@ PageRest 支持多种锁屏方式：
 
 锁屏可以配合浅睡、深睡或关机策略使用，唤醒后返回原来的阅读位置。
 
-<figure>
+<figure className="mx-auto w-full max-w-xs">
   <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/quote-lock.png" alt="PageRest 摘录锁屏，显示阅读摘录、书名来源和锁屏时间" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
   <figcaption>摘录锁屏：保存的摘录、书名来源与锁屏信息</figcaption>
 </figure>
@@ -59,7 +92,7 @@ PageRest 支持多种锁屏方式：
 
 传书页面提供二维码、连接状态、上传进度和失败恢复。设备也支持 USB 连接电脑，将 TF 卡作为磁盘使用。
 
-<figure>
+<figure className="mx-auto w-full max-w-xs">
   <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/transfer.png" alt="PageRest 传书页面，显示设备热点、二维码、上传状态和进度同步入口" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
   <figcaption>传书页面：热点、二维码与上传状态</figcaption>
 </figure>
@@ -70,18 +103,15 @@ PageRest 提供 BLE HID 翻页器支持，可连接兼容的蓝牙翻页设备�
 
 蓝牙仅在阅读正文中生效，不控制菜单和设置页面。ESP32-S3 只支持 BLE，传统 Bluetooth Classic 设备和需要独立接收器的翻页器不在直接配对范围内。
 
-### 面向墨水屏的刷新与功耗
+### 屏幕刷新与电源管理
 
 PageRest 针对小纸 Pico 的 4.7 英寸 16 级灰阶墨水屏设计，提供标准灰阶和快速刷新路径，并支持可配置的清残影周期。
 
 系统支持浅睡、深睡和关机模式，锁屏界面可以使用图片、摘录、时钟或日历。
 
-## 安装方式
+不同版本的功能、刷新速度、功耗和蓝牙设备兼容性，请以官网发布说明和实际设备表现为准。
 
-请打开 [PageRest 官网](https://pico.gofree.kdns.fr/)，下载最新固件并使用桌面版 Chrome 或 Edge 进行刷写。
-
-首次安装或恢复设备时使用完整固件。已有 PageRest 的设备可以选择保留数据升级，以保留设置和阅读记录。
-
-刷写前请准备支持数据传输的 USB 数据线，并备份重要数据。固件仅适配小纸 Pico RDP-G01-W。
-
-PageRest 仍在持续完善中，不同版本的功能、刷新速度、功耗和蓝牙设备兼容性，以官网发布说明和实际设备表现为准。
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡、串口连接和安装后卡顿等问题的处理方法。</Card>
+  <Card href="/docs/read_0/firmware" title="恢复官方演示系统">前往 DIY 你的系统，按编译与刷写步骤恢复官方演示系统。</Card>
+</Cards>

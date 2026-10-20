@@ -1,0 +1,117 @@
+---
+title: PageRest
+new: true
+description: Read Pico で TXT と EPUB を読み、ローカル本棚、フォント管理、ワイヤレス転送、USB ストレージ、Bluetooth ページめくり機器、各種ロック画面を利用できます。
+---
+
+Read Pico 向けにシステムを提供してくださった [PageRest 開発者](https://pico.gofree.kdns.fr/) に感謝します。
+
+PageRest は、ローカルの書籍を読むことを中心に設計された Read Pico 向けの読書システムです。表紙付きの本棚、フォント管理、ワイヤレス転送、Bluetooth ページめくり機器、画像や保存した抜粋を表示するロック画面を提供しています。
+
+## はじめる前に
+
+十分に充電した Read Pico、デスクトップ版 Chrome または Edge を使えるパソコン、データ転送に対応した USB-C ケーブルを用意してください。端末のシリアルポートを使用しているほかのページ、書き込みツール、ターミナルを閉じます。
+
+書籍、フォント、カスタムロック画面の画像は microSD カードに保存できます。Read Pico は最大 512 GB のカードに対応し、FAT32 形式を使用します。
+
+## 公式サイトからインストールする
+
+<Steps>
+<Step>
+
+### 公式サイトを開く
+
+パソコンの Chrome または Edge で [PageRest 公式サイト](https://pico.gofree.kdns.fr/)を開き、現在のバージョンのインストール手順を確認して、対応するシステムをダウンロードします。
+
+</Step>
+<Step>
+
+### インストール方法を選ぶ
+
+初回インストールや端末の復旧には、システム全体を書き込む方法を選びます。すでに PageRest を使用している場合は、設定や読書記録を残すため、データを保持する更新方法を選べます。
+
+</Step>
+<Step>
+
+### 端末を接続して書き込む
+
+USB データケーブルで Read Pico をパソコンに接続し、公式サイトの該当バージョンの手順に従って書き込みます。現在のシステムが置き換わるため、残したいデータは先に保存してください。
+
+USB 接続とページを開いた状態を保ち、パソコンをスリープさせないでください。書き込みの完了を待ち、公式サイトの案内に従って端末を起動します。
+
+</Step>
+</Steps>
+
+## 主な機能
+
+### ホームと本棚
+
+ホームには、読書の続き、最近読んだ本、読書の進捗、本棚への入口が表示されます。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/home.png" alt="PageRest のホーム。読書の続き、進捗、最近読んだ本を表示" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>ホーム：読書の続きと最近読んだ本</figcaption>
+</figure>
+
+本棚は TXT と EPUB、表紙サムネイル、一覧・複数表紙のレイアウトに対応しています。検索、並べ替え、入手元による絞り込み、一括管理、書籍ごとの進捗表示も利用できます。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/shelf.png" alt="PageRest の本棚。複数の表紙、書名、読書の進捗を表示" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>本棚：表紙、書名、読書の進捗</figcaption>
+</figure>
+
+### 読書ツール
+
+文字サイズ、フォント、行間、余白、段落先頭の字下げ、段落間隔を調整できます。目次、しおり、割合を指定した移動、読書の進捗表示も備えています。
+
+TXT と EPUB はどちらもローカルストレージから読めます。EPUB は章ごとの移動とローカルの JPEG・PNG 挿絵に対応しています。内蔵フォントのほか、microSD カードから TTF フォントを取り込むこともできます。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/reader.png" alt="PageRest の読書画面。中国語の本文、章タイトル、読書の進捗を表示" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>読書画面：本文、章、読書の進捗</figcaption>
+</figure>
+
+### 画像と抜粋のロック画面
+
+PageRest では、複数のロック画面を選べます。
+
+- 画像：内蔵画像を使用するか、microSD カードから JPG・PNG 画像を取り込み、ロック画面の壁紙に設定できます。
+- 抜粋：読書中に保存した文章を、書名や出典情報とともに表示します。
+- 情報表示：スリープ中に時計、カレンダーなどの簡潔な情報を表示できます。
+
+ロック画面は、ライトスリープ、ディープスリープ、電源オフの設定と組み合わせて使用できます。復帰後は元の読書位置に戻ります。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/quote-lock.png" alt="PageRest の抜粋ロック画面。保存した文章、書名と出典、時刻を表示" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>抜粋ロック画面：保存した文章、出典、ロック画面の情報</figcaption>
+</figure>
+
+### ワイヤレス転送と USB ストレージ
+
+端末のアクセスポイントや既存の Wi-Fi を使い、パソコンやスマートフォンのブラウザから TXT・EPUB 書籍、TTF フォント、JPG・PNG のロック画面用画像をアップロードできます。
+
+転送画面には QR コード、接続状態、アップロードの進捗、失敗時の復旧機能があります。USB でパソコンに接続し、microSD カードをドライブとして使うこともできます。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/fengcheng01/read_pico_firmware/main/web/public/screenshots/transfer.png" alt="PageRest の転送画面。端末のアクセスポイント、QR コード、アップロード状態、進捗同期の入口を表示" width="684" height="1216" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>転送画面：アクセスポイント、QR コード、アップロード状態</figcaption>
+</figure>
+
+### Bluetooth ページめくり機器
+
+PageRest は BLE HID のページめくり機器に対応しています。互換性のある機器を接続し、前のページ、次のページ、方向の反転、ロック画面のボタンを設定できます。
+
+Bluetooth 操作は本文の読書中のみ有効で、メニューや設定画面は操作できません。ESP32-S3 は BLE のみに対応しています。従来の Bluetooth Classic 機器や、専用レシーバーが必要なページめくり機器は直接ペアリングできません。
+
+### 画面更新と電源管理
+
+PageRest は Read Pico の 4.7 インチ・16 階調の電子ペーパーディスプレイ向けに設計されています。標準の階調表示と高速更新を備え、残像を除去する間隔を設定できます。
+
+ライトスリープ、ディープスリープ、電源オフに対応しています。ロック画面には画像、抜粋、時計、カレンダーを表示できます。
+
+機能、画面更新の速さ、消費電力、Bluetooth 機器の互換性はバージョンによって異なります。公式サイトのリリース情報と実際の端末の動作を確認してください。
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="インストールと使用に関するよくある質問">SD カード、シリアル接続、インストール後に動作が遅い・画面が固まる場合の対処方法。</Card>
+  <Card href="/docs/read_0/firmware" title="公式デモシステムに戻す">「自分だけのシステムを作る」のビルドと書き込み手順で、公式デモシステムに戻せます。</Card>
+</Cards>
