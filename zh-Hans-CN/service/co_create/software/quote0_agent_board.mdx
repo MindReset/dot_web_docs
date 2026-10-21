@@ -1,0 +1,43 @@
+---
+title: Quote0 Agent 状态牌
+description: 在 Quote/0 上查看 Claude Code 与 Codex 的对话状态、待处理提醒和剩余额度。
+new: true
+---
+
+<GithubInfo owner="realruian" repo="quote0-agent-board" />
+
+Quote0 Agent 状态牌把 Claude Code 和 Codex 的运行状态显示在 Quote/0 上。抬头就能看到哪些对话正在运行、哪些需要你批准或回答，以及最近完成的对话。
+
+<figure className="mx-auto w-full max-w-lg">
+  <img src="https://raw.githubusercontent.com/realruian/quote0-agent-board/830fad2b8d6087c4b69006a51b26ca2bf58730dd/docs/images/list.png" alt="Quote0 Agent 状态牌总览，显示多个对话、Agent 图标、运行时长和剩余额度" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>总览画面（演示数据）</figcaption>
+</figure>
+
+### 功能特性
+
+- **对话状态**：显示 Claude Code 与 Codex 的对话名称、运行状态和时长。
+- **待处理提醒**：需要批准、回答问题或确认计划时，整屏反色提醒；操作仍在电脑上完成。
+- **额度与电量**：显示可获取的剩余额度、重置时间和设备电量，也可以关闭额度展示。
+- **按需刷新**：合并短时间内的状态变化，并设置刷新间隔与免打扰时段。
+- **Mac 设置窗口**：预览画面、切换字体、管理对话，并通过菜单栏或程序坞图标查看状态。
+
+<figure className="mx-auto w-full max-w-lg">
+  <img src="https://raw.githubusercontent.com/realruian/quote0-agent-board/830fad2b8d6087c4b69006a51b26ca2bf58730dd/docs/images/wait.png" alt="Quote0 Agent 状态牌整屏反色，提醒有对话等待用户批准" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>待处理提醒（演示数据）</figcaption>
+</figure>
+
+### 开始使用
+
+准备 macOS 14 或更高版本的电脑、一台已联网并接通电源的 Quote/0，以及 Claude Code 或 Codex。支持 Apple 芯片与 Intel Mac，桌面应用与命令行均可连接。
+
+1. 在 Dot. App 内容工坊中，将「图像 API」加入设备的循环列表。
+2. 从 [Releases](https://github.com/realruian/quote0-agent-board/releases/latest) 下载并安装 Mac App。
+3. 在 App 中填入 [Dot. API 密钥](/docs/service/open/get_api)，选择设备并发送测试画面。安装后新建的 Agent 对话才会触发状态更新。
+
+完整设置与卸载步骤见[中文 README](https://github.com/realruian/quote0-agent-board/blob/main/README.zh-CN.md)。App 会安装 Agent 钩子并设置登录时启动，修改配置前会备份原文件。
+
+### 使用限制
+
+状态牌需要 Quote/0 持续接通电源；电池供电时，画面只在设备定时唤醒后更新。电脑断网或云服务不可用时，屏幕保留最后一帧。App 与屏幕界面目前仅提供中文。
+
+额度是否可读取取决于 Agent 的登录状态、版本和套餐。批准操作完成后，提醒可能要等当前命令结束才消失。渲染后的画面会通过 MindReset 云服务发送到设备，可在设置中关闭对话名称显示。

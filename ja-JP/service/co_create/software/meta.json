@@ -4,6 +4,7 @@
     "pages": [
         "quote",
         "rand",
-        "read"
+        "read",
+        "clock"
     ]
 }

@@ -20,6 +20,7 @@
         "../mindreset_dot_mcp",
         "../quote0",
         "../quote0_api",
+        "../quote0_agent_board",
         "../quote0_bad_apple",
         "../quote0_burnout",
         "../quote0_client",

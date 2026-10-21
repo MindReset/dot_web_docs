@@ -1,0 +1,36 @@
+---
+title: WhiteClock
+description: 为 小钟 更换七套黑白主题，设置定时反色，并使用双键操作番茄钟。
+new: true
+---
+
+<GithubInfo owner="446599" repo="WhiteClock" />
+
+WhiteClock 是面向 小钟 的社区时钟固件，提供七套黑白主题、定时反色与番茄钟，沿用 SET 和 BACK 两个按键操作。
+
+<figure>
+  <img src="https://raw.githubusercontent.com/446599/White小钟0f2038508c8671da2296bb8ce70716fc149f9e5/cw32l010_clock/docs/images/themes.png" alt="WhiteClock 七套黑白时钟主题预览" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>七套主题（固件渲染预览，非设备实拍）</figcaption>
+</figure>
+
+### 功能特性
+
+- **七套主题**：错版、撕纸、头版、半调、几何、日牌与织纹，搭配不同数字字体和黑白纹理。
+- **时间与日期**：显示中文日期和星期，支持 12 / 24 小时制及跨午夜的定时反色。
+- **番茄钟**：可选 5、15、25、45 或 60 分钟，支持暂停、继续与重置，到时通过屏幕全刷提醒。
+- **双键设置**：通过 SET 与 BACK 调整时间、日期、主题和反色时段，显示设置可在断电后保留。
+
+<figure>
+  <img src="https://raw.githubusercontent.com/446599/White小钟0f2038508c8671da2296bb8ce70716fc149f9e5/cw32l010_clock/docs/images/menus.png" alt="WhiteClock 设置菜单与番茄钟界面预览" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>设置菜单与番茄钟（固件渲染预览，非设备实拍）</figcaption>
+</figure>
+
+### 开始使用
+
+准备兼容的 SWD 烧录器，按照[烧录教程](https://github.com/446599/WhiteClock/blob/master/cw32l010_clock/docs/FLASHING.md)核对主控、屏幕接口与接线，备份原系统后再刷写。项目面向 CW32L010F8U6 与 2.66 英寸、152 × 296 像素的黑白墨水屏，不同批次硬件的兼容性需逐台确认。
+
+系统文件与开发说明见[项目 README](https://github.com/446599/WhiteClock#readme)。烧录前保留完整备份，写入后按教程完整回读验证；不要整片擦除或自动解除读保护。设备接口说明见 [小钟：DIY 你的系统](/docs/clock_0/firmware)。
+
+### 使用限制
+
+番茄钟通过屏幕提醒，没有声音，计时状态不跨重启保存。黑白网点不代表原生灰阶；显示的芯片温度为近似值，不能作为室温计。长期残影、功耗与不同温度下的表现尚未全面测量。

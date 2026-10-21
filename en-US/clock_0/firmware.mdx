@@ -1,13 +1,13 @@
 ---
 title: DIY Your System
-description: Develop CW32L010 firmware through Clock/0's SWD interface, with power and wiring guidance and an approach to an e-paper clock.
+description: Develop CW32L010 firmware through Clock's SWD interface, with power and wiring guidance and an approach to an e-paper clock.
 ---
 
-Write your own firmware and flash it through the SWD interface on the circuit board to try custom clock displays, button interactions, and low-power applications. Clock/0 has no visual design editor; custom displays require firmware development.
+Write your own firmware and flash it through the SWD interface on the circuit board to try custom clock displays, button interactions, and low-power applications. Clock has no visual design editor; custom displays require firmware development.
 
 ## Chip documentation
 
-Clock/0 uses the CW32L010. See the [technical specifications](/docs/clock_0) for the processor, memory, and clock resources, and Wuhan Xinyuan's [CW32L010 datasheet](https://www.whxy.com/shujushouce.html) for peripherals and package information.
+Clock uses the CW32L010. See the [technical specifications](/docs/clock_0) for the processor, memory, and clock resources, and Wuhan Xinyuan's [CW32L010 datasheet](https://www.whxy.com/shujushouce.html) for peripherals and package information.
 
 ## Connect SWD
 
@@ -38,11 +38,11 @@ Prepare a CW32L010-compatible SWD debugger, wires, and a compiler and debugger e
 
 ## Build and flash
 
-Before development, verify the display controller, resolution, pin assignments, and electrical connections for the hardware revision. Chip library examples need these connections adapted before they can run on Clock/0.
+Before development, verify the display controller, resolution, pin assignments, and electrical connections for the hardware revision. Chip library examples need these connections adapted before they can run on Clock.
 
 1. Start with a CW32L010 chip example project. Select the actual chip variant and configure the startup file, memory size, and flash programming algorithm.
 2. Select SWD debugging, connect the signals above, and confirm that the debugger can identify the chip.
-3. Adapt the buttons, clock, and display driver to Clock/0's hardware connections, then build the firmware.
+3. Adapt the buttons, clock, and display driver to Clock's hardware connections, then build the firmware.
 4. Once you have a recovery method, flash the build and check timekeeping, buttons, and screen refresh against the behavior you implemented.
 
 <Callout type="warn" title="Keep a recovery option">

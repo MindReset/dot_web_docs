@@ -1,5 +1,5 @@
 {
-    "title": "Clock/0",
+    "title": "Clock",
     "pages": ["start", "firmware"],
     "defaultOpen": true
 }

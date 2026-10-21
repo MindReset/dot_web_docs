@@ -1,0 +1,36 @@
+---
+title: WhiteClock
+description: Clock の七つのモノクロテーマと時刻指定の白黒反転、二つのボタンで操作するポモドーロタイマー。
+new: true
+---
+
+<GithubInfo owner="446599" repo="WhiteClock" />
+
+WhiteClock は Clock 向けのコミュニティ製時計ファームウェアです。七つのモノクロテーマ、時刻指定の白黒反転、ポモドーロタイマーを備え、SET と BACK の二つのボタンで操作します。
+
+<figure>
+  <img src="https://raw.githubusercontent.com/446599/WhiteClock0f2038508c8671da2296bb8ce70716fc149f9e5/cw32l010_clock/docs/images/themes.png" alt="WhiteClock の七つのモノクロ時計テーマのプレビュー" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>七つのテーマ（ファームウェアの描画プレビュー、実機写真ではありません）</figcaption>
+</figure>
+
+### 主な機能
+
+- **七つのテーマ**：错版、撕纸、头版、半调、几何、日牌、织纹。数字のフォントや白黒の模様を選べます。
+- **時刻と日付**：中国語の日付と曜日、12 / 24 時間表示、日付をまたぐ白黒反転の時刻設定に対応します。
+- **ポモドーロタイマー**：5、15、25、45、60 分から選び、一時停止、再開、リセットができます。終了時は画面全体の更新で知らせます。
+- **二つのボタンで設定**：SET と BACK で時刻、日付、テーマ、反転時間帯を設定します。表示設定は電源を切っても保存されます。
+
+<figure>
+  <img src="https://raw.githubusercontent.com/446599/WhiteClock0f2038508c8671da2296bb8ce70716fc149f9e5/cw32l010_clock/docs/images/menus.png" alt="WhiteClock の設定メニューとポモドーロタイマーのプレビュー" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>設定メニューとタイマー（ファームウェアの描画プレビュー、実機写真ではありません）</figcaption>
+</figure>
+
+### 使い始めるには
+
+対応する SWD 書き込み器を用意し、[書き込みガイド](https://github.com/446599/WhiteClock/blob/master/cw32l010_clock/docs/FLASHING.md)でマイコン、画面の接続方式、配線を確認してください。元のシステムをバックアップしてから書き込みます。対象は CW32L010F8U6 と 2.66 インチ、152 × 296 ピクセルのモノクロ電子ペーパーです。製造ロットによって異なる場合があるため、端末ごとに互換性を確認してください。
+
+ファームウェアと開発手順は[プロジェクトの README](https://github.com/446599/WhiteClock#readme)を参照してください。完全なバックアップを保存し、書き込み後はガイドに従って全体を読み戻して検証します。チップ全体の消去や読み出し保護の自動解除は行わないでください。端末の開発端子は [Clock：自分だけのシステムを作る](/docs/clock_0/firmware)で確認できます。
+
+### 利用上の制限
+
+タイマーは画面で通知し、音は鳴りません。計時状態は再起動すると失われます。濃淡は白黒の点による表現で、ネイティブのグレースケールではありません。チップ温度は概算値で、室温計としては使えません。長期的な残像、消費電力、温度条件ごとの動作は十分に測定されていません。

@@ -1,5 +1,5 @@
 {
-    "title": "Clock/0",
+    "title": "小钟",
     "pages": ["start", "firmware"],
     "defaultOpen": true
 }

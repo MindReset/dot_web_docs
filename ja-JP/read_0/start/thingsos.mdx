@@ -1,0 +1,100 @@
+---
+title: ThingsOS
+new: true
+description: Read Pico でローカルの EPUB・TXT と微信読書を読み、人気のハイライトや書評を確認し、フォントとページ送りを調整できます。
+---
+
+Read Pico 向けにシステムを提供してくださった [flicker](https://github.com/flowflic) に感謝します。
+
+ThingsOS は Read Pico 向けの読書システムです。ローカル書籍と微信読書のために、画面、組版、ページ送りを調整できます。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/flowflic/ThingsOS/ed344c5745e07a1dced8d4e0041218b2ce9dcd02/docs/images/reading.webp" alt="本文、時刻、バッテリー残量、読書進捗を表示する ThingsOS の読書画面" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>読書画面（ファームウェアの描画プレビュー、サンプルデータ）</figcaption>
+</figure>
+
+## はじめる前に
+
+十分に充電した Read Pico、デスクトップ版 Chrome または Edge を使えるパソコン、データ転送に対応した USB-C ケーブルを用意してください。端末のシリアルポートを使用している別のページ、書き込みツール、ターミナルは閉じてください。
+
+ローカル書籍と微信読書のキャッシュを保存する microSD カードを用意してください。Read Pico は最大 512 GB に対応し、フォーマットは FAT32 です。
+
+## 公式サイトからインストールする
+
+<Steps>
+<Step>
+
+### 公式サイトを開く
+
+パソコンの Chrome または Edge で [ThingsOS 公式サイト](https://thingsos.scholarcn.com/)を開き、インストールウィザードに進みます。スマートフォンでは閲覧とファイルのダウンロードができます。USB によるオンラインインストールにはパソコンが必要です。
+
+</Step>
+<Step>
+
+### 端末を接続してインストールする
+
+Read Pico を USB データケーブルで接続し、ウィザードで対応するシリアルポートを選びます。ThingsOS の初回インストールや別のシステムから切り替える場合は、完全 USB インストールを選択してください。OTA は対応する ThingsOS のパーティション構成を持つ端末専用です。
+
+完全インストールは現在のシステムを置き換え、端末内部の設定を初期化します。microSD カード上の書籍は保持されます。重要なデータをバックアップしてから、画面の案内に従って書き込みます。USB 接続とページを維持し、パソコンをスリープさせず、端末の起動を待ってください。
+
+</Step>
+<Step>
+
+### 書籍を入れ、微信読書に接続する
+
+EPUB と TXT を microSD カードの書籍フォルダにコピーするか、端末の転送サービスを起動し、スマートフォンやパソコンのブラウザーからアップロードします。
+
+微信読書を使うには Wi-Fi に接続し、端末の「微读」で WeChat を使って QR コードを読み取り、ログインします。個人の本棚を同期して読みたい本をカードにキャッシュすると、オフラインで読めます。
+
+</Step>
+</Steps>
+
+## 主な機能
+
+### ローカル書庫と微信読書
+
+ローカルの EPUB・TXT と微信読書の書籍を同じ書庫で管理し、一覧と表紙表示を切り替えられます。章、しおり、保存した進捗から読書を再開できます。微信読書の人気のハイライトと書評に対応しています。WeChat 公式アカウントの記事は近日対応予定です。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/flowflic/ThingsOS/ed344c5745e07a1dced8d4e0041218b2ce9dcd02/docs/images/weread-shelf.webp" alt="同期、ネットワーク、アカウント、書籍一覧を表示する ThingsOS の微信読書本棚" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>微信読書の本棚（ファームウェアの描画プレビュー、サンプルデータ）</figcaption>
+</figure>
+
+微信読書との連携は非公式です。アカウントに閲覧権限がある内容だけをキャッシュします。利用できる範囲は書籍の権限とサービスのインターフェースに依存します。
+
+### フォント、組版、ページ送り
+
+複数のフォントを切り替え、文字サイズ、太さ、行間、余白を調整できます。追加の TTF フォントは microSD カード直下の `/fonts` フォルダに入れます。
+
+通常のページ送りには波紋効果を設定でき、定期的な全画面更新の間隔も調整できます。読書の好みに合わせてページ送りと残像の除去を設定してください。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/flowflic/ThingsOS/ed344c5745e07a1dced8d4e0041218b2ce9dcd02/docs/images/reading-menu.webp" alt="文字サイズ、行間、余白、フォントを設定できる ThingsOS の読書メニュー" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>組版設定（ファームウェアの描画プレビュー、サンプルデータ）</figcaption>
+</figure>
+
+### 読書記録とロック画面
+
+毎日の読書時間、週間の傾向、読書ヒートマップを確認できます。ロック画面には読書統計、指定した本の表紙、好きな画像を表示できます。JPG・PNG の壁紙は `/wallpapers` に入れ、電源とロック画面の設定で選びます。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/flowflic/ThingsOS/ed344c5745e07a1dced8d4e0041218b2ce9dcd02/docs/images/statistics.webp" alt="ヒートマップと週間読書時間を表示する ThingsOS の読書統計" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>読書統計（ファームウェアの描画プレビュー、サンプルデータ）</figcaption>
+</figure>
+
+### ワイヤレス転送と更新
+
+端末のアクセスポイントか同じ Wi-Fi に接続し、スマートフォンやパソコンのブラウザーから書籍をアップロードできます。対応する ThingsOS がインストール済みの場合は、公式サイトの案内に従い、端末のファームウェア更新ページで OTA ファイルを使用できます。バージョン、パーティション、チェックサムは[ファームウェア情報](https://thingsos.scholarcn.com/release.json)で確認してください。
+
+## その他のインストール方法
+
+[リポジトリの README](https://github.com/flowflic/ThingsOS#readme)と、そこから案内される[ファームウェア情報](https://thingsos.scholarcn.com/release.json)から、インストールファイル、パーティション情報、チェックサムを取得して書き込むこともできます。
+
+<GithubInfo owner="flowflic" repo="ThingsOS" />
+
+## インストールと使用のヘルプ
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="インストールと使用に関するよくある質問">SD カード、シリアル接続、インストール後に動作が遅い・画面が固まる場合の対処方法。</Card>
+  <Card href="/docs/read_0/firmware" title="公式デモシステムに戻す">「自分だけのシステムを作る」のビルドと書き込み手順で、公式デモシステムに戻せます。</Card>
+</Cards>

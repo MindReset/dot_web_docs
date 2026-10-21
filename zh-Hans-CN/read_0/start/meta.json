@@ -10,7 +10,8 @@
         "pico_page",
         "aurareader",
         "pagerest",
-        "if_ink_os"
+        "if_ink_os",
+        "thingsos"
     ],
     "defaultOpen": true
 }

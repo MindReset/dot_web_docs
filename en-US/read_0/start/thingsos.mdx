@@ -1,0 +1,100 @@
+---
+title: ThingsOS
+new: true
+description: Read local EPUB and TXT books and WeRead on Read Pico, view popular highlights and reviews, and adjust fonts and page turns.
+---
+
+Thank you to [flicker](https://github.com/flowflic) for providing a system for Read Pico.
+
+ThingsOS is a reading system for Read Pico, with interface, layout, and page-turning adjustments for local books and WeRead.
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/flowflic/ThingsOS/ed344c5745e07a1dced8d4e0041218b2ce9dcd02/docs/images/reading.webp" alt="ThingsOS reading screen showing text, time, battery level, and reading progress" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>Reading screen rendered by the firmware with sample data</figcaption>
+</figure>
+
+## Before you start
+
+Prepare a sufficiently charged Read Pico, a computer running desktop Chrome or Edge, and a USB-C data cable. Close other webpages, flashing tools, or terminals using the device's serial port.
+
+Provide a microSD card for local books and cached WeRead content. Read Pico supports cards up to 512 GB, formatted as FAT32.
+
+## Install through the website
+
+<Steps>
+<Step>
+
+### Open the website
+
+Open the [ThingsOS website](https://thingsos.scholarcn.com/) in desktop Chrome or Edge and enter the installation wizard. Phones can browse the site and download files; online USB installation requires a computer.
+
+</Step>
+<Step>
+
+### Connect and install
+
+Connect Read Pico with a USB data cable and select its serial port in the wizard. Use a full USB installation when installing ThingsOS for the first time or switching from another system. OTA files are only for devices with a compatible ThingsOS partition layout.
+
+A full installation replaces the current system and resets internal settings, while retaining books on the microSD card. Back up important data first, then follow the installation prompts. Keep USB connected, the page open, and the computer awake until the device starts.
+
+</Step>
+<Step>
+
+### Add books and connect WeRead
+
+Copy EPUB and TXT books to the microSD card's books directory, or start the device's transfer service and upload from a phone or computer browser.
+
+For WeRead, connect to Wi-Fi, open 微读 on the device, and scan the sign-in QR code with WeChat. Sync your personal bookshelf and cache selected books on the card for offline reading.
+
+</Step>
+</Steps>
+
+## Main features
+
+### Local library and WeRead
+
+Local EPUB, TXT, and WeRead books share one library, with list and cover views. Use chapters, bookmarks, and saved progress to resume reading. WeRead supports popular highlights and book reviews. WeChat Official Account articles are coming soon.
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/flowflic/ThingsOS/ed344c5745e07a1dced8d4e0041218b2ce9dcd02/docs/images/weread-shelf.webp" alt="ThingsOS WeRead bookshelf showing sync, network and account controls, and a book list" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>WeRead bookshelf rendered by the firmware with sample data</figcaption>
+</figure>
+
+WeRead support is an unofficial integration. It only caches content your account is authorized to access; availability depends on book permissions and service interfaces.
+
+### Fonts, layout, and page turns
+
+Switch between fonts and adjust font size, weight, line spacing, and margins. Add extra TTF fonts to `/fonts` at the root of the microSD card.
+
+Enable the ripple effect for ordinary page turns and choose a periodic full-refresh interval to suit your reading preferences and clear ghosting.
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/flowflic/ThingsOS/ed344c5745e07a1dced8d4e0041218b2ce9dcd02/docs/images/reading-menu.webp" alt="ThingsOS reading menu with font size, line spacing, margins, and font selection" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>Reading layout controls rendered by the firmware with sample data</figcaption>
+</figure>
+
+### Reading history and lock screen
+
+View daily reading time, weekly trends, and a reading heatmap. Use reading statistics, a selected book cover, or your own picture on the lock screen. Put JPG and PNG wallpapers in `/wallpapers` and choose one in the power and lock-screen settings.
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/flowflic/ThingsOS/ed344c5745e07a1dced8d4e0041218b2ce9dcd02/docs/images/statistics.webp" alt="ThingsOS reading statistics with a heatmap and weekly reading time" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>Reading statistics rendered by the firmware with sample data</figcaption>
+</figure>
+
+### Wireless transfer and updates
+
+Upload books from a phone or computer browser through the device's hotspot or the same Wi-Fi network. Devices already running compatible ThingsOS can use OTA files from the device's firmware update page, following the website's instructions. See [firmware information](https://thingsos.scholarcn.com/release.json) for versions, partitions, and checksums.
+
+## Other installation options
+
+You can also follow the [repository README](https://github.com/flowflic/ThingsOS#readme) and its linked [firmware information](https://thingsos.scholarcn.com/release.json) to obtain installation files, partition details, and checksums before flashing.
+
+<GithubInfo owner="flowflic" repo="ThingsOS" />
+
+## Installation and usage help
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="Installation and Usage FAQ">Find help with SD cards, serial connections, and slow or frozen screens after installation.</Card>
+  <Card href="/docs/read_0/firmware" title="Restore the Official Demo System">Follow the build and flash instructions in DIY Your System to restore the official demo system.</Card>
+</Cards>

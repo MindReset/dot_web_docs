@@ -1,0 +1,100 @@
+---
+title: ThingsOS
+new: true
+description: 在小纸 Pico 上阅读本地 EPUB、TXT 与微信读书，查看热门划线和书评，按自己的习惯调整字体与翻页。
+---
+
+感谢 [flicker](https://github.com/flowflic) 为小纸 Pico 提供系统。
+
+ThingsOS 是面向小纸 Pico 的阅读系统，围绕本地阅读与微信读书优化界面、排版和翻页体验。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/flowflic/ThingsOS/ed344c5745e07a1dced8d4e0041218b2ce9dcd02/docs/images/reading.webp" alt="ThingsOS 阅读界面，显示正文、时间、电量和阅读进度" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>阅读界面（固件渲染预览，示例数据）</figcaption>
+</figure>
+
+## 开始之前
+
+准备电量充足的小纸 Pico、使用桌面版 Chrome 或 Edge 的电脑，以及支持数据传输的 USB-C 数据线。关闭其他占用设备串口的网页、刷写工具或终端。
+
+请准备 microSD 存储卡，用于本地书籍与微信读书缓存。小纸 Pico 最大支持 512 GB，格式为 FAT32。
+
+## 通过官网安装
+
+<Steps>
+<Step>
+
+### 打开官网
+
+在电脑的 Chrome 或 Edge 中打开 [ThingsOS 官网](https://thingsos.scholarcn.com/)，进入安装向导。手机可浏览网站和下载文件，USB 在线安装需使用电脑。
+
+</Step>
+<Step>
+
+### 连接设备并安装
+
+用 USB 数据线连接小纸 Pico，按向导选择对应串口。首次安装 ThingsOS 或从其他系统切换时，选择完整 USB 安装；OTA 仅适用于已有兼容 ThingsOS 分区布局的设备。
+
+完整安装会替换当前系统并重置设备内部设置，microSD 卡上的书籍会保留。请先备份重要数据，再按页面提示写入系统。保持 USB 连接、页面打开和电脑唤醒，等待设备启动。
+
+</Step>
+<Step>
+
+### 导入书籍并连接微信读书
+
+将 EPUB、TXT 放入 microSD 卡书籍目录，或开启设备上的传书服务，通过手机或电脑浏览器上传。
+
+使用微信读书时，先连接 Wi-Fi，在设备「微读」中用微信扫码登录，同步个人书架并将想读的书缓存到卡中。缓存完成后可离线阅读。
+
+</Step>
+</Steps>
+
+## 主要功能
+
+### 本地书库与微信读书
+
+本地 EPUB、TXT 与微信读书书籍集中在同一书库，可切换列表与封面视图，通过章节、书签和阅读进度继续阅读。微信读书支持热门划线和书评。公众号文章即将支持。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/flowflic/ThingsOS/ed344c5745e07a1dced8d4e0041218b2ce9dcd02/docs/images/weread-shelf.webp" alt="ThingsOS 微信读书书架，显示同步、网络、账号与书籍列表" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>微信读书书架（固件渲染预览，示例数据）</figcaption>
+</figure>
+
+微信读书为非官方适配，仅能缓存账号本身有权访问的内容，可用范围受书籍权限与服务接口影响。
+
+### 字体、排版与翻页
+
+可切换多种字体，并调整字号、字重、行距与页边距。额外的 TTF 字体可放入 microSD 卡根目录的 `/fonts` 文件夹。
+
+普通翻页可开启水波纹效果，也可以调整定期全刷周期，按阅读习惯平衡翻页与清残影。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/flowflic/ThingsOS/ed344c5745e07a1dced8d4e0041218b2ce9dcd02/docs/images/reading-menu.webp" alt="ThingsOS 阅读菜单，提供字号、行距、页边距与字体设置" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>阅读排版设置（固件渲染预览，示例数据）</figcaption>
+</figure>
+
+### 阅读记录与锁屏
+
+查看每日阅读时长、每周趋势和阅读热力图。锁屏可显示阅读统计、指定书籍封面或自选图片；JPG、PNG 壁纸可放入 `/wallpapers`，在电源与锁屏设置中选择。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://raw.githubusercontent.com/flowflic/ThingsOS/ed344c5745e07a1dced8d4e0041218b2ce9dcd02/docs/images/statistics.webp" alt="ThingsOS 阅读统计，包含热力图与每周阅读时长" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>阅读统计（固件渲染预览，示例数据）</figcaption>
+</figure>
+
+### 无线传书与升级
+
+通过设备热点或同一 Wi-Fi，在手机或电脑浏览器中上传书籍。已安装兼容 ThingsOS 的设备，可按官网说明在设备固件升级页面使用 OTA 文件。版本、分区信息与校验值见[固件信息](https://thingsos.scholarcn.com/release.json)。
+
+## 其他安装方式
+
+除了通过官网安装，也可以查看[仓库 README](https://github.com/flowflic/ThingsOS#readme)，按其中的安装说明与[固件信息](https://thingsos.scholarcn.com/release.json)获取安装包、分区信息和校验值，再进行刷写。
+
+<GithubInfo owner="flowflic" repo="ThingsOS" />
+
+## 安装与使用帮助
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡、串口连接和安装后卡顿等问题的处理方法。</Card>
+  <Card href="/docs/read_0/firmware" title="恢复官方演示系统">前往 DIY 你的系统，按编译与刷写步骤恢复官方演示系统。</Card>
+</Cards>

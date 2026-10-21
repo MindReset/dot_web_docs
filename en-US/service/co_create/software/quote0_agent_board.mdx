@@ -1,0 +1,43 @@
+---
+title: Quote0 Agent Board
+description: See Claude Code and Codex conversation status, requests for your attention, and remaining quota on Quote/0.
+new: true
+---
+
+<GithubInfo owner="realruian" repo="quote0-agent-board" />
+
+Quote0 Agent Board displays Claude Code and Codex activity on Quote/0. See which conversations are running, which need approval or an answer, and which finished recently.
+
+<figure className="mx-auto w-full max-w-lg">
+  <img src="https://raw.githubusercontent.com/realruian/quote0-agent-board/830fad2b8d6087c4b69006a51b26ca2bf58730dd/docs/images/list.png" alt="Quote0 Agent Board overview showing conversations, agent icons, durations, and remaining quota" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>Overview rendered with sample data</figcaption>
+</figure>
+
+### Features
+
+- **Conversation status**: Shows Claude Code and Codex conversation names, states, and durations.
+- **Requests for your attention**: Inverts the whole screen when approval, an answer, or plan confirmation is needed. Respond on your computer.
+- **Quota and battery**: Shows available quota readings, reset times, and device battery level. Quota display can be turned off.
+- **Refresh controls**: Combines changes that arrive close together and lets you set refresh intervals and quiet hours.
+- **Mac settings window**: Preview the display, choose fonts, manage conversations, and check status from the menu bar or Dock.
+
+<figure className="mx-auto w-full max-w-lg">
+  <img src="https://raw.githubusercontent.com/realruian/quote0-agent-board/830fad2b8d6087c4b69006a51b26ca2bf58730dd/docs/images/wait.png" alt="Quote0 Agent Board with an inverted screen indicating a conversation waiting for approval" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>Request for attention rendered with sample data</figcaption>
+</figure>
+
+### Getting started
+
+You need macOS 14 or later, a Quote/0 connected to the internet and external power, and Claude Code or Codex. Apple silicon and Intel Macs are supported, as are the desktop apps and command-line tools.
+
+1. Add Image API to the device's loop in the Dot. App Content Studio.
+2. Download and install the Mac app from [Releases](https://github.com/realruian/quote0-agent-board/releases/latest).
+3. Enter a [Dot. API key](/docs/service/open/get_api), choose a device, and send a test frame. Agent status updates apply to conversations started after installation.
+
+See the [README](https://github.com/realruian/quote0-agent-board#readme) for setup and uninstall instructions. The app installs agent hooks and starts at login, backing up configuration files before changing them.
+
+### Limitations
+
+Keep Quote/0 connected to external power. On battery, the screen updates only when the device wakes on its schedule. When the computer is offline or the cloud service is unavailable, the last frame remains. The app and display currently use Chinese only.
+
+Quota availability depends on the agent's sign-in state, version, and plan. After you approve a request, its alert may remain until the command finishes. Rendered frames travel through MindReset's cloud service; conversation names can be hidden in settings.

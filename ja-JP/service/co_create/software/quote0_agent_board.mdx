@@ -1,0 +1,43 @@
+---
+title: Quote0 Agent Board
+description: Claude Code と Codex の会話の状態、対応が必要な通知、残り利用枠を Quote/0 に表示します。
+new: true
+---
+
+<GithubInfo owner="realruian" repo="quote0-agent-board" />
+
+Quote0 Agent Board は、Claude Code と Codex の動作状況を Quote/0 に表示します。実行中の会話、承認や回答を待っている会話、直近で完了した会話を確認できます。
+
+<figure className="mx-auto w-full max-w-lg">
+  <img src="https://raw.githubusercontent.com/realruian/quote0-agent-board/830fad2b8d6087c4b69006a51b26ca2bf58730dd/docs/images/list.png" alt="会話、Agent のアイコン、実行時間、残り利用枠を表示する Quote0 Agent Board の一覧画面" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>一覧画面（サンプルデータによる描画）</figcaption>
+</figure>
+
+### 主な機能
+
+- **会話の状態**：Claude Code と Codex の会話名、実行状態、所要時間を表示します。
+- **対応待ちの通知**：承認、質問への回答、計画の確認が必要になると画面全体を反転します。承認や回答はパソコンで行います。
+- **利用枠とバッテリー**：取得可能な残り利用枠、リセット時刻、端末のバッテリー残量を表示します。利用枠の表示はオフにできます。
+- **更新の調整**：短時間の変更をまとめ、更新間隔や通知を控える時間帯を設定できます。
+- **Mac の設定画面**：表示のプレビュー、フォントの選択、会話の管理ができ、メニューバーや Dock のアイコンから状態を確認できます。
+
+<figure className="mx-auto w-full max-w-lg">
+  <img src="https://raw.githubusercontent.com/realruian/quote0-agent-board/830fad2b8d6087c4b69006a51b26ca2bf58730dd/docs/images/wait.png" alt="会話が承認を待っていることを全画面反転で知らせる Quote0 Agent Board" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>対応待ちの通知（サンプルデータによる描画）</figcaption>
+</figure>
+
+### 使い始めるには
+
+macOS 14 以降のパソコン、インターネットと外部電源に接続した Quote/0、Claude Code または Codex を用意してください。Apple シリコンと Intel Mac に対応し、デスクトップアプリとコマンドラインツールの両方を接続できます。
+
+1. Dot. App のコンテンツ工房で「画像 API」を端末のループに追加します。
+2. [Releases](https://github.com/realruian/quote0-agent-board/releases/latest) から Mac アプリをダウンロードしてインストールします。
+3. [Dot. API キー](/docs/service/open/get_api)を入力し、端末を選んでテスト画像を送信します。状態更新の対象はインストール後に開始した会話です。
+
+設定とアンインストールの手順は [README](https://github.com/realruian/quote0-agent-board#readme) を参照してください。アプリは Agent のフックとログイン時の自動起動を設定し、設定ファイルを変更する前にバックアップします。
+
+### 利用上の制限
+
+Quote/0 は外部電源に接続して使用してください。バッテリー駆動時は、端末が定期的に起動した時だけ表示が更新されます。パソコンがオフラインの場合やクラウドサービスを利用できない場合は、最後の画面が残ります。アプリと端末の表示は現在中国語のみです。
+
+利用枠を取得できるかどうかは、Agent のログイン状態、バージョン、プランに依存します。承認後も、実行中のコマンドが終了するまで通知が残る場合があります。描画した画像は MindReset のクラウドサービス経由で端末に届きます。会話名は設定で非表示にできます。
