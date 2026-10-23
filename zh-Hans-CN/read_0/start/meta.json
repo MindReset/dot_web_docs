@@ -1,17 +1,18 @@
 {
-    "title": "开始使用",
-    "pages": [
-        "crossmux",
-        "kiikoread",
-        "rickyos",
-        "whiteos",
-        "crosslink",
-        "justread",
-        "pico_page",
-        "aurareader",
-        "pagerest",
-        "if_ink_os",
-        "thingsos"
-    ],
-    "defaultOpen": true
+  "defaultOpen": true,
+  "title": "开始使用",
+  "pages": [
+    "crossmux",
+    "kiikoread",
+    "rickyos",
+    "whiteos",
+    "crosslink",
+    "justread",
+    "pico_page",
+    "aurareader",
+    "pagerest",
+    "if_ink_os",
+    "thingsos",
+    "take_easy"
+  ]
 }
