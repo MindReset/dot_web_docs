@@ -1,0 +1,92 @@
+---
+title: VanOS
+new: true
+description: 在小纸 Pico 上阅读存储卡中的书籍，用触控手势翻页、查看目录、保存书签与摘录，并自定义字体、版式和阅读背景。
+---
+
+感谢 [VanOS 开发者](https://vanos.pages.dev/) 为小纸 Pico 提供系统。
+
+VanOS 是面向小纸 Pico 的阅读系统。你可以从书架继续阅读，通过点击与滑动完成翻页和菜单操作，并按自己的习惯调整阅读界面。
+
+<figure className="mx-auto w-full max-w-xs">
+  <CustomCloudImage osSrc="dot/docs/library-full_1792766291129.png" alt="VanOS 首页，展示在读图书封面与竖排书脊书架" width={684} height={1216} />
+  <figcaption>首页与书架</figcaption>
+</figure>
+
+## 开始之前
+
+准备电量充足的小纸 Pico、使用桌面版 Chrome 或 Edge 的电脑，以及支持数据传输的 USB-C 数据线。关闭其他占用设备串口的网页、刷写工具或终端。
+
+请准备 microSD 存储卡，用于保存书籍、字体和图片。小纸 Pico 最大支持 512 GB，格式为 FAT32。
+
+官网采用整片刷写，会替换当前系统并重置设备内部设置，microSD 卡上的书库不受影响。请先保存需要保留的设置和重要数据。
+
+## 通过官网安装
+
+<Steps>
+<Step>
+
+### 打开官网
+
+在电脑的 Chrome 或 Edge 中打开 [VanOS 官网](https://vanos.pages.dev/)，找到「USB 刷入」。当前版本与变化可在官网的「更新日志」中查看。
+
+</Step>
+<Step>
+
+### 连接设备并安装
+
+用 USB 数据线连接小纸 Pico，点击「USB 刷入」，在浏览器弹窗中选择设备对应的串口。选择串口后，网页会开始刷写。
+
+保持 USB 连接、页面打开和电脑唤醒，等待写入完成。官网说明刷写完成后设备会自动复位。
+
+</Step>
+<Step>
+
+### 准备书籍与字体
+
+将 microSD 卡插入设备，按设备传书页面的提示导入书籍与字体，再从书架打开图书。
+
+内置字体仅覆盖常用字。如遇缺字，可从 [VanOS 官网](https://vanos.pages.dev/)下载朱雀仿宋字体，在卡内创建 `VanOS/fonts` 文件夹，并将文件保存为 `VanOS/fonts/朱雀仿宋.ttf`。保留此文件名时，开机会直接使用；若修改文件名，请在「阅读设置 → 字体」中手动选择。
+
+</Step>
+</Steps>
+
+## 主要功能
+
+### 书架与触控阅读
+
+首页显示正在阅读的图书与封面，书架以竖排书脊展示图书，可左右滑动切换。
+
+阅读时，点按右侧翻到下一页，点按左侧返回上一页；从屏幕下方向上滑打开阅读菜单，从上方向下滑查看目录。长按正文可选中一行，进行签名或摘录操作。也可以保存书签，之后继续阅读。
+
+<figure className="mx-auto w-full max-w-xs">
+  <CustomCloudImage osSrc="dot/docs/reader_1792766291129.png" alt="VanOS 阅读界面，展示正文、时间、电量与阅读进度" width={684} height={1216} />
+  <figcaption>阅读界面</figcaption>
+</figure>
+
+### 字体与阅读版式
+
+阅读菜单按文字、版心、断行、外观和显示分组。可以调整字体、字重、页边距、行距、字间距、段间距与首行缩进，阅读历史中可查看时长和进度。
+
+<figure className="mx-auto w-full max-w-xs">
+  <CustomCloudImage osSrc="dot/docs/menu_1792766291129.png" alt="VanOS 阅读菜单，展示页边距、行距、段间距与首行缩进设置" width={684} height={1216} />
+  <figcaption>阅读菜单与版式设置</figcaption>
+</figure>
+
+### 阅读背景与系统设置
+
+阅读背景可按书保存。将 PNG 或 JPG 图片放入卡内的 `VanOS/BACKGROUND/` 文件夹，再在「阅读菜单 → 显示 → 阅读背景」中选择。关机壁纸从设备的文件管理中设置。
+
+设置页可调整系统字体、图片对比、自动休眠和拿起唤醒，并查看存储卡状态与系统信息。还可使用 Wi-Fi 传书与联网校时。长按中间触摸按键可进行整屏刷新，清除残影。
+
+<figure className="mx-auto w-full max-w-xs">
+  <CustomCloudImage osSrc="dot/docs/settings_1792766291127.png" alt="VanOS 设置页，展示显示、系统、存储与关于信息" width={684} height={1216} />
+  <figcaption>系统设置</figcaption>
+</figure>
+
+## 安装与使用帮助
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡、串口连接和安装后卡顿等问题的处理方法。</Card>
+  <Card href="/docs/read_0/firmware" title="恢复官方演示系统">前往 DIY 你的系统，按编译与刷写步骤恢复官方演示系统。</Card>
+</Cards>

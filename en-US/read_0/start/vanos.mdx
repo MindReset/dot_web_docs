@@ -1,0 +1,92 @@
+---
+title: VanOS
+new: true
+description: Read books from a microSD card on Read Pico, use touch gestures to turn pages, browse chapters, save bookmarks and excerpts, and customize fonts, layout, and reading backgrounds.
+---
+
+Thank you to the [VanOS developer](https://vanos.pages.dev/) for providing a system for Read Pico.
+
+VanOS is a reading system for Read Pico. Resume books from the bookshelf, use taps and swipes for page turns and menus, and adjust the reading interface to your preferences.
+
+<figure className="mx-auto w-full max-w-xs">
+  <CustomCloudImage osSrc="dot/docs/library-full_1792766291129.png" alt="VanOS home screen with the current book cover and a bookshelf of vertical book spines" width={684} height={1216} />
+  <figcaption>Home screen and bookshelf</figcaption>
+</figure>
+
+## Before you start
+
+Prepare a sufficiently charged Read Pico, a computer running desktop Chrome or Edge, and a USB-C data cable. Close other webpages, flashing tools, or terminals using the device's serial port.
+
+Prepare a microSD card for books, fonts, and images. Read Pico supports cards up to 512 GB, formatted as FAT32.
+
+The website performs a full flash, replacing the current system and resetting internal device settings. The library on the microSD card is unaffected. Save any settings and important data you want to keep before installing.
+
+## Install through the website
+
+<Steps>
+<Step>
+
+### Open the website
+
+Open the [VanOS website](https://vanos.pages.dev/) in desktop Chrome or Edge and find USB 刷入 (USB Flash). See 更新日志 (Changelog) for the current version and changes.
+
+</Step>
+<Step>
+
+### Connect and install
+
+Connect Read Pico with a USB data cable, click USB 刷入 (USB Flash), and select the device's serial port in the browser dialog. Flashing starts after you select the port.
+
+Keep USB connected, the page open, and the computer awake until writing finishes. According to the website, the device resets automatically when flashing is complete.
+
+</Step>
+<Step>
+
+### Prepare books and fonts
+
+Insert the microSD card, follow the device's file-transfer page to import books and fonts, then open a book from the bookshelf.
+
+The built-in font covers only common characters. If characters are missing, download the 朱雀仿宋 font from the [VanOS website](https://vanos.pages.dev/). Create a `VanOS/fonts` folder on the card and save the file as `VanOS/fonts/朱雀仿宋.ttf`. Keeping this filename applies the font at startup. If you rename it, select it manually in 阅读设置 → 字体 (Reading Settings → Font).
+
+</Step>
+</Steps>
+
+## Main features
+
+### Bookshelf and touch reading
+
+The home screen shows the current book and its cover. The bookshelf uses vertical book spines, with horizontal swipes to browse more books.
+
+While reading, tap the right side to advance and the left side to go back. Swipe up from the lower part of the screen to open the reading menu, or swipe down from the upper part to open the table of contents. Hold a line of text to select it for a signature or excerpt. Save bookmarks to return to later.
+
+<figure className="mx-auto w-full max-w-xs">
+  <CustomCloudImage osSrc="dot/docs/reader_1792766291129.png" alt="VanOS reading screen showing text, time, battery level, and reading progress" width={684} height={1216} />
+  <figcaption>Reading screen</figcaption>
+</figure>
+
+### Fonts and reading layout
+
+The reading menu groups options into text, page layout, line breaking, appearance, and display. Adjust the font, weight, margins, line spacing, character spacing, paragraph spacing, and first-line indentation. Reading history shows time spent and progress.
+
+<figure className="mx-auto w-full max-w-xs">
+  <CustomCloudImage osSrc="dot/docs/menu_1792766291129.png" alt="VanOS reading menu with margin, line spacing, paragraph spacing, and first-line indentation settings" width={684} height={1216} />
+  <figcaption>Reading menu and layout settings</figcaption>
+</figure>
+
+### Reading backgrounds and system settings
+
+Reading backgrounds are saved per book. Place PNG or JPG images in `VanOS/BACKGROUND/` on the card, then select one in 阅读菜单 → 显示 → 阅读背景 (Reading Menu → Display → Reading Background). Set shutdown wallpaper through the device's file manager.
+
+Settings include the system font, image contrast, automatic sleep, and pickup wake, along with card status and system information. Wi-Fi file transfer and network time synchronization are also available. Hold the middle touch key to perform a full-screen refresh and clear ghosting.
+
+<figure className="mx-auto w-full max-w-xs">
+  <CustomCloudImage osSrc="dot/docs/settings_1792766291127.png" alt="VanOS settings screen showing display, system, storage, and device information" width={684} height={1216} />
+  <figcaption>System settings</figcaption>
+</figure>
+
+## Installation and usage help
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="Installation and Usage FAQ">Find help with SD cards, serial connections, and slow or frozen screens after installation.</Card>
+  <Card href="/docs/read_0/firmware" title="Restore the Official Demo System">Follow the build and flash instructions in DIY Your System to restore the official demo system.</Card>
+</Cards>

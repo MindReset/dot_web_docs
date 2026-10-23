@@ -1,5 +1,5 @@
 {
     "title": "Getting Started",
-    "pages": ["crossmux", "kiikoread", "rickyos", "whiteos", "crosslink", "justread", "pico_page", "aurareader", "pagerest", "if_ink_os", "thingsos", "take_easy"],
+    "pages": ["crossmux", "kiikoread", "rickyos", "whiteos", "crosslink", "justread", "pico_page", "aurareader", "pagerest", "if_ink_os", "thingsos", "take_easy", "vanos"],
     "defaultOpen": true
 }
