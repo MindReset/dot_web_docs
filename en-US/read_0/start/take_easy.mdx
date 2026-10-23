@@ -1,0 +1,104 @@
+---
+title: Take Easy
+new: true
+description: Read EPUB and TXT books on Read Pico, transfer files over USB or Wi-Fi, use weather, notes, and a Pomodoro timer, and customize reading layouts and the lock screen.
+---
+
+Thank you to [takeeasy-cui](https://github.com/takeeasy-cui) for providing a system for Read Pico.
+
+Take Easy is a third-party reading system for Read Pico, with a local library, Chinese text input, weather, and everyday tools. You can adjust reading layouts and the lock screen to suit your preferences.
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://take-easy.pages.dev/images/home.png" alt="Take Easy home screen showing reading data and check-in records" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>Take Easy home screen</figcaption>
+</figure>
+
+## Before you start
+
+Prepare a sufficiently charged Read Pico, a computer running desktop Chrome or Edge, and a USB-C data cable. Close other webpages, flashing tools, or terminals using the device's serial port.
+
+A FAT32-formatted microSD card is recommended for books and fonts. Back up important data before installation.
+
+Installation replaces the current system. When updating Take Easy, leave “Erase device” (擦除设备) unchecked in the installation dialog to retain device settings and reading history. Checking it erases internal device data. Files on the microSD card are unaffected.
+
+V1.0.2 changed the partition layout. When upgrading from an earlier version, the internal book storage is recreated, so books stored internally must be transferred again.
+
+## Install through the website
+
+<Steps>
+<Step>
+
+### Open the installation page
+
+Open the [Take Easy website](https://take-easy.pages.dev/) in desktop Chrome or Edge, then go to the [online installation page](https://take-easy.pages.dev/install/). Check that page for the version and installation requirements.
+
+</Step>
+<Step>
+
+### Connect and install
+
+Connect Read Pico with a USB data cable, click the connection button, and select the device's serial port in the browser dialog. Review the installation checklist and the “Erase device” option, then follow the prompts to install.
+
+Keep USB connected, the page open, and the computer awake until installation finishes and the device restarts automatically. The input method dictionary is included; no separate import is needed.
+
+If the serial port is missing, wake the device, keep USB connected, exit USB card-reader mode, and close other programs using the port. If necessary, enter BOOT mode through 设置 → 升级和恢复 (Settings → Upgrade and recovery) on the device, then try again.
+
+</Step>
+<Step>
+
+### Add books and fonts
+
+Copy EPUB and TXT files to `Books/` on the microSD card, and TTF or OTF fonts to `Fonts/`. Open a book from the bookshelf.
+
+You can also enable USB file transfer on the device and copy files from a computer. For Wi-Fi transfer, enable it on the device, connect your phone or computer to the same network, and open the address shown on the device in a browser to upload. For hotspot transfer, follow the device's prompts to connect and upload.
+
+The built-in font contains only some common Chinese characters. If characters appear as squares, add a font with full Chinese character coverage to `Fonts/` and select it in the reading layout menu.
+
+</Step>
+</Steps>
+
+## Main features
+
+### Local reading and layout
+
+Read EPUB and TXT books, browse covers, and view reading progress. Adjust font, size, weight, line spacing, paragraph spacing, and margins. Choose portrait, landscape, vertical text, or inverted layouts. The reading data panel shows reading time and progress.
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://take-easy.pages.dev/images/shelf.png" alt="Take Easy bookshelf showing book covers and reading progress" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>Bookshelf</figcaption>
+</figure>
+
+### Weather, notes, and tools
+
+Switch the home-screen widget between weather, a traditional Chinese almanac, a wooden fish tapping tool, and quick notes. Open apps such as notes, a Pomodoro timer, and a calculator. Choose 心知, 和风, or 彩云 as the weather provider, then configure the location and API key.
+
+Chinese text input supports full Pinyin and a nine-key Pinyin keyboard, with candidate paging, predictive input, and a user dictionary.
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://take-easy.pages.dev/images/apps.png" alt="Take Easy apps screen" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>Apps and tools</figcaption>
+</figure>
+
+### Lock screen and personalization
+
+Choose a ticket-style, wallpaper, clock, or calculator lock screen, and set a lock-screen password. Add your own lock-screen images to `LockScreens/` on the microSD card.
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://take-easy.pages.dev/images/lockscreen.png" alt="Take Easy lock-screen style selection" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>Lock-screen styles</figcaption>
+</figure>
+
+## Usage and updates
+
+See the [official usage guide](https://take-easy.pages.dev/docs/) for controls, file directories, and configuration backups. To update, return to the [online installation page](https://take-easy.pages.dev/install/) and reinstall. First review its data-retention conditions and the [changelog](https://take-easy.pages.dev/changelog/).
+
+Take Easy is based on MindReset's Read Pico demo firmware and [kiikoread](/docs/read_0/start/kiikoread), with an input method from YanReader.
+
+<GithubInfo owner="takeeasy-cui" repo="take-easy" />
+
+## Installation and usage help
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="Installation and Usage FAQ">Find help with SD cards, serial connections, and slow or frozen screens after installation.</Card>
+  <Card href="/docs/read_0/firmware" title="Restore the Official Demo System">Follow the build and flash instructions in DIY Your System to restore the official demo system.</Card>
+</Cards>

@@ -1,0 +1,40 @@
+---
+title: マカオバス到着案内
+description: マカオのバスの残り停留所数、到着予測時間、コタイの天気を Quote/0 に表示します。
+new: true
+---
+
+<GithubInfo owner="csloz" repo="macau-bus" />
+
+Macau Bus Tool は、マカオのバスの到着情報を Quote/0 に表示します。路線と停留所を選ぶと、最寄りのバスがあと何停留所で到着するか、到着予測時間、後続のバス、現在の天気を確認できます。
+
+<figure className="mx-auto w-full max-w-lg">
+  <img src="https://raw.githubusercontent.com/csloz/macau-bus/e105bfb60271670d5381582c338c1c4e840cd108/docs/quote0_output_example.jpg" alt="壁に取り付けた Quote/0 にマカオのバス到着情報を表示" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>Quote/0 実機でのバス到着情報の表示</figcaption>
+</figure>
+
+### 主な機能
+
+- **バスの運行状況**：マカオ交通事務局 DSAT のデータから、最寄りのバスと後続のバスの残り停留所数を表示します。
+- **距離と到着時間の推定**：停留所の座標を使って距離と到着時間を推定します。時間を推定できない場合は残り停留所数を表示します。
+- **天気と他の路線**：コタイの現在の気温、湿度、天気と、同じ停留所を通る他の路線を表示します。
+- **定期更新**：cron による定期送信とサイレント実行に対応します。画像モードではローカルにプレビューも保存します。
+
+### 使い始めるには
+
+Python 3 を実行できるパソコンまたはサーバー、インターネットに接続した Quote/0、[Dot. API キー](/docs/service/open/get_api)、端末 ID を用意してください。
+
+1. [ソースコード](https://github.com/csloz/macau-bus)をダウンロードします。画像モードには Pillow と DejaVu フォントが必要です。
+2. `~/.hermes/.env` に `QUOTE0_DEVICE_ID` と `QUOTE0_API_KEY` を設定します。`quote0_send_bus.py` の `SCRIPT` とフォントのディレクトリを実際の配置に合わせて変更してください。照会スクリプトの既定パスは `~/.hermes/macau_bus_arrivals.py` です。
+3. Dot. App のコンテンツ工房で「画像 API」を端末のループに追加します。テキストモードを使う場合は「テキスト API」を追加します。
+4. プロジェクトのディレクトリで実行します。路線と停留所は必要に応じて変更してください。
+
+```bash
+python3 quote0_send_bus.py 51A T394
+```
+
+既定では 296 × 152 ピクセルのモノクロ画像を生成します。`--text` でテキストモード、`--silent` でコマンドライン出力を抑制できます。定期実行の設定とその他の照会方法は [README](https://github.com/csloz/macau-bus#readme) を参照してください。
+
+### 利用上の注意
+
+到着時間は停留所の座標と固定の平均速度による推定で、公式の到着予測ではありません。天気の地点は既定でコタイです。更新には、実行するパソコンまたはサーバーがオンラインで、DSAT、Open-Meteo、Dot. API に接続できる必要があります。

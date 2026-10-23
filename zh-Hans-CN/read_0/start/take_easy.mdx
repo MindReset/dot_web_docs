@@ -1,59 +1,98 @@
 ---
 title: Take Easy
 new: true
-description: 「放轻松」主题阅读固件：EPUB / TXT 阅读与多路传书，天气、便签、木鱼、番茄钟等小应用，中文输入开箱即用。
+description: 在小纸 Pico 上阅读 EPUB、TXT，通过 USB 或 Wi-Fi 传书，使用天气、便签、番茄钟等小工具，并自定义排版与锁屏。
 ---
+
+感谢 [takeeasy-cui](https://github.com/takeeasy-cui) 为小纸 Pico 提供系统。
+
+Take Easy 是面向小纸 Pico 的第三方阅读系统，提供本地书库、中文输入、天气与日常小工具，可按自己的习惯调整排版和锁屏。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://take-easy.pages.dev/images/home.png" alt="Take Easy 首页，显示阅读数据与打卡记录" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>Take Easy 首页</figcaption>
+</figure>
 
 ## 开始之前
 
-准备一台电脑、桌面版 Chrome 或 Edge 浏览器，以及一根支持数据传输的 USB-C 数据线。
+准备电量充足的小纸 Pico、使用桌面版 Chrome 或 Edge 的电脑，以及支持数据传输的 USB-C 数据线。关闭其他占用设备串口的网页、刷写工具或终端。
 
-建议准备 microSD 存储卡（FAT32）：书籍放在 Books/ 目录、中文字体放在 Fonts/ 目录。刷写会写入引导程序、分区表、应用与输入法词库，默认保留设备设置（安装弹窗里不要勾选「擦除设备」），TF 卡不受影响；从旧版本 Take Easy 升级时机内书区会重建一次，TF 卡书籍与设置不受影响。
+建议准备 FAT32 格式的 microSD 存储卡，用于存放书籍和字体。安装前先备份重要数据。
 
-![Take Easy 首页](https://take-easy.pages.dev/images/home.png)
+安装会替换当前系统。更新 Take Easy 时，不勾选安装弹窗中的「擦除设备」可保留设备设置与阅读记录；勾选后会清除设备内部数据。microSD 卡上的文件不受影响。
+
+V1.0.2 更新了分区布局。从更早版本升级时，机内书区会重建，保存在机内的书籍需要重新传入。
+
+## 通过官网安装
 
 <Steps>
 <Step>
 
-### 打开刷机页并连接设备
+### 打开安装页面
 
-在电脑的 Chrome 或 Edge 中打开 [Take Easy 在线刷机页](https://take-easy.pages.dev/install/)，点击「连接小纸 Pico，刷入最新版」，在浏览器弹窗中选择小纸 Pico 的串口。
+在电脑的 Chrome 或 Edge 中打开 [Take Easy 官网](https://take-easy.pages.dev/)，进入[在线安装页面](https://take-easy.pages.dev/install/)。版本与安装要求以页面显示为准。
+
+</Step>
+<Step>
+
+### 连接设备并安装
+
+用 USB 数据线连接小纸 Pico，点击连接按钮，在浏览器弹窗中选择设备串口。确认安装清单和「擦除设备」选项后，按页面提示开始写入。
+
+保持 USB 连接、页面打开和电脑唤醒，等待写入完成、设备自动重启。输入法词库随安装写入，无需另行导入。
 
 找不到串口时，先唤醒设备并保持 USB 连接，退出设备的 USB 读卡模式，关闭占用串口的其他程序；必要时在设备「设置 → 升级和恢复」进入 BOOT 模式后重试。
 
 </Step>
 <Step>
 
-### 刷入固件
+### 导入书籍和字体
 
-确认安装清单后开始写入，约 1–2 分钟，依次写入引导程序、分区表、系统与输入法词库（精简版随刷机内置，中文输入开箱即用，无需另行导入）。完成后设备自动重启；期间保持页面打开、数据线不动、电脑不睡眠。
+将 EPUB、TXT 文件放入 microSD 卡的 `Books/` 文件夹，将 TTF、OTF 字体放入 `Fonts/` 文件夹，再从书架打开书籍。
 
-</Step>
-<Step>
+也可开启设备的 USB 文件传输，通过电脑复制文件；或开启 Wi-Fi 传书，让手机或电脑连接同一网络，在浏览器中打开设备显示的地址上传。使用设备热点传书时，按屏幕提示连接并上传。
 
-### 放入书籍并开始阅读
-
-把 TXT / EPUB 文件放进存储卡 Books/ 目录，中文字体放进 Fonts/ 目录，回到书架即可看到并打开。除 USB 读卡外，还支持 WiFi / 热点 / 微信等多路传书，在设备上开启传书后按提示上传。
-
-![书架与阅读](https://take-easy.pages.dev/images/shelf.png)
-
-</Step>
-<Step>
-
-### 探索更多功能
-
-首页天气（支持心知 / 和风 / 彩云数据源）、便签、木鱼、番茄钟、计算器等小应用，四款锁屏样式与主题设置；游戏包放入存储卡 games 目录即可游玩。
-
-![应用与小工具](https://take-easy.pages.dev/images/apps.png)
-
-![锁屏样式](https://take-easy.pages.dev/images/lockscreen.png)
+内置字体只包含部分常用汉字。若文字显示为方框，请将完整的中文字体放入 `Fonts/`，并在阅读排版菜单中切换。
 
 </Step>
 </Steps>
 
-## 源码与参与贡献
+## 主要功能
 
-Take Easy 是开源项目，欢迎克隆或 Fork 仓库查看源码、提交 Issue 与 Pull Request，也可以从 Releases 下载固件按说明安装。
+### 本地阅读与排版
+
+阅读 EPUB、TXT，查看书籍封面和阅读进度。可调整字体、字号、字重、行距、段距与页边距，并切换竖屏、横屏、竖排或倒转版式。阅读数据面板可查看阅读时长与进度。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://take-easy.pages.dev/images/shelf.png" alt="Take Easy 书架，显示图书封面与阅读进度" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>书架</figcaption>
+</figure>
+
+### 天气、便签与小工具
+
+首页可切换天气、黄历、木鱼和随心记小组件，也可打开便签、番茄钟、计算器等应用。天气可选择心知、和风或彩云数据源，并配置地点与密钥。
+
+中文输入支持全拼和九宫格拼音，可翻页选择候选词，并使用联想输入与用户词典。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://take-easy.pages.dev/images/apps.png" alt="Take Easy 应用页面" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>应用与小工具</figcaption>
+</figure>
+
+### 锁屏与个性化
+
+可选择票根、壁纸、时钟或计算器四种锁屏样式，并设置锁屏密码。自选锁屏图片可放入 microSD 卡的 `LockScreens/` 文件夹。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://take-easy.pages.dev/images/lockscreen.png" alt="Take Easy 锁屏样式选择页面" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>锁屏样式</figcaption>
+</figure>
+
+## 使用说明与更新
+
+按键操作、文件目录与配置备份见[官网使用说明](https://take-easy.pages.dev/docs/)。更新系统时，可回到[在线安装页面](https://take-easy.pages.dev/install/)重新安装；请先查看安装提示中的数据保留条件与[更新日志](https://take-easy.pages.dev/changelog/)。
+
+Take Easy 基于 MindReset 小纸 Pico 官方示例固件与 [kiikoread](/docs/read_0/start/kiikoread) 开发，输入法引用 YanReader。
 
 <GithubInfo owner="takeeasy-cui" repo="take-easy" />
 
@@ -63,7 +102,3 @@ Take Easy 是开源项目，欢迎克隆或 Fork 仓库查看源码、提交 Iss
   <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡、串口连接和安装后卡顿等问题的处理方法。</Card>
   <Card href="/docs/read_0/firmware" title="恢复官方演示系统">前往 DIY 你的系统，按编译与刷写步骤恢复官方演示系统。</Card>
 </Cards>
-
-## 致谢
-
-感谢 [MindReset](https://github.com/MindReset) 官方示例固件、上游 [kiikoread](https://github.com/wegooo-cell/read-pico-reader) 与 YanReader 输入法为小纸 Pico 提供的基石，Take Easy 基于以上项目修改开发。

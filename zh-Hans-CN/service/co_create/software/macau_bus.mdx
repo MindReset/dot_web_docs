@@ -1,0 +1,40 @@
+---
+title: 澳门巴士到站看板
+description: 在 Quote/0 上查看澳门巴士距离站点的站数、预计到站时间和路氹城天气。
+new: true
+---
+
+<GithubInfo owner="csloz" repo="macau-bus" />
+
+Macau Bus Tool 把澳门巴士到站信息显示在 Quote/0 上。选择线路和站点后，就能查看最近一班车还有几站、预计多久到达，以及后续班次和天气。
+
+<figure className="mx-auto w-full max-w-lg">
+  <img src="https://raw.githubusercontent.com/csloz/macau-bus/e105bfb60271670d5381582c338c1c4e840cd108/docs/quote0_output_example.jpg" alt="安装在墙上的 Quote/0 显示澳门巴士到站信息" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>Quote/0 实机显示巴士到站信息</figcaption>
+</figure>
+
+### 功能特性
+
+- **到站信息**：从澳门交通事务局 DSAT 获取巴士动态，显示最近一班车和下一班车距离站点的站数。
+- **距离与时间估算**：结合站点坐标估算距离和到站时间；无法估算时间时显示剩余站数。
+- **天气与其他线路**：显示路氹城当前温度、湿度、天气状况，以及同一站点的其他线路。
+- **定时更新**：可通过 cron 定时推送，支持静默运行；图像模式会保存本地预览。
+
+### 开始使用
+
+准备一台能运行 Python 3 的电脑或服务器、一台已联网的 Quote/0，以及 [Dot. API 密钥](/docs/service/open/get_api)和设备 ID。
+
+1. 下载[项目源码](https://github.com/csloz/macau-bus)，图像模式需安装 Pillow，并准备 DejaVu 字体。
+2. 在 `~/.hermes/.env` 中填写 `QUOTE0_DEVICE_ID` 和 `QUOTE0_API_KEY`。按实际安装位置调整 `quote0_send_bus.py` 中的 `SCRIPT` 和字体目录；默认查询脚本路径为 `~/.hermes/macau_bus_arrivals.py`。
+3. 在 Dot. App 内容工坊中，将「图像 API」加入设备的循环列表。使用文本模式时需添加「文本 API」。
+4. 在项目目录中运行，按需替换线路和站点：
+
+```bash
+python3 quote0_send_bus.py 51A T394
+```
+
+默认生成 296 × 152 黑白画面。添加 `--text` 使用文本模式，添加 `--silent` 静默运行。定时更新配置与更多查询方式见[项目 README](https://github.com/csloz/macau-bus#readme)。
+
+### 使用说明
+
+到站时间根据站点坐标和固定平均车速估算，仅供参考，并非官方到站预测。天气地点默认为路氹城。更新需要运行脚本的电脑或服务器持续联网，并能访问 DSAT、Open-Meteo 和 Dot. API。

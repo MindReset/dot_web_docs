@@ -1,0 +1,40 @@
+---
+title: Macau Bus Tool
+description: See Macau bus stops remaining, estimated arrival times, and Cotai weather on Quote/0.
+new: true
+---
+
+<GithubInfo owner="csloz" repo="macau-bus" />
+
+Macau Bus Tool displays Macau bus arrival information on Quote/0. Choose a route and stop to see how many stops away the nearest bus is, its estimated arrival time, the following bus, and current weather.
+
+<figure className="mx-auto w-full max-w-lg">
+  <img src="https://raw.githubusercontent.com/csloz/macau-bus/e105bfb60271670d5381582c338c1c4e840cd108/docs/quote0_output_example.jpg" alt="A wall-mounted Quote/0 displaying Macau bus arrival information" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>Bus arrival information on a Quote/0 device</figcaption>
+</figure>
+
+### Features
+
+- **Live bus information**: Uses Macau's DSAT data to show how many stops away the nearest and following buses are.
+- **Distance and arrival estimates**: Estimates distance and arrival time from stop coordinates. Shows stops remaining when an arrival estimate is unavailable.
+- **Weather and other routes**: Shows Cotai's current temperature, humidity, and weather conditions, plus other routes serving the stop.
+- **Scheduled updates**: Run with cron for regular updates, with a silent option. Image mode also saves a local preview.
+
+### Getting started
+
+You need a computer or server running Python 3, an online Quote/0, a [Dot. API key](/docs/service/open/get_api), and the device ID.
+
+1. Download the [source code](https://github.com/csloz/macau-bus). For image mode, install Pillow and provide DejaVu fonts.
+2. Set `QUOTE0_DEVICE_ID` and `QUOTE0_API_KEY` in `~/.hermes/.env`. Adjust `SCRIPT` and the font directory in `quote0_send_bus.py` to match your installation. The query script defaults to `~/.hermes/macau_bus_arrivals.py`.
+3. Add Image API to the device's loop in the Dot. App Content Studio. Add Text API if using text mode.
+4. Run from the project directory, replacing the route and stop as needed:
+
+```bash
+python3 quote0_send_bus.py 51A T394
+```
+
+The default mode renders a 296 × 152 monochrome image. Add `--text` for text mode or `--silent` to suppress command-line output. See the [README](https://github.com/csloz/macau-bus#readme) for scheduling and other queries.
+
+### Usage notes
+
+Arrival times are estimates based on stop coordinates and a fixed average speed, rather than official arrival predictions. The weather location defaults to Cotai. Updates require the host computer or server to stay online with access to DSAT, Open-Meteo, and the Dot. API.

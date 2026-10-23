@@ -1,0 +1,104 @@
+---
+title: Take Easy
+new: true
+description: Read Pico で EPUB・TXT を読み、USB や Wi-Fi で書籍を転送できます。天気、メモ、ポモドーロタイマーを使い、組版やロック画面も調整できます。
+---
+
+Read Pico 向けにシステムを提供してくださった [takeeasy-cui](https://github.com/takeeasy-cui) に感謝します。
+
+Take Easy は Read Pico 向けのサードパーティ製読書システムです。ローカル書庫、中国語入力、天気、日常の小さなツールを備え、組版とロック画面を好みに合わせて調整できます。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://take-easy.pages.dev/images/home.png" alt="読書データと読書日の記録を表示する Take Easy のホーム画面" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>Take Easy のホーム画面</figcaption>
+</figure>
+
+## はじめる前に
+
+十分に充電した Read Pico、デスクトップ版 Chrome または Edge を使えるパソコン、データ転送に対応した USB-C ケーブルを用意してください。端末のシリアルポートを使用している別のページ、書き込みツール、ターミナルは閉じてください。
+
+書籍とフォントの保存用に、FAT32 形式の microSD カードを推奨します。インストール前に重要なデータをバックアップしてください。
+
+インストールすると現在のシステムが置き換わります。Take Easy の更新時は、インストール画面の「擦除设备」（端末を消去）にチェックを入れなければ、端末設定と読書記録が保持されます。チェックを入れると端末内部のデータが消去されます。microSD カード上のファイルには影響しません。
+
+V1.0.2 ではパーティション構成が変更されています。それ以前のバージョンから更新すると、端末内部の書籍保存領域が再作成されるため、内部に保存した書籍は再転送が必要です。
+
+## 公式サイトからインストールする
+
+<Steps>
+<Step>
+
+### インストールページを開く
+
+パソコンの Chrome または Edge で [Take Easy 公式サイト](https://take-easy.pages.dev/)を開き、[オンラインインストールページ](https://take-easy.pages.dev/install/)に進みます。バージョンとインストール条件は、そのページで確認してください。
+
+</Step>
+<Step>
+
+### 端末を接続してインストールする
+
+Read Pico を USB データケーブルで接続し、接続ボタンを押して、ブラウザーのダイアログで端末のシリアルポートを選びます。インストール内容と「擦除设备」の選択状態を確認し、画面の案内に従って書き込みます。
+
+USB 接続とページを維持し、パソコンをスリープさせず、書き込みの完了と端末の自動再起動を待ってください。入力用の辞書は同時に書き込まれるため、別途取り込む必要はありません。
+
+シリアルポートが見つからない場合は、USB 接続を保ったまま端末をスリープから復帰させ、USB カードリーダーモードを終了し、ポートを使用している別のプログラムを閉じてください。必要に応じて、端末の「设置 → 升级和恢复」（設定 → 更新と復元）から BOOT モードに入り、再接続してください。
+
+</Step>
+<Step>
+
+### 書籍とフォントを入れる
+
+EPUB・TXT ファイルを microSD カードの `Books/` フォルダに、TTF・OTF フォントを `Fonts/` フォルダにコピーし、本棚から書籍を開きます。
+
+端末の USB ファイル転送を有効にして、パソコンからコピーすることもできます。Wi-Fi 転送では、端末で転送機能を起動し、スマートフォンやパソコンを同じネットワークに接続して、端末に表示されるアドレスをブラウザーで開き、アップロードします。端末のアクセスポイントを使う場合は、画面の案内に従って接続し、アップロードしてください。
+
+内蔵フォントには一部の常用漢字しか含まれていません。文字が四角で表示される場合は、中国語の文字を十分に収録したフォントを `Fonts/` に入れ、読書画面の組版メニューで切り替えてください。
+
+</Step>
+</Steps>
+
+## 主な機能
+
+### ローカル読書と組版
+
+EPUB・TXT を読み、表紙と読書進捗を確認できます。フォント、文字サイズ、太さ、行間、段落間隔、余白を調整し、縦向き、横向き、縦書き、上下反転のレイアウトを選べます。読書データ画面では読書時間と進捗を確認できます。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://take-easy.pages.dev/images/shelf.png" alt="書籍の表紙と読書進捗を表示する Take Easy の本棚" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>本棚</figcaption>
+</figure>
+
+### 天気、メモ、小さなツール
+
+ホーム画面のウィジェットを天気、中国の伝統的な暦、木魚、クイックメモに切り替えられます。メモ、ポモドーロタイマー、電卓などのアプリも利用できます。天気の情報源は「心知」「和风」「彩云」から選択し、場所と API キーを設定できます。
+
+中国語入力はフルピンインと9キーのピンインキーボードに対応しています。候補のページ切り替え、予測入力、ユーザー辞書も利用できます。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://take-easy.pages.dev/images/apps.png" alt="Take Easy のアプリ画面" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>アプリとツール</figcaption>
+</figure>
+
+### ロック画面とカスタマイズ
+
+チケット風、壁紙、時計、電卓の4種類からロック画面を選び、ロック画面のパスワードも設定できます。好きなロック画面用画像は microSD カードの `LockScreens/` フォルダに入れます。
+
+<figure className="mx-auto w-full max-w-xs">
+  <img src="https://take-easy.pages.dev/images/lockscreen.png" alt="Take Easy のロック画面スタイル選択" loading="lazy" className="m-0 h-auto w-full rounded-lg border" />
+  <figcaption>ロック画面のスタイル</figcaption>
+</figure>
+
+## 使い方と更新
+
+操作方法、ファイルの保存先、設定のバックアップは[公式の使用ガイド](https://take-easy.pages.dev/docs/)を参照してください。更新するには[オンラインインストールページ](https://take-easy.pages.dev/install/)で再インストールします。先にインストール時のデータ保持条件と[更新履歴](https://take-easy.pages.dev/changelog/)を確認してください。
+
+Take Easy は MindReset の Read Pico 公式デモファームウェアと [kiikoread](/docs/read_0/start/kiikoread) をもとに開発され、入力方式には YanReader を使用しています。
+
+<GithubInfo owner="takeeasy-cui" repo="take-easy" />
+
+## インストールと使用のヘルプ
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="インストールと使用に関するよくある質問">SD カード、シリアル接続、インストール後に動作が遅い・画面が固まる場合の対処方法。</Card>
+  <Card href="/docs/read_0/firmware" title="公式デモシステムに戻す">「自分だけのシステムを作る」のビルドと書き込み手順で、公式デモシステムに戻せます。</Card>
+</Cards>
