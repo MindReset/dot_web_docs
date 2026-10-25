@@ -28,6 +28,7 @@
         "../quote0_deepseek_balance",
         "../quote0_desk",
         "../quote0_desktop_status",
+        "../quote0_monitor",
         "../quote0_sonos",
         "../quote0_token_usage_dash",
         "../quote0_token_usage_dash_liuch4ng",

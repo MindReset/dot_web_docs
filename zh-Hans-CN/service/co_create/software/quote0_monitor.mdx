@@ -1,0 +1,40 @@
+---
+title: Quote/0 用量监控器（ChatGPT 与 GLM）
+description: 在 Windows 上查看 ChatGPT/Codex 与 GLM 用量，并定时推送到 Quote/0 的两张循环卡片。
+new: true
+---
+
+<GithubInfo owner="YuanTutu" repo="quote0-monitor" />
+
+quote0-monitor 把 ChatGPT/Codex 和 GLM 的用量分别显示在 Quote/0 的两张循环卡片上。你可以在电脑上预览画面、调整刷新间隔，或隐藏到托盘继续更新。
+
+### 功能特性
+
+- **双卡展示**：ChatGPT/Codex 与 GLM 分别推送，可单独开启或关闭；GLM 卡片还显示可获取的重置卡数量。
+- **窗口配置**：填写密钥与设备序列号，自动获取设备卡片，再测试并保存。
+- **本地预览**：在电脑上查看两张卡片的画面，并保存预览图片与运行日志。
+- **定时刷新**：支持 1–60 分钟的刷新间隔，也可以立即刷新。
+- **托盘与自启动**：关闭窗口后继续在托盘运行，可设置随 Windows 启动。
+
+### 开始使用
+
+准备 Windows 电脑、一台已联网的 Quote/0，以及 [Dot. API 密钥](/docs/service/open/get_api)和设备序列号。使用 GLM 卡片还需准备智谱开放平台 API Key。
+
+1. 从 [Releases](https://github.com/YuanTutu/quote0-monitor/releases/latest) 下载 `quote0-monitor.exe`，无需安装 Python。
+2. 在 Dot. App 内容工坊中，将两张独立的「图像 API」卡片加入设备循环列表，分别用于 ChatGPT 和 GLM，避免两张画面互相覆盖。
+3. 启动程序，在「配置」窗口填入 Dot. API 密钥、设备序列号和 GLM 密钥，点击「获取卡片并自动填入」，再点击「测试并保存」。
+4. 使用 ChatGPT 卡片时，在同一台电脑上安装 Codex CLI 并运行 `codex login`。如果只使用 GLM，可在主窗口关闭 ChatGPT。
+
+需要开机自启动时，在程序目录运行：
+
+```powershell
+.\quote0-monitor.exe --install-autostart
+```
+
+也可从源码运行，依赖安装与完整配置见[项目 README](https://github.com/YuanTutu/quote0-monitor#readme)。
+
+### 使用说明
+
+关闭窗口会隐藏到托盘并继续更新；要完全退出，请使用托盘右键菜单。电脑关机或程序退出后，Quote/0 保留最后一次成功推送的画面。
+
+ChatGPT 用量读取本机 Codex 登录凭证，不会自动续期；凭证失效时需重新登录。密钥保存在程序目录的 `config.json` 中，请勿分享该文件。手动修改配置后，需从托盘退出并重新启动程序。

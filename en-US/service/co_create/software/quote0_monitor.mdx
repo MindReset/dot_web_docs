@@ -1,0 +1,40 @@
+---
+title: Quote/0 Usage Monitor
+description: Monitor ChatGPT/Codex and GLM usage on Windows and send scheduled updates to two Quote/0 loop cards.
+new: true
+---
+
+<GithubInfo owner="YuanTutu" repo="quote0-monitor" />
+
+quote0-monitor displays ChatGPT/Codex and GLM usage on two separate Quote/0 loop cards. Preview both displays on your computer, adjust the refresh interval, or hide the window to keep updates running in the system tray.
+
+### Features
+
+- **Two usage cards**: Sends ChatGPT/Codex and GLM separately, with individual switches. The GLM card also shows available reset-card counts when they can be retrieved.
+- **Configuration window**: Enter your keys and device serial number, retrieve the device's cards, then test and save.
+- **Local previews**: View both cards on your computer and save preview images and logs.
+- **Scheduled updates**: Choose a refresh interval from 1 to 60 minutes or refresh immediately.
+- **Tray and startup controls**: Keep running after closing the window and optionally start with Windows.
+
+### Getting started
+
+You need a Windows computer, an online Quote/0, a [Dot. API key](/docs/service/open/get_api), and the device serial number. The GLM card also requires a Zhipu Open Platform API key.
+
+1. Download `quote0-monitor.exe` from [Releases](https://github.com/YuanTutu/quote0-monitor/releases/latest). No Python installation is needed.
+2. In the Dot. App Content Studio, add two separate Image API cards to the device's loop, one for ChatGPT and one for GLM, so the displays do not overwrite each other.
+3. Open the app's configuration window (「配置」), enter your Dot. API key, device serial number, and GLM key, then select 「获取卡片并自动填入」 to retrieve and fill in the cards. Select 「测试并保存」 to test and save.
+4. For the ChatGPT card, install Codex CLI on the same computer and run `codex login`. Turn off ChatGPT in the main window if you only use GLM.
+
+To start automatically with Windows, run this from the app's directory:
+
+```powershell
+.\quote0-monitor.exe --install-autostart
+```
+
+You can also run from source. See the [README](https://github.com/YuanTutu/quote0-monitor#readme) for dependencies and full configuration details.
+
+### Usage notes
+
+Closing the window hides it to the system tray while updates continue. Use the tray's context menu to quit completely. When the computer shuts down or the app exits, Quote/0 retains the last successfully sent display.
+
+ChatGPT usage is read using the local Codex credentials, which the app does not renew automatically. Sign in again if they expire. Keys are stored in `config.json` beside the app; do not share this file. After editing that file manually, quit from the tray and restart the app.
