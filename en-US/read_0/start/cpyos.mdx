@@ -1,0 +1,88 @@
+---
+title: CPYOS
+new: true
+description: Read local books, JJWXC, and WeRead on Read Pico, with Pinyin input, custom fonts, water-ripple page turns, and motion-controlled page turning.
+---
+
+Thank you to [Yana-Hangabina](https://github.com/Yana-Hangabina) for providing a system for Read Pico.
+
+CPYOS is a reading system based on [CrossMux](/docs/read_0/start/crossmux). It brings local books, JJWXC, and WeRead together in one library, with Chinese input, reading statistics, and customizable layouts.
+
+## Before you start
+
+Prepare a sufficiently charged Read Pico, a computer running desktop Chrome or Edge, and a USB-C data cable. Close other webpages, flashing tools, or terminals using the device's serial port.
+
+Prepare a microSD card for books, fonts, and reading data. Read Pico supports cards up to 512 GB, formatted as FAT32.
+
+First installation recreates the partition table and erases internal Flash. Follow the website's instructions to back up the complete 16 MiB Flash and save important data beforehand. Web installation does not delete books or settings on the microSD card.
+
+## Install through the website
+
+<Steps>
+<Step>
+
+### Open the website and choose an installation method
+
+Open the [CPYOS website](https://yana-hangabina.github.io/cpyos/) in desktop Chrome or Edge and go to 刷机 (Flash).
+
+For first installation or switching from another system, choose 首次安装 / 恢复 (First Install / Restore). Devices already running CPYOS can use 从 CPYOS 升级 (Upgrade from CPYOS), which retains device settings and the partition table.
+
+</Step>
+<Step>
+
+### Connect and install
+
+Connect Read Pico with a USB data cable, click the appropriate installation button, and select the device in the browser's serial-port dialog. It may appear as `USB JTAG/serial debug unit`.
+
+For first installation, confirm your backup is complete, then follow the page's erase and installation prompts. Keep USB connected, the page open, and the computer awake until writing finishes and the device restarts automatically.
+
+</Step>
+<Step>
+
+### Add books and start reading
+
+Insert the microSD card, open local books from the library, or import content through the device's browser-based file transfer. The reader supports EPUB, TXT, CBZ, and FB2.
+
+Import TTF, OTF, or TTC fonts from the card, or use fonts embedded in EPUB files. Font choices can be saved separately for each book.
+
+To use JJWXC or WeRead, connect to Wi-Fi and follow the corresponding device entry to sign in, browse your library, and obtain books. WeRead supports QR-code login and offline reading after downloading.
+
+</Step>
+</Steps>
+
+## Main features
+
+### Unified library and online reading
+
+The home screen includes Continue Reading, recent books, the last seven days of reading activity, and JJWXC updates. The library combines local, JJWXC, and WeRead books, with labels showing their source.
+
+JJWXC features include the bookshelf, discovery, book and author searches, collections, chapter purchases, paragraph-comment interactions, and progress synchronization. WeRead supports bookshelf browsing, EPUB downloads for offline reading, and progress synchronization.
+
+The JJWXC and WeRead integrations are unofficial. Available content depends on your account permissions and the services' interfaces.
+
+### Chinese input and reading layout
+
+Offline Pinyin input, book-title search, hyphenation, and Chinese fallback fonts are supported. Adjust fonts, sizes, and layouts, and use bookmarks, annotations, dictionaries, and reading statistics.
+
+### Page turns and display
+
+Choose water-ripple or fast black-and-white page turns, and clear screen ghosting. Alongside touch input, tilt or shake the device sideways to turn pages.
+
+## Connectivity and updates
+
+Use a browser to transfer books and change settings, or connect through WebDAV, OPDS, and Calibre wireless.
+
+Once CPYOS is installed, connect to Wi-Fi and open 设置 → 系统 → 检查更新 (Settings → System → Check for Updates) for OTA updates. Card-based updates are also available as described on the website. Keep the device powered until it restarts. When switching from another system for the first time, use the website's full installation method.
+
+## Other installation options
+
+Download the full installation package from the repository's Releases and follow its `FLASH.md` and `SHA256SUMS` for offline installation and verification. You can also clone or fork the repository to build and flash it yourself. First installation requires the full package; the application image alone is insufficient.
+
+<GithubInfo owner="Yana-Hangabina" repo="cpyos" />
+
+## Installation and usage help
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="Installation and Usage FAQ">Find help with SD cards, serial connections, and slow or frozen screens after installation.</Card>
+  <Card href="/docs/read_0/firmware" title="Restore the Official Demo System">Follow the build and flash instructions in DIY Your System to restore the official demo system.</Card>
+</Cards>
