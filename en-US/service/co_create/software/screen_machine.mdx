@@ -1,0 +1,38 @@
+---
+title: "Screen Machine: Room Status Display"
+new: true
+description: Display Screen Machine room modes, music playback, and scene status on Quote/0, with updates triggered by changes or a configured interval.
+---
+
+<GithubInfo owner="gjbm2" repo="screen-machine" />
+
+Screen Machine manages room audiovisual systems and generative visuals. Its `dot_service` turns room modes, music playback, automation, and scene information into a Quote/0 dashboard, so you can check the current state without opening the control page.
+
+### Features
+
+- **Room overview**: Show the room mode, automation, microphone and AI states, and current music or scene information.
+- **Quote/0 layout**: Render a 296 × 152 black-and-white image and send it through the Dot Image API.
+- **Change-based updates**: Push settled changes to key states, with separate refresh periods for normal and live scenes.
+- **Preview and manual push**: Local endpoints provide image previews, service status, and manual publishing.
+- **Refresh and sleep settings**: Synchronize the device refresh interval through the Dot Settings API and optionally configure sleep hours.
+
+### Before you start
+
+- A deployed Screen Machine instance and the room, playback, and scene services you need
+- A Python environment and repository dependencies
+- A bound Quote/0, its device ID, and a Dot API key
+- A runtime environment that can reach Dot cloud services and the relevant data services
+
+This is a room-status dashboard for self-hosted setups. Configure its data sources for your own devices and scenes.
+
+### Setup
+
+1. Deploy Screen Machine and the required companion services following the repository instructions. Confirm that room and playback information can be retrieved.
+2. Configure device-to-room mappings, refresh periods, and optional sleep hours in `config/room/dot.json`. Store the Dot API key in the `api_key` field of the local `~/.config/screen-machine/dot.json` file. Do not commit it to the repository.
+3. Run `python -m dot_service --port <PORT>` from the repository root, replacing `<PORT>` with an available local port. Inspect the results through its status, image-preview, and manual-push endpoints. Refer to the current repository version for available options.
+
+The Dot integration is in [`dot_service`](https://github.com/gjbm2/screen-machine/tree/main/dot_service). The main README and `room_service/README.md` describe the overall deployment and room service.
+
+<Callout type="info" title="Device settings">
+  The service changes Quote/0 refresh intervals according to its configuration and may enable sleep hours. Review the configuration before connecting, including how it affects other content updates on the device.
+</Callout>

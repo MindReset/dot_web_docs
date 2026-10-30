@@ -1,0 +1,90 @@
+---
+title: YanReader
+new: true
+description: Read EPUB, TXT, and XTC on Read Pico, save highlights and notes, and use journals, outline writing, and GTD planning.
+---
+
+Thank you to [autumnc](https://github.com/autumnc) for providing a system for Read Pico.
+
+YanReader combines reading, writing, and planning on one device. It uses the CrossMux layout engine and display and font components from the Read Pico official demo, with a local library, Pinyin input, Bluetooth keyboards, and page turners.
+
+## Before you start
+
+Prepare a sufficiently charged Read Pico, a computer running desktop Chrome or Edge, and a USB-C data cable. Close other webpages, flashing tools, or terminals using the device's serial port.
+
+Prepare a microSD card for books, fonts, notes, and planning data. Read Pico supports cards up to 512 GB, formatted as FAT32.
+
+According to the project, web installation does not actively erase device settings or card contents. Save books, notes, and other important data before changing systems.
+
+## Install through the website
+
+<Steps>
+<Step>
+
+### Open the website and check the system
+
+Open the [YanReader website](https://autumnc.github.io/YanReader-pico/) in desktop Chrome or Edge and review the loaded version and checksum information.
+
+By default, the page installs the current release. For an older or self-built version, expand the local-file option and select a full package named `yanreader-<version>-full.bin`. Do not select `pjournal_pico.bin`, which contains only the application.
+
+</Step>
+<Step>
+
+### Connect and flash
+
+Connect Read Pico with a USB data cable, click 连接设备 (Connect Device), and select `USB JTAG/serial debug unit` in the browser dialog. Once the page identifies ESP32-S3, click 开始刷写 (Start Flashing).
+
+The page writes the image, reads it back for verification, and restarts the device. Progress may remain at 100% during verification; wait for the completion message. Do not disconnect USB, close the page, or let the computer sleep during the process.
+
+</Step>
+<Step>
+
+### Prepare the card and start using the system
+
+Put books in `books/` on the card and custom TTF fonts in `fonts/`. Insert the card, start the device, and open a book from the bookshelf.
+
+For online features, connect through 设置 → WiFi 管理 (Settings → WiFi Management). Network time synchronization gives reading statistics and the standby clock the correct time. The website's 使用帮助 (Help) covers controls, directories, and installation.
+
+</Step>
+</Steps>
+
+## Main features
+
+### Reading and notes
+
+Read EPUB, TXT, and XTC, and adjust fonts, size, line and paragraph spacing, indentation, and margins. Features include embedded EPUB fonts, footnote popups, a table of contents, bookmarks, and percentage jumps. Hold text to select it for highlights, notes, or local StarDict dictionary lookup.
+
+Find books by title and search notes. The notes page's 导出 (Export) action combines highlights, notes, and bookmarks from all books into one Markdown file in `exports/` on the card. Reading statistics include time spent, daily pages, heatmaps, and consecutive reading days.
+
+### Writing and planning
+
+研墨 (Writing) provides journals, free writing, outlines, and idea capture, with Markdown display, version history, vertical writing, and Flomo and WebDAV synchronization. DeepSeek polishing requires your own API key and an internet connection.
+
+研行 (Planning) provides GTD task management with tasks, projects, a calendar, sticky notes, filters, and Markdown export.
+
+### Input and controls
+
+On the main screen, hold the middle touch key to cycle through 研读 (Reading), 研墨 (Writing), and 研行 (Planning). All modes share the virtual keyboard and Pinyin input, with multiple keyboard layouts. BLE keyboards and compatible Bluetooth page turners can also be connected.
+
+While reading, use the left and right keys or horizontal swipes to turn pages, and tap the center area to open the reading menu. Shake the device for a full-screen refresh. Use the power key to wake it from standby.
+
+## Updates and current support
+
+Revisit the website to install the current release, or select another version's full package on the same page. Device OTA updates are not currently supported.
+
+The device interface is currently in Chinese. Bookshelf and note searches are supported; full-text search within books is not.
+
+## Other installation options
+
+Download a full package from the repository's Releases and follow its version-specific USB flashing instructions, or clone or fork the repository to build it yourself.
+
+Building requires ESP-IDF v6.1 and the `read_pico_firmware` dependency. Follow the repository's instructions for generating input-method dictionaries and other resources and selecting build options.
+
+<GithubInfo owner="autumnc" repo="YanReader-pico" />
+
+## Installation and usage help
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="Installation and Usage FAQ">Find help with SD cards, serial connections, and slow or frozen screens after installation.</Card>
+  <Card href="/docs/read_0/firmware" title="Restore the Official Demo System">Follow the build and flash instructions in DIY Your System to restore the official demo system.</Card>
+</Cards>

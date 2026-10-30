@@ -46,6 +46,7 @@
         "../quote_buddy",
         "../quote_bambu",
         "../quote_yearly_progress_calendar",
+        "../screen_machine",
         "../server_status",
         "../toucan_echo",
         "../vibe_usage_quote0",

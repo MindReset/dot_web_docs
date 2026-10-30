@@ -1,0 +1,38 @@
+---
+title: "Screen Machine：房间状态看板"
+new: true
+description: 将 Screen Machine 的房间模式、音乐播放与场景状态显示在摘录 Quote/0 上，按状态变化和设定周期更新。
+---
+
+<GithubInfo owner="gjbm2" repo="screen-machine" />
+
+Screen Machine 是一个房间影音与生成式画面管理项目。它的 `dot_service` 可将房间模式、音乐播放、自动运行与场景信息整理为看板，显示在摘录 Quote/0 上，让你不用打开控制页面也能查看当前状态。
+
+### 功能特性
+
+- **房间状态总览**：显示房间模式、自动运行、麦克风与 AI 状态，以及当前音乐或场景信息。
+- **适配摘录画面**：生成 296 × 152 的黑白图片，通过 Dot 图片 API 推送到 Quote/0。
+- **按变化更新**：主要状态变化稳定后推送，也可分别设置普通场景与运行中场景的更新周期。
+- **预览与手动推送**：提供本地图片预览、服务状态与手动推送入口。
+- **刷新与休眠配置**：通过 Dot 设置 API 同步设备刷新间隔，并可设置休眠时段。
+
+### 使用前准备
+
+- 已部署的 Screen Machine，以及所需的房间、播放与场景数据服务
+- Python 环境和仓库依赖
+- 已绑定的 Quote/0、设备 ID 与 Dot API Key
+- 能访问 Dot 云端服务与相关数据服务的运行环境
+
+这是适合自行部署的房间状态看板案例，需要按自己的设备与场景配置数据来源。
+
+### 接入方式
+
+1. 按仓库说明部署 Screen Machine 及所需的配套服务，确认房间状态与播放信息可正常读取。
+2. 在 `config/room/dot.json` 中配置设备与房间对应关系、更新周期和可选的休眠时段。将 Dot API Key 保存在本地 `~/.config/screen-machine/dot.json` 的 `api_key` 字段中，不要提交到仓库。
+3. 从仓库根目录运行 `python -m dot_service --port <PORT>`，将 `<PORT>` 替换为本机可用端口。通过服务提供的状态、图片预览与手动推送入口查看结果，具体参数以仓库当前版本为准。
+
+Dot 相关实现位于仓库的 [`dot_service`](https://github.com/gjbm2/screen-machine/tree/main/dot_service) 目录，主项目 README 和 `room_service/README.md` 提供整体部署与房间服务说明。
+
+<Callout type="info" title="设备设置">
+  服务会根据配置修改 Quote/0 的刷新间隔，并可能启用休眠时段。接入前请检查配置；设备中的其他内容更新安排也需一并考虑。
+</Callout>
