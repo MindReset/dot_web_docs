@@ -14,7 +14,7 @@ Prepare a sufficiently charged Read Pico, a computer running desktop Chrome or E
 
 Prepare a microSD card for books, fonts, notes, and planning data. Read Pico supports cards up to 512 GB, formatted as FAT32.
 
-According to the project, web installation does not actively erase device settings or card contents. Save books, notes, and other important data before changing systems.
+According to the project, normal web installation does not actively erase the NVS partition containing device settings and Wi-Fi credentials, or delete card contents. Manually erasing the entire Flash also erases NVS. Save important books, notes, reading records, and settings before changing systems. Settings from another system are not guaranteed to work in YanReader.
 
 ## Install through the website
 
@@ -25,7 +25,14 @@ According to the project, web installation does not actively erase device settin
 
 Open the [YanReader website](https://autumnc.github.io/YanReader-pico/) in desktop Chrome or Edge and review the loaded version and checksum information.
 
-By default, the page installs the current release. For an older or self-built version, expand the local-file option and select a full package named `yanreader-<version>-full.bin`. Do not select `pjournal_pico.bin`, which contains only the application.
+By default, the page installs the current release's full image. For an older or self-built version, expand the local-file option. The two release files serve different purposes:
+
+| Release file | Purpose |
+| --- | --- |
+| `yanreader-<version>-full.bin` | Contains the bootloader, partition table, and application. Use this full image for a first installation, switching from another system, or reinstalling through the website. |
+| `pjournal_pico.bin` | Contains only the application and does not update the bootloader or partition table. Use it only for manual updates on a device with a compatible YanReader partition layout, following that version's instructions. It is not a full image for web installation. |
+
+Do not flash `pjournal_pico.bin` to `0x0` as a full image; the device will not boot normally. When selecting a local file, check its source, version, and the checksum information shown on the page.
 
 </Step>
 <Step>
@@ -47,6 +54,12 @@ For online features, connect through 设置 → WiFi 管理 (Settings → WiFi M
 
 </Step>
 </Steps>
+
+### Check after installation
+
+- Confirm that the card is readable, open a book from the bookshelf, and check that its reading position is retained after closing and reopening it.
+- Open an existing note, or create, save, and reopen a note to check that the data you need is usable.
+- Briefly press the power key to enter standby, then press it again to wake the device. Check that it returns to the previous page and that text display and page turns work normally.
 
 ## Main features
 
@@ -70,7 +83,9 @@ While reading, use the left and right keys or horizontal swipes to turn pages, a
 
 ## Updates and current support
 
-Revisit the website to install the current release, or select another version's full package on the same page. Device OTA updates are not currently supported.
+Device OTA updates are not currently supported. To update, connect over USB and use the website, or select another version's full package on the same page.
+
+Before manually updating with an application image, read the [release notes for that version](https://github.com/autumnc/YanReader-pico/releases) to confirm that the installed partition layout is compatible with the target version. If you cannot confirm compatibility, use that version's full image. Do not mix bootloaders, partition tables, and application files from different versions.
 
 The device interface is currently in Chinese. Bookshelf and note searches are supported; full-text search within books is not.
 

@@ -25,7 +25,7 @@ First installation recreates the partition table and erases internal Flash. Foll
 
 Open the [CPYOS website](https://yana-hangabina.github.io/cpyos/) in desktop Chrome or Edge and go to 刷机 (Flash).
 
-For first installation or switching from another system, choose 首次安装 / 恢复 (First Install / Restore). Devices already running CPYOS can use 从 CPYOS 升级 (Upgrade from CPYOS), which retains device settings and the partition table.
+For first installation or switching from another system, choose 首次安装 / 恢复 (First Install / Restore). Devices already running CPYOS can use 从 CPYOS 升级 (Upgrade from CPYOS) as directed by the target version's installation guide, retaining device settings and the partition table. If language packs or other resources have changed, also confirm that the installation includes the matching resources.
 
 </Step>
 <Step>
@@ -72,7 +72,17 @@ Choose water-ripple or fast black-and-white page turns, and clear screen ghostin
 
 Use a browser to transfer books and change settings, or connect through WebDAV, OPDS, and Calibre wireless.
 
-Once CPYOS is installed, connect to Wi-Fi and open 设置 → 系统 → 检查更新 (Settings → System → Check for Updates) for OTA updates. Card-based updates are also available as described on the website. Keep the device powered until it restarts. When switching from another system for the first time, use the website's full installation method.
+<Callout type="warn" title="Updating to 0.1.2 also requires new language resources">
+
+Do not use device OTA alone to update from 0.1.0 or 0.1.1 to 0.1.2. Version 0.1.2 changed the language pack. Device OTA updates only the application, leaving the data partition unchanged; keeping the old language pack causes parts of the interface to fall back to English.
+
+Follow [this version's installation guide](https://github.com/Yana-Hangabina/cpyos/blob/cpyos-0.1.2/docs/cpyos/install.md). Use a web upgrade that includes the data resources, or update the data partition with the full installation package or flashing scripts. Save important data first and check whether the chosen method erases internal Flash.
+
+</Callout>
+
+Only when the target version is compatible with the installed data resources, connect to Wi-Fi and open 设置 → 系统 → 检查更新 (Settings → System → Check for Updates) for OTA, or follow the project's card-based update instructions. Keep the device powered until it restarts. When switching from another system for the first time, use a full installation.
+
+For future updates, read the [release notes](https://github.com/Yana-Hangabina/cpyos/releases) first to check whether language packs or other data resources also need updating. A completed application update does not mean those resources have been updated.
 
 ## Other installation options
 

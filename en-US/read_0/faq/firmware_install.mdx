@@ -1,12 +1,14 @@
 ---
 title: Third-Party System Installation Issues
-description: Resolve SD card, serial connection, flashing failure, and post-installation responsiveness issues on Read Pico.
+description: Get help with installation packages, resource updates, SD cards, serial connections, and post-installation responsiveness on Read Pico.
 ---
 
 ## Common issues
 
 | Problem | What to do |
 | --- | --- |
+| Which package should I use for a first installation or a switch to another system? | Use the target project's full installation method for Read Pico. Application images, card-based updates, and OTA generally require a compatible system and partition layout already installed; they do not replace a full installation. Follow the instructions for that release. Do not mix bootloaders, partition tables, applications, or resources from different systems or versions. |
+| Languages fall back to English, fonts are missing, or the file-transfer page behaves unexpectedly after an update | Check whether the target version requires updated resources. An application-only update may leave old language packs, fonts, or web resources. Update the resources as directed by that project instead of repeatedly flashing only the application. See the CPYOS 0.1.2 entry below. |
 | No SD card detected | Insert a separately purchased microSD card, up to 512 GB. The card must be formatted as FAT32. |
 | Serial port missing | Try another USB data cable or port, and close other webpages, flashing tools, or terminals using the port. |
 | Device cannot connect | Use desktop Chrome or Edge. Mobile browsers and WeChat's in-app browser do not support these web flashing steps. If writing has not started, reconnect the device. If download mode is required, follow that system's instructions. |
@@ -14,6 +16,10 @@ description: Resolve SD card, serial connection, flashing failure, and post-inst
 | Installation interrupted or verification failed | Keep the device connected and retry as instructed by the flashing page. Do not unplug or force a restart before writing has finished. If the page provides an operation log, save it and send it to the system developer when reporting the issue. |
 
 ## System-specific issues
+
+### CPYOS falls back to English after updating to 0.1.2
+
+Version 0.1.2 changed the language pack. Device OTA updates only the application, leaving the data partition unchanged. When updating from 0.1.0 or 0.1.1, the old language pack may cause parts of the interface to fall back to English. Follow the [CPYOS update instructions](/docs/read_0/start/cpyos#connectivity-and-updates) to use an installation method that includes the data resources. Save important data first.
 
 ### kiikoread cannot connect
 
