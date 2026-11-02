@@ -1,0 +1,97 @@
+---
+title: Folio Book
+new: true
+description: 以简约界面专注阅读，支持 TXT、PDF、EPUB，以及字体切换、阅读背景、竖排、文本重排和自动旋转。
+---
+
+感谢 电刀卡卡西 为小纸 Pico 提供系统。
+
+Folio Book 注重简约的界面与阅读体验。你可以阅读 TXT、PDF 和 EPUB 书籍，在书架中搜索图书，调整阅读版式与背景，也可以切换系统主题、浏览存储卡中的图片。
+
+<figure className="mx-auto w-full max-w-xs">
+  <CustomCloudImage osSrc="dot/docs/folio_book_home_1793620730272.jpg" alt="Folio Book 黑胶唱片风格首页，展示阅读进度与功能入口" width={3072} height={4080} />
+  <figcaption>首页</figcaption>
+</figure>
+
+## 开始之前
+
+准备电量充足的小纸 Pico、使用桌面版 Chrome 或 Edge 的电脑，以及支持数据传输的 USB-C 数据线。关闭其他占用设备串口的网页、刷写工具或终端。
+
+请准备 microSD 存储卡，用于保存书籍、字体与图片。小纸 Pico 最大支持 512 GB，格式为 FAT32。
+
+安装会替换当前系统，内部设置可能被覆盖。按刷写页面说明，安装不会删除 microSD 卡中的书籍与配置；仍请提前保存重要数据。从其他系统切换时，原有设置不保证兼容。
+
+## 通过网页安装
+
+<Steps>
+<Step>
+
+### 打开刷写页面并选择系统
+
+在电脑的 Chrome 或 Edge 中打开 [Folio Book 在线刷写](https://esp-flasher.app.workbuddy.host/?sharecode=EKWWZFP3R3)。在「选择固件」区域确认选择 FolioBook，查看版本与安装说明。
+
+</Step>
+<Step>
+
+### 连接设备并安装
+
+用 USB 数据线连接小纸 Pico，点击「连接设备」，在浏览器弹窗中选择设备串口。确认连接信息后，点击「开始烧录」。
+
+保持 USB 连接、页面打开和电脑唤醒，等待页面显示烧录完成。页面会尝试重启设备；若未启动，可在写入完成后点击「复位设备」。找不到串口或安装后仍无响应时，查看文末的常见问题。
+
+页面提供的是包含引导程序、分区表和应用的完整镜像。安装说明注明通常无需勾选「烧录前擦除整片 Flash」；该选项会清除内部数据，请按所选版本的实际说明操作。
+
+</Step>
+<Step>
+
+### 导入字体与配套资源
+
+在「配套文件下载」中获取所需资源，按各文件标注的目录复制到 microSD 卡。字体放入 `font` 文件夹；主题包需解压，将解压后的主题文件夹放入 `themes`，再从设备设置中切换主题。
+
+也可以使用页面的「一键导入系统文件」：先在设备「存储卡」中点击「连接电脑传文件」，等待电脑识别存储卡；再在网页点击「选择 SD 卡目录」，选择存储卡根目录，核对文件列表后点击「开始导入」。导入完成后，在设备上点击「安全断开并收回卡」，再断开 USB。
+
+将书籍放入存储卡后，从书架或文件入口打开。字体导入后，可在设备的字体页面刷新并选择。
+
+</Step>
+</Steps>
+
+## 主要功能
+
+### 书架与书籍搜索
+
+支持 TXT、PDF、EPUB，书架提供搜索功能。界面可使用票根或封面形式展示图书，便于浏览与选择。
+
+<div className="mx-auto my-6 grid w-full max-w-2xl grid-cols-2 items-start gap-4">
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/folio_book_shelf_tickets_1793620730272.jpg" alt="Folio Book 票根书架，顶部提供搜索入口" width={3072} height={4080} />
+    <figcaption>票根书架与搜索</figcaption>
+  </figure>
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/folio_book_shelf_cover_1793620730272.jpg" alt="Folio Book 封面书架，以唱片风格展示图书" width={3072} height={4080} />
+    <figcaption>封面书架</figcaption>
+  </figure>
+</div>
+
+### 阅读版式与系统主题
+
+可切换字体、设置阅读背景，使用竖排显示、文本重排和自动旋转，按自己的阅读习惯调整页面。系统界面也支持主题切换。
+
+支持浏览 PNG、JPEG、JPG 图片。在设备的图片页面打开图片后，可按界面选项设为阅读背景或休眠壁纸。
+
+<div className="mx-auto my-6 grid w-full max-w-2xl grid-cols-2 items-start gap-4">
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/folio_book_reader_1793620730272.jpg" alt="Folio Book 阅读界面，正文搭配带边框和横线的阅读背景" width={3072} height={4080} />
+    <figcaption>阅读背景与正文</figcaption>
+  </figure>
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/folio_book_settings_1793620730272.jpg" alt="Folio Book 设置页，展示字号、字体、界面主题和正文重排选项" width={3072} height={4080} />
+    <figcaption>字体、主题与阅读设置</figcaption>
+  </figure>
+</div>
+
+## 安装与使用帮助
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡、串口连接和安装后卡顿等问题的处理方法。</Card>
+  <Card href="/docs/read_0/firmware" title="恢复官方演示系统">前往 DIY 你的系统，按编译与刷写步骤恢复官方演示系统。</Card>
+</Cards>

@@ -1,0 +1,97 @@
+---
+title: Folio Book
+new: true
+description: Focus on reading with a simple interface, TXT, PDF, and EPUB support, custom fonts and reading backgrounds, vertical text, text reflow, and automatic rotation.
+---
+
+Thank you to 电刀卡卡西 for providing a system for Read Pico.
+
+Folio Book focuses on a simple interface and the reading experience. Read TXT, PDF, and EPUB books, search your bookshelf, adjust reading layouts and backgrounds, switch system themes, and browse images on the card.
+
+<figure className="mx-auto w-full max-w-xs">
+  <CustomCloudImage osSrc="dot/docs/folio_book_home_1793620730272.jpg" alt="Folio Book home screen with a vinyl-record design, reading progress, and feature shortcuts" width={3072} height={4080} />
+  <figcaption>Home screen</figcaption>
+</figure>
+
+## Before you start
+
+Prepare a sufficiently charged Read Pico, a computer running desktop Chrome or Edge, and a USB-C data cable. Close other webpages, flashing tools, or terminals using the device's serial port.
+
+Prepare a microSD card for books, fonts, and images. Read Pico supports cards up to 512 GB, formatted as FAT32.
+
+Installation replaces the current system and may overwrite internal settings. According to the flashing page, it does not delete books or configuration files on the microSD card. Save important data first. Settings from another system are not guaranteed to be compatible.
+
+## Install through the website
+
+<Steps>
+<Step>
+
+### Open the flashing page and select the system
+
+Open [Folio Book Web Flasher](https://esp-flasher.app.workbuddy.host/?sharecode=EKWWZFP3R3) in desktop Chrome or Edge. Under 选择固件 (Select Firmware), confirm FolioBook is selected and review the version and installation notes.
+
+</Step>
+<Step>
+
+### Connect and install
+
+Connect Read Pico with a USB data cable, click 连接设备 (Connect Device), and select the device's serial port in the browser dialog. Check the connection details, then click 开始烧录 (Start Flashing).
+
+Keep USB connected, the page open, and the computer awake until the completion message appears. The page attempts to restart the device; if it does not start, click 复位设备 (Reset Device) after writing has finished. See the FAQ at the end of this page for missing serial ports or an unresponsive device after installation.
+
+The page provides a full image containing the bootloader, partition table, and application. Its installation notes say that 烧录前擦除整片 Flash (Erase Entire Flash Before Flashing) is normally unnecessary. This option clears internal data; follow the instructions for the selected version.
+
+</Step>
+<Step>
+
+### Import fonts and supporting resources
+
+Download the resources you need from 配套文件下载 (Supporting Files) and copy them to the card directories indicated for each file. Fonts go in `font`. Extract theme archives and put the resulting theme folders in `themes`, then select a theme in the device settings.
+
+Alternatively, use 一键导入系统文件 (Import System Files) on the page. On the device, open 存储卡 (Storage Card) and tap 连接电脑传文件 (Connect to Computer for File Transfer). Once the computer recognizes the card, click 选择 SD 卡目录 (Select SD Card Directory) on the website, choose the card's root directory, review the file list, and click 开始导入 (Start Import). When finished, tap 安全断开并收回卡 (Safely Disconnect and Reclaim Card) on the device before disconnecting USB.
+
+Put books on the card and open them from the bookshelf or file browser. After importing fonts, refresh the device's font page and select a font.
+
+</Step>
+</Steps>
+
+## Main features
+
+### Bookshelf and search
+
+Read TXT, PDF, and EPUB books and search the bookshelf. Ticket and cover views offer different ways to browse and select books.
+
+<div className="mx-auto my-6 grid w-full max-w-2xl grid-cols-2 items-start gap-4">
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/folio_book_shelf_tickets_1793620730272.jpg" alt="Folio Book ticket-style bookshelf with a search button at the top" width={3072} height={4080} />
+    <figcaption>Ticket-style bookshelf and search</figcaption>
+  </figure>
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/folio_book_shelf_cover_1793620730272.jpg" alt="Folio Book cover view with a vinyl-record design" width={3072} height={4080} />
+    <figcaption>Cover view</figcaption>
+  </figure>
+</div>
+
+### Reading layout and system themes
+
+Switch fonts and reading backgrounds, use vertical text, text reflow, and automatic rotation, and adjust the page to suit your reading habits. System themes can also be changed.
+
+Browse PNG, JPEG, and JPG images. Open an image in the device's image browser and use the available options to set it as a reading background or standby wallpaper.
+
+<div className="mx-auto my-6 grid w-full max-w-2xl grid-cols-2 items-start gap-4">
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/folio_book_reader_1793620730272.jpg" alt="Folio Book reading screen with a bordered and ruled reading background" width={3072} height={4080} />
+    <figcaption>Reading background and text</figcaption>
+  </figure>
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/folio_book_settings_1793620730272.jpg" alt="Folio Book settings with text size, fonts, interface themes, and text reflow options" width={3072} height={4080} />
+    <figcaption>Fonts, themes, and reading settings</figcaption>
+  </figure>
+</div>
+
+## Installation and usage help
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="Installation and Usage FAQ">Find help with SD cards, serial connections, and slow or frozen screens after installation.</Card>
+  <Card href="/docs/read_0/firmware" title="Restore the Official Demo System">Follow the build and flash instructions in DIY Your System to restore the official demo system.</Card>
+</Cards>

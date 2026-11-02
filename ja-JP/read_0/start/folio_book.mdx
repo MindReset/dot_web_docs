@@ -1,0 +1,97 @@
+---
+title: Folio Book
+new: true
+description: シンプルな画面で読書に集中できます。TXT、PDF、EPUB に対応し、フォントや読書背景の切り替え、縦書き、リフロー、自動回転を使えます。
+---
+
+Read Pico 向けにシステムを提供してくださった 電刀卡卡西 に感謝します。
+
+Folio Book はシンプルな画面と読書体験を重視したシステムです。TXT、PDF、EPUB を読み、本棚から書籍を検索できます。組版や読書背景の調整、システムテーマの切り替え、カード内の画像の閲覧にも対応します。
+
+<figure className="mx-auto w-full max-w-xs">
+  <CustomCloudImage osSrc="dot/docs/folio_book_home_1793620730272.jpg" alt="レコードをモチーフにした Folio Book のホーム画面。読書進捗と各機能の入口を表示" width={3072} height={4080} />
+  <figcaption>ホーム画面</figcaption>
+</figure>
+
+## はじめる前に
+
+十分に充電した Read Pico、デスクトップ版 Chrome または Edge を使うパソコン、データ通信対応の USB-C ケーブルを用意してください。端末のシリアルポートを使用している他のページ、書き込みツール、ターミナルは閉じてください。
+
+書籍、フォント、画像を保存する microSD カードを用意してください。Read Pico は最大 512 GB に対応し、FAT32 形式が必要です。
+
+インストールすると現在のシステムが置き換わり、内部設定が上書きされる場合があります。書き込みページの説明では、microSD カード上の書籍や設定ファイルは削除されません。大切なデータは事前に保存してください。別のシステムの設定を引き継げるとは限りません。
+
+## Web からインストールする
+
+<Steps>
+<Step>
+
+### 書き込みページを開いてシステムを選ぶ
+
+パソコンの Chrome または Edge で [Folio Book Web 書き込み](https://esp-flasher.app.workbuddy.host/?sharecode=EKWWZFP3R3)を開きます。「选择固件」（ファームウェアを選択）で FolioBook が選ばれていることを確認し、バージョンとインストールの説明を読んでください。
+
+</Step>
+<Step>
+
+### 端末を接続してインストールする
+
+USB データケーブルで Read Pico を接続し、「连接设备」（端末を接続）を押して、ブラウザーの一覧から端末のシリアルポートを選びます。接続情報を確認し、「开始烧录」（書き込み開始）を押してください。
+
+完了の表示が出るまで USB 接続とページを保ち、パソコンをスリープさせないでください。ページは端末の再起動を試みます。起動しない場合は、書き込み完了後に「复位设备」（端末をリセット）を押してください。シリアルポートが見つからない場合や、インストール後も反応しない場合は、ページ末尾のよくある質問を確認してください。
+
+ページではブートローダー、パーティションテーブル、アプリを含む完全イメージを提供しています。インストールの説明では、通常は「烧录前擦除整片 Flash」（書き込み前に Flash 全体を消去）を選ぶ必要はありません。この項目は内部データを消去するため、選んだバージョンの説明に従ってください。
+
+</Step>
+<Step>
+
+### フォントと関連リソースを入れる
+
+「配套文件下载」（関連ファイルのダウンロード）から必要なリソースを入手し、各ファイルに指定されたカード内のフォルダーへコピーします。フォントは `font` に入れます。テーマの ZIP は展開し、展開後のテーマフォルダーを `themes` に入れてから、端末の設定で切り替えてください。
+
+ページの「一键导入系统文件」（システムファイルの一括インポート）も使えます。端末の「存储卡」（ストレージカード）で「连接电脑传文件」（パソコンに接続して転送）を押します。パソコンがカードを認識したら、Web ページの「选择 SD 卡目录」（SD カードのフォルダーを選択）でカードのルートを選び、ファイル一覧を確認して「开始导入」（インポート開始）を押します。完了後は端末で「安全断开并收回卡」（安全に切断してカードを戻す）を押してから USB を抜いてください。
+
+カードに書籍を保存し、本棚またはファイル画面から開きます。フォントを入れた後は、端末のフォント画面を更新して選択してください。
+
+</Step>
+</Steps>
+
+## 主な機能
+
+### 本棚と書籍検索
+
+TXT、PDF、EPUB の読書と本棚の検索に対応します。チケット風の一覧や表紙表示で書籍を探して選べます。
+
+<div className="mx-auto my-6 grid w-full max-w-2xl grid-cols-2 items-start gap-4">
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/folio_book_shelf_tickets_1793620730272.jpg" alt="上部に検索ボタンがある Folio Book のチケット風本棚" width={3072} height={4080} />
+    <figcaption>チケット風本棚と検索</figcaption>
+  </figure>
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/folio_book_shelf_cover_1793620730272.jpg" alt="レコードをモチーフにした Folio Book の表紙表示" width={3072} height={4080} />
+    <figcaption>表紙表示</figcaption>
+  </figure>
+</div>
+
+### 読書の組版とシステムテーマ
+
+フォントや読書背景を切り替え、縦書き、リフロー、自動回転を使って、自分の読み方に合わせてページを調整できます。システムのテーマも切り替えられます。
+
+PNG、JPEG、JPG の画像を閲覧できます。端末の画像画面で画像を開き、表示される項目から読書背景や待機壁紙に設定できます。
+
+<div className="mx-auto my-6 grid w-full max-w-2xl grid-cols-2 items-start gap-4">
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/folio_book_reader_1793620730272.jpg" alt="枠と罫線のある背景を使った Folio Book の読書画面" width={3072} height={4080} />
+    <figcaption>読書背景と本文</figcaption>
+  </figure>
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/folio_book_settings_1793620730272.jpg" alt="文字サイズ、フォント、テーマ、本文リフローを選べる Folio Book の設定画面" width={3072} height={4080} />
+    <figcaption>フォント、テーマ、読書設定</figcaption>
+  </figure>
+</div>
+
+## インストールと使用のヘルプ
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="インストールと使用のよくある質問">SD カード、シリアル接続、インストール後の動作停止などの対処方法を確認できます。</Card>
+  <Card href="/docs/read_0/firmware" title="公式デモシステムに戻す">「自分だけのシステムを作る」のビルド・書き込み手順で、公式デモシステムに戻せます。</Card>
+</Cards>
