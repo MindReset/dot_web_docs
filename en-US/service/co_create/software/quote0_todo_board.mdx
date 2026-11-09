@@ -1,0 +1,23 @@
+---
+title: Quote/0 To-Do Board
+description: Organize and preview tasks on your computer, then sync them to the Quote/0 rotation through the Canvas API.
+new: true
+---
+
+<GithubInfo owner="douchunzhou" repo="quote0-todo-board" />
+
+Edit and preview your to-do list on a computer, then sync unfinished tasks to Quote/0. When the list fills more than one screen, the tool splits it across cards that the device displays in rotation.
+
+### Features
+
+- The browser version runs from a local HTML file and supports due dates, recurring tasks, search, filters, and pinning.
+- Sync manually or push updates automatically after edits. Optional weather and quote pages each use a separate Canvas API card.
+- Build the Windows version from source for a transparent widget that stays on top and supports checking off tasks and automatic updates.
+
+### Get started
+
+1. Download `Quote0-待办看板.html` from the repository and open it in a browser.
+2. Prepare a linked Quote/0, its serial number, and a [Dot. API key](/docs/service/open/get_api). In the Dot. App's Content Studio, add one Canvas API card to the device rotation for each page you plan to display.
+3. Enter the key and serial number in the tool's settings, discover the Canvas API cards, and check their order. Save the settings and sync all pages.
+
+The browser version stores tasks and settings in the current browser. Keep full JSON exports private because they include the API key.

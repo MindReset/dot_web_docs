@@ -1,0 +1,28 @@
+---
+title: XH View OS For Pico
+description: 在小纸 Pico 上阅读 TXT 和 EPUB，管理书库和传输文件，或在两台设备上体验双机阅读。
+new: true
+---
+
+感谢 XH Lab 为小纸 Pico 提供系统。
+
+XH View OS For Pico 是一款第三方系统固件，目前为预览版。你可以阅读 TXT 和 EPUB、搜索书架、调整排版，并通过局域网、设备热点或 USB 存储卡模式传输书籍。系统还提供 TF 卡应用、Home Link 家居控制和硬件诊断页面。
+
+## 编译与刷写
+
+准备 ESP-IDF v6.1 和支持数据传输的 USB 线。项目通过 GitHub 提供固件源码，需自行编译并通过 USB 刷写。刷写前请备份需要保留的书籍、笔记和设置。
+
+在项目的[编译与刷写说明](https://github.com/XHFO/XH-View-OS-For-Pico#build--flash)中查看构建步骤。体验双机阅读时，请按[双机阅读指南](https://github.com/XHFO/XH-View-OS-For-Pico/blob/main/docs/DUAL-READER.md)选择源码和双机配置，并在两台设备上使用相同版本。
+
+## 双机阅读
+
+在双机预览版中，将两台已插入可读写存储卡的小纸 Pico 连接到同一 Wi-Fi，在系统设置的「阅读与输入 → 双机阅读」中配对。两台设备通过 Wi-Fi 同步书籍和共享字体，通过蓝牙同步开书、双页位置与翻页。配对步骤和功能限制见上方的双机阅读指南。
+
+<GithubInfo owner="XHFO" repo="XH-View-OS-For-Pico" />
+
+## 安装与使用帮助
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="安装与使用常见问题">查看存储卡、串口连接和安装后卡顿等问题的处理方法。</Card>
+  <Card href="/docs/read_0/firmware" title="恢复官方演示系统">按编译与刷写步骤恢复官方演示系统。</Card>
+</Cards>

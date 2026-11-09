@@ -1,0 +1,28 @@
+---
+title: XH View OS For Pico
+description: Read TXT and EPUB, manage your library, and transfer files on Read Pico, or try paired reading across two devices.
+new: true
+---
+
+Thank you to XH Lab for providing a system for Read Pico.
+
+XH View OS For Pico is third-party system firmware available as a preview. You can read TXT and EPUB, search the library, customize the reading layout, and transfer books over Wi-Fi, a device hotspot, or USB card mode. The system also includes TF card apps, Home Link controls, and hardware diagnostics.
+
+## Build and flash
+
+Prepare ESP-IDF v6.1 and a USB data cable. The project provides firmware source on GitHub for you to build and flash over USB. Back up any books, notes, and settings you want to keep before flashing.
+
+Follow the project's [build and flash instructions](https://github.com/XHFO/XH-View-OS-For-Pico#build--flash). For paired reading, use the source and build profile in the [Duo guide](https://github.com/XHFO/XH-View-OS-For-Pico/blob/main/docs/DUAL-READER.md) and install the same version on both devices.
+
+## Paired reading
+
+With the Duo preview, insert a writable card into each Read Pico and connect both to the same Wi-Fi network. Pair the devices in the reading and input settings. The devices use Wi-Fi to sync books and a shared font, and Bluetooth to coordinate opening books, page spreads, and page turns. See the Duo guide for setup steps and limitations.
+
+<GithubInfo owner="XHFO" repo="XH-View-OS-For-Pico" />
+
+## Installation and usage help
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="Installation and Usage FAQ">Find help with memory cards, serial connections, and unresponsive devices after installation.</Card>
+  <Card href="/docs/read_0/firmware" title="Restore the Official Demo System">Follow the build and flash instructions to restore the official demo system.</Card>
+</Cards>

@@ -1,0 +1,28 @@
+---
+title: XH View OS For Pico
+description: Read Pico で TXT と EPUB の読書、書庫管理、ファイル転送ができ、2 台を使った見開き読書も試せます。
+new: true
+---
+
+Read Pico 向けにシステムを提供してくださった XH Lab に感謝します。
+
+XH View OS For Pico はプレビュー版のサードパーティ製ファームウェアです。TXT と EPUB を読み、本棚の検索や組版の調整ができます。書籍は Wi-Fi、端末のアクセスポイント、USB のカードモードで転送できます。TF カードのアプリ、Home Link による家電操作、ハードウェア診断も利用できます。
+
+## ビルドと書き込み
+
+ESP-IDF v6.1 とデータ通信対応の USB ケーブルを用意してください。GitHub で提供されているソースコードを自分でビルドし、USB 経由で書き込みます。書き込む前に、残しておきたい書籍、メモ、設定をバックアップしてください。
+
+プロジェクトの[ビルドと書き込み手順](https://github.com/XHFO/XH-View-OS-For-Pico#build--flash)に従ってください。2 台で読書する場合は、[Duo ガイド](https://github.com/XHFO/XH-View-OS-For-Pico/blob/main/docs/DUAL-READER.md)に従ってソースコードとビルド設定を選び、両方の端末に同じバージョンを書き込みます。
+
+## 2 台で見開き読書
+
+Duo プレビュー版では、2 台の Read Pico に書き込み可能なカードを挿入し、同じ Wi-Fi に接続します。読書と入力の設定から 2 台をペアリングしてください。書籍と共有フォントは Wi-Fi で同期し、書籍を開く操作、見開きの位置、ページ送りは Bluetooth で連動します。設定手順と制限は Duo ガイドをご覧ください。
+
+<GithubInfo owner="XHFO" repo="XH-View-OS-For-Pico" />
+
+## インストールと使用のヘルプ
+
+<Cards>
+  <Card href="/docs/read_0/faq/firmware_install" title="インストールと使用のよくある質問">カードの認識、シリアル接続、インストール後に反応しない場合の対処方法を確認できます。</Card>
+  <Card href="/docs/read_0/firmware" title="公式デモシステムに戻す">ビルドと書き込みの手順に従って、公式デモシステムに戻します。</Card>
+</Cards>
