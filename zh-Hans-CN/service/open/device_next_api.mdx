@@ -15,10 +15,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 3. 确保您的设备已接入电源；
 4. 确保您的设备已接入网络；
 
-<Callout
-	type="info"
-	title="API 的请求限制为每秒 10 次,通过 API 请求,您可以更灵活地控制设备的行为和响应。"
-/>
+同一台设备每 2 秒最多接受一次立即刷新请求。收到 `429` 时，请按 `Retry-After` 指定的秒数等待。详见 [API 限速](/docs/service/open/rate_limits)。
 
 <Callout
 	type="info"

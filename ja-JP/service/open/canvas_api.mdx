@@ -1,6 +1,5 @@
 ---
 title: Canvas コンテンツを制御
-new: true
 ---
 
 import Link from "fumadocs-core/link";
@@ -39,6 +38,8 @@ import { ApiPlayground } from "src/shadcn/components/api-playground";
 
 	ループリストでは即時表示を有効にすると、オンラインのデバイスへ更新を要求します。バッテリー駆動でスリープ中の場合は保存し、自動起動時に取得します。固定リストでは Dot. App の時間設定に従い、現在表示中でも次回の予定された更新を待ちます。API は時間設定を変更しません。詳しくは<Link href="/docs/quote_0/faq/refresh_timing">時間の仕組み</Link>をご覧ください。
 </Callout>
+
+即時更新はデバイスごとに 2 秒に 1 回までです。`429` が返った場合は、`Retry-After` が示す秒数だけ待ってから再試行してください。詳しくは [API のレート制限](/docs/service/open/rate_limits)をご覧ください。
 
 ### Playground
 

@@ -15,10 +15,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 3. Make sure your device is connected to power;
 4. Make sure your device is connected to the network;
 
-<Callout
-	type="info"
-	title="The API rate limit is 10 requests per second. With the API, you can control device behavior and responses more flexibly."
-/>
+Each device accepts one immediate refresh request every 2 seconds. If you receive a `429`, wait the number of seconds in `Retry-After`. See [API rate limits](/docs/service/open/rate_limits).
 
 <Callout
 	type="info"

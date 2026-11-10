@@ -169,7 +169,7 @@ python scripts/send_text.py --device-id '{{deviceId}}' --task-type fixed \
 
 ## API と payload の制限
 
-- サービスのレート制限は 1 秒あたり 10 リクエストです。
+- 即時更新はデバイスごとに 2 秒に 1 回までです。詳しくは [API のレート制限](/docs/service/open/rate_limits)をご覧ください。
 - Text、Image、Canvas の書き込みには、選択したループリストまたは固定リストに対応する API コンテンツが必要です。
 - デバイス設定の interval は整数分の倍数で指定します。最小値はモデルと電源モードにより異なります。[デバイス設定](./device_settings_api)を参照してください。最大値は 43,200,000 ミリ秒（12 時間）です。
 - Canvas の `data` は 64 KB、`windowData` は 128 KB、`layoutFull` は 8 KB までです。
@@ -181,7 +181,7 @@ python scripts/send_text.py --device-id '{{deviceId}}' --task-type fixed \
 
 - `401`：エージェントを起動するプロセスに `DOT_API_KEY` が設定され、key が有効か確認します。
 - `404`：デバイスのシリアル番号と、対応するコンテンツタスクを確認します。
-- `429`：1 秒あたり 10 リクエストの制限を守り、レートウィンドウ後に意図的に再試行します。
+- `429` の場合は、レスポンスヘッダーの `Retry-After` が示す秒数だけ待ってから再試行してください。
 - Canvas 検証エラー：`dot_validate_canvas` または `send_canvas.py --dry-run` を使います。
 - Text、Image、Canvas のタスクエラー：一覧取得と書き込みで同じ `taskType` を使い、そのリスト内の対応する API コンテンツの `taskKey` を指定してください。`taskType` の省略時はループリストを選択します。
 

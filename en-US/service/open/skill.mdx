@@ -169,7 +169,7 @@ python scripts/send_text.py --device-id '{{deviceId}}' --task-type fixed \
 
 ## API and payload limits
 
-- The service rate limit is 10 requests per second.
+- Each device accepts one immediate refresh request every 2 seconds. See [API rate limits](/docs/service/open/rate_limits).
 - Text, Image, and Canvas writes require the matching API content item to already exist in the selected loop or fixed list.
 - Settings intervals use whole-minute multiples. Minimums depend on the model and power mode; see [Device Settings](./device_settings_api). The maximum is 43,200,000 milliseconds (12 hours).
 - Canvas `data` is limited to 64 KB; `windowData` to 128 KB; and `layoutFull` to 8 KB.
@@ -181,7 +181,7 @@ python scripts/send_text.py --device-id '{{deviceId}}' --task-type fixed \
 
 - `401`: check that `DOT_API_KEY` is set in the process environment and that the key is valid.
 - `404`: check the device serial number and confirm the requested content task exists.
-- `429`: respect the 10 requests-per-second limit and retry deliberately after the rate window passes.
+- `429` — wait the number of seconds in the `Retry-After` header before retrying.
 - Canvas validation errors: run `dot_validate_canvas` or use `send_canvas.py --dry-run` before sending.
 - Text, Image, or Canvas task errors: use the same `taskType` for listing and writing, and a `taskKey` from a matching API item in that list. Omitting `taskType` selects the loop list.
 

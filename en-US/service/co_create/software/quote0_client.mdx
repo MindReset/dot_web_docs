@@ -54,4 +54,4 @@ response = client.send_text(devices[0].id, TextContentRequest(
 
 ### Error Handling
 
-The SDK provides typed exceptions: `AuthenticationError`, `NotFoundError`, `PermissionError`, `ValidationError`, and `RateLimitError` (rate limit: 10 req/sec).
+The SDK provides typed exceptions: `AuthenticationError`, `NotFoundError`, `PermissionError`, `ValidationError`, and `RateLimitError`. For `RateLimitError`, see [API rate limits](/docs/service/open/rate_limits).

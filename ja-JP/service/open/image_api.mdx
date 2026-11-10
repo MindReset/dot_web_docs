@@ -1,6 +1,5 @@
 ---
 title: 画像内容を制御
-new: true
 ---
 
 import Link from 'fumadocs-core/link';
@@ -61,10 +60,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 	- `Content-Type` が `image/*` であること。例: `image/png`、`image/jpeg`
 </Callout>
 
-<Callout
-	type="info"
-	title="APIのリクエスト制限は1秒あたり10回です。APIを使うとデバイスの動作と応答をより柔軟に制御できます。"
-/>
+即時更新はデバイスごとに 2 秒に 1 回までです。`429` が返った場合は、`Retry-After` が示す秒数だけ待ってから再試行してください。詳しくは [API のレート制限](/docs/service/open/rate_limits)をご覧ください。
 
 <Callout
 	type="info"

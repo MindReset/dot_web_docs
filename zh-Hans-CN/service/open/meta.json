@@ -5,6 +5,7 @@
         "skill",
         "get_api",
         "get_device_id",
+        "rate_limits",
         "list_devices_api",
         "device_status_api",
         "timezones_api",

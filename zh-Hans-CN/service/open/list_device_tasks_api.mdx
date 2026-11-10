@@ -14,10 +14,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 1. 确保您已在 Dot. App 中<Link href="/docs/service/studio/api/get_api">获取并保存了 API 密钥</Link>；
 2. 确保您至少有一台所属于自己的设备并已<Link href="/docs/service/studio/api/get_device_id">获取设备序列号</Link>；
 
-<Callout
-	type="info"
-	title="API 的请求限制为每秒 10 次，通过 API 请求，您可以更灵活地控制设备的行为和响应。"
-/>
+同一客户端 IP 对此路径每秒最多 10 次请求。详见 [API 限速](/docs/service/open/rate_limits)。
 
 <Callout
 	type="info"

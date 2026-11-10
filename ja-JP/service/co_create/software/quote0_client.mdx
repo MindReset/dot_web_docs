@@ -54,4 +54,4 @@ response = client.send_text(devices[0].id, TextContentRequest(
 
 ### エラーハンドリング
 
-SDK は型付き例外を提供します：`AuthenticationError`、`NotFoundError`、`PermissionError`、`ValidationError`、`RateLimitError`（レート制限：10 回/秒）。
+SDK は型付き例外を提供します：`AuthenticationError`、`NotFoundError`、`PermissionError`、`ValidationError`、`RateLimitError`。`RateLimitError` については [API のレート制限](/docs/service/open/rate_limits)をご覧ください。

@@ -54,4 +54,4 @@ response = client.send_text(devices[0].id, TextContentRequest(
 
 ### 错误处理
 
-SDK 提供细粒度的异常类型：`AuthenticationError`、`NotFoundError`、`PermissionError`、`ValidationError`、`RateLimitError`（限速 10 次/秒）。
+SDK 提供细粒度的异常类型：`AuthenticationError`、`NotFoundError`、`PermissionError`、`ValidationError`、`RateLimitError`。收到 `RateLimitError` 时，请参考 [API 限速](/docs/service/open/rate_limits)。

@@ -14,10 +14,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 1. Dot. アプリで<Link href="/docs/service/studio/api/get_api">API キーを取得して保存</Link>していること
 2. 自分のデバイスが少なくとも 1 台あり、<Link href="/docs/service/studio/api/get_device_id">デバイスのシリアル番号</Link>を取得していること
 
-<Callout
-	type="info"
-	title="APIのリクエスト制限は1秒あたり10回です。APIを使うとデバイスの動作と応答をより柔軟に制御できます。"
-/>
+同じクライアント IP からこのパスに送信できるリクエストは、1 秒あたり最大 10 件です。詳しくは [API のレート制限](/docs/service/open/rate_limits)をご覧ください。
 
 <Callout
 	type="info"

@@ -1,6 +1,5 @@
 ---
 title: Control Canvas Content
-new: true
 ---
 
 import Link from "fumadocs-core/link";
@@ -40,6 +39,8 @@ import { ApiPlayground } from "src/shadcn/components/api-playground";
 
 	Enable immediate display for loop content to request a screen update while the device is online. A sleeping device on battery retrieves saved content after automatic wake. Fixed content follows the times configured in Dot. App: even the item currently on screen waits for the next scheduled refresh. The API preserves its time settings. Read <Link href="/docs/quote_0/faq/refresh_timing">Timing</Link> for details.
 </Callout>
+
+Each device accepts one immediate refresh request every 2 seconds. If you receive a `429`, wait the number of seconds in `Retry-After`. See [API rate limits](/docs/service/open/rate_limits).
 
 ### Playground
 

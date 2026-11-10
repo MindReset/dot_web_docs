@@ -14,10 +14,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 1. Make sure you have <Link href="/docs/service/studio/api/get_api">retrieved and saved your API key</Link> in the Dot. App;
 2. Make sure you own at least one device and have <Link href="/docs/service/studio/api/get_device_id">obtained its device serial number</Link>;
 
-<Callout
-	type="info"
-	title="The API rate limit is 10 requests per second. With the API, you can control device behavior and responses more flexibly."
-/>
+Each client IP can send up to 10 requests per second to this path. See [API rate limits](/docs/service/open/rate_limits).
 
 <Callout
 	type="info"

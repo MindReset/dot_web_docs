@@ -1,0 +1,45 @@
+---
+title: Understand API rate limits
+new: true
+---
+
+An API rate limit caps how many requests the server accepts in a given amount of time.
+
+You can use one API key to request an immediate refresh on three devices at the same time. Say you ask the living room device to display a text card immediately, then ask it to display an image one second later. The second request hits the rate limit because immediate refresh requests for the same device must be at least two seconds apart.
+
+## Understand requests and rate limits
+
+- **Immediate refresh**. Each device accepts one immediate refresh request every two seconds. Text, Image, and Canvas requests that refresh immediately share this limit with requests to switch to the next item. Each device has its own cooldown.
+- **HTTP requests**. Each client IP can send up to 10 requests per second to the same path. Programs using the same public IP share those 10 requests when they access the same path.
+
+### Which operations count toward each limit
+
+In the two seconds after requesting an immediate refresh, you can still check the device status, update settings, or save content for later.
+
+| Operation | Immediate refresh limit | HTTP request limit |
+| --- | --- | --- |
+| Write loop content and request an immediate refresh (`taskType: "loop"` and `refreshNow: true`, both defaults) | Counts | Counts |
+| Switch to the next item | Counts | Counts |
+| Save loop content only (`taskType: "loop"` and `refreshNow: false`) | Does not count | Counts |
+| Save fixed content only (`taskType: "fixed"` and `refreshNow: false`) | Does not count | Counts |
+| Read the device list, device status, content list, device settings, or timezones | Does not count | Counts |
+| Update device settings | Does not count | Counts |
+| The device displays fixed content on its own schedule | Does not count | Does not count |
+
+`refreshNow` controls immediate refresh for loop content only. Fixed content follows the device schedule, so you can omit `refreshNow` when saving it.
+
+For example, one public IP can make up to 10 status requests per second for the living room device. The bedroom device has a different status path and a separate limit. Requests with different query parameters still count toward the limit for the same path.
+
+## How to handle a 429 response
+
+HTTP `429 Too Many Requests` means the request was rejected because it arrived too soon. Wait the number of seconds in the `Retry-After` header, then send the request again. For example, `Retry-After: 1` means wait one second.
+
+If a write hits the device refresh limit, the server rejects it before saving the content. The response body also provides the wait time.
+
+```json
+{
+  "code": "RATE_LIMITED",
+  "message": "Refresh requests for this device are too frequent. Try again in 1 second.",
+  "retryAfter": 1
+}
+```

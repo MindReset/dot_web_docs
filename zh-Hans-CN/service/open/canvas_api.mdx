@@ -1,6 +1,5 @@
 ---
 title: 控制画板内容
-new: true
 ---
 
 import Link from "fumadocs-core/link";
@@ -37,6 +36,8 @@ import { ApiPlayground } from "src/shadcn/components/api-playground";
 
 	立即显示设置仅对循环内容有效：开启时请求立即显示，关闭时仅保存。设备需要在线；电池供电且睡眠时，内容先保存，待设备自动唤醒后获取。固定内容始终按 App 中设置的时间显示，即使当前正在显示该固定内容，也要等下一次计划刷新。API 不改变固定内容的时间设置。详见<Link href="/docs/quote_0/faq/refresh_timing">时间机制</Link>。
 </Callout>
+
+同一台设备每 2 秒最多接受一次立即刷新请求。收到 `429` 时，请按 `Retry-After` 指定的秒数等待。详见 [API 限速](/docs/service/open/rate_limits)。
 
 ### 请求示例
 
