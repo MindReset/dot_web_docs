@@ -1,0 +1,41 @@
+---
+title: "quota-dot for Quote/0"
+description: "Show remaining Codex quota, relay balances, and daily cc-switch token usage on Quote/0."
+new: true
+---
+
+<GithubInfo owner="Bhipee" repo="quota_dot" />
+
+quota-dot turns remaining Codex quota, Nexus or LiteLLM team balances, and daily token usage recorded by cc-switch into monochrome images. It sends them to Quote/0 on a schedule through the Image API.
+
+<figure>
+  <CustomCloudImage osSrc="dot/docs/quota-dot-device_1794799824806.jpg" alt="Quote/0 overview preview in the Dot. App" width={1206} height={409} />
+  <figcaption>Quote/0 overview preview in the Dot. App</figcaption>
+</figure>
+
+### Dashboard pages
+
+The project generated these three previews with sample data.
+
+<div className="my-6 grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/quota-dot-overview_1794799824806.png" alt="Overview with token totals, remaining quota, and recent usage" width={592} height={304} />
+    <figcaption>Overview with token totals, remaining quota, and recent usage</figcaption>
+  </figure>
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/quota-dot-heatmap_1794799824806.png" alt="Heatmap of daily token usage over 24 weeks" width={592} height={304} />
+    <figcaption>Heatmap of daily token usage over 24 weeks</figcaption>
+  </figure>
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/quota-dot-quota_1794799824806.png" alt="Remaining Codex quota and relay balances" width={592} height={304} />
+    <figcaption>Remaining Codex quota and relay balances</figcaption>
+  </figure>
+</div>
+
+### Get started
+
+1. Download the project and run `pip install -r requirements.txt`. Copy `.env.example` to `.env`, then enter your [Dot. API key](/docs/service/open/get_api), device serial number, and data source settings.
+2. In the Dot. App’s Content Studio, add one Image API item to the device loop for each page you want to display. Set the corresponding item key in `PAGE_OVERVIEW_TASK_KEY`, `PAGE_HEATMAP_TASK_KEY`, or `PAGE_QUOTA_TASK_KEY` so pages do not overwrite one another.
+3. Run `python -m quotadot render` to preview images in `out/`, then `python -m quotadot push` to send them once. For scheduled updates, run `python -m quotadot run`.
+
+The overview and heatmap need access to the local cc-switch database. If you only want the quota page, follow the [configuration guide](https://github.com/Bhipee/quota_dot/blob/main/docs/configuration.md) to run it on a server with Docker.

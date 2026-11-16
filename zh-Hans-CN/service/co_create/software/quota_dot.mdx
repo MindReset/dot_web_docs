@@ -1,0 +1,41 @@
+---
+title: "quota-dot：Quote/0 额度与用量看板"
+description: "在摘录 Quote/0 上查看 Codex 剩余额度、中转站余额和 cc-switch 每日 Token 用量。"
+new: true
+---
+
+<GithubInfo owner="Bhipee" repo="quota_dot" />
+
+quota-dot 将 Codex 剩余额度、Nexus 或 LiteLLM 团队余额，以及 cc-switch 记录的每日 Token 用量绘制成黑白图，通过图像 API 定时推送到摘录 Quote/0。
+
+<figure>
+  <CustomCloudImage osSrc="dot/docs/quota-dot-device_1794799824806.jpg" alt="Dot. App 中的 Quote/0 总览预览" width={1206} height={409} />
+  <figcaption>Dot. App 中的 Quote/0 总览预览</figcaption>
+</figure>
+
+### 可选画面
+
+以下三张画面由项目使用示例数据生成。
+
+<div className="my-6 grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/quota-dot-overview_1794799824806.png" alt="总览：用量合计、剩余额度与近期用量" width={592} height={304} />
+    <figcaption>总览：用量合计、剩余额度与近期用量</figcaption>
+  </figure>
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/quota-dot-heatmap_1794799824806.png" alt="热力图：近 24 周的每日 Token 用量" width={592} height={304} />
+    <figcaption>热力图：近 24 周的每日 Token 用量</figcaption>
+  </figure>
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/quota-dot-quota_1794799824806.png" alt="额度：Codex 剩余额度与中转站余额" width={592} height={304} />
+    <figcaption>额度：Codex 剩余额度与中转站余额</figcaption>
+  </figure>
+</div>
+
+### 开始使用
+
+1. 下载项目，运行 `pip install -r requirements.txt`。将 `.env.example` 复制为 `.env`，填入 [Dot. API 密钥](/docs/service/open/get_api)、设备序列号和所需的数据源配置。
+2. 在 Dot. App 的内容工坊里，为每个要显示的页面向设备循环列表添加一项「图像 API」。将对应的内容 Key 填入 `PAGE_OVERVIEW_TASK_KEY`、`PAGE_HEATMAP_TASK_KEY` 或 `PAGE_QUOTA_TASK_KEY`，避免页面覆盖。
+3. 运行 `python -m quotadot render` 在 `out/` 预览画面，再用 `python -m quotadot push` 推送一次。需要定时更新时，运行 `python -m quotadot run`。
+
+总览和热力图需要能读取 cc-switch 的本地数据库。只显示额度时，也可以按[项目配置指南](https://github.com/Bhipee/quota_dot/blob/main/docs/configuration.md)在服务器上通过 Docker 运行。

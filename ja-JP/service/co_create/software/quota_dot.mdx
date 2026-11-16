@@ -1,0 +1,41 @@
+---
+title: "quota-dot：Quote/0 の利用枠と使用量"
+description: "Codex の残り利用枠、中継サービスの残高、cc-switch の日別トークン使用量を Quote/0 で確認できます。"
+new: true
+---
+
+<GithubInfo owner="Bhipee" repo="quota_dot" />
+
+quota-dot は、Codex の残り利用枠、Nexus や LiteLLM のチーム残高、cc-switch が記録した日別トークン使用量を白黒画像にまとめ、画像 API で Quote/0 に定期送信します。
+
+<figure>
+  <CustomCloudImage osSrc="dot/docs/quota-dot-device_1794799824806.jpg" alt="Dot. アプリでの Quote/0 の概要プレビュー" width={1206} height={409} />
+  <figcaption>Dot. アプリでの Quote/0 の概要プレビュー</figcaption>
+</figure>
+
+### 表示できる画面
+
+以下の 3 枚は、プロジェクトがサンプルデータで作成した表示例です。
+
+<div className="my-6 grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/quota-dot-overview_1794799824806.png" alt="概要画面の使用量合計、残り利用枠、最近の使用量" width={592} height={304} />
+    <figcaption>概要画面の使用量合計、残り利用枠、最近の使用量</figcaption>
+  </figure>
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/quota-dot-heatmap_1794799824806.png" alt="直近 24 週間の日別トークン使用量のヒートマップ" width={592} height={304} />
+    <figcaption>直近 24 週間の日別トークン使用量のヒートマップ</figcaption>
+  </figure>
+  <figure>
+    <CustomCloudImage osSrc="dot/docs/quota-dot-quota_1794799824806.png" alt="Codex の残り利用枠と中継サービスの残高" width={592} height={304} />
+    <figcaption>Codex の残り利用枠と中継サービスの残高</figcaption>
+  </figure>
+</div>
+
+### はじめるには
+
+1. プロジェクトをダウンロードし、`pip install -r requirements.txt` を実行します。`.env.example` を `.env` にコピーし、[Dot. API キー](/docs/service/open/get_api)、端末のシリアル番号、使用するデータソースの設定を入力します。
+2. Dot. アプリの創造所で、表示したい画面ごとに「画像 API」を 1 件ずつ端末のループリストに追加します。画面が上書きされないよう、対応するコンテンツのキーを `PAGE_OVERVIEW_TASK_KEY`、`PAGE_HEATMAP_TASK_KEY`、`PAGE_QUOTA_TASK_KEY` に設定します。
+3. `python -m quotadot render` を実行して `out/` の画像を確認し、`python -m quotadot push` で一度送信します。定期更新する場合は `python -m quotadot run` を実行します。
+
+概要とヒートマップの表示には、cc-switch のローカルデータベースへのアクセスが必要です。利用枠の画面だけを表示する場合は、[設定ガイド](https://github.com/Bhipee/quota_dot/blob/main/docs/configuration.md)に従ってサーバー上で Docker を使って実行することもできます。
