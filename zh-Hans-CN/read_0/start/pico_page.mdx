@@ -1,14 +1,17 @@
 ---
 title: Pico Page
 new: true
-description: 在小纸 Pico 上离线阅读 EPUB 与 TXT，调整字体与排版，并与 KOReader 接续 EPUB 阅读位置。
+description: 在小纸 Pico 上离线阅读 EPUB 与 TXT，调整字体与排版，长按查词，并与 KOReader 接续 EPUB 阅读位置。
 ---
 
-<figure className="mx-auto w-full max-w-[900px]">
-  <CustomCloudImage osSrc="dot/docs/pico-page-hero-home_1794982590217.jpg" alt="Pico Page 官网首页，左侧介绍 EPUB、TXT 离线阅读与 KOReader 位置接续，右侧展示书库和正文界面" width={1232} height={490} />
-</figure>
-
 感谢 [eMUQI](https://github.com/eMUQI) 为小纸 Pico 提供系统。
+
+Pico Page 是为小纸 Pico 设计的开源阅读系统，离线阅读存储卡上的 EPUB 和 TXT。排版调整先预览再保存，长按正文可用离线词典查词，EPUB 可与 KOReader 接续阅读位置。书籍、进度和设置都以普通文件保存在存储卡上。界面支持简体中文、繁体中文和英文。
+
+<figure className="mx-auto w-full max-w-[900px]">
+  <img src="https://raw.githubusercontent.com/eMUQI/pico-page/v0.8.0/docs/images/readme-device-gallery.webp" alt="四台小纸 Pico 依次显示 Pico Page 的休眠画面、全屏正文、排版面板和 KOReader 位置比较" width="3240" height="1410" loading="lazy" style={{ width: "100%", height: "auto" }} />
+  <figcaption>固件界面预览，演示数据</figcaption>
+</figure>
 
 ## 开始之前
 
@@ -38,7 +41,7 @@ description: 在小纸 Pico 上离线阅读 EPUB 与 TXT，调整字体与排版
 
 勾选「我确认连接的是 Read Pico」，点击「安装 Pico Page」。
 
-安装期间，保持 USB 连接和网页打开，避免电脑进入睡眠。安装完成后，设备自动重启并显示书库。
+安装期间，保持 USB 连接和网页打开，避免电脑进入睡眠。安装完成后，设备自动重启。首次使用时，先选择界面语言，点「继续」，再按开机引导练习翻页、了解阅读工具，也可点「跳过」直接进入书库。之后可在「设置 → 语言」中切换界面语言。
 
 找不到串口或无法连接时，按安装页面中的说明进入烧录模式，再重新连接。
 
@@ -70,13 +73,7 @@ description: 在小纸 Pico 上离线阅读 EPUB 与 TXT，调整字体与排版
   <CustomCloudImage osSrc="dot/docs/pico-page-operation-guide_1794982590217.png" alt="Read Pico 模型上显示 Pico Page 正文，以虚线标出侧边电源键、下方 K1 上一页、K2 全刷、K3 下一页，以及正文左、中、右和页脚左、右的触摸区域" width={1600} height={1510} />
 </figure>
 
-图中的触摸区域与设备内置使用说明一致。点击图片可放大查看。机身为模型示意，屏幕使用固件截图，阅读数据为演示数据。
-
-关闭、取消和确认操作均使用屏幕上的控件。K2 只全刷当前画面。
-
-短按电源键进入休眠，再次短按电源键唤醒设备。长按电源键可打开关机、重启菜单。
-
-准备休眠时，触摸和 K1、K2、K3 暂不响应。再次短按电源键可取消休眠准备；长按电源键仍可打开关机、重启菜单。
+长按正文并拖动可选词查询，需要先安装离线词典。关闭、取消和确认操作均使用屏幕上的控件。
 
 </Step>
 </Steps>
@@ -85,13 +82,21 @@ description: 在小纸 Pico 上离线阅读 EPUB 与 TXT，调整字体与排版
 
 在设备上打开「设置 → 使用说明」，可离线查看操作方法。书签、排版、传书和锁屏等详细步骤见[官网使用文档](https://picopage.wulu.zone/docs/)。
 
+使用离线词典时，将 StarDict 词典的整个文件夹复制到存储卡的 `Dictionaries/` 文件夹，再在「设置 → 阅读 → 离线词典」中启用。官网不提供词典文件，格式要求见[词典说明](https://picopage.wulu.zone/docs/#dictionaries)。
+
 与 KOReader 接续位置时，两端须使用内容完全相同的原始 EPUB 文件、同一同步服务器和同一账户。检查远端位置、采用远端位置和上传本机位置均需手动操作。TXT 不支持位置接续。配置方法见[同步说明](https://picopage.wulu.zone/docs/#sync)。
 
-已安装 Pico Page 的设备可在「设置 → 固件更新」中检查新版本，适用条件和操作步骤见[更新说明](https://picopage.wulu.zone/docs/#update)。
+已安装 Pico Page 的设备可在「设置 → 固件更新」中检查新版本，适用条件和操作步骤见[更新说明](https://picopage.wulu.zone/docs/#update)，各版本变化见[更新日志](https://picopage.wulu.zone/changelog/)。
 
 移动书籍时，同时移动原书旁同名的 `.picopage/` 文件夹，以保留进度、书签和单书设置。
 
 </Callout>
+
+## 源码与反馈
+
+Pico Page 的源码、发布版本和问题反馈都在 GitHub 仓库。安装和更新请使用官网。
+
+<GithubInfo owner="eMUQI" repo="pico-page" />
 
 ## 安装与使用帮助
 
