@@ -1,14 +1,16 @@
 ---
 title: Pico Page
 new: true
-description: Read EPUB and TXT offline on Read Pico, customize typography, and continue your EPUB reading position with KOReader.
+description: Read EPUB and TXT offline on Read Pico, customize typography, look up words, and continue your EPUB reading position with KOReader.
 ---
 
 Thank you to [eMUQI](https://github.com/eMUQI) for providing a system for Read Pico.
 
+Pico Page is open-source reading firmware for Read Pico. It reads EPUB and TXT files from the microSD card offline. You preview layout changes before saving them, look up words in offline dictionaries by long-pressing the text, and continue EPUB reading positions with KOReader. Books, progress, and settings are stored as ordinary files on the card. The interface is available in Simplified Chinese, Traditional Chinese, and English.
+
 ## Before you start
 
-Prepare a sufficiently charged Read Pico, a computer running desktop Chrome or Edge, and a USB-C data cable. Close other webpages, flashing tools, or terminals using the device's serial port.
+Prepare a sufficiently charged Read Pico, a computer running desktop Chrome or Edge, and a USB-C cable that supports data transfer. Close other webpages, flashing tools, or terminals using the device's serial port.
 
 Prepare a microSD card, up to 512 GB, formatted as FAT32.
 
@@ -17,30 +19,87 @@ Prepare a microSD card, up to 512 GB, formatted as FAT32.
 
 ### Open the installer
 
-Visit the [Pico Page website](https://picopage.wulu.zone/), click **安装固件** (Install firmware), and open the [installer](https://picopage.wulu.zone/install/). Read the installation notes.
+Visit the [Pico Page website](https://picopage.wulu.zone/en/), click **Install firmware**, and open the [installer](https://picopage.wulu.zone/en/install/). Read the notes before installing. The installer shows the current version.
 
 </Step>
 <Step>
 
 ### Connect and install
 
-Connect Read Pico over USB. Click **连接设备** (Connect device), select its serial port, confirm **我确认连接的是 Read Pico** (I confirm this is Read Pico), then click **安装 Pico Page** (Install Pico Page).
+<Callout type="warn" title="Device data">
 
-Installation overwrites the entire device flash, including the existing system and internal settings such as Wi-Fi. Books on the microSD card are unaffected. The installer refuses devices with flash encryption or secure boot enabled.
+Installation overwrites the device's entire internal flash, including the existing system and any settings stored there. Books, reading progress, and Pico Page settings on the microSD card, including saved Wi-Fi networks, are unaffected. The installer refuses devices with flash encryption or secure boot enabled.
 
-Keep USB connected, the page open, and the computer awake until installation finishes and the device restarts to the library.
+</Callout>
+
+Connect Read Pico over USB, click **Connect device**, and select the device's serial port in the browser dialog.
+
+Confirm that the connected device is a Read Pico, then click **Install Pico Page**.
+
+Keep USB connected, the page open, and the computer awake during installation. When installation finishes, the device restarts. On first start, choose **English** and tap **Continue**. A short introduction then lets you practice turning pages and shows the reading tools. Tap **Skip** to go straight to the library. You can change the language later under **Settings → Language**.
+
+If the serial port is missing or the device does not connect, follow the installer's instructions to enter flash mode, then connect again.
 
 </Step>
 <Step>
 
 ### Add books and fonts
 
-Copy EPUB and TXT books into `Books/` on the microSD card. Put Chinese TTF or OTF fonts and their licenses in `Fonts/`. The built-in character set is limited; use a full Chinese font if characters appear as boxes.
+Copy EPUB and TXT files into the `Books/` folder on the microSD card.
 
-Reinsert the card, restart the device, open a book, and tap the center of the text to select a font under **排版** (Typography). See the [website documentation](https://picopage.wulu.zone/docs/) for more controls.
+Download and extract the [Chinese font package from the website](https://picopage.wulu.zone/en/#fonts), or use your own TTF or OTF fonts. Copy the font files into the `Fonts/` folder on the microSD card.
+
+The built-in font covers only 3,500 common Chinese characters. Other characters appear as boxes. Add a full font for your books' language before you start reading.
+
+Restart the device after you remove or insert the microSD card: hold the power button and choose **Restart**.
+
+You can also transfer books over USB or Wi-Fi without removing the card. See [Transfer books](https://picopage.wulu.zone/en/docs/#transfer).
+
+</Step>
+<Step>
+
+### Open a book and start reading
+
+Open a book in the library, tap the center of the page, then choose **Layout** → **Font**. Select a font and tap **Use this font**. When the Layout panel returns, tap **Apply to this book** to save the setting. The preview is not saved automatically.
+
+Default controls:
+
+- **K1**, or tap the left side of the page: previous page.
+- **K3**, or tap the right side of the page: next page.
+- **K2**: fully refresh the current screen.
+- Tap the center of the page: open the reading tools.
+- Tap the left or right side of the footer: cycle or hide footer information.
+- Swipe left or right on the page: turn the page.
+- Long-press and drag on the text: select a word and look it up. Install an offline dictionary first.
+
+Use the on-screen controls to close, cancel, or confirm. K2 only refreshes the current screen.
+
+Briefly press the power button to sleep, and press it again to wake the device. Hold the power button to open the shutdown and restart menu.
+
+While the device is preparing to sleep, it ignores touch and K1, K2, and K3. Briefly press the power button again to cancel. Holding the power button still opens the shutdown and restart menu.
 
 </Step>
 </Steps>
+
+<Callout type="info" title="More features">
+
+Open **Settings → Help** on the device for offline instructions. For bookmarks, layout, book transfer, lock screens, and more, see the [website documentation](https://picopage.wulu.zone/en/docs/).
+
+To use offline dictionaries, copy each StarDict dictionary folder into the `Dictionaries/` folder on the microSD card, then enable it under **Settings → Reading → Offline dictionaries**. The website does not provide dictionary files. See [Offline dictionaries](https://picopage.wulu.zone/en/docs/#dictionaries) for format requirements.
+
+To continue reading positions with KOReader, both sides must use the identical original EPUB file, the same sync server, and the same account. Checking the remote position, using it, and uploading the local position are all manual. TXT does not support position sync. See [Sync with KOReader](https://picopage.wulu.zone/en/docs/#sync).
+
+Devices running Pico Page can check for new versions under **Settings → Firmware update**. See [Firmware update](https://picopage.wulu.zone/en/docs/#update) for requirements and steps, and the [changelog](https://picopage.wulu.zone/en/changelog/) for changes in each version.
+
+When you move a book, also move its matching `.picopage/` folder next to it, such as `Book.epub.picopage/`, to keep progress, bookmarks, and per-book settings.
+
+</Callout>
+
+## Source code and feedback
+
+Pico Page source code, releases, and issue reports are on GitHub. Use the website to install and update the firmware.
+
+<GithubInfo owner="eMUQI" repo="pico-page" />
 
 ## Installation and usage help
 
