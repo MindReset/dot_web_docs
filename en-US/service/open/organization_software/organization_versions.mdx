@@ -19,13 +19,38 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     firmwareId: { type: "string", name: "Device software ID", required: true, example: "000000000000000000000101" },
     pageIndex: { type: "number", name: "Page index", default: 0, example: 0 },
     pageSize: { type: "number", name: "Page size", default: 20, example: 20 },
-    channels: { type: "string", name: "Release channel", example: "ALPHA,TESTING" },
-    states: { type: "string", name: "State", example: "published" },
+    channels: {
+      type: "array",
+      name: "Release channel",
+      placeholder: "All channels",
+      example: ["ALPHA", "TESTING"],
+      options: [
+        { value: "ALPHA", label: "Internal testing" },
+        { value: "TESTING", label: "Public testing" },
+        { value: "RELEASED", label: "Stable release" },
+      ],
+    },
+    states: {
+      type: "array",
+      name: "Version state",
+      placeholder: "All states",
+      example: ["published"],
+      options: [
+        { value: "draft", label: "Draft" },
+        { value: "pending", label: "In review" },
+        { value: "published", label: "Live" },
+        { value: "rejected", label: "Changes requested" },
+        { value: "disabled", label: "Disabled" },
+        { value: "revoked", label: "Revoked" },
+      ],
+    },
     search: { type: "string", name: "Search", example: "Desk Clock" },
   }}
 />
 
 ### Query parameters
+
+Repeat the parameter name in the URL for each array item. For example, `?channels=ALPHA&channels=TESTING&states=published` selects live versions in either test channel. Each filter matches any of its selected values.
 
 <TypeTable
   type={{
@@ -45,12 +70,31 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       default: '20',
     },
     channels: {
-      type: 'string',
-      description: 'Filter by release channel. Separate multiple values with commas, for example ALPHA,TESTING.',
+      type: 'array',
+      description: "Filter by release channel. Omit to include all channels.",
+      items: {
+        type: 'string',
+        enumValues: {
+          ALPHA: "Internal testing",
+          TESTING: "Public testing",
+          RELEASED: "Stable release",
+        },
+      },
     },
     states: {
-      type: 'string',
-      description: 'Filter by version state. Separate multiple values with commas, for example pending,rejected.',
+      type: 'array',
+      description: "Filter by version state. Omit to include all states.",
+      items: {
+        type: 'string',
+        enumValues: {
+          draft: "Draft",
+          pending: "In review",
+          published: "Live",
+          rejected: "Changes requested",
+          disabled: "Disabled",
+          revoked: "Revoked",
+        },
+      },
     },
     search: {
       type: 'string',
@@ -61,7 +105,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### List response
 
-`items` contains the current page and `totalCount` counts all matches. `status` is the release channel. `state` describes review and distribution.
+`items` contains the current page in reverse creation order. `totalCount` counts all matches. `status` is the release channel. `state` describes review and distribution.
 
 | `state` | Meaning |
 | --- | --- |
@@ -72,7 +116,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 | `disabled` | Public distribution is paused. |
 | `revoked` | This version record has been withdrawn from distribution. |
 
-The following is an excerpt from a list response.
+For a published version, read its URLs from `downloads` in the list or version details. Use the same file type key in `artifacts` for its `name`, `size` in bytes, and `sha256` checksum. The example version has all three file types.
 
 ```json
 {
@@ -82,12 +126,36 @@ The following is an excerpt from a list response.
       "firmwareId": "000000000000000000000101",
       "version": "1.2.0-beta.1",
       "status": "TESTING",
-      "state": "published"
+      "state": "published",
+      "artifacts": {
+        "merged": {
+          "name": "desk-clock-1.2.0-beta.1-merged.bin",
+          "size": 4194304,
+          "sha256": "199198dbaf96cc8f5a3334adf86676abe9a98c24d65f8b74285c3927bbe9fc7d"
+        },
+        "archive": {
+          "name": "desk-clock-1.2.0-beta.1-flash.tar.gz",
+          "size": 1251968,
+          "sha256": "b45b2f438a169bbf805fcb5c6c622cd3583ff7a75ae57dc8a8476f970fed2bd4"
+        },
+        "ota": {
+          "name": "desk-clock-1.2.0-beta.1.bin",
+          "size": 1176976,
+          "sha256": "a4b13eb3a234a0446faeed2e1d07a22f52bf06b40b00e22f219e15211eed6b07"
+        }
+      },
+      "downloads": {
+        "merged": "https://dot.mindreset.tech/download/AgAAAAAAAAAAAAABAwAAAAA",
+        "archive": "https://dot.mindreset.tech/download/AQAAAAAAAAAAAAABAwAAAAA",
+        "ota": "https://dot.mindreset.tech/download/AwAAAAAAAAAAAAABAwAAAAA"
+      }
     }
   ],
   "totalCount": 1
 }
 ```
+
+See [how to download files for wired flashing](/docs/service/open/organization_software/download). To show the same version that devices receive, [query the published version](/docs/service/open/organization_software/organization_version_query) first, then match its `version` in the list for the same channel.
 
 ## Check a version and its review status
 

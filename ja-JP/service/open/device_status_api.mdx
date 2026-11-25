@@ -161,7 +161,8 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 						},
 						image: {
 							description: '現在表示している画像の URL 一覧。',
-							type: 'string[] | null',
+							type: 'array | null',
+							items: { type: 'string' },
 						},
 					},
 				},

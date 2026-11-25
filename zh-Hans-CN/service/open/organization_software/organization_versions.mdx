@@ -19,13 +19,38 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     firmwareId: { type: "string", name: "设备软件 ID", required: true, example: "000000000000000000000101" },
     pageIndex: { type: "number", name: "页码", default: 0, example: 0 },
     pageSize: { type: "number", name: "每页条数", default: 20, example: 20 },
-    channels: { type: "string", name: "发布渠道", example: "ALPHA,TESTING" },
-    states: { type: "string", name: "状态", example: "published" },
+    channels: {
+      type: "array",
+      name: "发布渠道",
+      placeholder: "全部渠道",
+      example: ["ALPHA", "TESTING"],
+      options: [
+        { value: "ALPHA", label: "内测" },
+        { value: "TESTING", label: "公测" },
+        { value: "RELEASED", label: "正式发布" },
+      ],
+    },
+    states: {
+      type: "array",
+      name: "版本状态",
+      placeholder: "全部状态",
+      example: ["published"],
+      options: [
+        { value: "draft", label: "草稿" },
+        { value: "pending", label: "待审核" },
+        { value: "published", label: "已生效" },
+        { value: "rejected", label: "需修改" },
+        { value: "disabled", label: "已停用" },
+        { value: "revoked", label: "已撤销" },
+      ],
+    },
     search: { type: "string", name: "搜索", example: "Desk Clock" },
   }}
 />
 
 ### 查询参数
+
+在 URL 中为数组的每一项重复参数名。例如，`?channels=ALPHA&channels=TESTING&states=published` 筛选内测和公测渠道中已生效的版本。同一筛选项匹配任意一个选值。
 
 <TypeTable
   type={{
@@ -45,12 +70,31 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       default: '20',
     },
     channels: {
-      type: 'string',
-      description: '按发布渠道筛选，多个值用逗号分隔，例如 ALPHA,TESTING。',
+      type: 'array',
+      description: "按发布渠道筛选。省略时查询所有渠道。",
+      items: {
+        type: 'string',
+        enumValues: {
+          ALPHA: "内测",
+          TESTING: "公测",
+          RELEASED: "正式发布",
+        },
+      },
     },
     states: {
-      type: 'string',
-      description: '按版本状态筛选，多个值用逗号分隔，例如 pending,rejected。',
+      type: 'array',
+      description: "按版本状态筛选。省略时查询所有状态。",
+      items: {
+        type: 'string',
+        enumValues: {
+          draft: "草稿",
+          pending: "待审核",
+          published: "已生效",
+          rejected: "需修改",
+          disabled: "已停用",
+          revoked: "已撤销",
+        },
+      },
     },
     search: {
       type: 'string',
@@ -61,7 +105,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### 列表响应
 
-`items` 为当前页，`totalCount` 为匹配总数。`status` 表示发布渠道，`state` 表示版本的处理和分发状态。
+`items` 为当前页，按创建时间倒序排列，`totalCount` 为匹配总数。`status` 表示发布渠道，`state` 表示版本的处理和分发状态。
 
 | `state` | 含义 |
 | --- | --- |
@@ -72,7 +116,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 | `disabled` | 已停用，暂停公开分发。 |
 | `revoked` | 已撤销，当前记录退出分发。 |
 
-下面是列表响应节选。
+已发布版本的列表项和详情通过 `downloads` 提供下载入口。用相同的文件类型键在 `artifacts` 中读取文件名 `name`、字节数 `size` 和校验值 `sha256`。下面的示例版本提供了三种软件文件。
 
 ```json
 {
@@ -82,12 +126,36 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       "firmwareId": "000000000000000000000101",
       "version": "1.2.0-beta.1",
       "status": "TESTING",
-      "state": "published"
+      "state": "published",
+      "artifacts": {
+        "merged": {
+          "name": "desk-clock-1.2.0-beta.1-merged.bin",
+          "size": 4194304,
+          "sha256": "199198dbaf96cc8f5a3334adf86676abe9a98c24d65f8b74285c3927bbe9fc7d"
+        },
+        "archive": {
+          "name": "desk-clock-1.2.0-beta.1-flash.tar.gz",
+          "size": 1251968,
+          "sha256": "b45b2f438a169bbf805fcb5c6c622cd3583ff7a75ae57dc8a8476f970fed2bd4"
+        },
+        "ota": {
+          "name": "desk-clock-1.2.0-beta.1.bin",
+          "size": 1176976,
+          "sha256": "a4b13eb3a234a0446faeed2e1d07a22f52bf06b40b00e22f219e15211eed6b07"
+        }
+      },
+      "downloads": {
+        "merged": "https://dot.mindreset.tech/download/AgAAAAAAAAAAAAABAwAAAAA",
+        "archive": "https://dot.mindreset.tech/download/AQAAAAAAAAAAAAABAwAAAAA",
+        "ota": "https://dot.mindreset.tech/download/AwAAAAAAAAAAAAABAwAAAAA"
+      }
     }
   ],
   "totalCount": 1
 }
 ```
+
+参见[线刷文件的下载方式](/docs/service/open/organization_software/download)。要与设备查询选中的版本保持一致，可先[查询已发布版本](/docs/service/open/organization_software/organization_version_query)，再在同一渠道的列表中按返回的 `version` 匹配。
 
 ## 查询版本和审核结果
 

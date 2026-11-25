@@ -164,6 +164,8 @@ HTTP `200 OK`。選択された `1.2.0-beta.1` はインストール済みのバ
 - `needUpdate` が `true` になるのは、選ばれたバージョンが `currentVersion` より新しい場合です。インストール済みバージョンを省略すると、バージョン情報と `needUpdate: false` が返ります。
 - 選択されたバージョンに OTA ファイルがない場合、`ota` は `null` です。ファイルがある場合は `ota.downloadUrl` に GET リクエストを送り、HTTP 302 リダイレクトをたどります。署名付き URL の有効期間は 3 分間です。[OTA ファイルのダウンロードと検証](/docs/service/open/organization_software/download)を参照してください。
 
+Web サイトや書き込みツールで一括書き込みイメージや分割書き込みパッケージを提供する場合は、[組織のバージョン一覧または詳細](/docs/service/open/organization_software/organization_versions)からダウンロード URL を取得できます。
+
 `firmwareId` を省略して公式ソフトウェアを照会すると、`ota` には従来の `ota.path` とダウンロード用の `ota.downloadUrl` の両方が含まれます。既存のデバイスでは、引き続き `https://os-cdn.mindreset.tech/` を基準に相対パス `ota.path` を解決できます。
 
 ## トラブルシューティング

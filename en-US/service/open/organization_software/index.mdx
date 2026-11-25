@@ -6,6 +6,43 @@ new: true
 
 Dot. provides cloud hosting for third-party device software. Upload your compiled files to manage versions, publish alpha, beta, and stable releases, and provide version queries and OTA downloads through the API.
 
+## Quick start
+
+After your organization is approved, open **My organizations → Your organization → Software** from the sidebar.
+
+<Steps>
+<Step>
+### Create a device software ID
+
+Under **Manage software IDs**, [create a software project](/docs/service/open/organization_software/software_ids) and select its target device. Use the resulting `firmwareId` to upload, publish, and query subsequent versions of the same software.
+
+</Step>
+<Step>
+### Upload your first version
+
+[Upload the compiled files](/docs/service/open/organization_software/upload) and save a draft. Upload through the website, or call the API from CI or a release script with an [organization API key or OAuth access token](/docs/service/open/organization/credentials).
+
+</Step>
+<Step>
+### Publish alpha and beta releases
+
+[Publish your first alpha](/docs/service/open/organization_software/publish) from its draft and have your team test it in the `ALPHA` channel. Then upload and publish a `TESTING` version for a small group of users. Both channels can go live directly from draft.
+
+</Step>
+<Step>
+### Submit the stable release for review
+
+When testing is complete, upload a `RELEASED` version and [submit it to Dot. for review](/docs/service/open/organization_software/publish). Approval automatically publishes the stable release.
+
+</Step>
+<Step>
+### Add OTA and website downloads
+
+Have your firmware [query the stable release](/docs/service/open/organization_software/version_query) and download the OTA file from `ota.downloadUrl`. For first-time installation or recovery on your website, query published versions from your server and use the returned download URL for the download button. See [Download and update](/docs/service/open/organization_software/download).
+
+</Step>
+</Steps>
+
 ## Hosting and installation
 
 The service currently supports publishing software for Read Pico.
@@ -41,22 +78,10 @@ Each version can include release notes in Simplified Chinese, English, and Japan
 - **Revoke** ends distribution for the version and keeps its history. Check the available version numbers for the same software ID and channel before uploading a replacement with the same number.
 - **Withdraw a submission** returns a stable version in review to draft. Edit it and submit the draft again when ready. See [Review and resubmission](/docs/service/open/organization_software/review).
 
-## Publish your first version
-
-This example follows `Field Lab` publishing the `Desk Clock` beta `1.2.0-beta.1`.
-
-1. Under **Software → Manage software IDs**, [create `Desk Clock`](/docs/service/open/organization_software/software_ids), select Read Pico, and copy the software ID.
-2. [Upload `desk-clock-1.2.0-beta.1.bin` and save a draft](/docs/service/open/organization_software/upload).
-3. [Publish the beta](/docs/service/open/organization_software/publish). Submit a stable version to Dot. for review.
-4. [Query the version from the device](/docs/service/open/organization_software/version_query) using the software ID.
-5. Use `ota.downloadUrl` from the response to [download and verify the OTA file](/docs/service/open/organization_software/download).
-
-The example device software ID `000000000000000000000101` is a placeholder. Replace it with your own ID before sending a request.
-
 ## Publish with the organization API
 
-[Verify your organization credentials in the interactive form](/docs/service/open/organization/credentials), then [create or find a device software ID](/docs/service/open/organization_software/software_ids). [Upload your files and confirm the upload](/docs/service/open/organization_software/upload). Use the returned version ID to [publish a test version or submit a stable version](/docs/service/open/organization_software/publish). You can then [check the version details and review status](/docs/service/open/organization_software/organization_versions) or [query the live version from your server](/docs/service/open/organization_software/organization_version_query).
+[Verify your organization credentials in the interactive form](/docs/service/open/organization/credentials) before integrating with CI or a release script. After submitting a version, you can [check its details and review status](/docs/service/open/organization_software/organization_versions) or [query the live version from your server](/docs/service/open/organization_software/organization_version_query).
 
-Fill Example inserts the guide’s sample values. Use your own IDs and credentials before sending the request, and choose your own software files when uploading.
+The examples follow `Field Lab` publishing the `Desk Clock` beta `1.2.0-beta.1`. Fill Example inserts sample values such as the placeholder device software ID `000000000000000000000101`. Use your own IDs, credentials, and software files when sending a request.
 
 <HrefInlineTOC prefix="/docs/service/open/organization_software" />

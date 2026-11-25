@@ -6,6 +6,43 @@ new: true
 
 Dot. 为第三方设备软件提供云端托管。你可以上传编译好的软件文件，管理版本，发布内测、公测和正式版，并通过 API 提供版本查询和 OTA 下载。
 
+## 快速开始
+
+组织获批后，从侧栏打开「我的组织 → 你的组织 → 软件」。
+
+<Steps>
+<Step>
+### 创建设备软件 ID
+
+在「管理软件 ID」中[创建软件项目](/docs/service/open/organization_software/software_ids)，选择目标设备。为同一款软件上传、发布或查询版本时，沿用生成的 `firmwareId`。
+
+</Step>
+<Step>
+### 上传第一个版本
+
+[上传编译好的文件](/docs/service/open/organization_software/upload)并保存草稿。你可以在网页上传，也可以在 CI 或发布脚本中调用 API，使用[组织 API 密钥或 OAuth 访问令牌](/docs/service/open/organization/credentials)。
+
+</Step>
+<Step>
+### 发布内测和公测版
+
+从草稿[发布第一个内测版](/docs/service/open/organization_software/publish)，让团队通过 `ALPHA` 渠道验证。内测完成后，上传并发布 `TESTING` 版本，邀请小范围用户试用。两个渠道都可直接发布。
+
+</Step>
+<Step>
+### 提交正式版审核
+
+测试完成后，上传 `RELEASED` 版本并[提交 Dot. 审核](/docs/service/open/organization_software/publish)。审核通过后，正式版自动发布。
+
+</Step>
+<Step>
+### 接入 OTA 和官网下载
+
+在自己的固件中[查询正式版](/docs/service/open/organization_software/version_query)，用响应中的 `ota.downloadUrl` 下载 OTA 文件。要在官网提供首次安装或恢复文件，可以从你的服务端查询已发布版本，把返回的下载入口接到下载按钮。参见[下载与更新](/docs/service/open/organization_software/download)。
+
+</Step>
+</Steps>
+
 ## 托管与安装
 
 目前可为小纸 Pico 发布软件。
@@ -41,22 +78,10 @@ Dot. 为第三方设备软件提供云端托管。你可以上传编译好的软
 - **撤销版本**结束该版本的分发并保留历史记录。能否沿用原版本号上传新文件，以同一软件 ID 和渠道的可用版本号为准。
 - **撤回审核**让待审核的正式版回到草稿。修改后可重新提交。参见[审核与重新提交](/docs/service/open/organization_software/review)。
 
-## 发布第一个版本
-
-下面以 `Field Lab` 发布 `Desk Clock` 公测版 `1.2.0-beta.1` 为例。
-
-1. 在组织的「软件 → 管理软件 ID」[创建 `Desk Clock`](/docs/service/open/organization_software/software_ids)，选择小纸 Pico 并复制软件 ID。
-2. [上传 `desk-clock-1.2.0-beta.1.bin` 并保存草稿](/docs/service/open/organization_software/upload)。
-3. [发布公测版](/docs/service/open/organization_software/publish)。如果是正式版，请提交 Dot. 审核。
-4. 用软件 ID [从设备查询版本](/docs/service/open/organization_software/version_query)。
-5. 使用响应中的 `ota.downloadUrl` [下载和校验 OTA 文件](/docs/service/open/organization_software/download)。
-
-示例设备软件 ID `000000000000000000000101` 为占位值。运行查询前请替换为实际 ID。
-
 ## 用组织 API 发布
 
-先用表单[验证组织凭据](/docs/service/open/organization/credentials)，再[创建或查找设备软件 ID](/docs/service/open/organization_software/software_ids)。[上传并确认文件](/docs/service/open/organization_software/upload)后，使用返回的版本 ID [发布测试版或提交正式版审核](/docs/service/open/organization_software/publish)。提交后可[查询版本详情和审核进度](/docs/service/open/organization_software/organization_versions)，也可[从服务端确认当前分发的版本](/docs/service/open/organization_software/organization_version_query)。
+接入 CI 或发布脚本前，先用表单[验证组织凭据](/docs/service/open/organization/credentials)。提交后可[查询版本详情和审核进度](/docs/service/open/organization_software/organization_versions)，也可[从服务端确认当前分发的版本](/docs/service/open/organization_software/organization_version_query)。
 
-「填充示例」会填入本指南的演示值。发送请求前，请换成自己的 ID 和凭据，上传时选择实际的软件文件。
+本指南以 `Field Lab` 发布 `Desk Clock` 公测版 `1.2.0-beta.1` 为例。「填充示例」使用占位 ID `000000000000000000000101` 等演示值。发送请求前，请换成自己的 ID 和凭据，上传时选择实际的软件文件。
 
 <HrefInlineTOC prefix="/docs/service/open/organization_software" />

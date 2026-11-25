@@ -161,7 +161,8 @@ The screen border color is returned as `0` for white or `1` for black.
 						},
 						image: {
 							description: 'URLs of the images used for the current screen.',
-							type: 'string[] | null',
+							type: 'array | null',
+							items: { type: 'string' },
 						},
 					},
 				},

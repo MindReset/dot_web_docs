@@ -164,6 +164,8 @@ HTTP `200 OK`。示例选中了 `1.2.0-beta.1`，高于设备当前版本，因�
 - 只有选中的版本高于 `currentVersion` 时，`needUpdate` 才为 `true`。未提供当前版本时也会返回版本信息，`needUpdate` 为 `false`。
 - `ota` 为 `null` 时，选中的版本未提供 OTA 文件。有 `ota` 时，向 `ota.downloadUrl` 发送 GET 请求并跟随 HTTP 302，获取有效期为 3 分钟的签名地址。参见[下载与更新](/docs/service/open/organization_software/download)。
 
+为官网或刷写工具提供完整烧录镜像和分离烧录包时，可从[组织版本列表或详情](/docs/service/open/organization_software/organization_versions)取得下载链接。
+
 省略 `firmwareId` 查询官方软件时，`ota` 同时包含原有的 `ota.path` 和授权下载入口 `ota.downloadUrl`。旧设备仍可按 `https://os-cdn.mindreset.tech/` 解析相对路径 `ota.path`。
 
 ## 排查

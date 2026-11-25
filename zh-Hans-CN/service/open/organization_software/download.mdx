@@ -1,14 +1,51 @@
 ---
 title: 下载与更新
-description: 通过授权链接下载 OTA 文件，校验后更新设备。
+description: 下载并校验 OTA 文件、完整烧录镜像和分离烧录包。
 new: true
 ---
 
-先[查询 Desk Clock 的公测版](/docs/service/open/organization_software/version_query)。有 OTA 文件时，从响应中读取 `ota.downloadUrl`、`ota.size` 和 `ota.sha256`。直接对 `ota.downloadUrl` 发送 `GET` 并跟随 HTTP `302`。使用 cURL 时可加上 `--location`。
+设备可以查询已发布的版本，下载并校验 OTA 文件，再由固件安装更新。官网也可以提供首次安装或恢复用的线刷文件。
+
+## OTA 更新步骤
+
+<Steps>
+<Step>
+### 查询版本
+
+[从设备查询版本](/docs/service/open/organization_software/version_query)，提供软件 ID `firmwareId` 和已安装版本 `currentVersion`。常规更新时，在 `needUpdate` 为 `true` 且 `ota` 有值时开始下载。
+
+</Step>
+<Step>
+### 跟随 302 并下载
+
+对 `ota.downloadUrl` 发送 `GET`，跟随 HTTP `302` 到 `Location` 中的 CDN 签名地址。读取成功响应中的二进制文件。使用 cURL 时可加上 `--location`。
+
+</Step>
+<Step>
+### 校验文件
+
+确认查询返回的系列、型号和硬件版本与设备一致。下载完成后，核对文件的字节数和 SHA-256，分别与 `ota.size` 和 `ota.sha256` 比较。
+
+</Step>
+<Step>
+### 安装更新
+
+校验通过后，将文件交给固件的 OTA 更新流程安装。
+
+</Step>
+</Steps>
+
+## 签名有效期与重试
+
+版本仍在分发时，每次请求 `ota.downloadUrl` 都会获得新的 CDN 签名地址。`302` 响应的 `Location` 中的地址从生成起**最多有效 3 分钟**，请在有效期内向 CDN 发起下载请求。
+
+CDN 在收到请求时校验签名。已在有效期内开始且持续传输的单次下载，通常可以在超过 3 分钟后完成。连接中断后重试、断点续传和分片下载都会发起新请求。如果签名已过期，重新访问原来的 `ota.downloadUrl` 获取新地址。
+
+续传时，向 CDN 发送 `Range` 请求。只有响应为 `206 Partial Content` 且 `Content-Range` 的起始位置等于已保存的字节数时，才追加到部分文件。收到 `200 OK` 时，用完整文件替换部分文件。
 
 ## 响应示例
 
-下载入口返回 HTTP `302 Found`。`Location` 指向 `cdn.mindreset.tech` 上有效期最长 3 分钟的签名地址。跟随跳转后，HTTP `200 OK` 的响应体是 OTA 文件的二进制内容。
+下面是下载 `Desk Clock` 公测版的响应示例。跟随跳转后，HTTP `200 OK` 的响应体是 OTA 文件的二进制内容。
 
 ```http
 HTTP/1.1 302 Found
@@ -21,13 +58,29 @@ Content-Length: 1176976
 Content-Disposition: attachment; filename*=UTF-8''desk-clock-1.2.0-beta.1.bin
 ```
 
-## 校验和排查
+本例中对应 `1176976` 字节和 SHA-256 `a4b13eb3a234a0446faeed2e1d07a22f52bf06b40b00e22f219e15211eed6b07`。请以实际查询返回的值为准。
 
-安装前，核对查询返回的设备系列、型号和硬件版本。确认下载文件的字节数和 SHA-256 分别与 `ota.size`、`ota.sha256` 一致。
+## 排查
 
-本例中对应 `1176976` 字节和 `a4b13eb3a234a0446faeed2e1d07a22f52bf06b40b00e22f219e15211eed6b07`。应以实际查询返回的值为准。常规 OTA 更新时，在 `needUpdate` 为 `true`、`ota` 存在且上述校验通过后安装。
-
-- `ota.downloadUrl` 是可重复请求的 Dot. 下载入口。版本仍在分发时，每次请求都会取得新的 CDN 签名。若 `Location` 中的地址已到期，重新访问原 `ota.downloadUrl`。
+- CDN 因签名过期返回 HTTP `403` 时，重新请求 `ota.downloadUrl`。
 - 下载入口返回 HTTP `404` 时，确认版本和组织仍可用。停用、撤销或组织不可用时，入口停止签发下载地址。重新查询同一软件 ID 和渠道，再判断是否更新。
 - HTTP `503` 表示暂时无法获取签名地址，稍后重试。
-- 需要分离烧录包或完整烧录镜像时，在「我的组织 → Field Lab → 软件」打开版本详情，从「软件文件」下载对应的产物。
+
+## 下载线刷文件
+
+官网提供首次安装或恢复用的下载时，可以从已发布版本取得完整烧录镜像或分离烧录包。
+
+- [列出版本](/docs/service/open/organization_software/organization_versions#列出版本)。填写设备软件 ID，发布渠道选择「正式发布」，版本状态选择「已生效」。从所需的 `items` 记录读取 `downloads`。
+- 已知版本 ID 时，直接[查询版本详情](/docs/service/open/organization_software/organization_versions#查询版本和审核结果)。填写设备软件 ID 和版本 ID，从响应读取 `downloads`。
+
+| 下载字段 | 文件 |
+| --- | --- |
+| `downloads.merged` | 完整烧录镜像（`.bin`）。 |
+| `downloads.archive` | 分离烧录包（`.tgz` 或 `.tar.gz`）。 |
+| `downloads.ota` | OTA 应用固件（`.bin`）。 |
+
+`downloads` 只包含该版本已提供的文件。用对应 `artifacts` 项的 `size` 和 `sha256` 校验文件，比如 `artifacts.merged`。
+
+下载按钮可直接使用返回的 Dot. 链接。访客无需组织凭据，访问链接并跟随 HTTP `302` 即可下载。若跳转后的 CDN 地址已过期，重新访问原链接即可。
+
+也可以在「我的组织 → Field Lab → 软件」打开版本详情，从「软件文件」下载。

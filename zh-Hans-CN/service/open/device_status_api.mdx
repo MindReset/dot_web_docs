@@ -162,7 +162,8 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 						},
 						image: {
 							description: '当前渲染图片 URL 列表',
-							type: 'string[] | null',
+							type: 'array | null',
+							items: { type: 'string' },
 						},
 					},
 				},

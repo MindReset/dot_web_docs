@@ -19,13 +19,38 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     firmwareId: { type: "string", name: "デバイスソフトウェア ID", required: true, example: "000000000000000000000101" },
     pageIndex: { type: "number", name: "ページ番号", default: 0, example: 0 },
     pageSize: { type: "number", name: "1 ページの件数", default: 20, example: 20 },
-    channels: { type: "string", name: "公開チャネル", example: "ALPHA,TESTING" },
-    states: { type: "string", name: "状態", example: "published" },
+    channels: {
+      type: "array",
+      name: "公開チャネル",
+      placeholder: "すべてのチャネル",
+      example: ["ALPHA", "TESTING"],
+      options: [
+        { value: "ALPHA", label: "内部テスト" },
+        { value: "TESTING", label: "公開テスト" },
+        { value: "RELEASED", label: "正式リリース" },
+      ],
+    },
+    states: {
+      type: "array",
+      name: "バージョンの状態",
+      placeholder: "すべての状態",
+      example: ["published"],
+      options: [
+        { value: "draft", label: "下書き" },
+        { value: "pending", label: "審査待ち" },
+        { value: "published", label: "公開済み" },
+        { value: "rejected", label: "要修正" },
+        { value: "disabled", label: "停止中" },
+        { value: "revoked", label: "公開取り消し済み" },
+      ],
+    },
     search: { type: "string", name: "検索", example: "Desk Clock" },
   }}
 />
 
 ### クエリパラメーター
+
+配列の要素ごとに、URL に同じパラメーター名を指定します。たとえば、`?channels=ALPHA&channels=TESTING&states=published` は、内部テストまたは公開テストのチャネルで公開済みのバージョンを取得します。各フィルターでは、指定した値のいずれかに一致するバージョンが対象です。
 
 <TypeTable
   type={{
@@ -45,12 +70,31 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       default: '20',
     },
     channels: {
-      type: 'string',
-      description: '公開チャネルで絞り込みます。複数指定する場合は ALPHA,TESTING のようにカンマで区切ります。',
+      type: 'array',
+      description: "公開チャネルで絞り込みます。省略するとすべてのチャネルが対象になります。",
+      items: {
+        type: 'string',
+        enumValues: {
+          ALPHA: "内部テスト",
+          TESTING: "公開テスト",
+          RELEASED: "正式リリース",
+        },
+      },
     },
     states: {
-      type: 'string',
-      description: 'バージョン状態で絞り込みます。複数指定する場合は pending,rejected のようにカンマで区切ります。',
+      type: 'array',
+      description: "バージョンの状態で絞り込みます。省略するとすべての状態が対象になります。",
+      items: {
+        type: 'string',
+        enumValues: {
+          draft: "下書き",
+          pending: "審査待ち",
+          published: "公開済み",
+          rejected: "要修正",
+          disabled: "停止中",
+          revoked: "公開取り消し済み",
+        },
+      },
     },
     search: {
       type: 'string',
@@ -61,7 +105,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 ### 一覧の応答
 
-`items` は現在のページ、`totalCount` は一致した全件数です。`status` は公開チャネル、`state` は審査や配布の状態です。
+`items` には現在のページのバージョンが作成日時の新しい順に入り、`totalCount` は一致した全件数です。`status` は公開チャネル、`state` は審査や配布の状態です。
 
 | `state` | 意味 |
 | --- | --- |
@@ -72,7 +116,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 | `disabled` | 公開配布は停止中です。 |
 | `revoked` | このバージョンの配布は取り消されました。 |
 
-以下は一覧応答の抜粋です。
+公開済みバージョンのダウンロード URL は、一覧やバージョン詳細の `downloads` に含まれます。同じファイル種別のキーを `artifacts` で参照すると、ファイル名 `name`、バイト数 `size`、チェックサム `sha256` を取得できます。この例のバージョンには 3 種類のファイルがあります。
 
 ```json
 {
@@ -82,12 +126,36 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       "firmwareId": "000000000000000000000101",
       "version": "1.2.0-beta.1",
       "status": "TESTING",
-      "state": "published"
+      "state": "published",
+      "artifacts": {
+        "merged": {
+          "name": "desk-clock-1.2.0-beta.1-merged.bin",
+          "size": 4194304,
+          "sha256": "199198dbaf96cc8f5a3334adf86676abe9a98c24d65f8b74285c3927bbe9fc7d"
+        },
+        "archive": {
+          "name": "desk-clock-1.2.0-beta.1-flash.tar.gz",
+          "size": 1251968,
+          "sha256": "b45b2f438a169bbf805fcb5c6c622cd3583ff7a75ae57dc8a8476f970fed2bd4"
+        },
+        "ota": {
+          "name": "desk-clock-1.2.0-beta.1.bin",
+          "size": 1176976,
+          "sha256": "a4b13eb3a234a0446faeed2e1d07a22f52bf06b40b00e22f219e15211eed6b07"
+        }
+      },
+      "downloads": {
+        "merged": "https://dot.mindreset.tech/download/AgAAAAAAAAAAAAABAwAAAAA",
+        "archive": "https://dot.mindreset.tech/download/AQAAAAAAAAAAAAABAwAAAAA",
+        "ota": "https://dot.mindreset.tech/download/AwAAAAAAAAAAAAABAwAAAAA"
+      }
     }
   ],
   "totalCount": 1
 }
 ```
+
+[有線書き込み用ファイルのダウンロード](/docs/service/open/organization_software/download)を参照してください。デバイスの照会結果と同じバージョンを表示するには、まず[公開済みバージョンを照会](/docs/service/open/organization_software/organization_version_query)し、同じチャネルの一覧で返された `version` に一致する項目を探します。
 
 ## バージョンと審査状況を確認する
 

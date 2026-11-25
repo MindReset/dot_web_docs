@@ -164,6 +164,8 @@ HTTP `200 OK`. The selected version is `1.2.0-beta.1`, which is newer than the i
 - `needUpdate` is `true` only when the selected version is newer than `currentVersion`. Omitting the installed version still returns the version metadata with `needUpdate` set to `false`.
 - `ota` is `null` when the selected version has no OTA file. If `ota` is present, send a GET request to `ota.downloadUrl` and follow the HTTP 302 redirect to a signed URL valid for three minutes. See [Download and update](/docs/service/open/organization_software/download).
 
+To offer a full flash image or split flash package from a website or flashing tool, get the download URL from the [organization version list or details](/docs/service/open/organization_software/organization_versions).
+
 When you omit `firmwareId` to query official software, `ota` includes both the legacy `ota.path` and the authorized `ota.downloadUrl`. Existing devices can continue to resolve the relative `ota.path` against `https://os-cdn.mindreset.tech/`.
 
 ## Troubleshooting

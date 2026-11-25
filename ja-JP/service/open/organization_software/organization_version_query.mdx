@@ -60,4 +60,6 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 `POST /query` は[デバイスからの照会](/docs/service/open/organization_software/version_query)と同じ組織ソフトウェアのバージョン情報を返します。`status` を省略すると正式版を照会します。指定の公開済みバージョンを探すには `version`、インストール済みのバージョンと比較するには `currentVersion` を指定します。OTA ファイルがある場合は、`ota.downloadUrl` から[ダウンロードして検証](/docs/service/open/organization_software/download)できます。
 
+一括書き込みイメージや分割書き込みパッケージを取得するには、[バージョン一覧または詳細](/docs/service/open/organization_software/organization_versions)の `downloads` から対応する URL を取得します。[有線書き込み用ファイルのダウンロード](/docs/service/open/organization_software/download)を参照してください。
+
 HTTP `404` の場合は、`firmwareId` が自分の組織の Read Pico プロジェクトに属していることを確認します。公開済みバージョンの照会では、指定したチャネルとバージョンが配布中であることも確認します。

@@ -60,4 +60,6 @@ Use `POST /api/authV2/organization/software/query` in a release script or server
 
 `POST /query` returns the same organization software version information as the [device query](/docs/service/open/organization_software/version_query). The default `status` is `RELEASED`. Set `version` to look up a specific published version. Pass `currentVersion` to compare with an installed version. If the response has an OTA file, use `ota.downloadUrl` to [download and verify it](/docs/service/open/organization_software/download).
 
+For a full flash image or split flash package, read the corresponding URL from `downloads` in the [version list or details](/docs/service/open/organization_software/organization_versions). See [download files for wired flashing](/docs/service/open/organization_software/download).
+
 For HTTP `404`, check that the `firmwareId` belongs to a Read Pico project in your organization. For published queries, also check that the channel and requested version are available for distribution.

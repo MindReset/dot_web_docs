@@ -1,14 +1,51 @@
 ---
 title: Download and update
-description: Download an OTA file through the authorized URL and verify it before updating a device.
+description: Download and verify OTA files, full flash images, and split flash packages.
 new: true
 ---
 
-[Query the Desk Clock public beta](/docs/service/open/organization_software/version_query) first. If it has an OTA file, read `ota.downloadUrl`, `ota.size`, and `ota.sha256` from the response. Send `GET` to `ota.downloadUrl` and follow the HTTP `302` redirect. With cURL, use `--location`.
+Devices can query published versions, download and verify an OTA file, and install the update through their firmware. Your website can also offer files for first-time wired flashing or recovery.
+
+## OTA update steps
+
+<Steps>
+<Step>
+### Query the version
+
+[Query from the device](/docs/service/open/organization_software/version_query) with the software ID `firmwareId` and installed version `currentVersion`. For a routine update, proceed when `needUpdate` is `true` and `ota` contains file details.
+
+</Step>
+<Step>
+### Follow the 302 and download
+
+Send `GET` to `ota.downloadUrl`. Follow the HTTP `302` redirect to the signed CDN URL in `Location` and read the binary file from the successful response. With cURL, use `--location`.
+
+</Step>
+<Step>
+### Verify the file
+
+Confirm that the device series, model, and hardware edition in the query response match the device. After downloading, compare the file's byte count and SHA-256 with `ota.size` and `ota.sha256`.
+
+</Step>
+<Step>
+### Install the update
+
+Once verification passes, install the file through the firmware's OTA update process.
+
+</Step>
+</Steps>
+
+## Signature lifetime and retries
+
+While the release is live, each request to `ota.downloadUrl` returns a fresh signed CDN URL. The URL in the `302` response's `Location` header is **valid for up to three minutes** from issuance. Start the CDN download request within that window.
+
+The CDN checks the signature when it receives the request. A single download that starts within the window and keeps transferring can generally take longer than three minutes. Retrying, resuming, or downloading another range makes a new request. If the signature has expired, request the original `ota.downloadUrl` for a fresh URL.
+
+To resume a download, send a `Range` request to the CDN. Append to the partial file only if the response is `206 Partial Content` and the starting offset in `Content-Range` equals the number of bytes already saved. If the CDN returns `200 OK`, replace the partial file with the full response.
 
 ## Response example
 
-The download endpoint returns HTTP `302 Found` with a signed URL on `cdn.mindreset.tech` in `Location`. The signature is valid for up to three minutes. Following the redirect returns the OTA file as binary data in an HTTP `200 OK` response.
+This example downloads the `Desk Clock` beta. After the redirect, the HTTP `200 OK` response contains the OTA file as binary data.
 
 ```http
 HTTP/1.1 302 Found
@@ -21,13 +58,29 @@ Content-Length: 1176976
 Content-Disposition: attachment; filename*=UTF-8''desk-clock-1.2.0-beta.1.bin
 ```
 
-## Verify and troubleshoot
+This example expects `1176976` bytes and SHA-256 `a4b13eb3a234a0446faeed2e1d07a22f52bf06b40b00e22f219e15211eed6b07`. Use the values from your own query.
 
-Before installing, confirm the device series, model, and hardware edition. Verify that the downloaded file’s byte count and SHA-256 match `ota.size` and `ota.sha256`.
+## Troubleshooting
 
-This example expects `1176976` bytes and SHA-256 `a4b13eb3a234a0446faeed2e1d07a22f52bf06b40b00e22f219e15211eed6b07`. Use the values from your query. For a routine OTA update, install only when `needUpdate` is `true`, `ota` is present, and verification passes.
-
-- Keep the Dot. URL in `ota.downloadUrl` for retries. Each request gets a fresh CDN signature while the version is live. If the URL in `Location` expires, request the original `ota.downloadUrl` again.
+- If the CDN returns HTTP `403` because the signature expired, request `ota.downloadUrl` again.
 - If the download endpoint returns HTTP `404`, check whether the release and organization are still available. Disabled or revoked releases and unavailable organizations stop receiving new signed links. Query the same software ID and channel again, then evaluate whether to update.
 - If the download endpoint returns HTTP `503`, retry later.
-- For a separate flash package or complete flash image, open the version under **My organizations → Field Lab → Software** and use the download in **Software files**.
+
+## Download files for wired flashing
+
+Offer a full flash image or split flash package from a published version for first-time installation or recovery.
+
+- [List versions](/docs/service/open/organization_software/organization_versions#list-versions). Enter the device software ID, select **Stable release** for the release channel and **Live** for the version state, and read `downloads` from the matching record in `items`.
+- If you have the version ID, [get the version details](/docs/service/open/organization_software/organization_versions#check-a-version-and-its-review-status). Enter the device software ID and version ID, then read `downloads` from the response.
+
+| Download field | File |
+| --- | --- |
+| `downloads.merged` | Full flash image (`.bin`). |
+| `downloads.archive` | Split flash package (`.tgz` or `.tar.gz`). |
+| `downloads.ota` | OTA application firmware (`.bin`). |
+
+`downloads` contains the files provided for the version. Verify the file against `size` and `sha256` in the matching `artifacts` entry, such as `artifacts.merged`.
+
+Use the returned Dot. URL for the download button. Visitors can follow the HTTP `302` redirect without an organization credential. If the redirected CDN URL expires, request the original URL again.
+
+You can also download files by opening the version under **My organizations → Field Lab → Software** and using **Software files**.

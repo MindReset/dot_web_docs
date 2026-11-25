@@ -60,4 +60,6 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 
 `POST /query` 返回与[设备查询](/docs/service/open/organization_software/version_query)相同的组织软件版本信息。省略 `status` 时查询正式版，传入 `version` 可查指定的已发布版本。需要比较设备上的版本时，传入 `currentVersion`。有 OTA 文件时，可用响应的 `ota.downloadUrl` [下载和校验](/docs/service/open/organization_software/download)。
 
+要获取完整烧录镜像或分离烧录包，请从[版本列表或详情](/docs/service/open/organization_software/organization_versions)的 `downloads` 读取对应链接。参见[下载线刷文件](/docs/service/open/organization_software/download)。
+
 HTTP `404` 时，确认 `firmwareId` 属于当前组织的小纸 Pico 项目。查询已发布版本时，也要确认指定渠道和版本正在分发。
