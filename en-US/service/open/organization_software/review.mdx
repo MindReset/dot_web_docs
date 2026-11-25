@@ -1,0 +1,120 @@
+---
+title: Review and resubmission
+description: Check review feedback, update the release notes or files, and resubmit the same stable version.
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+After [submitting a stable version](/docs/service/open/organization_software/publish), open the version under **Software** in your organization to follow its review. You can also [get the version details](/docs/service/open/organization_software/organization_versions) with an organization credential. An approved stable version goes live automatically.
+
+## Respond to a review on the website
+
+- A stable draft moves to **In review** when you select **Submit for review**. Select **Withdraw submission** to return it to draft.
+- When the status is **Changes requested**, read the review feedback and select **Edit and resubmit**. You can update the notes, keep or replace files, and resubmit the same version.
+
+## Resubmit with the organization API
+
+If a stable version enters the `rejected` state, [get its details](/docs/service/open/organization_software/organization_versions) to read `reviewReason`, `id`, and the current `reviewId`. Prepare another upload with the original `firmwareId` and `version`. Set `revision.versionId` to the version’s `id` and `revision.reviewId` to its current review ID.
+
+Set `revision.retainFiles` to an array of file types to keep, such as `["ota", "merged"]`. Put new and replacement files in `artifacts`. Use `[]` to replace all files. The submitted version must include at least one file. If you only keep existing files, preparation returns an empty `uploads` object and you can go straight to completion.
+
+The request’s `releaseNotes` replaces the entire set of notes. Send the existing text again for any language you want to keep. Completion returns the original version `id`, `state: "pending"`, and a new `reviewId` for the next review.
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/upload"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    firmwareId: { type: "string", name: "Device software ID", required: true, example: "000000000000000000000101" },
+    version: { type: "string", name: "Version", required: true, example: "1.2.0" },
+    status: {
+      example: "RELEASED",
+      type: "select",
+      name: "Release channel",
+      required: true,
+      default: "RELEASED",
+      options: [
+        { value: "RELEASED", label: "Stable" },
+      ],
+    },
+    "revision.versionId": { type: "string", name: "Version ID", required: true, example: "000000000000000000000104" },
+    "revision.reviewId": { type: "string", name: "Review ID", required: true, example: "00000000-0000-4000-8000-000000000105" },
+    "revision.retainFiles": { type: "list", name: "Files to keep", default: "ota", description: "Separate file types with commas, for example ota,merged. Leave blank to replace all files.", example: "ota" },
+    "artifacts.ota": { type: "file", name: "OTA application file", accept: ".bin" },
+    "artifacts.archive": { type: "file", name: "Split flash package", accept: ".tgz,.tar.gz" },
+    "artifacts.merged": { type: "file", name: "Full flash image", accept: ".bin" },
+    "releaseNotes.zh-Hans-CN": { type: "textarea", name: "Release notes (Simplified Chinese)", example: "提高时钟画面的刷新稳定性。" },
+    "releaseNotes.en-US": { type: "textarea", name: "Release notes (English)", example: "Improves the reliability of clock display refreshes." },
+    "releaseNotes.ja-JP": { type: "textarea", name: "Release notes (Japanese)", example: "時計表示の更新を安定させました。" },
+  }}
+/>
+
+### Request body
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'The 24-character hexadecimal firmwareId returned when you create or list software projects.',
+      required: true,
+    },
+    version: {
+      type: 'string',
+      description: 'The original stable version that needs changes.',
+      required: true,
+    },
+    status: {
+      type: '"RELEASED"',
+      description: 'Submit the updated stable version for review.',
+      required: true,
+    },
+    revision: {
+      type: 'object',
+      description: 'Identify the version and its current review, and choose which files to keep.',
+      required: true,
+      parameters: {
+        versionId: {
+          type: 'string',
+          description: 'The id from the version details. It identifies the version you are resubmitting.',
+          required: true,
+        },
+        reviewId: {
+          type: 'string (UUID)',
+          description: 'The current review ID from the version details.',
+          required: true,
+        },
+        retainFiles: {
+          type: '("ota" | "merged" | "archive" | "package")[]',
+          description: 'Up to four file types to keep. Use an empty array to replace all files. The package type refers to a legacy single-file package.',
+          required: true,
+        },
+      },
+    },
+    artifacts: {
+      type: 'object',
+      description: 'Metadata for new or replacement files. Use ota, merged, or archive. You can omit it when you only keep existing files.',
+    },
+    releaseNotes: {
+      type: 'object',
+      description: 'The localized notes replace the full previous set. Include the existing text for any language you want to keep.',
+      parameters: {
+        'zh-Hans-CN': {
+          type: 'string',
+          description: 'Simplified Chinese release notes.',
+        },
+        'en-US': {
+          type: 'string',
+          description: 'English release notes.',
+        },
+        'ja-JP': {
+          type: 'string',
+          description: 'Japanese release notes.',
+        },
+      },
+    },
+  }}
+/>
+
+When you receive the new `uploadId`, follow the [upload steps](/docs/service/open/organization_software/upload) for any files in `uploads`, then complete the upload. If you receive `409 ORGANIZATION_SOFTWARE_STATE_CHANGED`, get the version details again and use the current `reviewId`.

@@ -1,0 +1,108 @@
+---
+title: デバイスソフトウェア ID の管理
+description: デバイスソフトウェア ID を作成し、各チャネルのバージョンを管理します。
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+デバイスソフトウェア ID は一つのソフトウェアプロジェクトを識別します。新しいバージョンをアップロードするたびに同じプロジェクトを選び、デバイスからの照会にも同じ ID を使います。
+
+## Desk Clock を作成する
+
+1. 組織一覧から `Field Lab` を開き、「ソフトウェア」を選びます。
+2. 「ソフトウェア ID を管理」から新規作成を選び、名前に `Desk Clock` を入力します。
+3. Read Pico を選びます。プロジェクト作成時にデバイスが紐付きます。照会では `series: "read"`、`model: "read_0"`、`edition: 1` を指定します。
+4. 作成したプロジェクトを選び、デバイスソフトウェア ID をコピーします。以降は `000000000000000000000101` を例として使います。
+
+バージョンのアップロード画面からもソフトウェアを新規作成できます。次回以降の `Desk Clock` の公開では、既存のプロジェクトを選びます。
+
+## 各 ID の用途
+
+| 値 | 用途 |
+| --- | --- |
+| 組織 ID | `Field Lab` とそのチームを識別します。 |
+| デバイスソフトウェア ID（`firmwareId`） | `Desk Clock` を識別します。組織ソフトウェアのバージョン照会には、この 24 桁の 16 進数 ID を使います。 |
+| デバイス ID | 個々のデバイスを識別します。デバイス ID で照会する場合は、リクエストの `id` に指定します。 |
+| バージョン ID（`id`） | 一つのバージョンを識別します。アップロード完了時に取得し、公開や詳細の照会に使います。 |
+| アップロード ID（`uploadId`） | 一回のアップロード準備を識別し、完了リクエストに使います。 |
+| 審査 ID（`reviewId`） | 正式版の一回の審査を識別し、修正後の再提出に使います。 |
+
+## 名前の変更とアーカイブ
+
+名前を変更しても、同じデバイスソフトウェア ID を使えます。アーカイブするとアップロード時の選択肢に表示されなくなります。公開済みのバージョンとダウンロードリンクは引き続き利用でき、提出済みの審査も継続します。再びアップロードするには、プロジェクトを復元してください。
+
+## API でソフトウェア ID を管理する
+
+[組織の認証情報](/docs/service/open/organization/credentials)から API キーまたは OAuth アクセストークンを取得します。組織は認証情報から判定されます。API で作成したプロジェクトの対象デバイスは Read Pico です。
+
+### 作成済みのプロジェクトを確認する
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/projects"
+  method="GET"
+  auth="organization"
+/>
+
+応答はプロジェクトの配列で、`firmwareId`、`name`、`target` を含みます。アーカイブ済みのプロジェクトには `archivedAt` も含まれます。更新対象の `firmwareId` をコピーし、バージョンのアップロードや照会に使います。
+
+### デバイスソフトウェア ID を作成する
+
+ソフトウェア名は 80 文字以内で入力し、新規作成ごとに新しい UUID を `requestId` に指定します。タイムアウト時は同じ UUID で再試行します。作成済みの場合は元のプロジェクトが返ります。
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/projects/create"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    name: { type: "string", name: "ソフトウェア名", required: true, default: "Desk Clock", example: "Desk Clock" },
+    requestId: { type: "string", name: "リクエスト ID", required: true, generateUuid: true },
+  }}
+/>
+
+#### リクエストボディ
+
+<TypeTable
+  type={{
+    name: {
+      type: 'string',
+      description: 'ソフトウェアの名前。1～80 文字で、改行を含めずに指定します。',
+      required: true,
+    },
+    requestId: {
+      type: 'string (UUID)',
+      description: '作成リクエストを識別する UUID。「UUID を生成」で取得し、同じリクエストを再試行するときは同じ値を指定します。',
+      required: true,
+    },
+  }}
+/>
+
+取得した `firmwareId` をコピーし、[バージョンをアップロード](/docs/service/open/organization_software/upload)します。以降のバージョンでも同じ ID を使います。
+
+### デバイスソフトウェア ID をアーカイブする
+
+新しいバージョンのアップロードを停止するには、対象の `firmwareId` を入力し、アーカイブのリクエストを送信します。
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/projects/archive"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    firmwareId: { type: "string", name: "デバイスソフトウェア ID", required: true, example: "000000000000000000000101" },
+  }}
+/>
+
+#### リクエストボディ
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'プロジェクトの作成・一覧取得で返る 24 桁の 16 進数の firmwareId。',
+      required: true,
+    },
+  }}
+/>
+
+応答には `archivedAt` が含まれます。公開済みのバージョンは引き続き照会・ダウンロードできます。アップロードを再開するには、ウェブサイトのデバイスソフトウェア ID 管理画面でプロジェクトを復元します。

@@ -1,0 +1,62 @@
+---
+title: Device software
+description: Host device software and manage versions, release channels, and OTA downloads with your team.
+new: true
+---
+
+Dot. provides cloud hosting for third-party device software. Upload your compiled files to manage versions, publish alpha, beta, and stable releases, and provide version queries and OTA downloads through the API.
+
+## Hosting and installation
+
+The service currently supports publishing software for Read Pico.
+
+Today, your firmware, website, or flashing tool calls the Dot. APIs to find and download a version. Your firmware applies the OTA update, or your tool writes the downloaded software to the device. See [Query versions from a device](/docs/service/open/organization_software/version_query) and [Download and update](/docs/service/open/organization_software/download).
+
+Dot. may offer a shared installer on its website in the future. It would let users select and flash software published by organizations directly from their browser.
+
+## Teams and software IDs
+
+An organization can have up to 100 members, including its owner. Members can manage software projects and versions on the website. The owner can appoint administrators to help manage invitations and organization credentials. See [Create and manage an organization](/docs/service/open/organization/membership) for the role permissions.
+
+An organization can manage as many device software IDs as it needs. Give each project its own ID and use that ID when you upload, publish, or query a version of that software. Each project has its own version history. See [Manage device software IDs](/docs/service/open/organization_software/software_ids).
+
+## Release channels and version numbers
+
+| Channel | Recommended use | How it goes live |
+| --- | --- | --- |
+| Alpha `ALPHA` | Test new features within your team. | Publish directly. |
+| Beta `TESTING` | Invite a small group of users to try the software. | Publish directly. |
+| Stable `RELEASED` | Distribute a stable version to your users. | Submit it to Dot. for review. Approval publishes the version. |
+
+The public device query can find live versions in all three channels. Any client with the software ID and matching device information can query a channel. You can choose which users see the alpha or beta channel in your own update tools.
+
+Version numbers increase independently for each software ID and channel. When you omit the version number, the query returns the highest live version in the selected channel. The default channel is stable.
+
+Each version can include release notes in Simplified Chinese, English, and Japanese. Members can read them in the version details on the website. The version detail API returns `releaseNotes` when called with an organization credential. See [Version list and details](/docs/service/open/organization_software/organization_versions).
+
+## Manage release status
+
+- **Disable** pauses distribution. Public queries skip the version and its download endpoint pauses issuance of new signed links.
+- **Re-enable** restores queries and downloads for a disabled version that meets the current publishing rules.
+- **Revoke** ends distribution for the version and keeps its history. Check the available version numbers for the same software ID and channel before uploading a replacement with the same number.
+- **Withdraw a submission** returns a stable version in review to draft. Edit it and submit the draft again when ready. See [Review and resubmission](/docs/service/open/organization_software/review).
+
+## Publish your first version
+
+This example follows `Field Lab` publishing the `Desk Clock` beta `1.2.0-beta.1`.
+
+1. Under **Software → Manage software IDs**, [create `Desk Clock`](/docs/service/open/organization_software/software_ids), select Read Pico, and copy the software ID.
+2. [Upload `desk-clock-1.2.0-beta.1.bin` and save a draft](/docs/service/open/organization_software/upload).
+3. [Publish the beta](/docs/service/open/organization_software/publish). Submit a stable version to Dot. for review.
+4. [Query the version from the device](/docs/service/open/organization_software/version_query) using the software ID.
+5. Use `ota.downloadUrl` from the response to [download and verify the OTA file](/docs/service/open/organization_software/download).
+
+The example device software ID `000000000000000000000101` is a placeholder. Replace it with your own ID before sending a request.
+
+## Publish with the organization API
+
+[Verify your organization credentials in the interactive form](/docs/service/open/organization/credentials), then [create or find a device software ID](/docs/service/open/organization_software/software_ids). [Upload your files and confirm the upload](/docs/service/open/organization_software/upload). Use the returned version ID to [publish a test version or submit a stable version](/docs/service/open/organization_software/publish). You can then [check the version details and review status](/docs/service/open/organization_software/organization_versions) or [query the live version from your server](/docs/service/open/organization_software/organization_version_query).
+
+Fill Example inserts the guide’s sample values. Use your own IDs and credentials before sending the request, and choose your own software files when uploading.
+
+<HrefInlineTOC prefix="/docs/service/open/organization_software" />

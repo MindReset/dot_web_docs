@@ -1,0 +1,63 @@
+---
+title: サーバーから公開済みのバージョンを照会する
+description: 組織の認証情報で現在配布しているバージョンを調べ、OTA のダウンロード情報を取得します。
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+公開用スクリプトやサーバーから組織の Read Pico ソフトウェアを確認するには、`POST /api/authV2/organization/software/query` を使います。[組織の認証情報](/docs/service/open/organization/credentials)と、自分の組織の[デバイスソフトウェア ID](/docs/service/open/organization_software/software_ids)を用意します。`firmwareId` に対応するプロジェクトのデバイスが対象になります。
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/query"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    firmwareId: { type: "string", name: "デバイスソフトウェア ID", required: true, example: "000000000000000000000101" },
+    status: {
+      example: "TESTING",
+      type: "select",
+      name: "公開チャネル",
+      default: "TESTING",
+      options: [
+        { value: "ALPHA", label: "内部テスト" },
+        { value: "TESTING", label: "公開テスト" },
+        { value: "RELEASED", label: "正式版" },
+      ],
+    },
+    currentVersion: { type: "string", name: "インストール済みのバージョン", default: "1.1.0", example: "1.1.0" },
+    version: { type: "string", name: "指定バージョン" },
+  }}
+/>
+
+## リクエストボディ
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'プロジェクトの作成・一覧取得で返る 24 桁の 16 進数の firmwareId。',
+      required: true,
+    },
+    status: {
+      type: '"ALPHA" | "TESTING" | "RELEASED"',
+      description: '照会する公開チャネル。省略すると正式版が対象になります。',
+      default: 'RELEASED',
+    },
+    currentVersion: {
+      type: 'string | null',
+      description: 'インストール済みの SemVer バージョン。31 文字以内。省略するか null を送るとバージョン情報が返り、needUpdate は false になります。',
+    },
+    version: {
+      type: 'string',
+      description: '照会する公開済みの SemVer バージョン。31 文字以内。省略すると指定チャネルの最新バージョンが返ります。',
+    },
+  }}
+/>
+
+## 照会結果
+
+`POST /query` は[デバイスからの照会](/docs/service/open/organization_software/version_query)と同じ組織ソフトウェアのバージョン情報を返します。`status` を省略すると正式版を照会します。指定の公開済みバージョンを探すには `version`、インストール済みのバージョンと比較するには `currentVersion` を指定します。OTA ファイルがある場合は、`ota.downloadUrl` から[ダウンロードして検証](/docs/service/open/organization_software/download)できます。
+
+HTTP `404` の場合は、`firmwareId` が自分の組織の Read Pico プロジェクトに属していることを確認します。公開済みバージョンの照会では、指定したチャネルとバージョンが配布中であることも確認します。

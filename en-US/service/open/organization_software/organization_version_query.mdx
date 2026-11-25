@@ -1,0 +1,63 @@
+---
+title: Query published versions from a server
+description: Use an organization credential to check which software version is live and get its OTA download information.
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+Use `POST /api/authV2/organization/software/query` in a release script or server to check your organization’s published Read Pico software. Have an [organization credential](/docs/service/open/organization/credentials) and a [device software ID](/docs/service/open/organization_software/software_ids) from your organization ready. Send `firmwareId` to select the project and its device.
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/query"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    firmwareId: { type: "string", name: "Device software ID", required: true, example: "000000000000000000000101" },
+    status: {
+      example: "TESTING",
+      type: "select",
+      name: "Release channel",
+      default: "TESTING",
+      options: [
+        { value: "ALPHA", label: "Alpha" },
+        { value: "TESTING", label: "Beta" },
+        { value: "RELEASED", label: "Stable" },
+      ],
+    },
+    currentVersion: { type: "string", name: "Installed version", default: "1.1.0", example: "1.1.0" },
+    version: { type: "string", name: "Specific version" },
+  }}
+/>
+
+## Request body
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'The 24-character hexadecimal firmwareId returned when you create or list software projects.',
+      required: true,
+    },
+    status: {
+      type: '"ALPHA" | "TESTING" | "RELEASED"',
+      description: 'The release channel to query. Omit it to query the stable channel.',
+      default: 'RELEASED',
+    },
+    currentVersion: {
+      type: 'string | null',
+      description: 'The installed SemVer version, up to 31 characters. Omit it or send null to get version information with needUpdate set to false.',
+    },
+    version: {
+      type: 'string',
+      description: 'A specific live SemVer version, up to 31 characters. Omit it to get the latest version in the selected channel.',
+    },
+  }}
+/>
+
+## Query result
+
+`POST /query` returns the same organization software version information as the [device query](/docs/service/open/organization_software/version_query). The default `status` is `RELEASED`. Set `version` to look up a specific published version. Pass `currentVersion` to compare with an installed version. If the response has an OTA file, use `ota.downloadUrl` to [download and verify it](/docs/service/open/organization_software/download).
+
+For HTTP `404`, check that the `firmwareId` belongs to a Read Pico project in your organization. For published queries, also check that the channel and requested version are available for distribution.

@@ -1,0 +1,186 @@
+---
+title: デバイスからバージョンを照会する
+description: 公開済みの組織ソフトウェアのバージョン、更新の有無、OTA ダウンロード情報を取得します。
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+`POST /api/authV2/device/firmware/query` で、公開済みのデバイスソフトウェアを照会できます。ログインや API キーは不要です。組織ソフトウェアを照会するには、[デバイスソフトウェア ID](/docs/service/open/organization_software/software_ids) と、プロジェクトに紐付くデバイス情報を指定します。
+
+## デバイス ID で照会する
+
+デバイス ID での照会を推奨します。デバイスの MAC アドレスからコロンを取り除き、英字を大文字にします。たとえば、`02:ab:cd:ef:12:34` は `02ABCDEF1234` になります。
+
+変換したデバイス ID をリクエストボディの `id` に指定し、プロジェクトの `firmwareId` も送信します。サーバーはデバイス ID からシリーズ、モデル、ハードウェアバージョンを取得し、`status` に応じて公開チャネルを選びます。
+
+<ApiPlayground
+  endpoint="/api/authV2/device/firmware/query"
+  method="POST"
+  bodyParams={{
+    id: { type: "string", name: "デバイス ID", required: true, example: "02ABCDEF1234" },
+    firmwareId: { type: "string", name: "デバイスソフトウェア ID", required: true, example: "000000000000000000000101" },
+    status: {
+      example: "TESTING",
+      type: "select",
+      name: "公開チャネル",
+      default: "TESTING",
+      options: [
+        { value: "ALPHA", label: "内部テスト" },
+        { value: "TESTING", label: "公開テスト" },
+        { value: "RELEASED", label: "正式版" },
+      ],
+    },
+    currentVersion: { type: "string", name: "インストール済みのバージョン", default: "1.1.0", example: "1.1.0" },
+    version: { type: "string", name: "指定バージョン" },
+  }}
+/>
+
+## モデルで照会する
+
+モデルでも照会できます。デバイスソフトウェア ID と、デバイスのシリーズ、モデル、ハードウェアバージョンを指定します。この例では Read Pico の公開テスト版を照会します。
+
+<ApiPlayground
+  endpoint="/api/authV2/device/firmware/query"
+  method="POST"
+  bodyParams={{
+    series: {
+      example: "read",
+      type: 'select',
+      name: "シリーズ",
+      required: true,
+      default: "read",
+      options: [
+        { value: "read", label: "Read" },
+        { value: "quote", label: "Quote", disabled: true },
+      ],
+    },
+    model: {
+      example: "read_0",
+      type: 'select',
+      name: "モデル",
+      required: true,
+      default: "read_0",
+      options: [
+        { value: "read_0", label: "Read Pico" },
+        { value: "quote_0", label: "Quote/0", disabled: true },
+      ],
+    },
+    edition: {
+      example: 1,
+      type: 'select',
+      name: "ハードウェアバージョン",
+      required: true,
+      default: 1,
+      options: [
+        { value: 1, label: "ハードウェアバージョン 1" },
+        { value: 2, label: "ハードウェアバージョン 2", disabled: true },
+      ],
+    },
+    firmwareId: { type: 'string', name: "デバイスソフトウェア ID", required: true, example: "000000000000000000000101" },
+    status: {
+      example: "TESTING",
+      type: 'select',
+      name: "リリースチャネル",
+      required: true,
+      default: "TESTING",
+      options: [
+        { value: "ALPHA", label: "内部テスト" },
+        { value: "TESTING", label: "公開テスト" },
+        { value: "RELEASED", label: "正式リリース" },
+      ],
+    },
+    currentVersion: { type: 'string', name: "インストール済みバージョン", default: '1.1.0', example: "1.1.0" },
+    version: { type: "string", name: "指定バージョン" },
+  }}
+/>
+
+## リクエスト項目
+
+どちらの照会方法も JSON リクエストボディを使います。デバイス ID またはモデル情報でデバイスを指定します。
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: '組織のデバイスソフトウェア ID（16 進数 24 桁）。省略すると公式の正式版を照会します。',
+    },
+    id: {
+      type: 'string',
+      description: 'デバイスの MAC アドレスをコロンなしの大文字の 16 進数 12 桁で指定します。モデル情報も送る場合、シリーズ、モデル、ハードウェアバージョンがデバイス情報と一致する必要があります。',
+    },
+    series: {
+      type: 'string',
+      description: 'デバイスシリーズ。モデルで照会する場合は model と edition と一緒に指定します。Read Pico は read です。',
+    },
+    model: {
+      type: 'string',
+      description: 'デバイスモデル。モデルでの照会では必須です。Read Pico は read_0 です。',
+    },
+    edition: {
+      type: 'integer',
+      description: 'ハードウェアのエディション。モデルでの照会では必須です。Read Pico は 1 です。',
+    },
+    status: {
+      type: '"ALPHA" | "TESTING" | "RELEASED"',
+      description: '照会する公開チャネル。省略すると正式版が対象になります。',
+      default: 'RELEASED',
+    },
+    currentVersion: {
+      type: 'string | null',
+      description: 'インストール済みの SemVer バージョン。31 文字以内。省略するか null を送るとバージョン情報が返り、needUpdate は false になります。',
+    },
+    version: {
+      type: 'string',
+      description: '照会する公開済みの SemVer バージョン。31 文字以内。省略すると指定チャネルの最新バージョンが返ります。',
+    },
+  }}
+/>
+
+## 応答例
+
+HTTP `200 OK`。選択された `1.2.0-beta.1` はインストール済みのバージョンより新しいため、`needUpdate` は `true` です。
+
+```json
+{
+  "series": "read",
+  "model": "read_0",
+  "edition": 1,
+  "status": "TESTING",
+  "firmwareId": "000000000000000000000101",
+  "version": "1.2.0-beta.1",
+  "needUpdate": true,
+  "updateVersion": "1.2.0-beta.1",
+  "ota": {
+    "downloadUrl": "https://dot.mindreset.tech/download/AwAAAAAAAAAAAAABAwAAAAA",
+    "size": 1176976,
+    "sha256": "a4b13eb3a234a0446faeed2e1d07a22f52bf06b40b00e22f219e15211eed6b07"
+  }
+}
+```
+
+- `version` と `updateVersion` は、今回選ばれたバージョンを示します。
+- `needUpdate` が `true` になるのは、選ばれたバージョンが `currentVersion` より新しい場合です。インストール済みバージョンを省略すると、バージョン情報と `needUpdate: false` が返ります。
+- 選択されたバージョンに OTA ファイルがない場合、`ota` は `null` です。ファイルがある場合は `ota.downloadUrl` に GET リクエストを送り、HTTP 302 リダイレクトをたどります。署名付き URL の有効期間は 3 分間です。[OTA ファイルのダウンロードと検証](/docs/service/open/organization_software/download)を参照してください。
+
+`firmwareId` を省略して公式ソフトウェアを照会すると、`ota` には従来の `ota.path` とダウンロード用の `ota.downloadUrl` の両方が含まれます。既存のデバイスでは、引き続き `https://os-cdn.mindreset.tech/` を基準に相対パス `ota.path` を解決できます。
+
+## トラブルシューティング
+
+リクエスト本文が無効な場合、HTTP `400` の応答に次のメッセージが含まれます。
+
+```json
+{
+  "message": "Invalid firmware query."
+}
+```
+
+| HTTP ステータス | 確認方法 |
+| --- | --- |
+| `400` | デバイス情報、チャネル、SemVer の形式を確認します。 |
+| `404` | デバイス ID に対応する情報があるか確認するか、リクエストのモデル情報を確認します。ソフトウェアに紐付くデバイス、組織の利用状況、対象チャネルとバージョンの公開状況も確認します。 |
+| `429` | 同一 IP からは毎秒 10 件まで照会できます。リクエスト頻度を下げて再試行してください。 |
+| `500` | 照会を完了できませんでした。時間を置いて再試行してください。 |
+
+配信用サーバーからは、[組織の認証情報で公開済みのバージョンを照会](/docs/service/open/organization_software/organization_version_query)できます。下書きや審査状況を調べるには、[バージョンの一覧と詳細](/docs/service/open/organization_software/organization_versions)を使います。

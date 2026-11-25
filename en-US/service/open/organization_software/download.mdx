@@ -1,0 +1,33 @@
+---
+title: Download and update
+description: Download an OTA file through the authorized URL and verify it before updating a device.
+new: true
+---
+
+[Query the Desk Clock public beta](/docs/service/open/organization_software/version_query) first. If it has an OTA file, read `ota.downloadUrl`, `ota.size`, and `ota.sha256` from the response. Send `GET` to `ota.downloadUrl` and follow the HTTP `302` redirect. With cURL, use `--location`.
+
+## Response example
+
+The download endpoint returns HTTP `302 Found` with a signed URL on `cdn.mindreset.tech` in `Location`. The signature is valid for up to three minutes. Following the redirect returns the OTA file as binary data in an HTTP `200 OK` response.
+
+```http
+HTTP/1.1 302 Found
+Location: https://cdn.mindreset.tech/path/to/ota?sign=example
+Cache-Control: private, no-store
+
+HTTP/1.1 200 OK
+Content-Type: application/octet-stream
+Content-Length: 1176976
+Content-Disposition: attachment; filename*=UTF-8''desk-clock-1.2.0-beta.1.bin
+```
+
+## Verify and troubleshoot
+
+Before installing, confirm the device series, model, and hardware edition. Verify that the downloaded file’s byte count and SHA-256 match `ota.size` and `ota.sha256`.
+
+This example expects `1176976` bytes and SHA-256 `a4b13eb3a234a0446faeed2e1d07a22f52bf06b40b00e22f219e15211eed6b07`. Use the values from your query. For a routine OTA update, install only when `needUpdate` is `true`, `ota` is present, and verification passes.
+
+- Keep the Dot. URL in `ota.downloadUrl` for retries. Each request gets a fresh CDN signature while the version is live. If the URL in `Location` expires, request the original `ota.downloadUrl` again.
+- If the download endpoint returns HTTP `404`, check whether the release and organization are still available. Disabled or revoked releases and unavailable organizations stop receiving new signed links. Query the same software ID and channel again, then evaluate whether to update.
+- If the download endpoint returns HTTP `503`, retry later.
+- For a separate flash package or complete flash image, open the version under **My organizations → Field Lab → Software** and use the download in **Software files**.

@@ -39,18 +39,19 @@ Use the Device Settings API to read or update settings for a device owned by the
 			name: 'Device serial number',
 		},
 	}}
-	body={{
-		alias: 'Office Dot',
-		location: 'Desk',
-		timezone: 'Asia/Shanghai',
+	bodyParams={{
+		alias: { type: 'string', name: 'Device name', example: 'Office Dot' },
+		location: { type: 'string', name: 'Device location', example: 'Desk' },
+		timezone: { type: 'string', name: 'Time zone', example: 'Asia/Shanghai' },
 		interval: {
-			powerMs: 900000,
-			batteryMs: 10800000,
+			type: 'object',
+			name: 'Switching interval',
+			example: JSON.stringify({ powerMs: 900000, batteryMs: 10800000 }, null, 2),
 		},
 		sleep: {
-			enabled: true,
-			start: '23:00',
-			end: '07:00',
+			type: 'object',
+			name: 'Sleep settings',
+			example: JSON.stringify({ enabled: true, start: '23:00', end: '07:00' }, null, 2),
 		},
 	}}
 	auth={true}

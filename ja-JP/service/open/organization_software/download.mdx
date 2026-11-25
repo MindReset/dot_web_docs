@@ -1,0 +1,33 @@
+---
+title: ダウンロードと更新
+description: ダウンロード用 URL から OTA ファイルを取得し、検証してデバイスを更新します。
+new: true
+---
+
+まず [Desk Clock の公開ベータを照会](/docs/service/open/organization_software/version_query)します。OTA ファイルがある場合は `ota.downloadUrl`、`ota.size`、`ota.sha256` を取得します。`ota.downloadUrl` に `GET` を送り、HTTP `302` のリダイレクトをたどります。cURL では `--location` を指定します。
+
+## 応答例
+
+ダウンロード用のエンドポイントは HTTP `302 Found` を返します。`Location` には、最大 3 分間有効な `cdn.mindreset.tech` の署名付き URL が含まれます。リダイレクト先の HTTP `200 OK` 応答には、OTA ファイルのバイナリデータが含まれます。
+
+```http
+HTTP/1.1 302 Found
+Location: https://cdn.mindreset.tech/path/to/ota?sign=example
+Cache-Control: private, no-store
+
+HTTP/1.1 200 OK
+Content-Type: application/octet-stream
+Content-Length: 1176976
+Content-Disposition: attachment; filename*=UTF-8''desk-clock-1.2.0-beta.1.bin
+```
+
+## 検証とトラブルシューティング
+
+インストール前に、デバイスのシリーズ、モデル、ハードウェアバージョンを確認します。ダウンロードしたファイルのバイト数と SHA-256 が `ota.size` と `ota.sha256` に一致することを確認してください。
+
+この例では `1176976` バイトで、SHA-256 は `a4b13eb3a234a0446faeed2e1d07a22f52bf06b40b00e22f219e15211eed6b07` です。実際の照会で返された値を使ってください。通常の OTA 更新では、`needUpdate` が `true` で `ota` があり、上記の検証をすべて通過した場合にインストールします。
+
+- 再試行には `ota.downloadUrl` の Dot. URL を使います。バージョンの配布中は、アクセスするたびに新しい CDN 署名が発行されます。`Location` の URL が期限切れになったら、元の `ota.downloadUrl` にアクセスします。
+- ダウンロード用のエンドポイントが HTTP `404` を返した場合は、バージョンと組織が引き続き利用可能か確認します。バージョンの配布が停止または取り消された場合や、組織が利用できない場合は署名付き URL が発行されません。同じソフトウェア ID とチャネルで再度照会し、更新が必要か判断します。
+- HTTP `503` が返った場合は、時間をおいて再試行します。
+- 分割書き込みパッケージや完全書き込みイメージは、`Field Lab` の「ソフトウェア」でバージョン詳細を開き、ソフトウェアファイルの一覧からダウンロードできます。

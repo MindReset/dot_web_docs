@@ -1,0 +1,52 @@
+---
+title: 发布版本
+description: 发布内测和公测版本，或提交正式版审核。
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+先[上传版本并保存草稿](/docs/service/open/organization_software/upload)。内测和公测版本发布后立即生效。正式版经 Dot. 审核通过后生效。
+
+## 在网页上发布
+
+在组织的「软件」中打开版本草稿。内测或公测版点「发布版本」，正式版点「提交审核」。
+
+## 用组织 API 发布
+
+提交设备软件 ID 和确认上传时返回的草稿版本 `id`。内测和公测返回 `state: "published"`。正式版返回 `state: "pending"`，可继续[查看审核状态](/docs/service/open/organization_software/review)。
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/publish"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    firmwareId: { type: "string", name: "设备软件 ID", required: true, example: "000000000000000000000101" },
+    id: { type: "string", name: "版本 ID", required: true, example: "000000000000000000000103" },
+  }}
+/>
+
+### 请求体
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: '设备软件 ID。使用创建软件或项目列表返回的 firmwareId，格式为 24 位十六进制字符。',
+      required: true,
+    },
+    id: {
+      type: 'string',
+      description: '软件版本 ID。使用确认上传或列出版本时返回的 id。',
+      required: true,
+    },
+  }}
+/>
+
+公测版生效后，使用 `TESTING` [查询版本并获取 OTA 下载入口](/docs/service/open/organization_software/version_query)。
+
+## 管理已发布版本
+
+- **已生效**的版本可通过公开接口查询。有 OTA 文件时，查询响应的 `ota.downloadUrl` 提供[签名下载入口](/docs/service/open/organization_software/download)。点「停用此版本」可暂停分发，符合当前发布条件时可重新发布。
+- **已撤销**的版本退出分发，下载入口停止签发新链接。版本号是否可再次使用，以同一软件 ID 和渠道的上传页面提示为准。

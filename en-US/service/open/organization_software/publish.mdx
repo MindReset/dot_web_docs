@@ -1,0 +1,52 @@
+---
+title: Publish a version
+description: Publish alpha and beta versions or submit a stable version for review.
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+[Upload and save a draft](/docs/service/open/organization_software/upload) first. Alpha and beta versions go live immediately when you publish them. Stable versions go live after Dot. approves them.
+
+## Publish on the website
+
+Open a draft under **Software** in your organization. Select **Publish version** for an alpha or beta, or **Submit for review** for a stable version.
+
+## Publish with the organization API
+
+Send the device software ID and the draft version `id` from the upload completion response. Alpha and beta versions return `state: "published"`. Stable versions return `state: "pending"`. You can then [check the review status](/docs/service/open/organization_software/review).
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/publish"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    firmwareId: { type: "string", name: "Device software ID", required: true, example: "000000000000000000000101" },
+    id: { type: "string", name: "Version ID", required: true, example: "000000000000000000000103" },
+  }}
+/>
+
+### Request body
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'The 24-character hexadecimal firmwareId returned when you create or list software projects.',
+      required: true,
+    },
+    id: {
+      type: 'string',
+      description: 'The version id returned when you complete the upload or list versions.',
+      required: true,
+    },
+  }}
+/>
+
+Once the beta is live, [query the `TESTING` channel for its OTA download URL](/docs/service/open/organization_software/version_query).
+
+## Manage published versions
+
+- A **Live** version appears in public version queries. If it has an OTA file, the response includes `ota.downloadUrl` for [signed downloads](/docs/service/open/organization_software/download). Select **Disable this version** to pause distribution. You can publish it again when it meets the current publishing conditions.
+- A **Revoked** version stops being distributed and its download endpoint stops issuing signed URLs. Check the upload form for version numbers that can be reused for the same device software ID and channel.

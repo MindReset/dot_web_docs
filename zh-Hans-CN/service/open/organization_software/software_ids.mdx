@@ -1,0 +1,108 @@
+---
+title: 管理设备软件 ID
+description: 创建设备软件 ID，并用它管理各渠道的版本。
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+设备软件 ID 对应一个软件项目。每次上传新版本时，从列表选择同一个项目，后续设备查询也沿用这个 ID。
+
+## 创建 Desk Clock
+
+1. 打开「我的组织 → Field Lab → 软件」。
+2. 点「管理软件 ID → 新建软件」，填写 `Desk Clock`。
+3. 选择小纸 Pico。项目创建时绑定设备，查询参数为 `series: "read"`、`model: "read_0"` 和 `edition: 1`。
+4. 创建后，选中项目并复制设备软件 ID。后文以 `000000000000000000000101` 为例。
+
+在「上传新版本」时也可以直接选「新建软件」。以后为 `Desk Clock` 发布版本时，选择已有项目即可。
+
+## 区分几个 ID
+
+| 值 | 用途 |
+| --- | --- |
+| 组织 ID | 标识 `Field Lab` 及其团队。 |
+| 设备软件 ID `firmwareId` | 标识 `Desk Clock`。组织软件的版本查询使用这个 24 位十六进制 ID。 |
+| 设备 ID | 标识具体设备，设备查询的请求字段为 `id`。 |
+| 版本 ID `id` | 标识一个版本，由上传确认返回，用于发布和查询详情。 |
+| 上传 ID `uploadId` | 标识一次上传准备，用于确认上传。 |
+| 审核 ID `reviewId` | 标识一轮正式版审核，修改后重新提交时使用。 |
+
+## 重命名和归档
+
+重命名项目后，可以继续使用复制过的设备软件 ID。归档会把项目从上传选项中隐藏，已发布的版本及其下载入口仍可使用，已有提审会继续处理。恢复项目后可以再上传版本。
+
+## 通过 API 管理软件 ID
+
+先按[组织凭据](/docs/service/open/organization/credentials)取得 API 密钥或 OAuth 访问令牌。API 从凭据识别组织，创建的项目自动绑定小纸 Pico。
+
+### 查找已有项目
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/projects"
+  method="GET"
+  auth="organization"
+/>
+
+响应为项目数组，包含 `firmwareId`、`name` 和 `target`。已归档项目另有 `archivedAt`。复制要更新的项目的 `firmwareId`，在上传和查询版本时使用。
+
+### 创建设备软件 ID
+
+填写软件名称，最长 80 个字符。每次新建使用一个新的 `requestId` UUID。遇到请求超时时，用同一个 UUID 重试，已经创建成功的请求会返回原项目。
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/projects/create"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    name: { type: "string", name: "软件名称", required: true, default: "Desk Clock", example: "Desk Clock" },
+    requestId: { type: "string", name: "请求 ID", required: true, generateUuid: true },
+  }}
+/>
+
+#### 请求体
+
+<TypeTable
+  type={{
+    name: {
+      type: 'string',
+      description: '软件名称。使用 1 到 80 个字符，保持在一行。',
+      required: true,
+    },
+    requestId: {
+      type: 'string (UUID)',
+      description: '本次创建的请求 ID。可点击「生成 UUID」。重试同一次创建时使用原值。',
+      required: true,
+    },
+  }}
+/>
+
+成功后，从响应复制 `firmwareId`，然后[上传版本](/docs/service/open/organization_software/upload)。每次上传新版本都使用同一个 ID。
+
+### 归档设备软件 ID
+
+停止为项目上传新版本时，填写要归档的 `firmwareId` 并发送请求。
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/projects/archive"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    firmwareId: { type: "string", name: "设备软件 ID", required: true, example: "000000000000000000000101" },
+  }}
+/>
+
+#### 请求体
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: '设备软件 ID。使用创建软件或项目列表返回的 firmwareId，格式为 24 位十六进制字符。',
+      required: true,
+    },
+  }}
+/>
+
+响应包含 `archivedAt`。归档后，已发布的版本仍可查询和下载。需要继续上传时，可在网页的设备软件 ID 管理中恢复项目。

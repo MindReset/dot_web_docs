@@ -1,0 +1,186 @@
+---
+title: Query versions from a device
+description: Query a published organization software version, update status, and OTA download information.
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+Use `POST /api/authV2/device/firmware/query` to query live device software. This endpoint requires no login or API key. To query organization software, send its [device software ID](/docs/service/open/organization_software/software_ids) and the device identity bound to that software.
+
+## Query by device ID
+
+Querying by device ID is recommended. Read the device’s MAC address, remove the colons, and convert its letters to uppercase. For example, `02:ab:cd:ef:12:34` becomes `02ABCDEF1234`.
+
+Send the resulting device ID as `id` in the request body along with the project’s `firmwareId`. The server looks up the device’s series, model, and hardware edition by ID and uses `status` to select the release channel.
+
+<ApiPlayground
+  endpoint="/api/authV2/device/firmware/query"
+  method="POST"
+  bodyParams={{
+    id: { type: "string", name: "Device ID", required: true, example: "02ABCDEF1234" },
+    firmwareId: { type: "string", name: "Device software ID", required: true, example: "000000000000000000000101" },
+    status: {
+      example: "TESTING",
+      type: "select",
+      name: "Release channel",
+      default: "TESTING",
+      options: [
+        { value: "ALPHA", label: "Alpha" },
+        { value: "TESTING", label: "Beta" },
+        { value: "RELEASED", label: "Stable" },
+      ],
+    },
+    currentVersion: { type: "string", name: "Installed version", default: "1.1.0", example: "1.1.0" },
+    version: { type: "string", name: "Specific version" },
+  }}
+/>
+
+## Query by model
+
+You can also query by model. Send the device software ID along with the device series, model, and hardware edition. This example queries the Read Pico beta channel.
+
+<ApiPlayground
+  endpoint="/api/authV2/device/firmware/query"
+  method="POST"
+  bodyParams={{
+    series: {
+      example: "read",
+      type: 'select',
+      name: "Series",
+      required: true,
+      default: "read",
+      options: [
+        { value: "read", label: "Read" },
+        { value: "quote", label: "Quote", disabled: true },
+      ],
+    },
+    model: {
+      example: "read_0",
+      type: 'select',
+      name: "Model",
+      required: true,
+      default: "read_0",
+      options: [
+        { value: "read_0", label: "Read Pico" },
+        { value: "quote_0", label: "Quote/0", disabled: true },
+      ],
+    },
+    edition: {
+      example: 1,
+      type: 'select',
+      name: "Hardware edition",
+      required: true,
+      default: 1,
+      options: [
+        { value: 1, label: "Hardware edition 1" },
+        { value: 2, label: "Hardware edition 2", disabled: true },
+      ],
+    },
+    firmwareId: { type: 'string', name: "Device software ID", required: true, example: "000000000000000000000101" },
+    status: {
+      example: "TESTING",
+      type: 'select',
+      name: "Release channel",
+      required: true,
+      default: "TESTING",
+      options: [
+        { value: "ALPHA", label: "Internal testing" },
+        { value: "TESTING", label: "Public testing" },
+        { value: "RELEASED", label: "Stable release" },
+      ],
+    },
+    currentVersion: { type: 'string', name: "Installed version", default: '1.1.0', example: "1.1.0" },
+    version: { type: "string", name: "Specific version" },
+  }}
+/>
+
+## Request fields
+
+Both query methods use a JSON request body. Identify the device by its ID or by model.
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'The 24-character hexadecimal organization software ID. Omit it to query the official stable software.',
+    },
+    id: {
+      type: 'string',
+      description: 'The device MAC address as 12 uppercase hexadecimal characters without colons. If you also send the series, model, and hardware edition, all three must match the device record.',
+    },
+    series: {
+      type: 'string',
+      description: 'Device series. Send it with model and edition when querying by model. Use read for Read Pico.',
+    },
+    model: {
+      type: 'string',
+      description: 'Device model. Required when querying by model. Use read_0 for Read Pico.',
+    },
+    edition: {
+      type: 'integer',
+      description: 'Hardware edition. Required when querying by model. Use 1 for Read Pico.',
+    },
+    status: {
+      type: '"ALPHA" | "TESTING" | "RELEASED"',
+      description: 'The release channel to query. Omit it to query the stable channel.',
+      default: 'RELEASED',
+    },
+    currentVersion: {
+      type: 'string | null',
+      description: 'The installed SemVer version, up to 31 characters. Omit it or send null to get version information with needUpdate set to false.',
+    },
+    version: {
+      type: 'string',
+      description: 'A specific live SemVer version, up to 31 characters. Omit it to get the latest version in the selected channel.',
+    },
+  }}
+/>
+
+## Response example
+
+HTTP `200 OK`. The selected version is `1.2.0-beta.1`, which is newer than the installed version, so `needUpdate` is `true`.
+
+```json
+{
+  "series": "read",
+  "model": "read_0",
+  "edition": 1,
+  "status": "TESTING",
+  "firmwareId": "000000000000000000000101",
+  "version": "1.2.0-beta.1",
+  "needUpdate": true,
+  "updateVersion": "1.2.0-beta.1",
+  "ota": {
+    "downloadUrl": "https://dot.mindreset.tech/download/AwAAAAAAAAAAAAABAwAAAAA",
+    "size": 1176976,
+    "sha256": "a4b13eb3a234a0446faeed2e1d07a22f52bf06b40b00e22f219e15211eed6b07"
+  }
+}
+```
+
+- `version` and `updateVersion` identify the selected version.
+- `needUpdate` is `true` only when the selected version is newer than `currentVersion`. Omitting the installed version still returns the version metadata with `needUpdate` set to `false`.
+- `ota` is `null` when the selected version has no OTA file. If `ota` is present, send a GET request to `ota.downloadUrl` and follow the HTTP 302 redirect to a signed URL valid for three minutes. See [Download and update](/docs/service/open/organization_software/download).
+
+When you omit `firmwareId` to query official software, `ota` includes both the legacy `ota.path` and the authorized `ota.downloadUrl`. Existing devices can continue to resolve the relative `ota.path` against `https://os-cdn.mindreset.tech/`.
+
+## Troubleshooting
+
+For an invalid request body, the HTTP `400` response includes this message.
+
+```json
+{
+  "message": "Invalid firmware query."
+}
+```
+
+| HTTP status | What to check |
+| --- | --- |
+| `400` | Check the device identity, channel, and SemVer syntax. |
+| `404` | Check that a device record exists for the ID or verify the model details in the request. Check the software’s device binding, the organization’s availability, and whether a matching version is live in the requested channel. |
+| `429` | This endpoint allows 10 requests per second per IP. Reduce the request rate and retry. |
+| `500` | The query could not be completed. Retry later. |
+
+For a release service, you can also [query published versions with organization credentials](/docs/service/open/organization_software/organization_version_query). For drafts or review progress, use the [version list and details](/docs/service/open/organization_software/organization_versions).

@@ -1,0 +1,256 @@
+---
+title: バージョンをアップロードする
+description: デバイスソフトウェアのファイルと各言語のリリースノートを登録し、下書きとして保存します。
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+Dot. のウェブサイトで `Field Lab` の「ソフトウェア」を開きます。組織への参加と[デバイスソフトウェア ID](/docs/service/open/organization_software/software_ids)が必要です。この例を試すには、プロジェクトに紐付くデバイス用にビルドした OTA の `.bin` ファイルを用意してください。
+
+## ウェブサイトで下書きを保存する
+
+1. バージョンのアップロードを選び、`Desk Clock` を指定します。
+2. 「公開テスト」を選び、`1.2.0-beta.1` を入力します。
+3. OTA 欄に `desk-clock-1.2.0-beta.1.bin` を選びます。簡体字中国語、英語、日本語のリリースノートをそれぞれ入力でき、入力後は下書きを保存します。
+
+## ファイルとバージョン番号
+
+バージョンごとに、ソフトウェアファイルを 1 種類以上アップロードしてください。1 ファイルの上限は 32 MiB です。リリースノートは任意です。デバイスの照会結果に OTA ダウンロード情報を含める場合は、OTA 用のアプリケーションイメージをアップロードします。
+
+| ファイル | 形式 | 用途 |
+| --- | --- | --- |
+| 分割書き込みパッケージ | `.tgz`、`.tar.gz` | 複数のイメージをそれぞれの指定アドレスに書き込みます。 |
+| 完全書き込みイメージ | `.bin` | 初回書き込みやデバイスの復旧に使います。 |
+| OTA 用アプリケーションイメージ | `.bin` | インストール済みのソフトウェアを更新します。 |
+
+バージョン番号は下表の SemVer 形式で 31 文字以内にします。内部テストは `alpha.1`、公開テストは `beta.1` から始まります。同じデバイスソフトウェア ID 内で、チャネルごとに番号を繰り上げます。アップロードの前に[使用できるバージョン番号を確認](/docs/service/open/organization_software/organization_versions)できます。
+
+| チャネル | API の値 | 例 | 公開方法 |
+| --- | --- | --- | --- |
+| 内部テスト | `ALPHA` | `1.2.0-alpha.1` | 下書きから公開します。 |
+| 公開テスト | `TESTING` | `1.2.0-beta.1` | 下書きから公開します。 |
+| 正式リリース | `RELEASED` | `1.2.0` | Dot. の審査に提出し、承認後に公開されます。 |
+
+## 組織 API でアップロードする
+
+[組織の認証情報](/docs/service/open/organization/credentials)と[デバイスソフトウェア ID](/docs/service/open/organization_software/software_ids)を用意します。以下の手順で Read Pico の公開テスト版を下書きとして保存します。
+
+### 1. アップロードを準備する
+
+`POST /api/authV2/organization/software/upload` に JSON を送信します。対象のデバイスはプロジェクトの紐付けで決まります。フォームは選んだファイルの名前、バイト数、SHA-256 を取得します。
+
+以下の公開テスト版のリクエストには、OTA ファイル一つと 3 言語のリリースノートが含まれます。実際のデバイスソフトウェア ID とファイル情報を使用してください。
+
+```json
+{
+  "firmwareId": "000000000000000000000101",
+  "version": "1.2.0-beta.1",
+  "status": "TESTING",
+  "artifacts": {
+    "ota": {
+      "name": "desk-clock-1.2.0-beta.1.bin",
+      "size": 1176976,
+      "sha256": "a4b13eb3a234a0446faeed2e1d07a22f52bf06b40b00e22f219e15211eed6b07"
+    }
+  },
+  "releaseNotes": {
+    "zh-Hans-CN": "提高时钟画面的刷新稳定性。",
+    "en-US": "Improves the reliability of clock display refreshes.",
+    "ja-JP": "時計表示の更新を安定させました。"
+  }
+}
+```
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/upload"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    firmwareId: { type: "string", name: "デバイスソフトウェア ID", required: true, example: "000000000000000000000101" },
+    version: { type: "string", name: "バージョン", required: true, default: "1.2.0-beta.1", example: "1.2.0-beta.1" },
+    status: {
+      example: "TESTING",
+      type: "select",
+      name: "公開チャネル",
+      required: true,
+      default: "TESTING",
+      options: [
+        { value: "ALPHA", label: "内部テスト" },
+        { value: "TESTING", label: "公開テスト" },
+        { value: "RELEASED", label: "正式版" },
+      ],
+    },
+    "artifacts.ota": { type: "file", name: "OTA アプリケーションファイル", accept: ".bin" },
+    "artifacts.archive": { type: "file", name: "分割書き込みパッケージ", accept: ".tgz,.tar.gz" },
+    "artifacts.merged": { type: "file", name: "一括書き込みイメージ", accept: ".bin" },
+    "releaseNotes.zh-Hans-CN": { type: "textarea", name: "リリースノート（簡体字中国語）", example: "提高时钟画面的刷新稳定性。" },
+    "releaseNotes.en-US": { type: "textarea", name: "リリースノート（英語）", example: "Improves the reliability of clock display refreshes." },
+    "releaseNotes.ja-JP": { type: "textarea", name: "リリースノート（日本語）", example: "時計表示の更新を安定させました。" },
+  }}
+/>
+
+#### リクエストボディ
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'プロジェクトの作成・一覧取得で返る 24 桁の 16 進数の firmwareId。',
+      required: true,
+    },
+    version: {
+      type: 'string',
+      description: '完全な SemVer バージョン。31 文字以内で、チャネルの形式と番号ルールに従ってください。',
+      required: true,
+    },
+    status: {
+      type: '"ALPHA" | "TESTING" | "RELEASED"',
+      description: 'このバージョンの公開チャネル。',
+      required: true,
+    },
+    artifacts: {
+      type: 'object',
+      description: 'ソフトウェアファイルのメタデータ。新しいバージョンには ota、merged、archive のうち一つ以上を指定します。',
+      required: true,
+      parameters: {
+        ota: {
+          type: 'object',
+          description: 'OTA アプリケーションイメージ（.bin）のメタデータ。',
+        },
+        merged: {
+          type: 'object',
+          description: '一括書き込みイメージ（.bin）のメタデータ。',
+        },
+        archive: {
+          type: 'object',
+          description: '個別書き込みパッケージ（.tgz または .tar.gz）のメタデータ。',
+        },
+      },
+    },
+    releaseNotes: {
+      type: 'object',
+      description: '言語ごとのプレーンテキストのリリースノート。各言語は 20,000 文字以内で、指定しない言語は空文字列で保存されます。',
+      parameters: {
+        'zh-Hans-CN': {
+          type: 'string',
+          description: '簡体字中国語のリリースノート。',
+        },
+        'en-US': {
+          type: 'string',
+          description: '英語のリリースノート。',
+        },
+        'ja-JP': {
+          type: 'string',
+          description: '日本語のリリースノート。',
+        },
+      },
+    },
+  }}
+/>
+
+#### ファイルのメタデータ
+
+<TypeTable
+  type={{
+    name: {
+      type: 'string',
+      description: '元のファイル名。拡張子を含めて 1～255 文字で指定します。',
+      required: true,
+    },
+    size: {
+      type: 'integer',
+      description: 'ファイルのバイト数。1 バイトから 32 MiB まで。',
+      required: true,
+    },
+    sha256: {
+      type: 'string',
+      description: '元のファイルの SHA-256。小文字の 16 進数 64 桁で指定します。',
+      required: true,
+    },
+  }}
+/>
+
+返された `uploadId` はアップロードの完了時に使います。`uploads` にはファイルの種類ごとに署名付き URL とヘッダーが含まれます。有効期間は準備から 15 分間です。期限は応答の `expiresAt` を確認してください。
+
+```json
+{
+  "uploadId": "000000000000000000000102",
+  "expiresAt": "2030-01-01T00:15:00.000Z",
+  "uploads": {
+    "ota": {
+      "url": "https://uploads.example.com/desk-clock-1.2.0-beta.1.bin?signature=example",
+      "headers": {
+        "x-cos-acl": "private"
+      }
+    }
+  }
+}
+```
+
+### 2. ファイルをアップロードする
+
+`uploads` のファイルごとに、署名付き URL に `PUT` を送信します。応答に含まれるヘッダーを使用します。
+
+<ApiPlayground signedFile="upload" />
+
+#### 署名付きアップロードのリクエスト項目
+
+<TypeTable
+  type={{
+    URL: {
+      type: 'string',
+      description: '準備時の応答に含まれる、該当ファイルの署名付き URL を使います。',
+      required: true,
+    },
+    'x-cos-acl': {
+      type: '"private"',
+      description: '準備時の応答に含まれるこのヘッダーを PUT リクエストに付けます。',
+      required: true,
+    },
+    body: {
+      type: 'binary',
+      description: '選択したファイルのバイト列をリクエストボディとして送信します。長さは申告した size と一致させます。',
+      required: true,
+    },
+  }}
+/>
+
+### 3. アップロードを完了する
+
+すべてのファイルをアップロードしたら、`expiresAt` までに `uploadId` を送信します。準備時と同じ API キー、または同じ OAuth クライアントで取得したアクセストークンを使います。新規アップロードでは、バイト数と SHA-256 の検証後に `state: "draft"` が返ります。公開には応答のバージョン `id` を使います。完了リクエストがタイムアウトした場合は、同じ `uploadId` と認証情報で再試行できます。
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/upload/complete"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    uploadId: { type: "string", name: "アップロード ID", required: true, example: "000000000000000000000102" },
+  }}
+/>
+
+#### リクエストボディ
+
+<TypeTable
+  type={{
+    uploadId: {
+      type: 'string',
+      description: '準備時に返る uploadId。expiresAt までに、同じ組織 API キーまたは OAuth クライアントでアップロードを完了します。',
+      required: true,
+    },
+  }}
+/>
+
+## アップロードのトラブルシューティング
+
+| エラー | 対処方法 |
+| --- | --- |
+| `400 ORGANIZATION_SOFTWARE_FILE_REQUIRED` | ファイルを一つ以上指定します。再提出では既存ファイルを保持するか、新しいファイルを指定できます。 |
+| `400 ORGANIZATION_SOFTWARE_INVALID_VERSION` | 選択したチャネルに対応するバージョン形式を使います。 |
+| `400 ORGANIZATION_SOFTWARE_UPLOAD_EXPIRED` | 準備時と同じ API キーまたは OAuth クライアントを使います。`expiresAt` を過ぎている場合は、アップロードを準備し直します。 |
+| `400 ORGANIZATION_SOFTWARE_FILE_UNAVAILABLE` | 保持するファイルが元のバージョンにあるか確認します。新しいファイルは PUT が成功したか、バイト数と SHA-256 が一致するかを確認します。 |
+| `409 ORGANIZATION_SOFTWARE_VERSION_UNAVAILABLE` | [チャネルのバージョン番号を確認](/docs/service/open/organization_software/organization_versions)し、使用できる番号を選びます。 |
+| `409 ORGANIZATION_SOFTWARE_PROJECT_ARCHIVED` | ウェブサイトでソフトウェア ID を復元してから再試行します。 |
+
+下書きを保存したら、[バージョンの公開](/docs/service/open/organization_software/publish)に進みます。API を使う場合は、アップロード完了時に返るバージョン `id` を控えてください。

@@ -1,0 +1,12 @@
+{
+    "pages": [
+        "software_ids",
+        "upload",
+        "publish",
+        "review",
+        "version_query",
+        "organization_versions",
+        "organization_version_query",
+        "download"
+    ]
+}

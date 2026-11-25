@@ -1,0 +1,186 @@
+---
+title: 从设备查询版本
+description: 查询组织已发布的设备软件版本、更新状态和 OTA 下载信息。
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+使用 `POST /api/authV2/device/firmware/query` 查询已发布的设备软件。此接口无需登录或提供 API 密钥。查询组织软件时，传入 [设备软件 ID](/docs/service/open/organization_software/software_ids) 和该软件绑定的设备信息。
+
+## 设备 ID 查询
+
+推荐使用设备 ID 查询。读取设备的 MAC 地址，去掉冒号并将字母转为大写。例如，`02:ab:cd:ef:12:34` 转换为 `02ABCDEF1234`。
+
+将转换得到的设备 ID 填入请求体的 `id`，并传入项目的 `firmwareId`。服务端根据设备 ID 查找系列、型号和硬件版本，并按 `status` 选择发布渠道。
+
+<ApiPlayground
+  endpoint="/api/authV2/device/firmware/query"
+  method="POST"
+  bodyParams={{
+    id: { type: "string", name: "设备 ID", required: true, example: "02ABCDEF1234" },
+    firmwareId: { type: "string", name: "设备软件 ID", required: true, example: "000000000000000000000101" },
+    status: {
+      example: "TESTING",
+      type: "select",
+      name: "发布渠道",
+      default: "TESTING",
+      options: [
+        { value: "ALPHA", label: "内测" },
+        { value: "TESTING", label: "公测" },
+        { value: "RELEASED", label: "正式发布" },
+      ],
+    },
+    currentVersion: { type: "string", name: "已安装版本", default: "1.1.0", example: "1.1.0" },
+    version: { type: "string", name: "指定版本" },
+  }}
+/>
+
+## 按型号查询
+
+也可以按型号查询。填写设备软件 ID，并提供设备系列、型号和硬件版本。以下示例查询小纸 Pico 的公测版。
+
+<ApiPlayground
+  endpoint="/api/authV2/device/firmware/query"
+  method="POST"
+  bodyParams={{
+    series: {
+      example: "read",
+      type: 'select',
+      name: "系列",
+      required: true,
+      default: "read",
+      options: [
+        { value: "read", label: "小纸" },
+        { value: "quote", label: "摘录", disabled: true },
+      ],
+    },
+    model: {
+      example: "read_0",
+      type: 'select',
+      name: "型号",
+      required: true,
+      default: "read_0",
+      options: [
+        { value: "read_0", label: "小纸 Pico" },
+        { value: "quote_0", label: "Quote/0", disabled: true },
+      ],
+    },
+    edition: {
+      example: 1,
+      type: 'select',
+      name: "硬件版本",
+      required: true,
+      default: 1,
+      options: [
+        { value: 1, label: "硬件版本 1" },
+        { value: 2, label: "硬件版本 2", disabled: true },
+      ],
+    },
+    firmwareId: { type: 'string', name: "设备软件 ID", required: true, example: "000000000000000000000101" },
+    status: {
+      example: "TESTING",
+      type: 'select',
+      name: "发布渠道",
+      required: true,
+      default: "TESTING",
+      options: [
+        { value: "ALPHA", label: "内测" },
+        { value: "TESTING", label: "公测" },
+        { value: "RELEASED", label: "正式发布" },
+      ],
+    },
+    currentVersion: { type: 'string', name: "已安装版本", default: '1.1.0', example: "1.1.0" },
+    version: { type: "string", name: "指定版本" },
+  }}
+/>
+
+## 请求字段
+
+两个查询方式都使用 JSON 请求体。选用设备 ID 或型号信息来标识设备。
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: '组织软件的 24 位十六进制 ID。省略时查询官方正式版。',
+    },
+    id: {
+      type: 'string',
+      description: '设备 MAC 地址去掉冒号后的 12 位大写十六进制字符。如同时提供型号信息，系列、型号和硬件版本须与设备记录一致。',
+    },
+    series: {
+      type: 'string',
+      description: '设备系列。按型号查询时与 model 和 edition 一起提供，小纸 Pico 使用 read。',
+    },
+    model: {
+      type: 'string',
+      description: '设备型号。按型号查询时必填，小纸 Pico 使用 read_0。',
+    },
+    edition: {
+      type: 'integer',
+      description: '设备的硬件版本。按型号查询时必填，小纸 Pico 使用 1。',
+    },
+    status: {
+      type: '"ALPHA" | "TESTING" | "RELEASED"',
+      description: '要查询的发布渠道。省略时查询正式版。',
+      default: 'RELEASED',
+    },
+    currentVersion: {
+      type: 'string | null',
+      description: '已安装的 SemVer 版本，最多 31 个字符。省略或传 null 时仍返回版本信息，needUpdate 为 false。',
+    },
+    version: {
+      type: 'string',
+      description: '要查询的已生效版本。使用最多 31 个字符的 SemVer，省略时取所选渠道的最新版本。',
+    },
+  }}
+/>
+
+## 响应示例
+
+HTTP `200 OK`。示例选中了 `1.2.0-beta.1`，高于设备当前版本，因此 `needUpdate` 为 `true`。
+
+```json
+{
+  "series": "read",
+  "model": "read_0",
+  "edition": 1,
+  "status": "TESTING",
+  "firmwareId": "000000000000000000000101",
+  "version": "1.2.0-beta.1",
+  "needUpdate": true,
+  "updateVersion": "1.2.0-beta.1",
+  "ota": {
+    "downloadUrl": "https://dot.mindreset.tech/download/AwAAAAAAAAAAAAABAwAAAAA",
+    "size": 1176976,
+    "sha256": "a4b13eb3a234a0446faeed2e1d07a22f52bf06b40b00e22f219e15211eed6b07"
+  }
+}
+```
+
+- `version` 和 `updateVersion` 指向本次选中的版本。
+- 只有选中的版本高于 `currentVersion` 时，`needUpdate` 才为 `true`。未提供当前版本时也会返回版本信息，`needUpdate` 为 `false`。
+- `ota` 为 `null` 时，选中的版本未提供 OTA 文件。有 `ota` 时，向 `ota.downloadUrl` 发送 GET 请求并跟随 HTTP 302，获取有效期为 3 分钟的签名地址。参见[下载与更新](/docs/service/open/organization_software/download)。
+
+省略 `firmwareId` 查询官方软件时，`ota` 同时包含原有的 `ota.path` 和授权下载入口 `ota.downloadUrl`。旧设备仍可按 `https://os-cdn.mindreset.tech/` 解析相对路径 `ota.path`。
+
+## 排查
+
+请求体无效时，HTTP `400` 响应包含以下错误信息。
+
+```json
+{
+  "message": "Invalid firmware query."
+}
+```
+
+| HTTP 状态 | 检查方式 |
+| --- | --- |
+| `400` | 检查设备标识是否完整、渠道是否有效、版本号是否符合 SemVer。 |
+| `404` | 确认设备 ID 对应的设备记录存在，或核对请求中的型号信息。检查软件 ID 与设备绑定是否相符、组织是否可用，以及所选渠道是否有已生效的版本。指定 `version` 时，确认该版本仍在分发。 |
+| `429` | 同一 IP 对此接口每秒最多 10 次请求。降低频率后重试。 |
+| `500` | 查询未完成，稍后重试。 |
+
+发布服务可[用组织凭据查询已发布版本](/docs/service/open/organization_software/organization_version_query)。需要查看草稿或审核进度时，使用[版本列表与详情](/docs/service/open/organization_software/organization_versions)。

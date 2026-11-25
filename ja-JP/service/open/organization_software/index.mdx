@@ -1,0 +1,62 @@
+---
+title: デバイスソフトウェア
+description: デバイスソフトウェアをクラウドに保管し、チームでバージョン、公開チャネル、OTA ダウンロードを管理します。
+new: true
+---
+
+Dot. では、サードパーティ製のデバイスソフトウェアをクラウドに保管できます。ビルドしたファイルをアップロードし、バージョンの管理や内部テスト版、公開テスト版、正式版の公開を行えます。バージョン照会と OTA ファイルのダウンロードには API を利用できます。
+
+## ホスティングとインストール
+
+現在は Read Pico 向けのソフトウェアを公開できます。
+
+現在は、ご自身のファームウェア、ウェブサイト、書き込みツールからバージョンを照会し、ファイルをダウンロードします。OTA 更新はファームウェアで実行し、デバイスへの書き込みにはご自身のツールを使用します。手順は[デバイスからバージョンを照会する](/docs/service/open/organization_software/version_query)と[ダウンロードと更新](/docs/service/open/organization_software/download)を参照してください。
+
+将来的には、Dot. のウェブサイトに共通のインストールページを設ける可能性があります。ユーザーが組織の公開したソフトウェアを選び、ブラウザーからデバイスに直接書き込めるようにするものです。
+
+## チームとソフトウェア ID
+
+組織には、所有者を含めて最大 100 人が参加できます。メンバーはウェブサイトでソフトウェアのプロジェクトとバージョンを管理できます。所有者は管理者を任命でき、招待や組織の認証情報を共同で管理できます。役割ごとの権限は[組織の作成と管理](/docs/service/open/organization/membership)を参照してください。
+
+一つの組織で作成できるデバイスソフトウェア ID の数に上限はありません。ソフトウェアごとに ID を作成し、アップロード、公開、照会に同じ ID を使います。バージョン履歴はプロジェクトごとに管理されます。詳しくは[デバイスソフトウェア ID の管理](/docs/service/open/organization_software/software_ids)を参照してください。
+
+## 公開チャネルとバージョン番号
+
+| チャネル | 推奨する用途 | 公開方法 |
+| --- | --- | --- |
+| 内部テスト `ALPHA` | チーム内で新機能を検証する。 | 直接公開できます。 |
+| 公開テスト `TESTING` | 少人数のユーザーに試してもらう。 | 直接公開できます。 |
+| 正式版 `RELEASED` | 正式版をユーザーに配布する。 | Dot. の審査に提出し、承認されると自動で公開されます。 |
+
+いずれのチャネルも、配布中のバージョンは公開のデバイス照会 API で取得できます。ソフトウェア ID と対応するデバイス情報があれば、どのチャネルも照会できます。内部テストや公開テストのチャネルを表示するユーザーは、ご自身の更新ツールで選べます。
+
+バージョン番号は、デバイスソフトウェア ID とチャネルの組み合わせごとに繰り上げます。照会時にバージョン番号を省略すると、指定したチャネルで配布中の最上位バージョンが返ります。チャネルを省略すると正式版が対象になります。
+
+バージョンごとに、簡体字中国語、英語、日本語のリリースノートを登録できます。メンバーはウェブサイトのバージョン詳細で確認できます。組織の認証情報で詳細 API を呼び出すと、応答の `releaseNotes` でも取得できます。参照先は[バージョンの一覧と詳細](/docs/service/open/organization_software/organization_versions)です。
+
+## 公開状態の管理
+
+- **配布の停止**は、そのバージョンの配布を一時停止します。公開照会の対象から外れ、ダウンロード用の署名付き URL の新規発行も止まります。
+- **配布の再開**は、現在の公開条件を満たす停止済みバージョンを、再び照会・ダウンロードできるようにします。
+- **公開の取り消し**は、そのバージョンの配布を終了し、履歴を残します。同じ番号で新しいファイルをアップロードする前に、同じソフトウェア ID とチャネルで使用できるバージョン番号を確認してください。
+- **審査の取り下げ**は、審査待ちの正式版を下書きに戻します。修正後に再提出できます。詳しくは[審査と再提出](/docs/service/open/organization_software/review)を参照してください。
+
+## 最初のバージョンを公開する
+
+ここでは `Field Lab` が `Desk Clock` の公開テスト版 `1.2.0-beta.1` を公開する手順を紹介します。
+
+1. 「ソフトウェア → ソフトウェア ID を管理」で[`Desk Clock` を作成](/docs/service/open/organization_software/software_ids)し、Read Pico を選びます。作成されたソフトウェア ID をコピーします。
+2. [`desk-clock-1.2.0-beta.1.bin` をアップロードして下書きに保存](/docs/service/open/organization_software/upload)します。
+3. [公開テスト版を公開](/docs/service/open/organization_software/publish)します。正式版は Dot. の審査に提出します。
+4. ソフトウェア ID を使い、[デバイスからバージョンを照会](/docs/service/open/organization_software/version_query)します。
+5. 応答の `ota.downloadUrl` から [OTA ファイルをダウンロードして検証](/docs/service/open/organization_software/download)します。
+
+例のデバイスソフトウェア ID `000000000000000000000101` は、作成したプロジェクトの ID に置き換えてください。
+
+## 組織 API で公開する
+
+フォームで[組織の認証情報を確認](/docs/service/open/organization/credentials)し、[デバイスソフトウェア ID を作成または確認](/docs/service/open/organization_software/software_ids)します。[ファイルをアップロードして完了](/docs/service/open/organization_software/upload)したら、取得したバージョン ID で[テスト版を公開するか正式版を審査に提出](/docs/service/open/organization_software/publish)します。提出後は[バージョンの詳細や審査状況を確認](/docs/service/open/organization_software/organization_versions)したり、[配布中のバージョンをサーバーから照会](/docs/service/open/organization_software/organization_version_query)したりできます。
+
+「サンプル入力」でこのガイドの例を入力できます。送信前に実際の ID と認証情報に置き換え、アップロード時は自身のソフトウェアファイルを選びます。
+
+<HrefInlineTOC prefix="/docs/service/open/organization_software" />

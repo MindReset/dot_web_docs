@@ -1,0 +1,148 @@
+---
+title: バージョンの一覧と詳細
+description: 組織 API で下書き、審査中、公開済みのバージョンを一覧表示し、詳細や使用できるバージョン番号を確認します。
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+[組織の認証情報](/docs/service/open/organization/credentials)と[デバイスソフトウェア ID](/docs/service/open/organization_software/software_ids)を取得します。以下のフォームでは、自分の組織の Read Pico ソフトウェアを照会できます。各リクエストに `firmwareId` を指定します。
+
+## バージョンを一覧表示する
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software"
+  method="GET"
+  auth="organization"
+  queryParams={{
+    firmwareId: { type: "string", name: "デバイスソフトウェア ID", required: true, example: "000000000000000000000101" },
+    pageIndex: { type: "number", name: "ページ番号", default: 0, example: 0 },
+    pageSize: { type: "number", name: "1 ページの件数", default: 20, example: 20 },
+    channels: { type: "string", name: "公開チャネル", example: "ALPHA,TESTING" },
+    states: { type: "string", name: "状態", example: "published" },
+    search: { type: "string", name: "検索", example: "Desk Clock" },
+  }}
+/>
+
+### クエリパラメーター
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'プロジェクトの作成・一覧取得で返る 24 桁の 16 進数の firmwareId。',
+      required: true,
+    },
+    pageIndex: {
+      type: 'integer',
+      description: '0 から始まるページ番号。最大 100,000。',
+      default: '0',
+    },
+    pageSize: {
+      type: 'integer',
+      description: '1 ページの件数。1～45。',
+      default: '20',
+    },
+    channels: {
+      type: 'string',
+      description: '公開チャネルで絞り込みます。複数指定する場合は ALPHA,TESTING のようにカンマで区切ります。',
+    },
+    states: {
+      type: 'string',
+      description: 'バージョン状態で絞り込みます。複数指定する場合は pending,rejected のようにカンマで区切ります。',
+    },
+    search: {
+      type: 'string',
+      description: '100 文字以内で、バージョン番号、ソフトウェア名またはファイル名を検索します。',
+    },
+  }}
+/>
+
+### 一覧の応答
+
+`items` は現在のページ、`totalCount` は一致した全件数です。`status` は公開チャネル、`state` は審査や配布の状態です。
+
+| `state` | 意味 |
+| --- | --- |
+| `draft` | 下書き。テスト公開または正式版の審査提出ができます。 |
+| `pending` | 正式版の審査待ちです。 |
+| `rejected` | 要修正です。詳細で審査コメントを確認できます。 |
+| `published` | 公開済みです。デバイスから照会できます。 |
+| `disabled` | 公開配布は停止中です。 |
+| `revoked` | このバージョンの配布は取り消されました。 |
+
+以下は一覧応答の抜粋です。
+
+```json
+{
+  "items": [
+    {
+      "id": "000000000000000000000103",
+      "firmwareId": "000000000000000000000101",
+      "version": "1.2.0-beta.1",
+      "status": "TESTING",
+      "state": "published"
+    }
+  ],
+  "totalCount": 1
+}
+```
+
+## バージョンと審査状況を確認する
+
+プロジェクトの `firmwareId` と、一覧またはアップロード完了時に取得したバージョンの `id` を使います。詳細の `releaseNotes` には `zh-Hans-CN`、`en-US`、`ja-JP` が含まれます。正式版が `rejected` の場合は `reviewReason` と今回の `reviewId` を確認し、[修正して再提出](/docs/service/open/organization_software/review)します。
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/detail"
+  method="GET"
+  auth="organization"
+  queryParams={{
+    firmwareId: { type: "string", name: "デバイスソフトウェア ID", required: true, example: "000000000000000000000101" },
+    id: { type: "string", name: "バージョン ID", required: true, example: "000000000000000000000103" },
+  }}
+/>
+
+### クエリパラメーター
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'プロジェクトの作成・一覧取得で返る 24 桁の 16 進数の firmwareId。',
+      required: true,
+    },
+    id: {
+      type: 'string',
+      description: 'アップロード完了時またはバージョン一覧で返るバージョンの id。',
+      required: true,
+    },
+  }}
+/>
+
+## 使用できるバージョン番号を確認する
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/versions"
+  method="GET"
+  auth="organization"
+  queryParams={{
+    firmwareId: { type: "string", name: "デバイスソフトウェア ID", required: true, example: "000000000000000000000101" },
+  }}
+/>
+
+### クエリパラメーター
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'プロジェクトの作成・一覧取得で返る 24 桁の 16 進数の firmwareId。',
+      required: true,
+    },
+  }}
+/>
+
+アップロード前に `GET /versions` で使用できるバージョン番号を確認できます。応答の配列には、デバイスごとに `channels.ALPHA`、`channels.TESTING`、`channels.RELEASED` が含まれます。各チャネルの `latest` は登録済みの最上位バージョンで、登録がなければ `null` です。それより高い番号か、`reusable` にある番号を使います。アップロードが `409` を返した場合は、照会し直して番号を選びます。
+
+使用できるバージョン番号が決まったら、[新しいバージョンをアップロード](/docs/service/open/organization_software/upload)できます。現在配布しているバージョンを調べる場合は、[サーバーから公開済みのバージョンを照会](/docs/service/open/organization_software/organization_version_query)します。

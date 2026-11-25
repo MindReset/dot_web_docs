@@ -1,0 +1,108 @@
+---
+title: Manage device software IDs
+description: Create a device software ID and use it to manage versions across release channels.
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+A device software ID identifies one software project. Select that project whenever you upload a new version and keep using its ID in version queries.
+
+## Create Desk Clock
+
+1. Open **My organizations → Field Lab → Software**.
+2. Select **Manage software IDs → New software** and enter `Desk Clock`.
+3. Select Read Pico. Creating a project binds it to the device, queried as `series: "read"`, `model: "read_0"`, and `edition: 1`.
+4. Select the new project and copy its device software ID. The following pages use `000000000000000000000101` as an example.
+
+You can also select **New software** when uploading a version. Select the existing project for subsequent `Desk Clock` releases.
+
+## Identify each ID
+
+| Value | Purpose |
+| --- | --- |
+| Organization ID | Identifies `Field Lab` and its team. |
+| Device software ID (`firmwareId`) | Identifies `Desk Clock`. Use this 24-character hexadecimal ID in an organization software version query. |
+| Device ID | Identifies a particular device. Use the `id` request field to query by device. |
+| Version ID (`id`) | Identifies one version. Upload completion returns it for publishing and detail queries. |
+| Upload ID (`uploadId`) | Identifies an upload preparation. Use it to complete that upload. |
+| Review ID (`reviewId`) | Identifies a round of stable-release review. Use it to resubmit changes. |
+
+## Rename or archive a project
+
+A project keeps its device software ID when you rename it. Archiving hides the project from upload choices. Live versions keep their download links and submitted reviews continue. Restore the project to upload another version.
+
+## Manage software IDs with the API
+
+[Get an organization API key or OAuth access token](/docs/service/open/organization/credentials). The credential identifies the organization. The API binds each new project to Read Pico.
+
+### Find a project
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/projects"
+  method="GET"
+  auth="organization"
+/>
+
+The response is an array of projects with `firmwareId`, `name`, and `target`. Archived projects also have `archivedAt`. Copy the `firmwareId` of the project you want to update and use it for version uploads and queries.
+
+### Create a device software ID
+
+Enter a software name of up to 80 characters and use a new `requestId` UUID for each creation. If a request times out, retry with the same UUID. A request that already succeeded returns the original project.
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/projects/create"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    name: { type: "string", name: "Software name", required: true, default: "Desk Clock", example: "Desk Clock" },
+    requestId: { type: "string", name: "Request ID", required: true, generateUuid: true },
+  }}
+/>
+
+#### Request body
+
+<TypeTable
+  type={{
+    name: {
+      type: 'string',
+      description: 'The software name. Use 1 to 80 characters on a single line.',
+      required: true,
+    },
+    requestId: {
+      type: 'string (UUID)',
+      description: 'A UUID for this creation request. Use Generate UUID and reuse the same value when retrying that request.',
+      required: true,
+    },
+  }}
+/>
+
+Copy the returned `firmwareId`, then [upload a version](/docs/service/open/organization_software/upload). Use the same ID for each new version.
+
+### Archive a device software ID
+
+When you want to stop uploads for a project, enter its `firmwareId` and send the archive request.
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/projects/archive"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    firmwareId: { type: "string", name: "Device software ID", required: true, example: "000000000000000000000101" },
+  }}
+/>
+
+#### Request body
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'The 24-character hexadecimal firmwareId returned when you create or list software projects.',
+      required: true,
+    },
+  }}
+/>
+
+The response includes `archivedAt`. Published versions remain available for queries and downloads. To resume uploads, restore the project in the website's device software ID manager.

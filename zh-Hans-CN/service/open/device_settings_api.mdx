@@ -39,18 +39,19 @@ import { TypeTable } from 'src/shadcn/components/type-table';
 			name: '设备序列号',
 		},
 	}}
-	body={{
-		alias: 'Office Dot',
-		location: 'Desk',
-		timezone: 'Asia/Shanghai',
+	bodyParams={{
+		alias: { type: 'string', name: '设备名称', example: 'Office Dot' },
+		location: { type: 'string', name: '设备位置', example: 'Desk' },
+		timezone: { type: 'string', name: '时区', example: 'Asia/Shanghai' },
 		interval: {
-			powerMs: 900000,
-			batteryMs: 10800000,
+			type: 'object',
+			name: '切换间隔',
+			example: JSON.stringify({ powerMs: 900000, batteryMs: 10800000 }, null, 2),
 		},
 		sleep: {
-			enabled: true,
-			start: '23:00',
-			end: '07:00',
+			type: 'object',
+			name: '睡眠设置',
+			example: JSON.stringify({ enabled: true, start: '23:00', end: '07:00' }, null, 2),
 		},
 	}}
 	auth={true}

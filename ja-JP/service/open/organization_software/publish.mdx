@@ -1,0 +1,52 @@
+---
+title: バージョンを公開する
+description: 内部テスト版や公開テスト版を公開し、正式版を審査に提出します。
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+まず[バージョンをアップロードして下書きに保存](/docs/service/open/organization_software/upload)します。内部テスト版と公開テスト版はすぐに公開されます。正式版は Dot. の審査を通過すると公開されます。
+
+## ウェブサイトで公開する
+
+組織の「ソフトウェア」から下書きを開きます。内部テスト版または公開テスト版は「バージョンを公開」、正式版は「審査に提出」を選びます。
+
+## 組織 API で公開する
+
+デバイスソフトウェア ID と、アップロード完了時に返る下書きのバージョン `id` を送信します。内部テスト版と公開テスト版は `state: "published"`、正式版の審査提出は `state: "pending"` が返ります。提出後は[審査状況を確認](/docs/service/open/organization_software/review)できます。
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/publish"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    firmwareId: { type: "string", name: "デバイスソフトウェア ID", required: true, example: "000000000000000000000101" },
+    id: { type: "string", name: "バージョン ID", required: true, example: "000000000000000000000103" },
+  }}
+/>
+
+### リクエストボディ
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'プロジェクトの作成・一覧取得で返る 24 桁の 16 進数の firmwareId。',
+      required: true,
+    },
+    id: {
+      type: 'string',
+      description: 'アップロード完了時またはバージョン一覧で返るバージョンの id。',
+      required: true,
+    },
+  }}
+/>
+
+公開テスト版の公開後は、[`TESTING` チャネルを照会して OTA のダウンロード URL を取得](/docs/service/open/organization_software/version_query)できます。
+
+## 公開済みのバージョンを管理する
+
+- **公開済み**。公開 API で照会できます。OTA ファイルがある場合は、応答の `ota.downloadUrl` から[署名付き URL でダウンロード](/docs/service/open/organization_software/download)できます。配布を停止したバージョンは、現在の公開条件を満たせば再公開できます。
+- **公開取り消し済み**。そのバージョンの配布と署名付き URL の発行が終了します。同じ ID とチャネルで再利用できるバージョン番号は、アップロード画面で確認できます。

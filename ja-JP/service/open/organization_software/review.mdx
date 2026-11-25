@@ -1,0 +1,120 @@
+---
+title: 審査と再提出
+description: 正式版の審査コメントを確認し、リリースノートやファイルを修正して同じバージョンを再提出します。
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+[正式版を審査に提出](/docs/service/open/organization_software/publish)した後は、組織の「ソフトウェア」からバージョンを開いて進捗を確認できます。組織の認証情報で[バージョンの詳細を取得](/docs/service/open/organization_software/organization_versions)することもできます。審査を通過すると正式版は自動で公開されます。
+
+## ウェブサイトで審査に対応する
+
+- **審査待ち**。正式版の下書きから「審査に提出」を選ぶと、この状態になります。取り下げると下書きに戻ります。
+- **要修正**。審査コメントを確認し、「修正して再提出」を選びます。リリースノートを編集し、ファイルを保持または差し替えて同じバージョンを提出できます。
+
+## 組織 API で再提出する
+
+正式版が `rejected` になった場合は、[バージョンの詳細](/docs/service/open/organization_software/organization_versions)で `reviewReason`、`id`、今回の `reviewId` を確認します。元の `firmwareId` と `version` でアップロードを準備します。詳細の `id` を `revision.versionId` に、今回の審査 ID を `revision.reviewId` に指定します。
+
+`revision.retainFiles` には保持するファイルの種類を配列で指定します。たとえば `["ota", "merged"]` です。追加・差し替え用のファイルは `artifacts` に指定します。すべて差し替える場合は `[]` を指定します。提出するバージョンにはファイルが一つ以上必要です。既存ファイルだけを使う場合は `uploads` が空のオブジェクトになるので、そのまま完了に進めます。
+
+今回の `releaseNotes` は元のリリースノート全体を置き換えます。保持する言語の本文も再送してください。完了すると、元のバージョン `id` と `state: "pending"`、新しい `reviewId` が返り、再審査に進みます。
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/upload"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    firmwareId: { type: "string", name: "デバイスソフトウェア ID", required: true, example: "000000000000000000000101" },
+    version: { type: "string", name: "バージョン", required: true, example: "1.2.0" },
+    status: {
+      example: "RELEASED",
+      type: "select",
+      name: "公開チャネル",
+      required: true,
+      default: "RELEASED",
+      options: [
+        { value: "RELEASED", label: "正式版" },
+      ],
+    },
+    "revision.versionId": { type: "string", name: "バージョン ID", required: true, example: "000000000000000000000104" },
+    "revision.reviewId": { type: "string", name: "審査 ID", required: true, example: "00000000-0000-4000-8000-000000000105" },
+    "revision.retainFiles": { type: "list", name: "保持するファイルの種類", default: "ota", description: "複数の種類はカンマ区切りで入力します（例 ota,merged）。すべて差し替える場合は空欄にします。", example: "ota" },
+    "artifacts.ota": { type: "file", name: "OTA アプリケーションファイル", accept: ".bin" },
+    "artifacts.archive": { type: "file", name: "分割書き込みパッケージ", accept: ".tgz,.tar.gz" },
+    "artifacts.merged": { type: "file", name: "一括書き込みイメージ", accept: ".bin" },
+    "releaseNotes.zh-Hans-CN": { type: "textarea", name: "リリースノート（簡体字中国語）", example: "提高时钟画面的刷新稳定性。" },
+    "releaseNotes.en-US": { type: "textarea", name: "リリースノート（英語）", example: "Improves the reliability of clock display refreshes." },
+    "releaseNotes.ja-JP": { type: "textarea", name: "リリースノート（日本語）", example: "時計表示の更新を安定させました。" },
+  }}
+/>
+
+### リクエストボディ
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'プロジェクトの作成・一覧取得で返る 24 桁の 16 進数の firmwareId。',
+      required: true,
+    },
+    version: {
+      type: 'string',
+      description: '修正が必要な正式版の元のバージョン番号。',
+      required: true,
+    },
+    status: {
+      type: '"RELEASED"',
+      description: '修正した正式版を審査に提出します。',
+      required: true,
+    },
+    revision: {
+      type: 'object',
+      description: '再提出するバージョンと現在の審査を指定し、保持するファイルを選びます。',
+      required: true,
+      parameters: {
+        versionId: {
+          type: 'string',
+          description: 'バージョン詳細に含まれる id。再提出する元のバージョンを指します。',
+          required: true,
+        },
+        reviewId: {
+          type: 'string (UUID)',
+          description: 'バージョン詳細に含まれる今回の審査 ID。',
+          required: true,
+        },
+        retainFiles: {
+          type: '("ota" | "merged" | "archive" | "package")[]',
+          description: '保持するファイルの種類を最大 4 件指定します。すべて差し替える場合は空配列を指定します。package は旧形式の単一ファイルです。',
+          required: true,
+        },
+      },
+    },
+    artifacts: {
+      type: 'object',
+      description: '追加・差し替えファイルのメタデータ。ota、merged、archive を指定できます。既存ファイルだけを保持する場合は省略できます。',
+    },
+    releaseNotes: {
+      type: 'object',
+      description: '今回のリリースノートは既存の全言語分を置き換えます。残したい言語の本文も再送してください。',
+      parameters: {
+        'zh-Hans-CN': {
+          type: 'string',
+          description: '簡体字中国語のリリースノート。',
+        },
+        'en-US': {
+          type: 'string',
+          description: '英語のリリースノート。',
+        },
+        'ja-JP': {
+          type: 'string',
+          description: '日本語のリリースノート。',
+        },
+      },
+    },
+  }}
+/>
+
+新しい `uploadId` を受け取ったら、[アップロード手順](/docs/service/open/organization_software/upload)に従って `uploads` のファイルをアップロードし、完了リクエストを送ります。`409 ORGANIZATION_SOFTWARE_STATE_CHANGED` が返った場合は、詳細を取得し直し、現在の `reviewId` を使います。

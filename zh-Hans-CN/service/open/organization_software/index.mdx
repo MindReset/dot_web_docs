@@ -1,0 +1,62 @@
+---
+title: 设备软件
+description: 托管设备软件，和团队一起管理版本、发布渠道和 OTA 下载。
+new: true
+---
+
+Dot. 为第三方设备软件提供云端托管。你可以上传编译好的软件文件，管理版本，发布内测、公测和正式版，并通过 API 提供版本查询和 OTA 下载。
+
+## 托管与安装
+
+目前可为小纸 Pico 发布软件。
+
+目前，你需要把版本查询和下载接入自己的固件、网站或刷写工具，再由固件完成 OTA 更新，或由你的工具刷写设备。接入方式见[从设备查询版本](/docs/service/open/organization_software/version_query)和[下载与更新](/docs/service/open/organization_software/download)。
+
+未来，Dot. 官网可能提供统一的安装入口，让用户从网页选择组织发布的软件并直接刷写。
+
+## 团队与软件 ID
+
+每个组织最多有 100 位成员，包括所有者。成员可以在网页上管理软件项目和版本。所有者可以指定管理员，共同管理邀请和组织凭据。具体权限见[创建与管理组织](/docs/service/open/organization/membership)。
+
+一个组织可以维护多款软件，设备软件 ID 的数量没有上限。为每款软件创建独立的 ID，后续上传、发布和查询都沿用该 ID，各项目分别保留版本记录。参见[管理设备软件 ID](/docs/service/open/organization_software/software_ids)。
+
+## 发布渠道与版本号
+
+| 渠道 | 建议用途 | 生效方式 |
+| --- | --- | --- |
+| 内测 `ALPHA` | 由团队内部验证新功能。 | 直接发布。 |
+| 公测 `TESTING` | 邀请小范围用户试用。 | 直接发布。 |
+| 正式 `RELEASED` | 向用户分发正式版本。 | 提交 Dot. 审核，通过后自动发布。 |
+
+三个渠道的已生效版本都可通过公开的设备查询接口获取。拿到软件 ID 并提供匹配设备信息的客户端，可以查询任一渠道。你可以在自己的更新工具中决定向哪些用户展示内测或公测渠道。
+
+版本号按设备软件 ID 和渠道独立递增。查询时未指定版本号，会返回所选渠道中版本号最高的已生效版本。省略渠道时，默认查询正式版。
+
+每个版本可以附上简体中文、英文和日文的发布说明。成员可以在网页的版本详情中查看，也可使用组织凭据从版本详情接口读取 `releaseNotes`。参见[版本列表与详情](/docs/service/open/organization_software/organization_versions)。
+
+## 管理发布状态
+
+- **停用**暂时停止分发。公开查询会跳过该版本，下载入口也会暂停签发新链接。
+- **重新启用**让符合当前发布条件的已停用版本恢复查询和下载。
+- **撤销版本**结束该版本的分发并保留历史记录。能否沿用原版本号上传新文件，以同一软件 ID 和渠道的可用版本号为准。
+- **撤回审核**让待审核的正式版回到草稿。修改后可重新提交。参见[审核与重新提交](/docs/service/open/organization_software/review)。
+
+## 发布第一个版本
+
+下面以 `Field Lab` 发布 `Desk Clock` 公测版 `1.2.0-beta.1` 为例。
+
+1. 在组织的「软件 → 管理软件 ID」[创建 `Desk Clock`](/docs/service/open/organization_software/software_ids)，选择小纸 Pico 并复制软件 ID。
+2. [上传 `desk-clock-1.2.0-beta.1.bin` 并保存草稿](/docs/service/open/organization_software/upload)。
+3. [发布公测版](/docs/service/open/organization_software/publish)。如果是正式版，请提交 Dot. 审核。
+4. 用软件 ID [从设备查询版本](/docs/service/open/organization_software/version_query)。
+5. 使用响应中的 `ota.downloadUrl` [下载和校验 OTA 文件](/docs/service/open/organization_software/download)。
+
+示例设备软件 ID `000000000000000000000101` 为占位值。运行查询前请替换为实际 ID。
+
+## 用组织 API 发布
+
+先用表单[验证组织凭据](/docs/service/open/organization/credentials)，再[创建或查找设备软件 ID](/docs/service/open/organization_software/software_ids)。[上传并确认文件](/docs/service/open/organization_software/upload)后，使用返回的版本 ID [发布测试版或提交正式版审核](/docs/service/open/organization_software/publish)。提交后可[查询版本详情和审核进度](/docs/service/open/organization_software/organization_versions)，也可[从服务端确认当前分发的版本](/docs/service/open/organization_software/organization_version_query)。
+
+「填充示例」会填入本指南的演示值。发送请求前，请换成自己的 ID 和凭据，上传时选择实际的软件文件。
+
+<HrefInlineTOC prefix="/docs/service/open/organization_software" />

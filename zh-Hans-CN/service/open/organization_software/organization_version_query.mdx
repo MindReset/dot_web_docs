@@ -1,0 +1,63 @@
+---
+title: 从服务端查询已发布版本
+description: 用组织凭据确认本组织正在分发的版本，并获取 OTA 下载信息。
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+在发布脚本或服务端查询本组织的小纸 Pico 软件时，使用 `POST /api/authV2/organization/software/query`。先准备[组织凭据](/docs/service/open/organization/credentials)和本组织的[设备软件 ID](/docs/service/open/organization_software/software_ids)。接口按软件项目确定设备，填写 `firmwareId` 即可开始查询。
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/query"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    firmwareId: { type: "string", name: "设备软件 ID", required: true, example: "000000000000000000000101" },
+    status: {
+      example: "TESTING",
+      type: "select",
+      name: "发布渠道",
+      default: "TESTING",
+      options: [
+        { value: "ALPHA", label: "内测" },
+        { value: "TESTING", label: "公测" },
+        { value: "RELEASED", label: "正式发布" },
+      ],
+    },
+    currentVersion: { type: "string", name: "已安装版本", default: "1.1.0", example: "1.1.0" },
+    version: { type: "string", name: "指定版本" },
+  }}
+/>
+
+## 请求体
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: '设备软件 ID。使用创建软件或项目列表返回的 firmwareId，格式为 24 位十六进制字符。',
+      required: true,
+    },
+    status: {
+      type: '"ALPHA" | "TESTING" | "RELEASED"',
+      description: '要查询的发布渠道。省略时查询正式版。',
+      default: 'RELEASED',
+    },
+    currentVersion: {
+      type: 'string | null',
+      description: '已安装的 SemVer 版本，最多 31 个字符。省略或传 null 时仍返回版本信息，needUpdate 为 false。',
+    },
+    version: {
+      type: 'string',
+      description: '要查询的已生效版本。使用最多 31 个字符的 SemVer，省略时取所选渠道的最新版本。',
+    },
+  }}
+/>
+
+## 查询结果
+
+`POST /query` 返回与[设备查询](/docs/service/open/organization_software/version_query)相同的组织软件版本信息。省略 `status` 时查询正式版，传入 `version` 可查指定的已发布版本。需要比较设备上的版本时，传入 `currentVersion`。有 OTA 文件时，可用响应的 `ota.downloadUrl` [下载和校验](/docs/service/open/organization_software/download)。
+
+HTTP `404` 时，确认 `firmwareId` 属于当前组织的小纸 Pico 项目。查询已发布版本时，也要确认指定渠道和版本正在分发。

@@ -1,0 +1,148 @@
+---
+title: 版本列表与详情
+description: 用组织 API 列出草稿、审核中和已发布的版本，查看详情或检查可用版本号。
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+先[取得组织凭据](/docs/service/open/organization/credentials)和本组织的[设备软件 ID](/docs/service/open/organization_software/software_ids)。以下表单可查询该组织的小纸 Pico 软件。每次查询都要填写 `firmwareId`。
+
+## 列出版本
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software"
+  method="GET"
+  auth="organization"
+  queryParams={{
+    firmwareId: { type: "string", name: "设备软件 ID", required: true, example: "000000000000000000000101" },
+    pageIndex: { type: "number", name: "页码", default: 0, example: 0 },
+    pageSize: { type: "number", name: "每页条数", default: 20, example: 20 },
+    channels: { type: "string", name: "发布渠道", example: "ALPHA,TESTING" },
+    states: { type: "string", name: "状态", example: "published" },
+    search: { type: "string", name: "搜索", example: "Desk Clock" },
+  }}
+/>
+
+### 查询参数
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: '设备软件 ID。使用创建软件或项目列表返回的 firmwareId，格式为 24 位十六进制字符。',
+      required: true,
+    },
+    pageIndex: {
+      type: 'integer',
+      description: '页码从 0 开始，最大为 100,000。',
+      default: '0',
+    },
+    pageSize: {
+      type: 'integer',
+      description: '每页返回的条数，范围为 1 到 45。',
+      default: '20',
+    },
+    channels: {
+      type: 'string',
+      description: '按发布渠道筛选，多个值用逗号分隔，例如 ALPHA,TESTING。',
+    },
+    states: {
+      type: 'string',
+      description: '按版本状态筛选，多个值用逗号分隔，例如 pending,rejected。',
+    },
+    search: {
+      type: 'string',
+      description: '最长 100 字，可匹配版本号、软件名称或文件名。',
+    },
+  }}
+/>
+
+### 列表响应
+
+`items` 为当前页，`totalCount` 为匹配总数。`status` 表示发布渠道，`state` 表示版本的处理和分发状态。
+
+| `state` | 含义 |
+| --- | --- |
+| `draft` | 草稿，可发布测试版或提交正式版审核。 |
+| `pending` | 正式版待审核。 |
+| `rejected` | 需修改，详情中可查看审核意见。 |
+| `published` | 已生效，可通过设备查询接口获取。 |
+| `disabled` | 已停用，暂停公开分发。 |
+| `revoked` | 已撤销，当前记录退出分发。 |
+
+下面是列表响应节选。
+
+```json
+{
+  "items": [
+    {
+      "id": "000000000000000000000103",
+      "firmwareId": "000000000000000000000101",
+      "version": "1.2.0-beta.1",
+      "status": "TESTING",
+      "state": "published"
+    }
+  ],
+  "totalCount": 1
+}
+```
+
+## 查询版本和审核结果
+
+使用软件项目的 `firmwareId`，以及从版本列表或上传确认响应取得的版本 `id`。详情的 `releaseNotes` 包含 `zh-Hans-CN`、`en-US` 和 `ja-JP`。正式版进入 `rejected` 时，读取 `reviewReason` 和本轮 `reviewId`，再[修改后重新提交](/docs/service/open/organization_software/review)。
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/detail"
+  method="GET"
+  auth="organization"
+  queryParams={{
+    firmwareId: { type: "string", name: "设备软件 ID", required: true, example: "000000000000000000000101" },
+    id: { type: "string", name: "版本 ID", required: true, example: "000000000000000000000103" },
+  }}
+/>
+
+### 查询参数
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: '设备软件 ID。使用创建软件或项目列表返回的 firmwareId，格式为 24 位十六进制字符。',
+      required: true,
+    },
+    id: {
+      type: 'string',
+      description: '软件版本 ID。使用确认上传或列出版本时返回的 id。',
+      required: true,
+    },
+  }}
+/>
+
+## 检查可用版本号
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/versions"
+  method="GET"
+  auth="organization"
+  queryParams={{
+    firmwareId: { type: "string", name: "设备软件 ID", required: true, example: "000000000000000000000101" },
+  }}
+/>
+
+### 查询参数
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: '设备软件 ID。使用创建软件或项目列表返回的 firmwareId，格式为 24 位十六进制字符。',
+      required: true,
+    },
+  }}
+/>
+
+上传前可用 `GET /versions` 检查可用版本号。响应是数组，每项按设备提供 `channels.ALPHA`、`channels.TESTING` 和 `channels.RELEASED`。各渠道的 `latest` 是已记录的最高版本，无记录时为 `null`。请使用比 `latest` 高的版本，或使用 `reusable` 列出的可重用版本。若上传返回 `409`，重新查询后再选版本。
+
+确认可用版本号后，可以[上传新版本](/docs/service/open/organization_software/upload)。如果只需要获取正在分发的版本，使用[服务端查询已发布版本](/docs/service/open/organization_software/organization_version_query)。

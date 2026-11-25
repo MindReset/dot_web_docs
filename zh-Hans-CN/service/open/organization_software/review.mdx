@@ -1,0 +1,120 @@
+---
+title: 审核与重新提交
+description: 查看正式版的审核反馈，修改发布说明或软件文件，再提交同一版本。
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+[提交正式版](/docs/service/open/organization_software/publish)后，可以在组织的「软件」里打开版本查看审核进度，也可以用组织凭据[查询版本详情](/docs/service/open/organization_software/organization_versions)。审核通过后，正式版会自动生效。
+
+## 在网页上处理审核
+
+- 正式版草稿点击「提交审核」后变为**待审核**。需要改动时可「撤回审核」，回到草稿。
+- 状态为**需修改**时，查看审核意见，点「修改后重新提交」。可编辑说明、保留或替换软件文件，再提交同一个版本。
+
+## 用组织 API 重新提交
+
+正式版进入 `rejected` 状态时，先[查询版本详情](/docs/service/open/organization_software/organization_versions)读取 `reviewReason`、`id` 和本轮 `reviewId`。准备上传时沿用 `firmwareId` 和 `version`，将详情的 `id` 填入 `revision.versionId`，并传入 `revision.reviewId`。
+
+`revision.retainFiles` 是要保留的文件类型数组，例如 `["ota", "merged"]`。在 `artifacts` 中提供新增或替换的文件。传 `[]` 表示全部使用新文件，提交的版本至少需要一个文件。只保留已有文件时，`uploads` 为空对象，直接确认即可。
+
+这次的 `releaseNotes` 会替换原版本的发布说明。需要保留的语言也要随请求提交。确认后，响应以原版本 `id` 返回 `state: "pending"` 和新的 `reviewId`，重新进入正式版审核。
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/upload"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    firmwareId: { type: "string", name: "设备软件 ID", required: true, example: "000000000000000000000101" },
+    version: { type: "string", name: "版本号", required: true, example: "1.2.0" },
+    status: {
+      example: "RELEASED",
+      type: "select",
+      name: "发布渠道",
+      required: true,
+      default: "RELEASED",
+      options: [
+        { value: "RELEASED", label: "正式发布" },
+      ],
+    },
+    "revision.versionId": { type: "string", name: "版本 ID", required: true, example: "000000000000000000000104" },
+    "revision.reviewId": { type: "string", name: "审核 ID", required: true, example: "00000000-0000-4000-8000-000000000105" },
+    "revision.retainFiles": { type: "list", name: "保留的文件类型", default: "ota", description: "多个类型用逗号分隔，例如 ota,merged。留空表示替换全部文件。", example: "ota" },
+    "artifacts.ota": { type: "file", name: "OTA 应用文件", accept: ".bin" },
+    "artifacts.archive": { type: "file", name: "分离烧录包", accept: ".tgz,.tar.gz" },
+    "artifacts.merged": { type: "file", name: "完整烧录镜像", accept: ".bin" },
+    "releaseNotes.zh-Hans-CN": { type: "textarea", name: "发布说明（简体中文）", example: "提高时钟画面的刷新稳定性。" },
+    "releaseNotes.en-US": { type: "textarea", name: "发布说明（英文）", example: "Improves the reliability of clock display refreshes." },
+    "releaseNotes.ja-JP": { type: "textarea", name: "发布说明（日文）", example: "時計表示の更新を安定させました。" },
+  }}
+/>
+
+### 请求体
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: '设备软件 ID。使用创建软件或项目列表返回的 firmwareId，格式为 24 位十六进制字符。',
+      required: true,
+    },
+    version: {
+      type: 'string',
+      description: '需修改的正式版本的原版本号。',
+      required: true,
+    },
+    status: {
+      type: '"RELEASED"',
+      description: '提交修改后的正式版审核。',
+      required: true,
+    },
+    revision: {
+      type: 'object',
+      description: '选择要重新提交的版本及本轮审核，并指定要保留的文件。',
+      required: true,
+      parameters: {
+        versionId: {
+          type: 'string',
+          description: '版本详情返回的 id，指向要重新提交的同一个版本。',
+          required: true,
+        },
+        reviewId: {
+          type: 'string (UUID)',
+          description: '版本详情返回的本轮审核 ID。',
+          required: true,
+        },
+        retainFiles: {
+          type: '("ota" | "merged" | "archive" | "package")[]',
+          description: '保留的文件类型，最多四项。空数组表示全部替换。package 用于旧版单文件软件包。',
+          required: true,
+        },
+      },
+    },
+    artifacts: {
+      type: 'object',
+      description: '新增或替换的文件元数据，可用 ota、merged、archive。保留旧文件时可省略。',
+    },
+    releaseNotes: {
+      type: 'object',
+      description: '本次提交的三语发布说明，整体替换原说明。要保留的语言也需再次传入。',
+      parameters: {
+        'zh-Hans-CN': {
+          type: 'string',
+          description: '简体中文发布说明。',
+        },
+        'en-US': {
+          type: 'string',
+          description: '英文发布说明。',
+        },
+        'ja-JP': {
+          type: 'string',
+          description: '日文发布说明。',
+        },
+      },
+    },
+  }}
+/>
+
+拿到新的 `uploadId` 后，按[上传步骤](/docs/service/open/organization_software/upload)上传 `uploads` 中的文件，再确认上传。如果收到 `409 ORGANIZATION_SOFTWARE_STATE_CHANGED`，先重新查询版本详情，再使用当前的 `reviewId`。

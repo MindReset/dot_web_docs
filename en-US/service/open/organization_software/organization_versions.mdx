@@ -1,0 +1,148 @@
+---
+title: Version list and details
+description: List drafts, submissions, and published versions, check their details, or find a version number you can upload.
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+[Get an organization credential](/docs/service/open/organization/credentials) and your [device software ID](/docs/service/open/organization_software/software_ids). Use these forms to query the organization’s Read Pico software. Include `firmwareId` in each request.
+
+## List versions
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software"
+  method="GET"
+  auth="organization"
+  queryParams={{
+    firmwareId: { type: "string", name: "Device software ID", required: true, example: "000000000000000000000101" },
+    pageIndex: { type: "number", name: "Page index", default: 0, example: 0 },
+    pageSize: { type: "number", name: "Page size", default: 20, example: 20 },
+    channels: { type: "string", name: "Release channel", example: "ALPHA,TESTING" },
+    states: { type: "string", name: "State", example: "published" },
+    search: { type: "string", name: "Search", example: "Desk Clock" },
+  }}
+/>
+
+### Query parameters
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'The 24-character hexadecimal firmwareId returned when you create or list software projects.',
+      required: true,
+    },
+    pageIndex: {
+      type: 'integer',
+      description: 'The zero-based page index, up to 100,000.',
+      default: '0',
+    },
+    pageSize: {
+      type: 'integer',
+      description: 'The number of results per page, from 1 to 45.',
+      default: '20',
+    },
+    channels: {
+      type: 'string',
+      description: 'Filter by release channel. Separate multiple values with commas, for example ALPHA,TESTING.',
+    },
+    states: {
+      type: 'string',
+      description: 'Filter by version state. Separate multiple values with commas, for example pending,rejected.',
+    },
+    search: {
+      type: 'string',
+      description: 'Up to 100 characters. Matches version numbers, software names, or filenames.',
+    },
+  }}
+/>
+
+### List response
+
+`items` contains the current page and `totalCount` counts all matches. `status` is the release channel. `state` describes review and distribution.
+
+| `state` | Meaning |
+| --- | --- |
+| `draft` | Ready to publish to a test channel or submit for stable-release review. |
+| `pending` | The stable release is in review. |
+| `rejected` | Changes were requested. Review feedback is available in the details. |
+| `published` | Live and available to device queries. |
+| `disabled` | Public distribution is paused. |
+| `revoked` | This version record has been withdrawn from distribution. |
+
+The following is an excerpt from a list response.
+
+```json
+{
+  "items": [
+    {
+      "id": "000000000000000000000103",
+      "firmwareId": "000000000000000000000101",
+      "version": "1.2.0-beta.1",
+      "status": "TESTING",
+      "state": "published"
+    }
+  ],
+  "totalCount": 1
+}
+```
+
+## Check a version and its review status
+
+Use the project’s `firmwareId` and the version `id` from the list or upload completion response. The detail response includes `releaseNotes` with `zh-Hans-CN`, `en-US`, and `ja-JP`. When a stable release has state `rejected`, read `reviewReason` and the current `reviewId` before [resubmitting it](/docs/service/open/organization_software/review).
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/detail"
+  method="GET"
+  auth="organization"
+  queryParams={{
+    firmwareId: { type: "string", name: "Device software ID", required: true, example: "000000000000000000000101" },
+    id: { type: "string", name: "Version ID", required: true, example: "000000000000000000000103" },
+  }}
+/>
+
+### Query parameters
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'The 24-character hexadecimal firmwareId returned when you create or list software projects.',
+      required: true,
+    },
+    id: {
+      type: 'string',
+      description: 'The version id returned when you complete the upload or list versions.',
+      required: true,
+    },
+  }}
+/>
+
+## Check available version numbers
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/versions"
+  method="GET"
+  auth="organization"
+  queryParams={{
+    firmwareId: { type: "string", name: "Device software ID", required: true, example: "000000000000000000000101" },
+  }}
+/>
+
+### Query parameters
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'The 24-character hexadecimal firmwareId returned when you create or list software projects.',
+      required: true,
+    },
+  }}
+/>
+
+Before uploading, use `GET /versions` to check available version numbers. Each item in the response array has `channels.ALPHA`, `channels.TESTING`, and `channels.RELEASED` for its device. A channel’s `latest` is the highest recorded version, or `null` if there are no versions. Choose a higher version or one listed in `reusable`. If the upload returns `409`, query the ranges again before choosing a version.
+
+Once you have an available version number, [upload a new version](/docs/service/open/organization_software/upload). To see which version is currently distributed, [query published versions from your server](/docs/service/open/organization_software/organization_version_query).

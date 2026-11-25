@@ -1,0 +1,256 @@
+---
+title: Upload a version
+description: Upload device software files and multilingual release notes, then save a version as a draft.
+new: true
+---
+
+import { ApiPlayground } from 'src/shadcn/components/api-playground';
+import { TypeTable } from 'src/shadcn/components/type-table';
+
+On the Dot. website, open **My organizations → Field Lab → Software**. You need organization membership and a [device software ID](/docs/service/open/organization_software/software_ids). Prepare an OTA `.bin` file built for the device bound to your project.
+
+## Save a draft on the website
+
+1. Select **Upload version** and choose `Desk Clock`.
+2. Choose **Public testing** and enter `1.2.0-beta.1`.
+3. Select `desk-clock-1.2.0-beta.1.bin` in the OTA field. You can enter separate notes in Simplified Chinese, English, and Japanese before you select **Save draft**.
+
+## Files and version numbers
+
+Upload at least one software file per version. Each file can be up to 32 MiB. Release notes are optional. Include an OTA application image to return an OTA download in the device query.
+
+| File | Format | Use |
+| --- | --- | --- |
+| Separate flash package | `.tgz`, `.tar.gz` | Flash multiple images at their specified addresses. |
+| Complete flash image | `.bin` | Initial flashing or device recovery. |
+| OTA application image | `.bin` | Update installed software. |
+
+Use the SemVer formats below, up to 31 characters. Internal testing starts at `alpha.1` and public testing at `beta.1`. Version numbers increase independently for each channel within a device software ID. [Check available versions](/docs/service/open/organization_software/organization_versions) before uploading.
+
+| Channel | API value | Example | How it goes live |
+| --- | --- | --- | --- |
+| Internal testing | `ALPHA` | `1.2.0-alpha.1` | Publish from the draft. |
+| Public testing | `TESTING` | `1.2.0-beta.1` | Publish from the draft. |
+| Stable release | `RELEASED` | `1.2.0` | Submit to Dot. for review. Approval publishes the version. |
+
+## Upload with the organization API
+
+[Get an organization credential](/docs/service/open/organization/credentials) and a [device software ID](/docs/service/open/organization_software/software_ids). These steps save a Read Pico beta as a draft.
+
+### 1. Prepare the upload
+
+Send JSON to `POST /api/authV2/organization/software/upload`. The project binding determines the device. The form computes the filename, size, and SHA-256 for each selected file.
+
+This public beta request includes one OTA file and release notes in all three languages. Use your own software ID and file metadata.
+
+```json
+{
+  "firmwareId": "000000000000000000000101",
+  "version": "1.2.0-beta.1",
+  "status": "TESTING",
+  "artifacts": {
+    "ota": {
+      "name": "desk-clock-1.2.0-beta.1.bin",
+      "size": 1176976,
+      "sha256": "a4b13eb3a234a0446faeed2e1d07a22f52bf06b40b00e22f219e15211eed6b07"
+    }
+  },
+  "releaseNotes": {
+    "zh-Hans-CN": "提高时钟画面的刷新稳定性。",
+    "en-US": "Improves the reliability of clock display refreshes.",
+    "ja-JP": "時計表示の更新を安定させました。"
+  }
+}
+```
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/upload"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    firmwareId: { type: "string", name: "Device software ID", required: true, example: "000000000000000000000101" },
+    version: { type: "string", name: "Version", required: true, default: "1.2.0-beta.1", example: "1.2.0-beta.1" },
+    status: {
+      example: "TESTING",
+      type: "select",
+      name: "Release channel",
+      required: true,
+      default: "TESTING",
+      options: [
+        { value: "ALPHA", label: "Alpha" },
+        { value: "TESTING", label: "Beta" },
+        { value: "RELEASED", label: "Stable" },
+      ],
+    },
+    "artifacts.ota": { type: "file", name: "OTA application file", accept: ".bin" },
+    "artifacts.archive": { type: "file", name: "Split flash package", accept: ".tgz,.tar.gz" },
+    "artifacts.merged": { type: "file", name: "Full flash image", accept: ".bin" },
+    "releaseNotes.zh-Hans-CN": { type: "textarea", name: "Release notes (Simplified Chinese)", example: "提高时钟画面的刷新稳定性。" },
+    "releaseNotes.en-US": { type: "textarea", name: "Release notes (English)", example: "Improves the reliability of clock display refreshes." },
+    "releaseNotes.ja-JP": { type: "textarea", name: "Release notes (Japanese)", example: "時計表示の更新を安定させました。" },
+  }}
+/>
+
+#### Request body
+
+<TypeTable
+  type={{
+    firmwareId: {
+      type: 'string',
+      description: 'The 24-character hexadecimal firmwareId returned when you create or list software projects.',
+      required: true,
+    },
+    version: {
+      type: 'string',
+      description: 'The full SemVer version, up to 31 characters. Follow the format and progression rules for the selected channel.',
+      required: true,
+    },
+    status: {
+      type: '"ALPHA" | "TESTING" | "RELEASED"',
+      description: 'The release channel for this version.',
+      required: true,
+    },
+    artifacts: {
+      type: 'object',
+      description: 'Software file metadata. A new version requires at least one of ota, merged, or archive.',
+      required: true,
+      parameters: {
+        ota: {
+          type: 'object',
+          description: 'Metadata for the OTA application image (.bin).',
+        },
+        merged: {
+          type: 'object',
+          description: 'Metadata for the complete flash image (.bin).',
+        },
+        archive: {
+          type: 'object',
+          description: 'Metadata for the separate flash package (.tgz or .tar.gz).',
+        },
+      },
+    },
+    releaseNotes: {
+      type: 'object',
+      description: 'Plain-text release notes by language, up to 20,000 characters per language. Omitted languages are stored as empty strings.',
+      parameters: {
+        'zh-Hans-CN': {
+          type: 'string',
+          description: 'Simplified Chinese release notes.',
+        },
+        'en-US': {
+          type: 'string',
+          description: 'English release notes.',
+        },
+        'ja-JP': {
+          type: 'string',
+          description: 'Japanese release notes.',
+        },
+      },
+    },
+  }}
+/>
+
+#### File metadata
+
+<TypeTable
+  type={{
+    name: {
+      type: 'string',
+      description: 'The original filename, 1 to 255 characters. Include the extension.',
+      required: true,
+    },
+    size: {
+      type: 'integer',
+      description: 'Size in bytes, from 1 byte to 32 MiB.',
+      required: true,
+    },
+    sha256: {
+      type: 'string',
+      description: 'The SHA-256 of the original file, written as 64 lowercase hexadecimal characters.',
+      required: true,
+    },
+  }}
+/>
+
+Use the returned `uploadId` to complete this upload. The `uploads` object contains the signed URL and headers for each file type. The upload window lasts 15 minutes. Use the returned `expiresAt` as the deadline.
+
+```json
+{
+  "uploadId": "000000000000000000000102",
+  "expiresAt": "2030-01-01T00:15:00.000Z",
+  "uploads": {
+    "ota": {
+      "url": "https://uploads.example.com/desk-clock-1.2.0-beta.1.bin?signature=example",
+      "headers": {
+        "x-cos-acl": "private"
+      }
+    }
+  }
+}
+```
+
+### 2. Upload the file
+
+For each file in `uploads`, send a `PUT` to its signed URL with the headers returned in the response.
+
+<ApiPlayground signedFile="upload" />
+
+#### Signed upload request fields
+
+<TypeTable
+  type={{
+    URL: {
+      type: 'string',
+      description: 'Use the signed URL for this file from the preparation response.',
+      required: true,
+    },
+    'x-cos-acl': {
+      type: '"private"',
+      description: 'Send this header from the preparation response with the PUT request.',
+      required: true,
+    },
+    body: {
+      type: 'binary',
+      description: 'Send the file bytes as the request body. The length must match the declared size.',
+      required: true,
+    },
+  }}
+/>
+
+### 3. Complete the upload
+
+Once the files are uploaded, submit the `uploadId` before `expiresAt`. Use the API key that prepared the upload or an access token issued to the same OAuth client. A new upload returns `state: "draft"` after the size and SHA-256 checks pass. Use the returned version `id` to publish it. If the completion request times out, retry with the same `uploadId` and credential.
+
+<ApiPlayground
+  endpoint="/api/authV2/organization/software/upload/complete"
+  method="POST"
+  auth="organization"
+  bodyParams={{
+    uploadId: { type: "string", name: "Upload ID", required: true, example: "000000000000000000000102" },
+  }}
+/>
+
+#### Request body
+
+<TypeTable
+  type={{
+    uploadId: {
+      type: 'string',
+      description: 'The uploadId from the preparation response. Complete before expiresAt with the same organization API key or OAuth client.',
+      required: true,
+    },
+  }}
+/>
+
+## Troubleshoot uploads
+
+| Error | What to do |
+| --- | --- |
+| `400 ORGANIZATION_SOFTWARE_FILE_REQUIRED` | Include at least one file. A resubmission can retain an existing file or include a new one. |
+| `400 ORGANIZATION_SOFTWARE_INVALID_VERSION` | Use the version format for the selected channel. |
+| `400 ORGANIZATION_SOFTWARE_UPLOAD_EXPIRED` | Use the API key or OAuth client that prepared the upload. Prepare a new upload if `expiresAt` has passed. |
+| `400 ORGANIZATION_SOFTWARE_FILE_UNAVAILABLE` | Check that retained files exist in the original version. For new files, confirm the PUT succeeded and the byte counts and SHA-256 hashes match. |
+| `409 ORGANIZATION_SOFTWARE_VERSION_UNAVAILABLE` | [Check version numbers for this channel](/docs/service/open/organization_software/organization_versions) and choose an available version. |
+| `409 ORGANIZATION_SOFTWARE_PROJECT_ARCHIVED` | Restore the software ID on the website and try again. |
+
+Once you have a draft, go to [Publish a version](/docs/service/open/organization_software/publish). For an API upload, keep the version `id` from the completion response.
