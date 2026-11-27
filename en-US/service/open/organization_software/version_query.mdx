@@ -1,11 +1,22 @@
 ---
 title: Query versions from a device
-description: Query a published organization software version, update status, and OTA download information.
+description: Query published device software versions, update status, release notes, and OTA download information.
 new: true
 ---
 
 import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
+import { getLanguageNames } from '~/dot_platform_share/utils/language';
+
+export const releaseNoteLocales = getLanguageNames("en-US");
+
+export const releaseNotesParam = {
+  type: "array",
+  name: "Release note languages",
+  placeholder: "Select languages",
+  example: ["en-US"],
+  options: Object.entries(releaseNoteLocales).map(([value, label]) => ({ value, label })),
+};
 
 Use `POST /api/authV2/device/firmware/query` to query live device software. This endpoint requires no login or API key. To query organization software, send its [device software ID](/docs/service/open/organization_software/software_ids) and the device identity bound to that software.
 
@@ -34,6 +45,7 @@ Send the resulting device ID as `id` in the request body along with the projectâ
     },
     currentVersion: { type: "string", name: "Installed version", default: "1.1.0", example: "1.1.0" },
     version: { type: "string", name: "Specific version" },
+    releaseNotes: releaseNotesParam,
   }}
 />
 
@@ -93,6 +105,7 @@ You can also query by model. Send the device software ID along with the device s
     },
     currentVersion: { type: 'string', name: "Installed version", default: '1.1.0', example: "1.1.0" },
     version: { type: "string", name: "Specific version" },
+    releaseNotes: releaseNotesParam,
   }}
 />
 
@@ -104,7 +117,7 @@ Both query methods use a JSON request body. Identify the device by its ID or by 
   type={{
     firmwareId: {
       type: 'string',
-      description: 'The 24-character hexadecimal organization software ID. Omit it to query the official stable software.',
+      description: 'The 24-character hexadecimal organization software ID. Omit it to query official software.',
     },
     id: {
       type: 'string',
@@ -124,8 +137,7 @@ Both query methods use a JSON request body. Identify the device by its ID or by 
     },
     status: {
       type: '"ALPHA" | "TESTING" | "RELEASED"',
-      description: 'The release channel to query. Omit it to query the stable channel.',
-      default: 'RELEASED',
+      description: 'The organization software channel, which defaults to RELEASED. For official software, omitting this field uses the channel configured for the device ID, or the stable channel when querying by model. Pass RELEASED to explicitly request the official stable channel.',
     },
     currentVersion: {
       type: 'string | null',
@@ -135,12 +147,17 @@ Both query methods use a JSON request body. Identify the device by its ID or by 
       type: 'string',
       description: 'A specific live SemVer version, up to 31 characters. Omit it to get the latest version in the selected channel.',
     },
+    releaseNotes: {
+      type: 'array',
+      description: "Choose one or more language codes. Send every code listed below to request all languages. Omit the field or send an empty array to receive only version and OTA information.",
+      items: { type: 'string', enumValues: releaseNoteLocales },
+    },
   }}
 />
 
 ## Response example
 
-HTTP `200 OK`. The selected version is `1.2.0-beta.1`, which is newer than the installed version, so `needUpdate` is `true`.
+HTTP `200 OK`. The example requests `releaseNotes: ["en-US"]` and selects `1.2.0-beta.1`. The selected version is newer than the installed version, so `needUpdate` is `true`.
 
 ```json
 {
@@ -152,6 +169,9 @@ HTTP `200 OK`. The selected version is `1.2.0-beta.1`, which is newer than the i
   "version": "1.2.0-beta.1",
   "needUpdate": true,
   "updateVersion": "1.2.0-beta.1",
+  "releaseNotes": [
+    { "locale": "en-US", "content": "Improves display refresh reliability after waking from sleep." }
+  ],
   "ota": {
     "downloadUrl": "https://dot.mindreset.tech/download/AwAAAAAAAAAAAAABAwAAAAA",
     "size": 1176976,
@@ -162,11 +182,32 @@ HTTP `200 OK`. The selected version is `1.2.0-beta.1`, which is newer than the i
 
 - `version` and `updateVersion` identify the selected version.
 - `needUpdate` is `true` only when the selected version is newer than `currentVersion`. Omitting the installed version still returns the version metadata with `needUpdate` set to `false`.
-- `ota` is `null` when the selected version has no OTA file. If `ota` is present, send a GET request to `ota.downloadUrl` and follow the HTTP 302 redirect to a signed URL valid for three minutes. See [Download and update](/docs/service/open/organization_software/download).
+- `ota` is `null` when the selected version has no OTA file. If `ota` is present, send a GET request to `ota.downloadUrl` and follow the HTTP 302 redirect to a signed URL valid for up to three minutes. See [Download and update](/docs/service/open/organization_software/download).
+
+<TypeTable
+  type={{
+    releaseNotes: {
+      type: 'array',
+      description: "Release notes for the selected version. Available entries follow the requested order. If none match, the response contains an empty array. You can request notes even when the device is up to date.",
+      items: {
+        locale: {
+          type: 'string',
+          description: "Language code for the entry.",
+        },
+        content: {
+          type: 'string',
+          description: "The full release notes text. New submissions allow up to 20,000 characters per language.",
+        },
+      },
+    },
+  }}
+/>
 
 To offer a full flash image or split flash package from a website or flashing tool, get the download URL from the [organization version list or details](/docs/service/open/organization_software/organization_versions).
 
 When you omit `firmwareId` to query official software, `ota` includes both the legacy `ota.path` and the authorized `ota.downloadUrl`. Existing devices can continue to resolve the relative `ota.path` against `https://os-cdn.mindreset.tech/`.
+
+`GET /api/authV2/device/ota` is deprecated and remains available to deployed devices. For new integrations, use the POST query on this page and download through `ota.downloadUrl`.
 
 ## Troubleshooting
 

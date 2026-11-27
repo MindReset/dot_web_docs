@@ -1,11 +1,22 @@
 ---
 title: 从设备查询版本
-description: 查询组织已发布的设备软件版本、更新状态和 OTA 下载信息。
+description: 查询已发布的设备软件版本、更新状态、发布说明和 OTA 下载信息。
 new: true
 ---
 
 import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
+import { getLanguageNames } from '~/dot_platform_share/utils/language';
+
+export const releaseNoteLocales = getLanguageNames("zh-Hans-CN");
+
+export const releaseNotesParam = {
+  type: "array",
+  name: "发布说明语言",
+  placeholder: "选择语言",
+  example: ["zh-Hans-CN"],
+  options: Object.entries(releaseNoteLocales).map(([value, label]) => ({ value, label })),
+};
 
 使用 `POST /api/authV2/device/firmware/query` 查询已发布的设备软件。此接口无需登录或提供 API 密钥。查询组织软件时，传入 [设备软件 ID](/docs/service/open/organization_software/software_ids) 和该软件绑定的设备信息。
 
@@ -34,6 +45,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     },
     currentVersion: { type: "string", name: "已安装版本", default: "1.1.0", example: "1.1.0" },
     version: { type: "string", name: "指定版本" },
+    releaseNotes: releaseNotesParam,
   }}
 />
 
@@ -93,6 +105,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     },
     currentVersion: { type: 'string', name: "已安装版本", default: '1.1.0', example: "1.1.0" },
     version: { type: "string", name: "指定版本" },
+    releaseNotes: releaseNotesParam,
   }}
 />
 
@@ -104,7 +117,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   type={{
     firmwareId: {
       type: 'string',
-      description: '组织软件的 24 位十六进制 ID。省略时查询官方正式版。',
+      description: '组织软件的 24 位十六进制 ID。省略时查询官方软件。',
     },
     id: {
       type: 'string',
@@ -124,8 +137,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     },
     status: {
       type: '"ALPHA" | "TESTING" | "RELEASED"',
-      description: '要查询的发布渠道。省略时查询正式版。',
-      default: 'RELEASED',
+      description: '组织软件的发布渠道，默认 RELEASED。查询官方软件时，省略此字段会使用设备 ID 对应的频道，按型号查询则使用正式频道。也可显式传入 RELEASED 查询官方正式版。',
     },
     currentVersion: {
       type: 'string | null',
@@ -135,12 +147,17 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       type: 'string',
       description: '要查询的已生效版本。使用最多 31 个字符的 SemVer，省略时取所选渠道的最新版本。',
     },
+    releaseNotes: {
+      type: 'array',
+      description: "选择一个或多个语言代码。请求所有语言时传入下方列出的全部代码。省略字段或传空数组时，响应省略发布说明。",
+      items: { type: 'string', enumValues: releaseNoteLocales },
+    },
   }}
 />
 
 ## 响应示例
 
-HTTP `200 OK`。示例选中了 `1.2.0-beta.1`，高于设备当前版本，因此 `needUpdate` 为 `true`。
+HTTP `200 OK`。示例请求 `releaseNotes: ["zh-Hans-CN"]` 并选中 `1.2.0-beta.1`。所选版本高于设备当前版本，因此 `needUpdate` 为 `true`。
 
 ```json
 {
@@ -152,6 +169,9 @@ HTTP `200 OK`。示例选中了 `1.2.0-beta.1`，高于设备当前版本，因�
   "version": "1.2.0-beta.1",
   "needUpdate": true,
   "updateVersion": "1.2.0-beta.1",
+  "releaseNotes": [
+    { "locale": "zh-Hans-CN", "content": "提高从休眠唤醒后画面的刷新稳定性。" }
+  ],
   "ota": {
     "downloadUrl": "https://dot.mindreset.tech/download/AwAAAAAAAAAAAAABAwAAAAA",
     "size": 1176976,
@@ -162,11 +182,32 @@ HTTP `200 OK`。示例选中了 `1.2.0-beta.1`，高于设备当前版本，因�
 
 - `version` 和 `updateVersion` 指向本次选中的版本。
 - 只有选中的版本高于 `currentVersion` 时，`needUpdate` 才为 `true`。未提供当前版本时也会返回版本信息，`needUpdate` 为 `false`。
-- `ota` 为 `null` 时，选中的版本未提供 OTA 文件。有 `ota` 时，向 `ota.downloadUrl` 发送 GET 请求并跟随 HTTP 302，获取有效期为 3 分钟的签名地址。参见[下载与更新](/docs/service/open/organization_software/download)。
+- `ota` 为 `null` 时，选中的版本未提供 OTA 文件。有 `ota` 时，向 `ota.downloadUrl` 发送 GET 请求并跟随 HTTP 302，获取有效期最长为 3 分钟的签名地址。参见[下载与更新](/docs/service/open/organization_software/download)。
+
+<TypeTable
+  type={{
+    releaseNotes: {
+      type: 'array',
+      description: "本次选中版本的发布说明。填写了内容的语言按请求顺序返回，无匹配内容时返回空数组。设备已是最新版时也可以查询。",
+      items: {
+        locale: {
+          type: 'string',
+          description: "对应的语言代码。",
+        },
+        content: {
+          type: 'string',
+          description: "发布时填写的完整说明。新提交的说明每种语言最多 20,000 个字符。",
+        },
+      },
+    },
+  }}
+/>
 
 为官网或刷写工具提供完整烧录镜像和分离烧录包时，可从[组织版本列表或详情](/docs/service/open/organization_software/organization_versions)取得下载链接。
 
 省略 `firmwareId` 查询官方软件时，`ota` 同时包含原有的 `ota.path` 和授权下载入口 `ota.downloadUrl`。旧设备仍可按 `https://os-cdn.mindreset.tech/` 解析相对路径 `ota.path`。
+
+`GET /api/authV2/device/ota` 已弃用，已部署的设备仍可调用。新接入使用本页的 POST 查询与 `ota.downloadUrl`。
 
 ## 排查
 

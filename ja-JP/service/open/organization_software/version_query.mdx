@@ -1,11 +1,22 @@
 ---
 title: デバイスからバージョンを照会する
-description: 公開済みの組織ソフトウェアのバージョン、更新の有無、OTA ダウンロード情報を取得します。
+description: 公開済みのデバイスソフトウェアのバージョン、更新の有無、リリースノート、OTA ダウンロード情報を取得します。
 new: true
 ---
 
 import { ApiPlayground } from 'src/shadcn/components/api-playground';
 import { TypeTable } from 'src/shadcn/components/type-table';
+import { getLanguageNames } from '~/dot_platform_share/utils/language';
+
+export const releaseNoteLocales = getLanguageNames("ja-JP");
+
+export const releaseNotesParam = {
+  type: "array",
+  name: "リリースノートの言語",
+  placeholder: "言語を選択",
+  example: ["ja-JP"],
+  options: Object.entries(releaseNoteLocales).map(([value, label]) => ({ value, label })),
+};
 
 `POST /api/authV2/device/firmware/query` で、公開済みのデバイスソフトウェアを照会できます。ログインや API キーは不要です。組織ソフトウェアを照会するには、[デバイスソフトウェア ID](/docs/service/open/organization_software/software_ids) と、プロジェクトに紐付くデバイス情報を指定します。
 
@@ -34,6 +45,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     },
     currentVersion: { type: "string", name: "インストール済みのバージョン", default: "1.1.0", example: "1.1.0" },
     version: { type: "string", name: "指定バージョン" },
+    releaseNotes: releaseNotesParam,
   }}
 />
 
@@ -93,6 +105,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     },
     currentVersion: { type: 'string', name: "インストール済みバージョン", default: '1.1.0', example: "1.1.0" },
     version: { type: "string", name: "指定バージョン" },
+    releaseNotes: releaseNotesParam,
   }}
 />
 
@@ -104,7 +117,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
   type={{
     firmwareId: {
       type: 'string',
-      description: '組織のデバイスソフトウェア ID（16 進数 24 桁）。省略すると公式の正式版を照会します。',
+      description: '組織のデバイスソフトウェア ID（16 進数 24 桁）。省略すると公式ソフトウェアを照会します。',
     },
     id: {
       type: 'string',
@@ -124,8 +137,7 @@ import { TypeTable } from 'src/shadcn/components/type-table';
     },
     status: {
       type: '"ALPHA" | "TESTING" | "RELEASED"',
-      description: '照会する公開チャネル。省略すると正式版が対象になります。',
-      default: 'RELEASED',
+      description: '組織ソフトウェアの公開チャネル。既定値は RELEASED です。公式ソフトウェアの照会で省略すると、デバイス ID に設定されたチャネルが使われます。モデルで照会する場合や RELEASED を指定した場合は、公式の正式版が対象になります。',
     },
     currentVersion: {
       type: 'string | null',
@@ -135,12 +147,17 @@ import { TypeTable } from 'src/shadcn/components/type-table';
       type: 'string',
       description: '照会する公開済みの SemVer バージョン。31 文字以内。省略すると指定チャネルの最新バージョンが返ります。',
     },
+    releaseNotes: {
+      type: 'array',
+      description: "取得する言語コードを 1 つ以上指定します。すべての言語を取得するには、下に示すコードをすべて送信します。フィールドを省略するか空の配列を送ると、バージョンと OTA の情報だけが返ります。",
+      items: { type: 'string', enumValues: releaseNoteLocales },
+    },
   }}
 />
 
 ## 応答例
 
-HTTP `200 OK`。選択された `1.2.0-beta.1` はインストール済みのバージョンより新しいため、`needUpdate` は `true` です。
+HTTP `200 OK`。この例では `releaseNotes: ["ja-JP"]` を送信し、`1.2.0-beta.1` が選ばれています。インストール済みのバージョンより新しいため、`needUpdate` は `true` です。
 
 ```json
 {
@@ -152,6 +169,9 @@ HTTP `200 OK`。選択された `1.2.0-beta.1` はインストール済みのバ
   "version": "1.2.0-beta.1",
   "needUpdate": true,
   "updateVersion": "1.2.0-beta.1",
+  "releaseNotes": [
+    { "locale": "ja-JP", "content": "スリープから復帰した後の画面更新を安定させました。" }
+  ],
   "ota": {
     "downloadUrl": "https://dot.mindreset.tech/download/AwAAAAAAAAAAAAABAwAAAAA",
     "size": 1176976,
@@ -162,11 +182,32 @@ HTTP `200 OK`。選択された `1.2.0-beta.1` はインストール済みのバ
 
 - `version` と `updateVersion` は、今回選ばれたバージョンを示します。
 - `needUpdate` が `true` になるのは、選ばれたバージョンが `currentVersion` より新しい場合です。インストール済みバージョンを省略すると、バージョン情報と `needUpdate: false` が返ります。
-- 選択されたバージョンに OTA ファイルがない場合、`ota` は `null` です。ファイルがある場合は `ota.downloadUrl` に GET リクエストを送り、HTTP 302 リダイレクトをたどります。署名付き URL の有効期間は 3 分間です。[OTA ファイルのダウンロードと検証](/docs/service/open/organization_software/download)を参照してください。
+- 選択されたバージョンに OTA ファイルがない場合、`ota` は `null` です。ファイルがある場合は `ota.downloadUrl` に GET リクエストを送り、HTTP 302 リダイレクトをたどります。署名付き URL の有効期間は最長 3 分です。[OTA ファイルのダウンロードと検証](/docs/service/open/organization_software/download)を参照してください。
+
+<TypeTable
+  type={{
+    releaseNotes: {
+      type: 'array',
+      description: "選ばれたバージョンのリリースノート。本文のある言語が指定順に返り、該当する本文がなければ空の配列が返ります。デバイスが最新版でも取得できます。",
+      items: {
+        locale: {
+          type: 'string',
+          description: "項目の言語コード。",
+        },
+        content: {
+          type: 'string',
+          description: "リリースノートの全文。新規提出時は 1 言語あたり 20,000 文字までです。",
+        },
+      },
+    },
+  }}
+/>
 
 Web サイトや書き込みツールで一括書き込みイメージや分割書き込みパッケージを提供する場合は、[組織のバージョン一覧または詳細](/docs/service/open/organization_software/organization_versions)からダウンロード URL を取得できます。
 
 `firmwareId` を省略して公式ソフトウェアを照会すると、`ota` には従来の `ota.path` とダウンロード用の `ota.downloadUrl` の両方が含まれます。既存のデバイスでは、引き続き `https://os-cdn.mindreset.tech/` を基準に相対パス `ota.path` を解決できます。
+
+`GET /api/authV2/device/ota` は非推奨です。稼働中のデバイスでは引き続き利用できます。新規連携では、このページの POST リクエストと `ota.downloadUrl` を使用してください。
 
 ## トラブルシューティング
 
